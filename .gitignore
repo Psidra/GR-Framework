@@ -43,3 +43,5 @@ NYP_Framework/Base/Debug/*
 NYP_Framework/Base/Debug/vc120.idb
 NYP_Framework/Base/Debug/vc120.pdb
 NYP_Framework/Debug/Base.pdb
+*.idb
+*.pdb
