@@ -32,10 +32,7 @@
 *.suo
 *.sdf
 *.opendb
-*.log
-*.log
 *.lastbuildstate
-*.tlog
 *.idb
 *.pdb
 *.lib
