@@ -6,7 +6,6 @@
 *.lo
 *.o
 *.obj
-*.1.tlog
 
 # Precompiled Headers
 *.gch
@@ -33,3 +32,10 @@
 *.suo
 *.sdf
 *.opendb
+*.log
+*.log
+*.lastbuildstate
+*.tlog
+*.idb
+*.pdb
+*.lib
