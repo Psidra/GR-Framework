@@ -54,6 +54,15 @@ public:
 	// Get Fall Acceleration of the player
 	double GetFallAcceleration(void) const;
 
+	// Move Up
+	void MoveUp(double dt = 0.0333f);
+	// Move Down
+	void MoveDown(double dt = 0.0333f);
+	// Move Left
+	void MoveLeft(double dt = 0.0333f);
+	// Move Right
+	void MoveRight(double dt = 0.0333f);
+
 	// Update Jump Upwards
 	void UpdateJumpUpwards(double dt = 0.0333f);
 	// Update FreeFall
