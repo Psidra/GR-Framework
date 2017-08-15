@@ -42,3 +42,4 @@ Debug/
 Base/Debug/
 *.idb
 *.pdb
+*.lastbuildstate

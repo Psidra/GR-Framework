@@ -205,7 +205,7 @@ void Application::InitAllMeshes()
 	{
 		MeshBuilder::GetInstance()->GenerateAxes("reference");
 		MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
-		MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
+		MeshBuilder::GetInstance()->GenerateQuad("quad", Color(0.4f, 0.2f, 0.2f), 1.f);
 		//MeshList::GetInstance()->GetMesh("quad")->textureID[0] = LoadTGA("Image//calibri.tga");
 		MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 		MeshList::GetInstance()->GetMesh("text")->textureID[0] = LoadTGA("Image//calibri.tga");
@@ -217,6 +217,11 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+
+		// Player sprite
+		MeshBuilder::GetInstance()->GenerateQuad("player", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player")->textureID[0] = LoadTGA("Image/Player/placeholder.tga");
+
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);

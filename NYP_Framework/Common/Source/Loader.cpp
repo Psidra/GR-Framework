@@ -39,17 +39,21 @@ bool Loader::OpenFile(std::string _name)
 
 bool Loader::LoadData(std::string _name)
 {
-    std::cout << "<Loader Output>" << std::endl;
+	    std::cout << "<Loader Output>" << std::endl;
     if (!this->OpenFile(_name))
         return false;
 
     int i = 0;
-    for (std::vector<std::string>::iterator it = this->m_file_data.begin(); it != this->m_file_data.end(); ++i, ++it)
-    {
-        *m_file << *it;
-    }
-    std::cout << i << " rows of data written into file " << _name << "!" << std::endl;
+    
+	while (!this->m_file->eof())
+	{
+		std::string ss;
+		std::getline(*m_file, ss);
+		this->m_file_data.push_back(ss);
+		++i;
+	}
 
+    std::cout << i << " rows of data read into file " << _name << "!" << std::endl;
 
     if (this->CloseFile())
     {
@@ -66,7 +70,14 @@ bool Loader::WriteData(std::string _name)
     if (!this->OpenFile(_name))
         return false;
 
+	int i = 0;
 
+	for (std::vector<std::string>::iterator it = this->m_file_data.begin(); it != this->m_file_data.end(); ++i, ++it)
+	{
+		*m_file << *it;
+	}
+
+	std::cout << i << " rows of data written into file " << _name << "!" << std::endl;
 
     if (this->CloseFile())
     {
