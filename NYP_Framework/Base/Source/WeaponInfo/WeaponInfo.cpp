@@ -44,7 +44,6 @@ void CWeaponInfo::SetMaxTotalRound(const int maxTotalRounds)
 	this->maxTotalRounds = maxTotalRounds;
 }
 
-
 // Get the number of ammunition in the magazine for this player
 int CWeaponInfo::GetMagRound(void) const
 {
@@ -137,7 +136,7 @@ void CWeaponInfo::Update(const double dt)
 }
 
 // Discharge this weapon
-void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _source)
+void CWeaponInfo::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -150,8 +149,7 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 															position, 
 															(target - position).Normalized(), 
 															2.0f, 
-															10.0f,
-															_source);
+															10.0f);
 			aProjectile->SetCollider(true);
 			aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 			bFire = false;
