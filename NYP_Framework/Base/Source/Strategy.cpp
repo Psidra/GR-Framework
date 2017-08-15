@@ -11,7 +11,7 @@ CStrategy::~CStrategy()
 {
 }
 
-void CStrategy::Update(Vector3& theDestination, Vector3& theEnemyPosition)
+void CStrategy::Update(Vector3& theDestination, Vector3& theEnemyPosition, double dt)
 {
 	cout << "void CStrategy::Update()" << endl;
 }
