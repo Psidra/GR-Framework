@@ -4,7 +4,7 @@
 #include "MouseController.h"
 #include "KeyboardController.h"
 #include "Mtx44.h"
-
+#include "../WeaponInfo/Pistol.h"
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
 
@@ -20,6 +20,7 @@ Player::Player(void)
 	, m_dElapsedTime(0.0)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
+	, primaryWeapon(NULL)
 {
 }
 
@@ -40,6 +41,10 @@ void Player::Init(void)
 	// Set Boundary
 	maxBoundary.Set(1,1,1);
 	minBoundary.Set(-1, -1, -1);
+
+	//init weapon
+	primaryWeapon = new CPistol();
+	primaryWeapon->Init();
 }
 
 // Returns true if the player is on ground
@@ -312,6 +317,7 @@ void Player::Update(double dt)
 		attachedCamera->SetCameraTarget(position);
 		attachedCamera->Update(dt);
 	}
+	primaryWeapon->Update(dt);
 }
 
 // Constrain the position within the borders
@@ -354,3 +360,12 @@ void Player::DetachCamera()
 {
 	attachedCamera = nullptr;
 }
+
+// Shoot Weapon
+bool Player::Shoot(const float dt)
+{	
+	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir of gun
+	return false;
+}
+
+

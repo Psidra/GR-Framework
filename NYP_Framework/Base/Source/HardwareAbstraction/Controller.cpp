@@ -28,7 +28,7 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_MOVEDOWN] = &Controller::MoveDown;
 	this->controllerfunc[CONTROLLER_MOVELEFT] = &Controller::MoveLeft;
 	this->controllerfunc[CONTROLLER_MOVERIGHT] = &Controller::MoveRight;
-
+	this->controllerfunc[CONTROLLER_SHOOT] = &Controller::Shoot;
 	return false;
 }
 
@@ -65,5 +65,12 @@ bool Controller::MoveRight(double dt)
 {
 	Player::GetInstance()->MoveRight(dt);
 	std::cout << "Right" << std::endl;
+	return false;
+}
+
+bool Controller::Shoot(double dt)
+{
+	Player::GetInstance()->Shoot(dt);
+	std::cout << "Shoot" << std::endl;
 	return false;
 }

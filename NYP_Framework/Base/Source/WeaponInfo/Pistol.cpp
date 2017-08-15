@@ -1,5 +1,5 @@
 #include "Pistol.h"
-
+#include "../Projectile/Projectile.h"
 
 CPistol::CPistol()
 {
@@ -32,3 +32,26 @@ void CPistol::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 }
+
+void CPistol::Discharge(Vector3 position, Vector3 target)
+{
+	if (bFire)
+	{
+		// If there is still ammo in the magazine, then fire
+		if (magRounds > 0)
+		{
+			// Create a projectile with a cube mesh. Its position and direction is same as the player.
+			// It will last for 3.0 seconds and travel at 500 units per second
+			CProjectile* aProjectile = Create::Projectile("cube",
+				position,
+				target.Normalized(),
+				2.0f,
+				10.0f);
+			//aProjectile->SetCollider(true);
+			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+			bFire = false;
+			magRounds--;
+		}
+	}
+}
+
