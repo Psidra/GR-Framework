@@ -167,13 +167,11 @@
     <ClInclude Include="Source\Strategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Source\AI FSM\Ai_1.h">
       <Filter>AI FSM</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="Source\WeaponInfo\Shotgun.h">
       <Filter>Header Files</Filter>
->>>>>>> c8ef45636c3bdf97f9493622309e51f390ea85d8
     </ClInclude>
   </ItemGroup>
 </Project>
