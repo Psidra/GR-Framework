@@ -211,6 +211,11 @@ void SceneText::Init()
 
 	// Create player sprit
 	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+	
+	minion = new CEnemy();
+	minion->Init();
+	minion->SetEnemyGE(Create::Entity("player", minion->GetPos(), Vector3(1, 1, 1), true));
+	minion->ChangeStrategy(new CStrategy_AI_1(), false);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -227,6 +232,8 @@ void SceneText::Update(double dt)
 	EntityManager::GetInstance()->Update(dt);
 
 	keyboard->Read(dt);
+	minion->Update(dt);
+
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if(KeyboardController::GetInstance()->IsKeyDown('1'))

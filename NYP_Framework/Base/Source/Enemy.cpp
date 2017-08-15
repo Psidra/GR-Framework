@@ -5,10 +5,12 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 
+
+
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy(Mesh * modelMesh)
+CEnemy::CEnemy() :defaultPosition(0, 0, 0)
 {
 }
 
@@ -26,16 +28,32 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Update(double dt)
 {
+	if (theStrategy != NULL)
+	{
+		theStrategy->Update(Player::GetInstance()->GetPos(), position, dt);
+	}
+	enemyModel->SetPosition(position);
 }
 
-void CEnemy::Render(void)
+void CEnemy::Init()
 {
-	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	RenderHelper::RenderMesh(modelMesh);
-	modelStack.PopMatrix();
+	// Set the current values
+	position.Set(0, 5, 0);
+
+	// Set Boundary
+	maxBoundary.Set(1, 1, 1);
+	minBoundary.Set(-1, -1, -1);
+}
+
+void CEnemy::SetEnemyGE(GenericEntity * _enemyModel)
+{
+	this->enemyModel = _enemyModel;
+	this->enemyModel->type = GenericEntity::OBJECT_TYPE::ENEMY;
+}
+
+Vector3 CEnemy::GetPos()
+{
+	return position;
 }
 
 /********************************************************************************
@@ -53,21 +71,4 @@ void CEnemy::ChangeStrategy(CStrategy* theNewStrategy, bool bDelete)
 	}
 
 	theStrategy = theNewStrategy;
-}
-
-CEnemy * Create::Enemy(const std::string & _meshName, const Vector3 & position, const Vector3 & scale, const Vector3 & maxAABB, const Vector3 & minAABB)
-{
-	Mesh* modelMesh = MeshList::GetInstance()->GetMesh(_meshName);
-	if (modelMesh == nullptr)
-		return nullptr;
-
-	CEnemy* result = new CEnemy(modelMesh);
-	result->SetPosition(position);
-	result->SetScale(scale);
-	result->SetAABB(maxAABB, minAABB);
-	result->enemyType->type = GenericEntity::OBJECT_TYPE::ENEMY;
-	EntityManager::GetInstance()->AddEntity(result);
-
-
-	return result;
 }

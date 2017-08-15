@@ -10,6 +10,7 @@
 #include "MatrixStack.h"
 #include "GenericEntity.h"
 #include "Enemy.h"
+#include "AI FSM\Ai_1.h"
 
 class ShaderProgram;
 class SceneManager;

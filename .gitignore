@@ -50,3 +50,7 @@ NYP_Framework/Debug/Common.lib
 *.idb
 *.pdb
 *.lib
+*.idb
+*.pdb
+*.lib
+*.lastbuildstate

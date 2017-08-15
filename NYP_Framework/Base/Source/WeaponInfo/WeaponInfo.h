@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Vector3.h"
+#include "../GenericEntity.h"
 
 class CPlayerInfo;
 
 class CWeaponInfo
 {
 public:
-	CWeaponInfo();
+	CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType);
 	virtual ~CWeaponInfo();
 protected:
 	// The number of ammunition in a magazine for this weapon
@@ -25,6 +26,8 @@ protected:
 	double elapsedTime;
 	// Boolean flag to indicate if weapon can fire now
 	bool bFire;
+	// Bullet type (player/enemy)
+	GenericEntity::OBJECT_TYPE bulletType;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -71,4 +74,10 @@ public:
 
 	// Print Self
 	void PrintSelf(void);
+
+protected:
+	// Number of bullet to create
+	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0);
+	// bullet pattern(using angle)
+	//Vector3 bulletPattern(Vector3 target, float angle = 10.f);
 };

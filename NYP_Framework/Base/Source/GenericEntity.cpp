@@ -39,6 +39,14 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 	default:
 		break;
 	}
+	if ((this->type == PLAYER_BULLET && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER_BULLET))
+	{
+		std::cout << "bullet collide\n";
+		if (this->type == PLAYER_BULLET)
+			this->SetIsDone(true);
+		if (ThatEntity->type == PLAYER_BULLET)
+			ThatEntity->SetIsDone(true);
+	}
 }
 
 // Set the maxAABB and minAABB
