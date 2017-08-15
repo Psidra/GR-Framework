@@ -10,6 +10,7 @@
 #include "MeshBuilder.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "PlayerInfo\PlayerInfo.h"
 
 class Mesh;
 
@@ -18,33 +19,25 @@ class CEnemy :public Collision, public EntityBase, public CAnimation
 protected:
 	Mesh* modelMesh;
 
-	Vector3 defaultPosition, defaultTarget;
+	Vector3 defaultPosition;
+	Vector3 position, scale;
+	Vector3 maxBoundary, minBoundary;
 	Vector3 target;
 	
 	CStrategy* theStrategy;
-
-	double m_dSpeed;
-	double m_dAcceleration;
-	Vector3 position, scale;
-	Vector3 maxBoundary, minBoundary;
-	
 	
 public:
-	CEnemy(Mesh* modelMesh);
+	CEnemy();
 	virtual ~CEnemy();
 
+	void Init();
 	void Update(double dt = 0.0333f);
-	void Render(void);
+	void SetEnemyGE(GenericEntity* _enemyModel);
+	Vector3 GetPos();
+	GenericEntity* enemyModel;
 
 	// Strategy
 	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
-
-	GenericEntity* enemyType;
-};
-
-namespace Create
-{
-	CEnemy* Enemy(const std::string&_meshName, const Vector3& position, const Vector3& scale, const Vector3& maxAABB = Vector3(5, 5, 0), const Vector3& minAABB = Vector3(-5, -5, 0));
 };
 
 #endif // !Enemy

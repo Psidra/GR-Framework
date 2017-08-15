@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AI FSM\Ai_1.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\CollisionManager.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AI FSM\Ai_1.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\CollisionManager.h" />
