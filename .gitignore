@@ -48,3 +48,5 @@ Base/Debug/
 *.tlog
 *.idb
 *.pdb
+*.idb
+*.lib
