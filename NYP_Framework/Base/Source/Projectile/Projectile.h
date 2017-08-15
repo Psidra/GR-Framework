@@ -1,12 +1,12 @@
 #pragma once
-#include "EntityBase.h"
 #include "Vector3.h"
 #include "Collider\Collider.h"
+#include "../GenericEntity.h"
 
 class Mesh;
 class CPlayerInfo;
 
-class CProjectile : public EntityBase, public Collision
+class CProjectile : public GenericEntity
 {
 public:
 	CProjectile(void);
@@ -34,9 +34,9 @@ public:
 	// Get the speed of the projectile
 	float GetSpeed(void) const;
 	// Set the source of the projectile
-	void SetSource(CPlayerInfo* _source);
+	//void SetSource(CPlayerInfo* _source);
 	// Get the source of the projectile
-	CPlayerInfo* GetSource(void) const;
+	//CPlayerInfo* GetSource(void) const;
 
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
@@ -54,7 +54,7 @@ protected:
 	// The direction of the projectile
 	Vector3 theDirection;
 	// The character which fired this projectile
-	CPlayerInfo* theSource;
+	//CPlayerInfo* theSource;
 };
 
 namespace Create

@@ -15,7 +15,6 @@ CWeaponInfo::CWeaponInfo()
 {
 }
 
-
 CWeaponInfo::~CWeaponInfo()
 {
 }
@@ -197,4 +196,16 @@ void CWeaponInfo::PrintSelf(void)
 	cout << "timeBetweenShots\t:\t" << timeBetweenShots << endl;
 	cout << "elapsedTime\t\t:\t" << elapsedTime << endl;
 	cout << "bFire\t\t:\t" << bFire << endl;
+}
+
+void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet)
+{
+	for (int i = 0;i < numBullet;++i)
+	{
+		CProjectile* aProjectile = Create::Projectile("cube",
+			position,
+			target.Normalized(),
+			2.0f,
+			10.0f);
+	}
 }

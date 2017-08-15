@@ -1,17 +1,17 @@
-#include "Pistol.h"
+#include "../WeaponInfo/Shotgun.h"
 #include "../Projectile/Projectile.h"
 
-CPistol::CPistol()
+Shotgun::Shotgun()
 {
 }
 
 
-CPistol::~CPistol()
+Shotgun::~Shotgun()
 {
 }
 
 // Initialise this instance to default values
-void CPistol::Init(void)
+void Shotgun::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
@@ -26,14 +26,14 @@ void CPistol::Init(void)
 	maxTotalRounds = 40;
 
 	// The time between shots
-	timeBetweenShots = 0.3333;
+	timeBetweenShots = 0.55;
 	// The elapsed time (between shots)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 }
 
-void CPistol::Discharge(Vector3 position, Vector3 target)
+void Shotgun::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -43,7 +43,7 @@ void CPistol::Discharge(Vector3 position, Vector3 target)
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
 			
-			generateBullet(position, target);
+			generateBullet(position, target, 5);
 
 			//aProjectile->SetCollider(true);
 			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
@@ -53,7 +53,7 @@ void CPistol::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
-void CPistol::generateBullet(Vector3 position, Vector3 target, const int numBullet)
+void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBullet)
 {
 	if (numBullet < 0)
 		return;
@@ -65,6 +65,10 @@ void CPistol::generateBullet(Vector3 position, Vector3 target, const int numBull
 			target.Normalized(),
 			2.0f,
 			10.0f);
+		
+		Vector3 temp = target;
+		//rotate vector
+		target.x = temp.x * cos(Math::DegreeToRadian(10)) - temp.y * sin(Math::DegreeToRadian(10));
+		target.y = temp.x * sin(Math::DegreeToRadian(10)) + temp.y * cos(Math::DegreeToRadian(10));
 	}
 }
-

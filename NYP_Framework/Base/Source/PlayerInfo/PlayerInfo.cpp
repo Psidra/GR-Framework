@@ -5,6 +5,7 @@
 #include "KeyboardController.h"
 #include "Mtx44.h"
 #include "../WeaponInfo/Pistol.h"
+#include "../WeaponInfo/Shotgun.h"
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
 
@@ -43,7 +44,7 @@ void Player::Init(void)
 	minBoundary.Set(-1, -1, -1);
 
 	//init weapon
-	primaryWeapon = new CPistol();
+	primaryWeapon = new Shotgun();
 	primaryWeapon->Init();
 }
 
@@ -364,7 +365,7 @@ void Player::DetachCamera()
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir of gun
+	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir to shoot from
 	return false;
 }
 
