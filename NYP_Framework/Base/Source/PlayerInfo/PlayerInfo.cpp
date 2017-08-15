@@ -45,6 +45,9 @@ void Player::Init(void)
 	//init weapon
 	primaryWeapon = new CPistol();
 	primaryWeapon->Init();
+
+	this->SetCollider(true);
+	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
 }
 
 // Returns true if the player is on ground
@@ -314,13 +317,14 @@ void Player::Update(double dt)
 	if (attachedCamera)
 	{
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position + Vector3(0, 0, 10));
+		attachedCamera->SetCameraPos(position + Vector3(0, 0, 15));
 		attachedCamera->SetCameraTarget(position);
 		attachedCamera->Update(dt);
 	}
 
-	playerModel->SetPosition(position);
-	this->setPlayerAABB(this->getPlayerGE()->GetScale() * 0.5f + this->GetPos(), this->getPlayerGE()->GetScale() * -0.5f + this->GetPos());
+	this->SetPosition(position);
+	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
+
 	primaryWeapon->Update(dt);
 }
 
@@ -363,22 +367,6 @@ void Player::AttachCamera(FPSCamera* _cameraPtr)
 void Player::DetachCamera()
 {
 	attachedCamera = nullptr;
-}
-
-void Player::setPlayerGE(GenericEntity* _playerModel)
-{
-	this->playerModel = _playerModel;
-	this->playerModel->type = GenericEntity::OBJECT_TYPE::PLAYER;
-}
-
-GenericEntity * Player::getPlayerGE()
-{
-	return playerModel;
-}
-
-void Player::setPlayerAABB(Vector3 _MaxAABB, Vector3 _MinAABB)
-{
-	this->playerModel->SetAABB(_MaxAABB, _MinAABB);
 }
 
 // Shoot Weapon

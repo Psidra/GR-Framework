@@ -31,9 +31,13 @@ void GenericEntity::Render()
 
 void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 {
-	if ((this->type == PLAYER && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER))
-	{
+	switch (ThatEntity->type) {
+	case WALL:
 		std::cout << "collide" << std::endl;
+		break;
+
+	default:
+		break;
 	}
 }
 

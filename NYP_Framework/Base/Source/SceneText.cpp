@@ -209,8 +209,8 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	// Create player sprite
-	Player::GetInstance()->setPlayerGE(Create::Entity("player", Player::GetInstance()->GetPos(), Vector3(1, 1, 1), true));
+	// Create player sprit
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -431,6 +431,11 @@ void SceneText::RenderWorld()
 	ms.Translate(0, 0, -5);
 	ms.Scale(70, 50, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
+	ms.PopMatrix();
+
+	ms.PushMatrix();
+	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
+	RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	ms.PopMatrix();
 }
 

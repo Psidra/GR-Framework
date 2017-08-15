@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include "PlayerInfo\PlayerInfo.h"
 
 bool CollisionManager::CheckPointToSphereCollision(Vector3 point, EntityBase * ThatEntity)
 {
@@ -96,6 +97,12 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);
 			}
+		}
+
+		if (CheckAABBCollision(Player::GetInstance(), *it))
+		{
+			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+			Player::GetInstance()->CollisionResponse(thatEntity);
 		}
 	}
 }
