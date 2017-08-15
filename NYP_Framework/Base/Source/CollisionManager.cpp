@@ -84,8 +84,10 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 {
 	std::list<EntityBase*>::iterator it, it2, end;
 	end = collisionList.end();
-	for (it = collisionList.begin(); it != end; ++it) {
-		for (it2 = std::next(it, 1); it2 != end; ++it) {
+	for (it = collisionList.begin(); it != end; ++it) 
+	{
+		for (it2 = std::next(it, 1); it2 != end; ++it2)
+		{
 			// do your checks here
 			if (CheckAABBCollision(*it, *it2))
 			{

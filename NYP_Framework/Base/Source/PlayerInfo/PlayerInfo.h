@@ -5,7 +5,7 @@
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
 
-class Player : public Singleton<Player>, public GenericEntity
+class Player : public Singleton<Player>
 {
 	friend Singleton<Player>;
 public:
@@ -79,11 +79,27 @@ public:
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera();
 
+	// Set GenericEntity
+	void setPlayerGE(GenericEntity* _playerModel);
+	// Get GenericEntity
+	GenericEntity* getPlayerGE();
+
+	// Set AABB
+	void setPlayerAABB(Vector3 _MaxAABB, Vector3 _MinAABB);
+
+	// return true if dodge rolling
+	bool isDodging(void);
+	// toggle dodge
+	void toggleDodge(bool _dodge);
+	// dodge roll action
+	void DodgeRoll();
+
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
+	GenericEntity* playerModel;
 
 	double m_dSpeed;
 	double m_dAcceleration;
