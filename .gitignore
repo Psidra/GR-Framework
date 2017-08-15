@@ -50,3 +50,5 @@ Base/Debug/
 *.pdb
 *.idb
 *.lib
+*.pdb
+*.idb
