@@ -176,6 +176,11 @@ void SceneText::Init()
 //	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
+	// test walls
+	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f));
+	wall->SetCollider(true);
+	wall->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+
 
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
@@ -201,7 +206,11 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprite
-	Create::Sprite2DObject("player", Player::GetInstance()->GetPos(), Vector3(50.0f, 50.0f, 50.0f));
+	//Create::Entity("player", Player::GetInstance()->GetPos(), Vector3(1, 1, 1));
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"), GenericEntity::OBJECT_TYPE::PLAYER);
+	Player::GetInstance()->SetCollider(true);
+	Player::GetInstance()->SetAABB(Vector3(50, 50, 50), Vector3(0, 0, 0));
+	
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -422,6 +431,11 @@ void SceneText::RenderWorld()
 	ms.Translate(0, 0, -5);
 	ms.Scale(70, 50, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
+	ms.PopMatrix();
+
+	ms.PushMatrix();
+	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
+	RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	ms.PopMatrix();
 }
 

@@ -10,12 +10,14 @@ class Mesh;
 class GenericEntity : public EntityBase, public Collision
 {
 public:
+	GenericEntity() { modelMesh = nullptr; };
 	GenericEntity(Mesh* _modelMesh);
 	virtual ~GenericEntity();
 
 	enum OBJECT_TYPE {
 		NONE = 0,
-		TEST
+		PLAYER,
+		WALL
 	}type;
 
 	virtual void Update(double _dt);
@@ -25,6 +27,11 @@ public:
 
 	// Set the maxAABB and minAABB
 	void SetAABB(Vector3 maxAABB, Vector3 minAABB);
+
+	// Set mesh
+	void SetMesh(Mesh* _modelMesh, OBJECT_TYPE _type = NONE);
+	// Get mesh
+	Mesh* GetMesh();
 
 private:
 	Mesh* modelMesh;

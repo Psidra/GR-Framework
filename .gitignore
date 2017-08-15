@@ -38,8 +38,5 @@
 *.lib
 *.tlog
 *.log
-Debug/
-Base/Debug/
-*.idb
-*.pdb
-*.lastbuildstate
+Debug
+Base/Debug
