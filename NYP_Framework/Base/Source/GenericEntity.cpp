@@ -30,8 +30,8 @@ void GenericEntity::Render()
 
 void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 {
-	if (this->type == TEST && ThatEntity->type == TEST) {
-		//do whatever here
+	if (this->type == PLAYER && ThatEntity->type == WALL) {
+		std::cout << "lmao" << std::endl;
 	}
 }
 
@@ -40,6 +40,17 @@ void GenericEntity::SetAABB(Vector3 maxAABB, Vector3 minAABB)
 {
 	this->maxAABB = maxAABB;
 	this->minAABB = minAABB;
+}
+
+void GenericEntity::SetMesh(Mesh * _modelMesh, OBJECT_TYPE _type)
+{
+	this->type = _type;
+	this->modelMesh = _modelMesh;
+}
+
+Mesh * GenericEntity::GetMesh()
+{
+	return modelMesh;
 }
 
 GenericEntity* Create::Entity(	const std::string& _meshName, 

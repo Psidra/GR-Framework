@@ -3,8 +3,9 @@
 #include "../FPSCamera.h"
 #include "../GroundEntity.h"
 #include "SingletonTemplate.h"
+#include "../GenericEntity.h"
 
-class Player : public Singleton<Player>
+class Player : public Singleton<Player>, public GenericEntity
 {
 	friend Singleton<Player>;
 public:
