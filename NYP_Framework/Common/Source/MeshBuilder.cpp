@@ -524,3 +524,11 @@ Mesh* MeshBuilder::GenerateText(const std::string &meshName, unsigned numRow, un
 
 	return mesh;
 }
+
+Mesh* MeshBuilder::GetMesh(const std::string& _meshName)
+{
+	if (meshMap.count(_meshName) != 0)
+		return meshMap[_meshName];
+
+	return nullptr;
+}

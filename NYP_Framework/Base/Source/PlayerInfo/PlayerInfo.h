@@ -5,6 +5,8 @@
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
 
+class CWeaponInfo;
+
 class Player : public Singleton<Player>
 {
 	friend Singleton<Player>;
@@ -94,6 +96,9 @@ public:
 	// dodge roll action
 	void DodgeRoll();
 
+	// Shoot Weapon
+	bool Shoot(const float dt);
+
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction;
@@ -115,4 +120,5 @@ private:
 	double m_dFallAcceleration;
 
 	FPSCamera* attachedCamera;
+	CWeaponInfo* primaryWeapon;
 };

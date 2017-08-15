@@ -1,10 +1,14 @@
 #include "Enemy.h"
-#include <iostream>
+
+#include "MeshBuilder.h"
+#include "EntityManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
 
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy(Mesh* modelMesh) : modelMesh(modelMesh)
+CEnemy::CEnemy(Mesh * modelMesh)
 {
 }
 
@@ -26,6 +30,12 @@ void CEnemy::Update(double dt)
 
 void CEnemy::Render(void)
 {
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
+	RenderHelper::RenderMesh(modelMesh);
+	modelStack.PopMatrix();
 }
 
 /********************************************************************************
@@ -43,4 +53,21 @@ void CEnemy::ChangeStrategy(CStrategy* theNewStrategy, bool bDelete)
 	}
 
 	theStrategy = theNewStrategy;
+}
+
+CEnemy * Create::Enemy(const std::string & _meshName, const Vector3 & position, const Vector3 & scale, const Vector3 & maxAABB, const Vector3 & minAABB)
+{
+	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
+	if (modelMesh == nullptr)
+		return nullptr;
+
+	CEnemy* result = new CEnemy(modelMesh);
+	result->SetPosition(position);
+	result->SetScale(scale);
+	result->SetAABB(maxAABB, minAABB);
+	result->enemyType->type = GenericEntity::OBJECT_TYPE::ENEMY;
+	EntityManager::GetInstance()->AddEntity(result);
+
+
+	return result;
 }

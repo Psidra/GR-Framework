@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "GenericEntity.h"
+#include "Enemy.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -32,6 +33,7 @@ private:
 
 	ShaderProgram* currProg;
 	Player* playerInfo;
+	CEnemy* minion;
 	GroundEntity* groundEntity;
 	FPSCamera *camera;
 	TextEntity* textObj[3];

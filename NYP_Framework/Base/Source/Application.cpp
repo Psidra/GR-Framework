@@ -221,6 +221,15 @@ void Application::InitAllMeshes()
 		// Player sprite
 		MeshBuilder::GetInstance()->GenerateQuad("player", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player")->textureID[0] = LoadTGA("Image/Player/placeholder.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_standgunleft1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_standgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_StandGunLeft1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_standgunleft2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_standgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_StandGunLeft2.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minion_walkdown1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minion_walkdown2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown2.tga");
 
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
