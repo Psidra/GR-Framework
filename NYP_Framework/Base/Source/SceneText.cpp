@@ -177,9 +177,13 @@ void SceneText::Init()
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
 	// test walls
-	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f));
-	wall->SetCollider(true);
-	wall->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 10, 2), true);
+	wall->type = GenericEntity::OBJECT_TYPE::WALL;
+	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
+
+	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
+	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
+	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
 
 	// Setup the 2D entities
@@ -206,11 +210,7 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprite
-	//Create::Entity("player", Player::GetInstance()->GetPos(), Vector3(1, 1, 1));
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"), GenericEntity::OBJECT_TYPE::PLAYER);
-	Player::GetInstance()->SetCollider(true);
-	Player::GetInstance()->SetAABB(Vector3(50, 50, 50), Vector3(0, 0, 0));
-	
+	Player::GetInstance()->setPlayerGE(Create::Entity("player", Player::GetInstance()->GetPos(), Vector3(1, 1, 1), true));
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -220,6 +220,9 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
+	// Update the player position and other details based on keyboard and mouse inputs
+	Player::GetInstance()->Update(dt);
+
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
@@ -283,9 +286,6 @@ void SceneText::Update(double dt)
 		std::cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << std::endl;
 	}
 	// <THERE>
-
-	// Update the player position and other details based on keyboard and mouse inputs
-	Player::GetInstance()->Update(dt);
 
 	//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
 
@@ -431,11 +431,6 @@ void SceneText::RenderWorld()
 	ms.Translate(0, 0, -5);
 	ms.Scale(70, 50, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
-	ms.PopMatrix();
-
-	ms.PushMatrix();
-	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
-	RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	ms.PopMatrix();
 }
 

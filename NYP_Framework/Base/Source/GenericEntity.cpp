@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "PlayerInfo\PlayerInfo.h"
 
 GenericEntity::GenericEntity(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
@@ -30,8 +31,9 @@ void GenericEntity::Render()
 
 void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 {
-	if (this->type == PLAYER && ThatEntity->type == WALL) {
-		std::cout << "lmao" << std::endl;
+	if ((this->type == PLAYER && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER))
+	{
+		std::cout << "collide" << std::endl;
 	}
 }
 
@@ -55,7 +57,8 @@ Mesh * GenericEntity::GetMesh()
 
 GenericEntity* Create::Entity(	const std::string& _meshName, 
 								const Vector3& _position,
-								const Vector3& _scale)
+								const Vector3& _scale,
+								bool _collision)
 {
 	Mesh* modelMesh = MeshList::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -64,7 +67,7 @@ GenericEntity* Create::Entity(	const std::string& _meshName,
 	GenericEntity* result = new GenericEntity(modelMesh);
 	result->SetPosition(_position);
 	result->SetScale(_scale);
-	result->SetCollider(false);
+	result->SetCollider(_collision);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
 }

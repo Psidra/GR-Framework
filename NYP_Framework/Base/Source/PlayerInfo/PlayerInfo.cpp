@@ -34,10 +34,10 @@ Player::~Player(void)
 void Player::Init(void)
 {
 	// Set the default values
-	defaultPosition.Set(0,0,10);
+	defaultPosition.Set(0, 0, 0);
 
 	// Set the current values
-	position.Set(0, 0, 10);
+	position.Set(0, 0, 0);
 
 	// Set Boundary
 	maxBoundary.Set(1,1,1);
@@ -293,10 +293,11 @@ void Player::Update(double dt)
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
+
 	}
 	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-
+		
 	}
 
 	// If the user presses R key, then reset the view to default values
@@ -318,6 +319,9 @@ void Player::Update(double dt)
 		attachedCamera->SetCameraTarget(position);
 		attachedCamera->Update(dt);
 	}
+
+	playerModel->SetPosition(position);
+	this->setPlayerAABB(this->getPlayerGE()->GetScale() * 0.5f + this->GetPos(), this->getPlayerGE()->GetScale() * -0.5f + this->GetPos());
 	primaryWeapon->Update(dt);
 }
 
@@ -362,10 +366,25 @@ void Player::DetachCamera()
 	attachedCamera = nullptr;
 }
 
+void Player::setPlayerGE(GenericEntity* _playerModel)
+{
+	this->playerModel = _playerModel;
+	this->playerModel->type = GenericEntity::OBJECT_TYPE::PLAYER;
+}
+
+GenericEntity * Player::getPlayerGE()
+{
+	return playerModel;
+}
+
+void Player::setPlayerAABB(Vector3 _MaxAABB, Vector3 _MinAABB)
+{
+	this->playerModel->SetAABB(_MaxAABB, _MinAABB);
+}
+
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
 	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir to shoot from
 	return false;
 }
-
