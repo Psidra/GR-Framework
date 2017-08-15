@@ -15,7 +15,7 @@ public:
         CONTROLLER_MOVEDOWN,
         CONTROLLER_MOVELEFT,
         CONTROLLER_MOVERIGHT,
-
+		CONTROLLER_SHOOT,
         NUM_CONRTOLLER,
     };
 
@@ -33,7 +33,7 @@ public:
 	virtual bool MoveDown(double dt);
 	virtual bool MoveLeft(double dt);
 	virtual bool MoveRight(double dt);
-
+	virtual bool Shoot(double dt);
 
 };
 
