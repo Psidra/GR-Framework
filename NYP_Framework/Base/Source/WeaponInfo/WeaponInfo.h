@@ -71,4 +71,8 @@ public:
 
 	// Print Self
 	void PrintSelf(void);
+
+protected:
+	// Number of bullet to create
+	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1);
 };

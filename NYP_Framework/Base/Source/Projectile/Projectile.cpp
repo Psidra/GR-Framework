@@ -11,7 +11,6 @@ CProjectile::CProjectile(void)
 	, theDirection(0, 0, 0)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
-	, theSource(NULL)
 {
 }
 
@@ -21,14 +20,12 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, theDirection(0, 0, 0)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
-	, theSource(NULL)
 {
 }
 
 CProjectile::~CProjectile(void)
 {
 	modelMesh = NULL;
-	theSource = NULL;
 }
 
 // Activate the projectile. true == active, false == inactive
@@ -91,16 +88,16 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 }
 
 // Set the source of the projectile
-void CProjectile::SetSource(CPlayerInfo* _source)
-{
-	theSource = _source;
-}
-
+//void CProjectile::SetSource(CPlayerInfo* _source)
+//{
+//	theSource = _source;
+//}
+//
 // Get the source of the projectile
-CPlayerInfo* CProjectile::GetSource(void) const
-{
-	return theSource;
-}
+//CPlayerInfo* CProjectile::GetSource(void) const
+//{
+//	return theSource;
+//}
 
 // Update the status of this projectile
 void CProjectile::Update(double dt)
@@ -121,6 +118,8 @@ void CProjectile::Update(double dt)
 	position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
 					position.y + (float)(theDirection.y * dt * m_fSpeed),
 					position.z + (float)(theDirection.z * dt * m_fSpeed));
+
+	SetAABB(position + scale, position - scale);
 }
 
 

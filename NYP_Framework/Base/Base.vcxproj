@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
+    <ClCompile Include="Source\WeaponInfo\Shotgun.cpp" />
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,7 @@
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\TextEntity.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
+    <ClInclude Include="Source\WeaponInfo\Shotgun.h" />
     <ClInclude Include="Source\WeaponInfo\WeaponInfo.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

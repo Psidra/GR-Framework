@@ -13,5 +13,9 @@ public:
 	void Init(void);
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
+
+private:
+	// Number of bullet to create
+	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1);
 };
 
