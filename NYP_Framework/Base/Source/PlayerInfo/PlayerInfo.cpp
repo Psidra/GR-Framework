@@ -9,7 +9,7 @@
 // The pointer is allocated but not the object's constructor.
 
 Player::Player(void)
-	: m_dSpeed(40.0)
+	: m_dSpeed(10.0)
 	, m_dAcceleration(10.0)
 	, m_bJumpUpwards(false)
 	, m_dJumpSpeed(10.0)
