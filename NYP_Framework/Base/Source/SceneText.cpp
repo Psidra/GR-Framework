@@ -361,26 +361,26 @@ void SceneText::RenderPassMain()
 
 	GraphicsManager::GetInstance()->UpdateLightUniforms();
 
-	//GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-	//GraphicsManager::GetInstance()->AttachCamera(Player::GetInstance()->getCamera());
+	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	GraphicsManager::GetInstance()->AttachCamera(Player::GetInstance()->getCamera());
 
 	ms.LoadIdentity();
 
-	Light* light = dynamic_cast<Light*>(g->GetLight("lights[0]"));
-	ms.PushMatrix();
-	ms.Translate(light->position.x,
-		light->position.y,
-		light->position.z);
-	ms.Scale(0.1f, 0.1f, 0.1f);
-	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("sphere"));
-	ms.PopMatrix();
+	//Light* light = dynamic_cast<Light*>(g->GetLight("lights[0]"));
+	//ms.PushMatrix();
+	//ms.Translate(light->position.x,
+	//	light->position.y,
+	//	light->position.z);
+	//ms.Scale(0.1f, 0.1f, 0.1f);
+	//RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("sphere"));
+	//ms.PopMatrix();
 
-	ms.PushMatrix();
-	ms.Translate(0, 0, -10);
-	//ms.Rotate(-90, 1, 0, 0);
-	ms.Scale(10, 10, 10);
-	RenderHelper::RenderMesh(light_depth_mesh);
-	ms.PopMatrix();
+	//ms.PushMatrix();
+	//ms.Translate(0, 0, -10);
+	////ms.Rotate(-90, 1, 0, 0);
+	//ms.Scale(10, 10, 10);
+	//RenderHelper::RenderMesh(light_depth_mesh);
+	//ms.PopMatrix();
 
 	//placed down so alpha will work properly on ldq.
 	RenderWorld();
@@ -388,7 +388,7 @@ void SceneText::RenderPassMain()
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
-	//GraphicsManager::GetInstance()->DetachCamera();
+	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
 
 	//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
@@ -400,16 +400,21 @@ void SceneText::RenderWorld()
 
 	MS& ms = GraphicsManager::GetInstance()->GetModelStack();
 
-	ms.PushMatrix();
-	ms.Scale(0.1f, 0.1f, 0.1f);
-	RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("sphere"));
-	ms.PopMatrix();
+	//ms.PushMatrix();
+	//ms.Scale(0.1f, 0.1f, 0.1f);
+	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("sphere"));
+	//ms.PopMatrix();
+
+	//ms.PushMatrix();
+	//ms.Translate(0, -5, 0);
+	//ms.Rotate(-90, 1, 0, 0);
+	//ms.Scale(10, 10, 10);
+	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("quad"));
+	//ms.PopMatrix();
 
 	ms.PushMatrix();
-	ms.Translate(0, -5, 0);
-	ms.Rotate(-90, 1, 0, 0);
-	ms.Scale(10, 10, 10);
-	RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("quad"));
+	ms.Translate(5, 0, 0);
+	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
 	ms.PopMatrix();
 }
 

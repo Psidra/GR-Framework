@@ -24,8 +24,8 @@ bool Controller::Create(Player* thePlayerInfo)
 	if (_CONTROLLER_DEBUG)
 		cout << "Controller::Create()" << endl;
 	this->thePlayerInfo = thePlayerInfo;
-	this->controllerfunc[CONTROLLER_MOVEFRONT] = &Controller::MoveFront;
-	this->controllerfunc[CONTROLLER_MOVEBACK] = &Controller::MoveBack;
+	this->controllerfunc[CONTROLLER_MOVEUP] = &Controller::MoveUp;
+	this->controllerfunc[CONTROLLER_MOVEDOWN] = &Controller::MoveDown;
 	this->controllerfunc[CONTROLLER_MOVELEFT] = &Controller::MoveLeft;
 	this->controllerfunc[CONTROLLER_MOVERIGHT] = &Controller::MoveRight;
 
@@ -40,13 +40,13 @@ int Controller::Read(const const float deltaTime)
 	return 0;
 }
 
-bool Controller::MoveFront(double dt)
+bool Controller::MoveUp(double dt)
 {
 	std::cout << "Front" << std::endl;
 	return false;
 }
 
-bool Controller::MoveBack(double dt)
+bool Controller::MoveDown(double dt)
 {
 	std::cout << "Back" << std::endl;
 	return false;

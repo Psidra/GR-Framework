@@ -21,8 +21,8 @@ Keyboard::~Keyboard()
 bool Keyboard::Create(Player* thePlayerInfo)
 {
 	Controller::Create(thePlayerInfo);
-	KeyList[CONTROLLER_MOVEFRONT] = 'W';
-	KeyList[CONTROLLER_MOVEBACK] = 'S';
+	KeyList[CONTROLLER_MOVEUP] = 'W';
+	KeyList[CONTROLLER_MOVEDOWN] = 'S';
 	KeyList[CONTROLLER_MOVELEFT] = 'A';
 	KeyList[CONTROLLER_MOVERIGHT] = 'D';
 
