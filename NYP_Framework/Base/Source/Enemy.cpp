@@ -72,23 +72,3 @@ void CEnemy::ChangeStrategy(CStrategy* theNewStrategy, bool bDelete)
 
 	theStrategy = theNewStrategy;
 }
-<<<<<<< HEAD
-=======
-
-CEnemy * Create::Enemy(const std::string & _meshName, const Vector3 & position, const Vector3 & scale, const Vector3 & maxAABB, const Vector3 & minAABB)
-{
-	Mesh* modelMesh = MeshList::GetInstance()->GetMesh(_meshName);
-	if (modelMesh == nullptr)
-		return nullptr;
-
-	CEnemy* result = new CEnemy(modelMesh);
-	result->SetPosition(position);
-	result->SetScale(scale);
-	result->SetAABB(maxAABB, minAABB);
-	result->enemyType->type = GenericEntity::OBJECT_TYPE::ENEMY;
-	EntityManager::GetInstance()->AddEntity(result);
-
-
-	return result;
-}
->>>>>>> c8ef45636c3bdf97f9493622309e51f390ea85d8
