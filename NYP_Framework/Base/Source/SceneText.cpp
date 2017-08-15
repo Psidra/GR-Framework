@@ -210,6 +210,8 @@ void SceneText::Init()
 	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"), GenericEntity::OBJECT_TYPE::PLAYER);
 	Player::GetInstance()->SetCollider(true);
 	Player::GetInstance()->SetAABB(Vector3(50, 50, 50), Vector3(0, 0, 0));
+
+	
 	
 
 	//light testing

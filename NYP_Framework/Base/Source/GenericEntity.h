@@ -17,7 +17,8 @@ public:
 	enum OBJECT_TYPE {
 		NONE = 0,
 		PLAYER,
-		WALL
+		WALL,
+		ENEMY
 	}type;
 
 	virtual void Update(double _dt);
