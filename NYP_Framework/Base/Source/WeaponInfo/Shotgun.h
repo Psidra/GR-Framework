@@ -6,7 +6,7 @@
 class Shotgun : public CWeaponInfo
 {
 public:
-	Shotgun();
+	Shotgun(GenericEntity::OBJECT_TYPE _bulletType);
 	virtual ~Shotgun();
 
 	// Initialise this instance to default values
@@ -16,7 +16,7 @@ public:
 
 private:
 	// generate bullet(num of bullet,dir)
-	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1);
+	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 10.f);
 };
 
 #endif

@@ -4,8 +4,9 @@
 #include <iostream>
 using namespace std;
 
-CWeaponInfo::CWeaponInfo()
-	: magRounds(1)
+CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
+	: bulletType(_bulletType)
+	, magRounds(1)
 	, maxMagRounds(1)
 	, totalRounds(8)
 	, maxTotalRounds(8)
@@ -144,13 +145,8 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			CProjectile* aProjectile = Create::Projectile("cube", 
-															position, 
-															target.Normalized(),
-															2.0f, 
-															10.0f);
-			//aProjectile->SetCollider(true);
-			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+			generateBullet(position, target);
+
 			bFire = false;
 			magRounds--;
 		}
@@ -198,14 +194,29 @@ void CWeaponInfo::PrintSelf(void)
 	cout << "bFire\t\t:\t" << bFire << endl;
 }
 
-void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet)
+void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
+	if (numBullet < 0)
+		return;
+
+	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	Vector3 temp = target;
+
 	for (int i = 0;i < numBullet;++i)
 	{
+		//rotate vector
+		if (angle >= 0)
+		{
+			target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+			target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+			totalAngle -= angle;
+		}
+
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			2.0f,
 			10.0f);
+		aProjectile->type = bulletType;
 	}
 }

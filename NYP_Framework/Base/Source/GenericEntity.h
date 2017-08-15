@@ -18,7 +18,9 @@ public:
 		NONE = 0,
 		PLAYER,
 		WALL,
-		ENEMY
+		ENEMY,
+		ENEMY_BULLET,
+		PLAYER_BULLET,
 	}type;
 
 	virtual void Update(double _dt);

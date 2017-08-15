@@ -1,10 +1,9 @@
 #include "Pistol.h"
 #include "../Projectile/Projectile.h"
 
-CPistol::CPistol()
+CPistol::CPistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 }
-
 
 CPistol::~CPistol()
 {
@@ -41,19 +40,16 @@ void CPistol::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second
-			
+			// It will last for 3.0 seconds and travel at 500 units per second			
 			generateBullet(position, target);
 
-			//aProjectile->SetCollider(true);
-			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 			bFire = false;
 			magRounds--;
 		}
 	}
 }
 
-void CPistol::generateBullet(Vector3 position, Vector3 target, const int numBullet)
+void CPistol::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
@@ -65,6 +61,7 @@ void CPistol::generateBullet(Vector3 position, Vector3 target, const int numBull
 			target.Normalized(),
 			2.0f,
 			10.0f);
+		aProjectile->type = bulletType;
 	}
 }
 

@@ -1,10 +1,9 @@
 #include "../WeaponInfo/Shotgun.h"
 #include "../Projectile/Projectile.h"
 
-Shotgun::Shotgun()
+Shotgun::Shotgun(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 }
-
 
 Shotgun::~Shotgun()
 {
@@ -31,6 +30,7 @@ void Shotgun::Init(void)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
+
 }
 
 void Shotgun::Discharge(Vector3 position, Vector3 target)
@@ -42,33 +42,37 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			
-			generateBullet(position, target, 5);
+			generateBullet(position, target, 5, 10);
 
-			//aProjectile->SetCollider(true);
-			//aProjectile->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 			bFire = false;
 			magRounds--;
 		}
 	}
 }
 
-void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBullet)
+void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
 
+	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	Vector3 temp = target;
+
 	for (int i = 0;i < numBullet;++i)
 	{
+		//rotate vector
+		if (angle >= 0)
+		{
+			target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+			target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+			totalAngle -= angle;
+		}
+
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			2.0f,
 			10.0f);
-		
-		Vector3 temp = target;
-		//rotate vector
-		target.x = temp.x * cos(Math::DegreeToRadian(10)) - temp.y * sin(Math::DegreeToRadian(10));
-		target.y = temp.x * sin(Math::DegreeToRadian(10)) + temp.y * cos(Math::DegreeToRadian(10));
+		aProjectile->type = bulletType;
 	}
 }

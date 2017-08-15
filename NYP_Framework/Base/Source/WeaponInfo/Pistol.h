@@ -6,7 +6,7 @@ class CPistol :
 	public CWeaponInfo
 {
 public:
-	CPistol();
+	CPistol(GenericEntity::OBJECT_TYPE _bulletType);
 	virtual ~CPistol();
 
 	// Initialise this instance to default values
@@ -16,6 +16,6 @@ public:
 
 private:
 	// Number of bullet to create
-	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1);
+	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
 };
 
