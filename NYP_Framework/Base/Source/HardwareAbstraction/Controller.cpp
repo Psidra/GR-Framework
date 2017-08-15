@@ -42,24 +42,28 @@ int Controller::Read(const const float deltaTime)
 
 bool Controller::MoveUp(double dt)
 {
+	Player::GetInstance()->MoveUp(dt);
 	std::cout << "Front" << std::endl;
 	return false;
 }
 
 bool Controller::MoveDown(double dt)
 {
+	Player::GetInstance()->MoveDown(dt);
 	std::cout << "Back" << std::endl;
 	return false;
 }
 
 bool Controller::MoveLeft(double dt)
 {
+	Player::GetInstance()->MoveLeft(dt);
 	std::cout << "Left" << std::endl;
 	return false;
 }
 
 bool Controller::MoveRight(double dt)
 {
+	Player::GetInstance()->MoveRight(dt);
 	std::cout << "Right" << std::endl;
 	return false;
 }

@@ -38,7 +38,7 @@
 *.lib
 *.tlog
 *.log
-NYP_Framework/Debug/
-NYP_Framework/Base/Debug/
+Debug/
+Base/Debug/
 *.idb
 *.pdb

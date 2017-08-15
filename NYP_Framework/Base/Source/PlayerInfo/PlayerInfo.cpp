@@ -154,6 +154,41 @@ double Player::GetJumpAcceleration(void) const
 	return m_dJumpAcceleration;
 }
 
+void Player::MoveUp(double dt)
+{
+	// If doing move front/back, direction.normalized()
+	Vector3 up(0, 1, 0);
+	position += up * (float)m_dSpeed * (float)dt;
+}
+
+void Player::MoveDown(double dt)
+{
+	Vector3 up(0, 1, 0);
+	position -= up * (float)m_dSpeed * (float)dt;
+}
+
+void Player::MoveLeft(double dt)
+{
+	Vector3 up(0, 1, 0);
+	Vector3 rightUV;
+
+	rightUV = (direction.Normalized()).Cross(up);
+	rightUV.y = 0;
+	rightUV.Normalize();
+	position -= rightUV * (float)m_dSpeed * (float)dt;
+}
+
+void Player::MoveRight(double dt)
+{
+	Vector3 up(0, 1, 0);
+	Vector3 rightUV;
+
+	rightUV = (direction.Normalized()).Cross(up);
+	rightUV.y = 0;
+	rightUV.Normalize();
+	position += rightUV * (float)m_dSpeed * (float)dt;
+}
+
 // Update Jump Upwards
 void Player::UpdateJumpUpwards(double dt)
 {
@@ -227,39 +262,14 @@ void Player::Update(double dt)
 	//direction.y = 0;
 	direction.Normalize();
 
-	Vector3 up(0, 1, 0);
-
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
-		Vector3 rightUV;
-		if (KeyboardController::GetInstance()->IsKeyDown('W'))
-		{
-			position += direction.Normalized() * (float)m_dSpeed * (float)dt;
-		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('S'))
-		{
-			position -= direction.Normalized() * (float)m_dSpeed * (float)dt;
-		}
-		if (KeyboardController::GetInstance()->IsKeyDown('A'))
-		{
-			rightUV = (direction.Normalized()).Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			position -= rightUV * (float)m_dSpeed * (float)dt;
-		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('D'))
-		{
-			rightUV = (direction.Normalized()).Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			position += rightUV * (float)m_dSpeed * (float)dt;
-		}
-		// Constrain the position
-		Constrain();
+		// Constrain position
+		//Constrain();
 	}
 
 	// If the user presses SPACEBAR, then make him jump
@@ -298,8 +308,8 @@ void Player::Update(double dt)
 	if (attachedCamera)
 	{
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position);
-		attachedCamera->SetCameraTarget(position + cameraView.Normalized());
+		attachedCamera->SetCameraPos(position + Vector3(0, 0, 10));
+		attachedCamera->SetCameraTarget(position);
 		attachedCamera->Update(dt);
 	}
 }
@@ -337,7 +347,7 @@ void Player::AttachCamera(FPSCamera* _cameraPtr)
 	Vector3 view = target - position;
 	Vector3 up = Vector3(0,0,1).Cross(view).Normalized();
 	attachedCamera->Init(position, target, up);
-	std::cout << up << std::endl;
+	//std::cout << up << std::endl;
 }
 
 void Player::DetachCamera()

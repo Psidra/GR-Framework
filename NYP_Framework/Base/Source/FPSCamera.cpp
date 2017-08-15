@@ -34,11 +34,11 @@ void FPSCamera::Update(double dt)
 {
 	static const float CAMERA_SPEED = 200.f;
 
-	double mouse_diff_x, mouse_diff_y;
-	MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
+	//double mouse_diff_x, mouse_diff_y;
+	//MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
 
-	double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
-	double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
+	//double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
+	//double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
 
 	if(KeyboardController::GetInstance()->IsKeyDown(VK_LEFT))
 	{
@@ -94,7 +94,7 @@ void FPSCamera::Update(double dt)
 	}
 	//Update the camera direction based on mouse move
 	// left-right rotate
-	{
+	/*{
 		Vector3 view = (target - position).Normalized();
 		float yaw = (float)(-CAMERA_SPEED * camera_yaw * (float)dt);
 		Mtx44 rotation;
@@ -117,7 +117,7 @@ void FPSCamera::Update(double dt)
 		rotation.SetToRotation(pitch, right.x, right.y, right.z);
 		view = rotation * view;
 		target = position + view;
-	}
+	}*/
 	if(KeyboardController::GetInstance()->IsKeyDown('R'))
 	{
 		Reset();
