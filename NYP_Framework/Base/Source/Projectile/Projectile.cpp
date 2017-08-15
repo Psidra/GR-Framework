@@ -149,7 +149,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const float m_fSpeed,
 								CPlayerInfo* _source)
 {
-	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
+	Mesh* modelMesh = MeshList::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
 		return nullptr;
 
