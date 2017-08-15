@@ -43,3 +43,8 @@ Base/Debug/
 *.idb
 *.pdb
 *.lastbuildstate
+*.log
+*.lastbuildstate
+*.tlog
+*.idb
+*.pdb
