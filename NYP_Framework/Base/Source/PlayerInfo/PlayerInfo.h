@@ -4,10 +4,11 @@
 #include "../GroundEntity.h"
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
+#include "../Animation.h"
 
 class CWeaponInfo;
 
-class Player : public Singleton<Player>, public GenericEntity
+class Player : public Singleton<Player>, public GenericEntity, public CAnimation
 {
 	friend Singleton<Player>;
 public:
@@ -92,6 +93,8 @@ public:
 	bool Shoot(const float dt);
 	bool is_Moving;
 	void animate(double dt);
+	GenericEntity** playerAnimated;
+	int anim_index;
 
 private:
 	Vector3 defaultPosition;

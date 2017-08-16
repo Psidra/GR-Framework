@@ -9,8 +9,11 @@ public:
 	void SetAnimationStatus(bool m_bAnimationInvert);
 	// Update the Animation Index
 	void UpdateAnimationIndex(void);
-	// Get the Animation status
-	bool GetAnimationStatus(void) const;
+
+	// Get the LeftRightAnimation status
+	bool GetLeftRightAnimationStatus(void) const;
+
+
 	// Get the Animation index
 	int GetAnimationIndex(void) const;
 

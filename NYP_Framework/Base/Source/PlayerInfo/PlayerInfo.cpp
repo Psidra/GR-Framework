@@ -25,6 +25,7 @@ Player::Player(void)
 	, primaryWeapon(NULL)
 	, is_Moving(false)
 	, anim_ElapsedTime(0.0)
+	, anim_index (0)
 {
 }
 
@@ -273,7 +274,7 @@ void Player::Update(double dt)
 	//lock player movement to the ground only
 	//direction.y = 0;
 	direction.Normalize();
-	
+	anim_ElapsedTime += dt * 10;
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
@@ -281,13 +282,13 @@ void Player::Update(double dt)
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
 		is_Moving = true;
-		anim_ElapsedTime += dt * 10;
+		
 		// Constrain position
 		//Constrain();
 	}
 	else
 		is_Moving = false;
-	animate(dt);
+	//animate(dt);
 
 	// If the user presses SPACEBAR, then make him jump
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE) &&
@@ -387,14 +388,24 @@ bool Player::Shoot(const float dt)
 
 void Player::animate(double dt)
 {
-	if (anim_ElapsedTime > 1.5)
+	double anim_spdoffset = 1.0;
+
+	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
 		anim_ElapsedTime = 0.0;
-	else if (anim_ElapsedTime > 1.0)
+	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
 	{
-		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-	}	
-	else if (anim_ElapsedTime > 0.5)
+		if (is_Moving)
+			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+		else
+			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
+			
+	}
+	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
 	{
-		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	}		
+		if (is_Moving)
+			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+		else
+			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+	}
+		
 }
