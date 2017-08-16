@@ -232,10 +232,11 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkGunLeft1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkgunleft2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkGunLeft2.tga");
-		/*MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunleft1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft1.tga");
+		
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunleft1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontstandgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunleft2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft2.tga");/*
+		MeshList::GetInstance()->GetMesh("player_frontstandgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft2.tga");
 		
 
 

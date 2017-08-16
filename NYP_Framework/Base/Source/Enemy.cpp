@@ -10,7 +10,7 @@
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy() :speed(1.0), position(0,5,0)
+CEnemy::CEnemy() :speed(1.0), position(0,5,0), health(100.f)
 {
 }
 
@@ -46,6 +46,16 @@ void CEnemy::SetEnemyGE(GenericEntity * _enemyModel)
 void CEnemy::SetSpeed(double speed)
 {
 	this->speed = speed;
+}
+
+void CEnemy::SetHP(float _health)
+{
+	health = _health;
+}
+
+float CEnemy::GetHP()
+{
+	return health;
 }
 
 Vector3 CEnemy::GetPos()

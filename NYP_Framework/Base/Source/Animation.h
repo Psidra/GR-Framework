@@ -9,8 +9,11 @@ public:
 	void SetAnimationStatus(bool m_bAnimationInvert);
 	// Update the Animation Index
 	void UpdateAnimationIndex(void);
-	// Get the Animation status
+
+	// Get the LeftRightAnimation status
 	bool GetAnimationStatus(void) const;
+
+
 	// Get the Animation index
 	int GetAnimationIndex(void) const;
 
@@ -18,6 +21,10 @@ public:
 	void SetRightIndices(const int m_iRight_Start, const int m_iRight_End);
 	// Set left indices
 	void SetLeftIndices(const int m_iLeft_Start, const int m_iLeft_End);
+	// Set Up indices
+	void SetUpIndices(const int m_iUp_Start, const int m_iUp_End);
+	// Set Down indices
+	void SetDownIndices(const int m_iDown_Start, const int m_iDown_End);
 
 private:
 	// Flag to indicate if the Animation is inverted to the left. 
@@ -28,6 +35,7 @@ private:
 	// 4/5/6 == Left facing animations
 	int m_iAnimation_Index;
 
+	//Walking
 	// Start index of right facing Animations
 	int m_iRight_Start;
 	// End index of right facing Animations
@@ -36,5 +44,13 @@ private:
 	int m_iLeft_Start;
 	// End index of left facing Animations
 	int m_iLeft_End;
+	// Start index of Up facing Animations
+	int m_iUp_Start;
+	// End index of Up facing Animations
+	int m_iUp_End;
+	// Start index of down facing Animations
+	int m_iDown_Start;
+	// End index of down facing Animations
+	int m_iDown_End;
 };
 

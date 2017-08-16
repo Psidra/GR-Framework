@@ -149,8 +149,6 @@ void SceneText::Init()
 
 	currProg->UpdateInt("numLights", 2);
 	currProg->UpdateInt("textEnabled", 0);
-
-	m_worldHeight = 100.f; // i have no idea why this is 100.f
 	
 	// Create the playerinfo instance, which manages all information about the player
 
@@ -213,7 +211,21 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+
+	
+	playerAnimated = new GenericEntity*[4];
+	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+
+	Player::GetInstance()->SetMesh(playerAnimated[Player::GetInstance()->GetAnimIndex()]->GetMesh());
+	Player::GetInstance()->SetLeftIndices(2, 3);
+	Player::GetInstance()->SetRightIndices(2, 3);
+	Player::GetInstance()->SetUpIndices(2, 3);
+	Player::GetInstance()->SetDownIndices(2, 3);
 
 	minion = new CEnemy();
 	minion->SetPosition(Vector3(0, 5, 0));
@@ -232,17 +244,14 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
-	if (KeyboardController::GetInstance()->IsKeyDown('9'))
-		int g = 4;
-
-	m_worldWidth = m_worldHeight * (float)Application::GetInstance().GetWindowWidth() / Application::GetInstance().GetWindowHeight();
-
 	double x, y;
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	int w = Application::GetInstance().GetWindowWidth();
 	int h = Application::GetInstance().GetWindowHeight();
-	float posX = static_cast<float>(x) / w * m_worldWidth;
-	float posY = (h - static_cast<float>(y)) / h * m_worldHeight;
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+	float posX = static_cast<float>(x);
+	float posY = (h - static_cast<float>(y));
 	Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
 
 	// Update the player position and other details based on keyboard and mouse inputs

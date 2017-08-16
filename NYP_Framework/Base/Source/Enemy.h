@@ -22,6 +22,7 @@ protected:
 	Vector3 maxBoundary, minBoundary;
 	Vector3 target;
 	double speed;
+	float health;
 	
 	CStrategy* theStrategy;
 	
@@ -32,6 +33,8 @@ public:
 	void Update(double dt = 0.0333f);
 	void SetEnemyGE(GenericEntity* _enemyModel);
 	void SetSpeed(double speed);
+	void SetHP(float health);
+	float GetHP();
 	Vector3 GetPos();
 
 	GenericEntity* enemyModel;

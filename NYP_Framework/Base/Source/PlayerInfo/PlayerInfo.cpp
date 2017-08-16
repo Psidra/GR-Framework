@@ -31,8 +31,10 @@ Player::Player(void)
 	, primaryWeapon(NULL)
 	, m_bDodge(false)
 	, m_dRollTime(0.0)
-	, is_Moving(false)
-	, anim_ElapsedTime(0.0)
+	, m_bMoving(false)
+	, m_iAnimIndex(0)
+	//, anim_ElapsedTime(0.0)
+	//, anim_index (0)
 {
 }
 
@@ -61,8 +63,8 @@ void Player::Init(void)
 	minBoundary.Set(-1, -1, -1);
 
 	//init weapon
-	primaryWeapon = new Shotgun(GenericEntity::PLAYER_BULLET);
-	//primaryWeapon->Init();
+	primaryWeapon = new Pistol(GenericEntity::PLAYER_BULLET);
+	primaryWeapon->Init();
 
 	this->SetCollider(true);
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
@@ -350,7 +352,7 @@ void Player::MoveRight()
 
 void Player::SetMovement(bool _movement)
 {
-	m_dMoving = _movement;
+	m_bMoving = _movement;
 }
 
 // Update Jump Upwards
@@ -407,6 +409,21 @@ void Player::UpdateFreeFall(double dt)
 /********************************************************************************
  Hero Update
  ********************************************************************************/
+
+void Player::CollisionResponse(GenericEntity* ThatEntity)
+{
+	switch (ThatEntity->type) {
+	case WALL:
+		std::cout << "collide" << std::endl;
+		break;
+	case ENEMY:
+		std::cout << "enemy collide" << std::endl;
+		break;
+	default:
+		break;
+	}
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
@@ -426,25 +443,24 @@ void Player::Update(double dt)
 	//direction = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
 	//lock player movement to the ground only
 	//direction.y = 0;
-	//direction.Normalize();
 
-	// This should be only used for mouse controls. Otherwise, use controller.cpp	
-	
+	//anim_ElapsedTime += dt * 10;
+
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
-		is_Moving = true;
-		anim_ElapsedTime += dt * 10;
+		m_bMoving = true;
+		
 		// Constrain position
 		//Constrain();
 	}
 	else
-		is_Moving = false;
+		m_bMoving = false;
+	//animate(dt);
 
-	animate(dt);
 
 	//// Update the position if the WASD buttons were activated
 	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
@@ -492,7 +508,7 @@ void Player::Update(double dt)
 		m_dSpeed = 10;
 	}
 
-	if (m_dMoving) // TODO: Add dodge roll :v
+	if (m_bMoving) // TODO: Add dodge roll :v
 	{
 		position += direction * (float)m_dSpeed * (float)dt;
 		if (!m_bDodge)
@@ -569,21 +585,46 @@ bool Player::Shoot(const float dt)
 	return false;
 }
 
+int Player::GetAnimIndex()
+{
+	return m_iAnimIndex;
+}
+
 void Player::SetView(Vector3 _view)
 {
 	this->view = _view;
 }
 
-void Player::animate(double dt)
+void Player::SetHealth(float _health)
 {
-	if (anim_ElapsedTime > 1.5)
-		anim_ElapsedTime = 0.0;
-	else if (anim_ElapsedTime > 1.0)
-	{
-		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-	}
-	else if (anim_ElapsedTime > 0.5)
-	{
-		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	}
+	this->m_fHealth = _health;
 }
+
+float Player::GetHealth()
+{
+	return m_fHealth;
+}
+
+//void Player::animate(double dt)
+//{
+//	double anim_spdoffset = 1.0;
+//
+//	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
+//		anim_ElapsedTime = 0.0;
+//	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
+//	{
+//		if (is_Moving)
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+//		else
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
+//			
+//	}
+//	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
+//	{
+//		if (is_Moving)
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+//		else
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+//	}
+//		
+//}

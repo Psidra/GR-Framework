@@ -4,10 +4,11 @@
 #include "../GroundEntity.h"
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
+#include "../Animation.h"
 
 class CWeaponInfo;
 
-class Player : public Singleton<Player>, public GenericEntity
+class Player : public Singleton<Player>, public GenericEntity, public CAnimation
 {
 	friend Singleton<Player>;
 public:
@@ -90,11 +91,21 @@ public:
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
-	bool is_Moving;
-	void animate(double dt);
 
+
+	//void animate(double dt);
+	GenericEntity** playerAnimated;
+	int GetAnimIndex();
 	// Set view direction
 	void SetView(Vector3 _view);
+
+	// Collision Response
+	void CollisionResponse(GenericEntity* ThatEntity);
+
+	// Set Health
+	void SetHealth(float _health);
+	// Get Health
+	float GetHealth();
 
 private:
 	Vector3 defaultPosition;
@@ -115,12 +126,15 @@ private:
 	bool m_bFallDownwards;
 	double m_dFallAcceleration;
 
-	bool m_dMoving;
+	bool m_bMoving;
 	bool m_bDodge;
 	double m_dRollTime; // Bouncetime for rolling
+
+	int m_iAnimIndex;
+	float m_fHealth;
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
 
-	double anim_ElapsedTime;
+	//double anim_ElapsedTime;
 };
