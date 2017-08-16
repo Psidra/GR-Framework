@@ -409,6 +409,21 @@ void Player::UpdateFreeFall(double dt)
 /********************************************************************************
  Hero Update
  ********************************************************************************/
+
+void Player::CollisionResponse(GenericEntity* ThatEntity)
+{
+	switch (ThatEntity->type) {
+	case WALL:
+		std::cout << "collide" << std::endl;
+		break;
+	case ENEMY:
+		std::cout << "enemy collide" << std::endl;
+		break;
+	default:
+		break;
+	}
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
@@ -578,6 +593,16 @@ int Player::GetAnimIndex()
 void Player::SetView(Vector3 _view)
 {
 	this->view = _view;
+}
+
+void Player::SetHealth(float _health)
+{
+	this->m_fHealth = _health;
+}
+
+float Player::GetHealth()
+{
+	return m_fHealth;
 }
 
 //void Player::animate(double dt)
