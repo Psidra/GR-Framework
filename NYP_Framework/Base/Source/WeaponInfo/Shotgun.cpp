@@ -31,7 +31,10 @@ void Shotgun::Init(void)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
-
+	// Weapon Damage 
+	weaponDamage = 10;
+	// boolean flag for dots
+	isDots = false;
 }
 
 void Shotgun::Discharge(Vector3 position, Vector3 target)
@@ -73,5 +76,7 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 			2.0f,
 			10.0f);
 		aProjectile->type = bulletType;
+		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setIsDots(isDots);
 	}
 }

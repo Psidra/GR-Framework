@@ -29,6 +29,10 @@ protected:
 	bool bFire;
 	// Bullet type (player/enemy)
 	GenericEntity::OBJECT_TYPE bulletType;
+	// Weapon Damage 
+	float weaponDamage;
+	// boolean flag for dots
+	bool isDots;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -75,6 +79,15 @@ public:
 
 	// Print Self
 	void PrintSelf(void);
+
+	//Set weapon damage
+	void setWeaponDamage(const float _weaponDamage);
+	//get weapon damage
+	float getWeaponDamage();
+	//set bool bDots
+	void setIsDots(bool _isDots);
+	//get bDots
+	bool getDots();
 
 protected:
 	// Number of bullet to create

@@ -33,6 +33,14 @@ public:
 	void SetSpeed(const float m_fSpeed);
 	// Get the speed of the projectile
 	float GetSpeed(void) const;
+	// get projectile damage
+	float getProjectileDamage();
+	//set projectile damage
+	void setProjectileDamage(const float pDamage);
+	//get isDots
+	bool getIsDots();
+	//set isDots
+	void setIsDots(bool _isDots);
 	// Set the source of the projectile
 	//void SetSource(CPlayerInfo* _source);
 	// Get the source of the projectile
@@ -55,6 +63,10 @@ protected:
 	Vector3 theDirection;
 	// The character which fired this projectile
 	//CPlayerInfo* theSource;
+	// projectile damage
+	float projectileDamage;
+	// bool flag to indicate if there is DOTS
+	bool isDots;
 };
 
 namespace Create
