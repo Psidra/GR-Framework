@@ -40,7 +40,6 @@ private:
 	TextEntity* textObj[3];
 	Light* lights[2];
 
-	GenericEntity** playerAnimated = Player::GetInstance()->playerAnimated;
 	GenericEntity* theCube;
 	Keyboard* keyboard;
 	static SceneText* sInstance; // The pointer to the object that gets registered

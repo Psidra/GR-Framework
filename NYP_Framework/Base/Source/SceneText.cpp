@@ -211,21 +211,22 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
 
 	
-	playerAnimated = new GenericEntity*[4];
-	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+	////playerAnimated = new GenericEntity*[4];
+	//Player::GetInstance()->playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+	//Player::GetInstance()->playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
 
-	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+	//Player::GetInstance()->playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	//Player::GetInstance()->playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
 
-	Player::GetInstance()->SetMesh(playerAnimated[Player::GetInstance()->GetAnimIndex()]->GetMesh());
-	Player::GetInstance()->SetLeftIndices(2, 3);
-	Player::GetInstance()->SetRightIndices(2, 3);
-	Player::GetInstance()->SetUpIndices(2, 3);
-	Player::GetInstance()->SetDownIndices(2, 3);
+
+	//Player::GetInstance()->SetMesh(Player::GetInstance()->playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
+	//Player::GetInstance()->SetLeftIndices(2, 3);
+	//Player::GetInstance()->SetRightIndices(2, 3);
+	//Player::GetInstance()->SetUpIndices(2, 3);
+	//Player::GetInstance()->SetDownIndices(2, 3);
 
 	minion = new CEnemy();
 	minion->SetPosition(Vector3(0, 5, 0));
