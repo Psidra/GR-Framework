@@ -292,9 +292,9 @@ void Player::MoveLeft()
 		else
 		{
 			std::cout << "Something is blocking left" << std::endl;
-			if (direction.y == -1)
+			if (direction.x == -1)
 			{
-				direction.y = 0;
+				direction.x = 0;
 				SetMovement(false);
 			}
 			break;
@@ -342,9 +342,9 @@ void Player::MoveRight()
 			if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 			{
 				std::cout << "Something is blocking right" << std::endl;
-				if (direction.y == 1)
+				if (direction.x == 1)
 				{
-					direction.y = 0;
+					direction.x = 0;
 					SetMovement(false);
 				}
 				break;
