@@ -8,6 +8,7 @@
 #include "../WeaponInfo/Shotgun.h"
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
+#include "MeshList.h"
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
 
@@ -26,6 +27,8 @@ Player::Player(void)
 	, primaryWeapon(NULL)
 	, m_bDodge(false)
 	, m_dRollTime(0.0)
+	, is_Moving(false)
+	, anim_ElapsedTime(0.0)
 {
 }
 
@@ -422,6 +425,22 @@ void Player::Update(double dt)
 	//direction.Normalize();
 
 	// This should be only used for mouse controls. Otherwise, use controller.cpp	
+	
+	// Update the position if the WASD buttons were activated
+	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+		KeyboardController::GetInstance()->IsKeyDown('A') ||
+		KeyboardController::GetInstance()->IsKeyDown('S') ||
+		KeyboardController::GetInstance()->IsKeyDown('D'))
+	{
+		is_Moving = true;
+		anim_ElapsedTime += dt * 10;
+		// Constrain position
+		//Constrain();
+	}
+	else
+		is_Moving = false;
+
+	animate(dt);
 
 	//// Update the position if the WASD buttons were activated
 	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
@@ -550,4 +569,18 @@ bool Player::Shoot(const float dt)
 void Player::SetView(Vector3 _view)
 {
 	this->view = _view;
+}
+
+void Player::animate(double dt)
+{
+	if (anim_ElapsedTime > 1.5)
+		anim_ElapsedTime = 0.0;
+	else if (anim_ElapsedTime > 1.0)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+	}
+	else if (anim_ElapsedTime > 0.5)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	}
 }

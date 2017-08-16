@@ -90,6 +90,8 @@ public:
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
+	bool is_Moving;
+	void animate(double dt);
 
 	// Set view direction
 	void SetView(Vector3 _view);
@@ -119,4 +121,6 @@ private:
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
+
+	double anim_ElapsedTime;
 };

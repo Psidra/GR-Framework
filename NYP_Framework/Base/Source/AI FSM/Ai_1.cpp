@@ -20,7 +20,7 @@ CStrategy_AI_1::~CStrategy_AI_1()
 /********************************************************************************
 Update method
 ********************************************************************************/
-void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, double dt)
+void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, double speed, double dt)
 {
 	// Decide which state to change to
 	int distanceHeroToEnemy = CalculateDistance(theDestination, theEnemyPosition);
@@ -36,14 +36,14 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, 
 	{
 	case CHASE:
 		if (theDestination.x - 2 > theEnemyPosition.x)
-			theEnemyPosition.x += dt;
+			theEnemyPosition.x += dt * speed;
 		else if (theDestination.x + 2 < theEnemyPosition.x)
-			theEnemyPosition.x -= dt;
+			theEnemyPosition.x -= dt * speed;
 
 		if (theDestination.y - 2 > theEnemyPosition.y)
-			theEnemyPosition.y += dt;
+			theEnemyPosition.y += dt * speed;
 		else if (theDestination.y + 2 < theEnemyPosition.y)
-			theEnemyPosition.y -= dt;
+			theEnemyPosition.y -= dt * speed;
 		break;
 	case ATTACK:
 		if (theDestination.x - 2 == theEnemyPosition.x || theDestination.x + 2 == theEnemyPosition.x ||
