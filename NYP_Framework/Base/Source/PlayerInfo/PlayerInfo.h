@@ -91,11 +91,11 @@ public:
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
-	bool is_Moving;
-	//void animate(double dt);
-	//GenericEntity** playerAnimated;
-	//int anim_index;
 
+
+	//void animate(double dt);
+	GenericEntity** playerAnimated;
+	int GetAnimIndex();
 	// Set view direction
 	void SetView(Vector3 _view);
 
@@ -118,9 +118,11 @@ private:
 	bool m_bFallDownwards;
 	double m_dFallAcceleration;
 
-	bool m_dMoving;
+	bool m_bMoving;
 	bool m_bDodge;
 	double m_dRollTime; // Bouncetime for rolling
+
+	int m_iAnimIndex;
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;

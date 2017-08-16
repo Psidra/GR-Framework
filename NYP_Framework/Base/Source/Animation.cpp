@@ -8,6 +8,10 @@ CAnimation::CAnimation()
 	, m_iRight_End(0)
 	, m_iLeft_Start(0)
 	, m_iLeft_End(0)
+	, m_iUp_Start(0)
+	, m_iUp_End(0)
+	, m_iDown_Start(0)
+	, m_iDown_End(0)
 {
 }
 
@@ -72,4 +76,16 @@ void CAnimation::SetLeftIndices(const int m_iLeft_Start, const int m_iLeft_End)
 {
 	this->m_iLeft_Start = m_iLeft_Start;
 	this->m_iLeft_End = m_iLeft_End;
+}
+
+void CAnimation::SetUpIndices(const int m_iUp_Start, const int m_iUp_End)
+{
+	this->m_iUp_Start = m_iUp_Start;
+	this->m_iUp_End = m_iUp_End;
+}
+
+void CAnimation::SetDownIndices(const int m_iDown_Start, const int m_iDown_End)
+{
+	this->m_iDown_Start = m_iDown_Start;
+	this->m_iDown_End = m_iDown_End;
 }

@@ -31,7 +31,8 @@ Player::Player(void)
 	, primaryWeapon(NULL)
 	, m_bDodge(false)
 	, m_dRollTime(0.0)
-	, is_Moving(false)
+	, m_bMoving(false)
+	, m_iAnimIndex(0)
 	//, anim_ElapsedTime(0.0)
 	//, anim_index (0)
 {
@@ -351,7 +352,7 @@ void Player::MoveRight()
 
 void Player::SetMovement(bool _movement)
 {
-	m_dMoving = _movement;
+	m_bMoving = _movement;
 }
 
 // Update Jump Upwards
@@ -436,13 +437,13 @@ void Player::Update(double dt)
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
-		is_Moving = true;
+		m_bMoving = true;
 		
 		// Constrain position
 		//Constrain();
 	}
 	else
-		is_Moving = false;
+		m_bMoving = false;
 	//animate(dt);
 
 
@@ -492,7 +493,7 @@ void Player::Update(double dt)
 		m_dSpeed = 10;
 	}
 
-	if (m_dMoving) // TODO: Add dodge roll :v
+	if (m_bMoving) // TODO: Add dodge roll :v
 	{
 		position += direction * (float)m_dSpeed * (float)dt;
 		if (!m_bDodge)
@@ -567,6 +568,11 @@ bool Player::Shoot(const float dt)
 {	
 	primaryWeapon->Discharge(position, view); //position of player, dir to shoot from
 	return false;
+}
+
+int Player::GetAnimIndex()
+{
+	return m_iAnimIndex;
 }
 
 void Player::SetView(Vector3 _view)
