@@ -58,13 +58,15 @@ public:
 	double GetFallAcceleration(void) const;
 
 	// Move Up
-	void MoveUp(double dt = 0.0333f);
+	void MoveUp();
 	// Move Down
-	void MoveDown(double dt = 0.0333f);
+	void MoveDown();
 	// Move Left
-	void MoveLeft(double dt = 0.0333f);
+	void MoveLeft();
 	// Move Right
-	void MoveRight(double dt = 0.0333f);
+	void MoveRight();
+	// Set Movement
+	void SetMovement(bool _movement);
 
 	// Update Jump Upwards
 	void UpdateJumpUpwards(double dt = 0.0333f);
@@ -84,16 +86,17 @@ public:
 	// return true if dodge rolling
 	bool isDodging(void);
 	// toggle dodge
-	void toggleDodge(bool _dodge);
-	// dodge roll action
-	void DodgeRoll();
+	void setDodge(bool _dodge);
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
 
+	// Set view direction
+	void SetView(Vector3 _view);
+
 private:
 	Vector3 defaultPosition;
-	Vector3 position, direction;
+	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
 
@@ -109,6 +112,10 @@ private:
 	double m_dFallSpeed;
 	bool m_bFallDownwards;
 	double m_dFallAcceleration;
+
+	bool m_dMoving;
+	bool m_bDodge;
+	double m_dRollTime; // Bouncetime for rolling
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;

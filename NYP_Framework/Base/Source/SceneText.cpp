@@ -148,6 +148,8 @@ void SceneText::Init()
 
 	currProg->UpdateInt("numLights", 2);
 	currProg->UpdateInt("textEnabled", 0);
+
+	m_worldHeight = 100.f; // i have no idea why this is 100.f
 	
 	// Create the playerinfo instance, which manages all information about the player
 
@@ -225,6 +227,19 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
+	if (KeyboardController::GetInstance()->IsKeyDown('9'))
+		int g = 4;
+
+	m_worldWidth = m_worldHeight * (float)Application::GetInstance().GetWindowWidth() / Application::GetInstance().GetWindowHeight();
+
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	int w = Application::GetInstance().GetWindowWidth();
+	int h = Application::GetInstance().GetWindowHeight();
+	float posX = static_cast<float>(x) / w * m_worldWidth;
+	float posY = (h - static_cast<float>(y)) / h * m_worldHeight;
+	Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
 
