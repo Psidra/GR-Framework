@@ -32,16 +32,6 @@ void GenericEntity::Render()
 
 void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 {
-	switch (ThatEntity->type) {
-	case WALL:
-		std::cout << "collide" << std::endl;
-		break;
-	case ENEMY:
-		std::cout << "enemy collide" << std::endl;
-		break;
-	default:
-		break;
-	}
 	if ((this->type == PLAYER_BULLET && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER_BULLET))
 	{
 		std::cout << "bullet collide\n";

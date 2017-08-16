@@ -99,6 +99,14 @@ public:
 	// Set view direction
 	void SetView(Vector3 _view);
 
+	// Collision Response
+	void CollisionResponse(GenericEntity* ThatEntity);
+
+	// Set Health
+	void SetHealth(float _health);
+	// Get Health
+	float GetHealth();
+
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)
@@ -121,6 +129,8 @@ private:
 	bool m_dMoving;
 	bool m_bDodge;
 	double m_dRollTime; // Bouncetime for rolling
+
+	float m_fHealth;
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
