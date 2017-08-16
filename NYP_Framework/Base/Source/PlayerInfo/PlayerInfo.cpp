@@ -57,7 +57,7 @@ void Player::Init(void)
 	minBoundary.Set(-1, -1, -1);
 
 	//init weapon
-	primaryWeapon = new Shotgun(GenericEntity::PLAYER_BULLET);
+	primaryWeapon = new CPistol(GenericEntity::PLAYER_BULLET);
 	primaryWeapon->Init();
 
 	this->SetCollider(true);
