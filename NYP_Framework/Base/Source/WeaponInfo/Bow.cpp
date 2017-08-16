@@ -31,6 +31,10 @@ void Bow::Init(void)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
+	// Weapon Damage 
+	weaponDamage = 15;
+	// boolean flag for dots
+	isDots = false;
 }
 
 // Discharge this weapon
@@ -65,5 +69,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 			2.0f,
 			20.0f);
 		aProjectile->type = bulletType;
+		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setIsDots(isDots);
 	}
 }

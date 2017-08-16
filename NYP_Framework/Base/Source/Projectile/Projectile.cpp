@@ -87,6 +87,27 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 	this->m_fSpeed = m_fSpeed;
 }
 
+// get projectile damage
+float CProjectile::getProjectileDamage()
+{
+	return projectileDamage;
+}
+//set projectile damage
+void CProjectile::setProjectileDamage(const float pDamage)
+{
+	projectileDamage = pDamage;
+}
+//get isDots
+bool CProjectile::getIsDots()
+{
+	return isDots;
+}
+//set isDots
+void CProjectile::setIsDots(bool _isDots)
+{
+	isDots = _isDots;
+}
+
 // Set the source of the projectile
 //void CProjectile::SetSource(CPlayerInfo* _source)
 //{

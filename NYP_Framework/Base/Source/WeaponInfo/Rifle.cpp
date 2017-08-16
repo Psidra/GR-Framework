@@ -31,6 +31,10 @@ void Rifle::Init(void)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
+	// Weapon Damage 
+	weaponDamage = 3;
+	// boolean flag for dots
+	isDots = false;
 
 }
 
@@ -43,7 +47,7 @@ void Rifle::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target, 1);
+			generateBullet(position, target, 5);
 
 			bFire = false;
 			--magRounds;
@@ -58,7 +62,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 
 	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	//Vector3 temp = target;
-
+	float tempSpeed = 10.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
@@ -71,7 +75,10 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 			position,
 			target.Normalized(),
 			2.0f,
-			10.0f);
+			tempSpeed);
+		tempSpeed += 3.f;
 		aProjectile->type = bulletType;
+		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setIsDots(isDots);
 	}
 }

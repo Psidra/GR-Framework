@@ -14,6 +14,8 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, timeBetweenShots(0.5)
 	, elapsedTime(0.0)
 	, bFire(true)
+	, weaponDamage(5)
+	, isDots(false)
 {	
 }
 
@@ -123,6 +125,10 @@ void CWeaponInfo::Init(void)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
+	// Weapon Damage 
+	weaponDamage = 5;
+	// boolean flag for dots
+	isDots = false;
 }
 
 // Update the elapsed time
@@ -193,6 +199,30 @@ void CWeaponInfo::PrintSelf(void)
 	cout << "timeBetweenShots\t:\t" << timeBetweenShots << endl;
 	cout << "elapsedTime\t\t:\t" << elapsedTime << endl;
 	cout << "bFire\t\t:\t" << bFire << endl;
+}
+
+//Set weapon damage
+void CWeaponInfo::setWeaponDamage(const float _weaponDamage)
+{
+	weaponDamage = _weaponDamage;
+}
+
+//get weapon damage
+float CWeaponInfo::getWeaponDamage()
+{
+	return this->weaponDamage;
+}
+
+//set bool bDots
+void CWeaponInfo::setIsDots(bool _isDots)
+{
+	isDots = _isDots;
+}
+
+//get bDots
+bool CWeaponInfo::getDots()
+{
+	return this->isDots;
 }
 
 void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
