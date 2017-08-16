@@ -25,7 +25,7 @@ public:
 	Mesh* GenerateSkyPlane(const std::string &meshName, Color color, int slices,float PlanetRadius, float AtmosphereRadius, float hTile, float vTile);
 
 	Mesh* GetMesh(const std::string& _meshName);
-
+	Mesh* GenerateSpriteAnimation(const std::string& meshName, unsigned numRow, unsigned numCol);
 private:
 	std::map<std::string, Mesh*> meshMap;
 };

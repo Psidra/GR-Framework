@@ -9,6 +9,9 @@
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponInfo/Bow.h"
 #include "../WeaponManager.h"
+#include "../CollisionManager.h"
+#include "../EntityManager.h"
+#include "MeshList.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -26,6 +29,10 @@ Player::Player(void)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
+	, m_bDodge(false)
+	, m_dRollTime(0.0)
+	, is_Moving(false)
+	, anim_ElapsedTime(0.0)
 {
 }
 
@@ -42,6 +49,12 @@ void Player::Init(void)
 
 	// Set the current values
 	position.Set(0, 0, 0);
+
+	// Set direction
+	direction.SetZero();
+
+	// Set view direction
+	view.SetZero();
 
 	// Set Boundary
 	maxBoundary.Set(1,1,1);
@@ -167,39 +180,177 @@ double Player::GetJumpAcceleration(void) const
 	return m_dJumpAcceleration;
 }
 
-void Player::MoveUp(double dt)
+void Player::MoveUp()
 {
-	// If doing move front/back, direction.normalized()
-	Vector3 up(0, 1, 0);
-	position += up * (float)m_dSpeed * (float)dt;
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+
+	this->SetAABB(tempMax + Vector3(0.f, 0.1f, 0.f), tempMin + Vector3(0.f, 0.1f, 0.f));
+
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+
+	end = cpy.end();
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+		{
+			if (direction.y != -1)
+			{
+				direction.y = 1;
+				SetMovement(true);
+			}
+			else
+				direction.y = 0;
+		}
+		else
+		{
+			std::cout << "Something is blocking up" << std::endl;
+			if (direction.y == 1)
+			{
+				direction.y = 0;
+				SetMovement(false);
+			}
+			break;
+		}
+	}
+
+	this->SetAABB(tempMax, tempMin);
 }
 
-void Player::MoveDown(double dt)
+void Player::MoveDown()
 {
-	Vector3 up(0, 1, 0);
-	position -= up * (float)m_dSpeed * (float)dt;
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+
+	this->SetAABB(tempMax - Vector3(0.f, 0.1f, 0.f), tempMin - Vector3(0.f, 0.1f, 0.f));
+
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+
+	end = cpy.end();
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+		{
+			if (direction.y != 1)
+			{
+				direction.y = -1;
+				SetMovement(true);
+			}
+			else
+				direction.y = 0;
+		}
+		else
+		{
+			std::cout << "Something is blocking down" << std::endl;
+			if (direction.y == -1)
+			{
+				direction.y = 0;
+				SetMovement(false);
+			}
+			break;
+		}
+	}
+
+	this->SetAABB(tempMax, tempMin);
 }
 
-void Player::MoveLeft(double dt)
+void Player::MoveLeft()
 {
-	Vector3 up(0, 1, 0);
-	Vector3 rightUV;
+	//Vector3 up(0, 1, 0);
+	//Vector3 rightUV;
 
-	rightUV = (direction.Normalized()).Cross(up);
-	rightUV.y = 0;
-	rightUV.Normalize();
-	position -= rightUV * (float)m_dSpeed * (float)dt;
+	//rightUV = (direction.Normalized()).Cross(up);
+	//rightUV.y = 0;
+	//rightUV.Normalize();
+	//position -= rightUV * (float)m_dSpeed * (float)dt;
+
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+
+	this->SetAABB(tempMax - Vector3(0.1f, 0.f, 0.f), tempMin - Vector3(0.1f, 0.f, 0.f));
+
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+
+	end = cpy.end();
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+		{
+			if (direction.x != 1)
+			{
+				direction.x = -1;
+				SetMovement(true);
+			}
+			else
+				direction.x = 0;
+		}
+		else
+		{
+			std::cout << "Something is blocking left" << std::endl;
+			if (direction.y == -1)
+			{
+				direction.y = 0;
+				SetMovement(false);
+			}
+			break;
+		}
+	}
+
+	this->SetAABB(tempMax, tempMin);
 }
 
-void Player::MoveRight(double dt)
+void Player::MoveRight()
 {
-	Vector3 up(0, 1, 0);
-	Vector3 rightUV;
+	//Vector3 up(0, 1, 0);
+	//Vector3 rightUV;
 
-	rightUV = (direction.Normalized()).Cross(up);
-	rightUV.y = 0;
-	rightUV.Normalize();
-	position += rightUV * (float)m_dSpeed * (float)dt;
+	//rightUV = (direction.Normalized()).Cross(up);
+	//rightUV.y = 0;
+	//rightUV.Normalize();
+	//position += rightUV * (float)m_dSpeed * (float)dt;
+
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+
+	this->SetAABB(tempMax + Vector3(0.1f, 0.f, 0.f), tempMin + Vector3(0.1f, 0.f, 0.f));
+
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+
+	end = cpy.end();
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+		{
+			if (direction.x != -1)
+			{
+				direction.x = 1;
+				SetMovement(true);
+			}
+			else
+				direction.x = 0;
+		}
+		else
+		{
+			std::cout << "Something is blocking right" << std::endl;
+			if (direction.y == 1)
+			{
+				direction.y = 0;
+				SetMovement(false);
+			}
+			break;
+		}
+	}
+
+	this->SetAABB(tempMax, tempMin);
+}
+
+void Player::SetMovement(bool _movement)
+{
+	m_dMoving = _movement;
 }
 
 // Update Jump Upwards
@@ -222,10 +373,6 @@ void Player::UpdateJumpUpwards(double dt)
 	// Check if the jump speed is less than zero, then it should be falling
 	if (m_dJumpSpeed < 0.0)
 	{
-
-
-
-
 	}
 }
 
@@ -262,49 +409,97 @@ void Player::UpdateFreeFall(double dt)
  ********************************************************************************/
 void Player::Update(double dt)
 {
-	double mouse_diff_x, mouse_diff_y;
-	MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
+	m_dElapsedTime += dt;
+	//double mouse_diff_x, mouse_diff_y;
+	//MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
 
-	double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
-	double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
+	//double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
+	//double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
+
+	//double mouse_pos_x, mouse_pos_y;
+	//MouseController::GetInstance()->GetMousePosition(mouse_pos_x, mouse_pos_y);
+	//view.Set(mouse_pos_x, mouse_pos_y, 0);
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
-	direction = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
+	// This code was for first person camera direction
+	//direction = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
 	//lock player movement to the ground only
 	//direction.y = 0;
-	direction.Normalize();
+	//direction.Normalize();
 
+	// This should be only used for mouse controls. Otherwise, use controller.cpp	
+	
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
+		is_Moving = true;
+		anim_ElapsedTime += dt * 10;
 		// Constrain position
 		//Constrain();
 	}
+	else
+		is_Moving = false;
 
-	// If the user presses SPACEBAR, then make him jump
-	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE) &&
-		position.y == m_pTerrain->GetTerrainHeight(position))
-	{
+	animate(dt);
 
-	}
+	//// Update the position if the WASD buttons were activated
+	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('A') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('S') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('D'))
+	//{
+	//	// Constrain position
+	//	//Constrain();
+	//}
 
-	// Update the weapons
-	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
-	{
-	}
+	//// If the user presses SPACEBAR, then make him jump
+	//if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE) &&
+	//	position.y == m_pTerrain->GetTerrainHeight(position))
+	//{
+
+	//}
+
+	//// Update the weapons
+	//if (KeyboardController::GetInstance()->IsKeyReleased('R'))
+	//{
+	//}
 
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
 
 	}
-	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
+	
+	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-		
+		if (!m_bDodge)
+		{
+			// SUPAH COOL
+			setDodge(true);
+			m_dSpeed = 50;
+			m_dRollTime = m_dElapsedTime + 0.25f;
+			std::cout << "roll" << std::endl;
+		}
+	}
+
+	if (m_dElapsedTime > m_dRollTime && m_bDodge)
+	{
+		setDodge(false);
+		m_dSpeed = 10;
+	}
+
+	if (m_dMoving) // TODO: Add dodge roll :v
+	{
+		position += direction * (float)m_dSpeed * (float)dt;
+		if (!m_bDodge)
+		{
+			direction.SetZero();
+			SetMovement(false);
+		}	
 	}
 
 	// If the user presses R key, then reset the view to default values
@@ -335,22 +530,6 @@ void Player::Update(double dt)
 // Constrain the position within the borders
 void Player::Constrain(void)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 FPSCamera * Player::getCamera()
@@ -373,9 +552,38 @@ void Player::DetachCamera()
 	attachedCamera = nullptr;
 }
 
+bool Player::isDodging(void)
+{
+	return m_bDodge;
+}
+
+void Player::setDodge(bool _dodge)
+{
+	this->m_bDodge = _dodge;
+}
+
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir to shoot from
+	primaryWeapon->Discharge(position, view); //position of player, dir to shoot from
 	return false;
+}
+
+void Player::SetView(Vector3 _view)
+{
+	this->view = _view;
+}
+
+void Player::animate(double dt)
+{
+	if (anim_ElapsedTime > 1.5)
+		anim_ElapsedTime = 0.0;
+	else if (anim_ElapsedTime > 1.0)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+	}
+	else if (anim_ElapsedTime > 0.5)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	}
 }

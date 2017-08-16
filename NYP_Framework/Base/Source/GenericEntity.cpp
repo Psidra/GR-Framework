@@ -17,6 +17,7 @@ GenericEntity::~GenericEntity()
 void GenericEntity::Update(double _dt)
 {
 	// Does nothing here, can inherit & override or create your own version of this class :D
+
 }
 
 void GenericEntity::Render()
@@ -35,7 +36,9 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 	case WALL:
 		std::cout << "collide" << std::endl;
 		break;
-
+	case ENEMY:
+		std::cout << "enemy collide" << std::endl;
+		break;
 	default:
 		break;
 	}
@@ -58,8 +61,8 @@ void GenericEntity::SetAABB(Vector3 maxAABB, Vector3 minAABB)
 
 void GenericEntity::SetMesh(Mesh * _modelMesh, OBJECT_TYPE _type)
 {
-	this->type = _type;
 	this->modelMesh = _modelMesh;
+	this->type = _type;
 }
 
 Mesh * GenericEntity::GetMesh()

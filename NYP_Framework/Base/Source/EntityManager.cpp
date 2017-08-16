@@ -103,6 +103,11 @@ bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 	return false;
 }
 
+std::list<EntityBase*> EntityManager::getCollisionList()
+{
+	return collisionList;
+}
+
 // Constructor
 EntityManager::EntityManager()
 {

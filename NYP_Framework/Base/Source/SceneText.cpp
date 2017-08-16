@@ -149,6 +149,8 @@ void SceneText::Init()
 
 	currProg->UpdateInt("numLights", 2);
 	currProg->UpdateInt("textEnabled", 0);
+
+	m_worldHeight = 100.f; // i have no idea why this is 100.f
 	
 	// Create the playerinfo instance, which manages all information about the player
 
@@ -211,12 +213,13 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
-	
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+
 	minion = new CEnemy();
-	minion->Init();
+	minion->SetPosition(Vector3(0, 5, 0));
 	minion->SetEnemyGE(Create::Entity("player", minion->GetPos(), Vector3(1, 1, 1), true));
 	minion->ChangeStrategy(new CStrategy_AI_1(), false);
+	minion->SetSpeed(2.0);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -229,15 +232,27 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
+	if (KeyboardController::GetInstance()->IsKeyDown('9'))
+		int g = 4;
+
+	m_worldWidth = m_worldHeight * (float)Application::GetInstance().GetWindowWidth() / Application::GetInstance().GetWindowHeight();
+
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	int w = Application::GetInstance().GetWindowWidth();
+	int h = Application::GetInstance().GetWindowHeight();
+	float posX = static_cast<float>(x) / w * m_worldWidth;
+	float posY = (h - static_cast<float>(y)) / h * m_worldHeight;
+	Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
+	minion->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
 	keyboard->Read(dt);
-	minion->Update(dt);
-
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if(KeyboardController::GetInstance()->IsKeyDown('1'))
