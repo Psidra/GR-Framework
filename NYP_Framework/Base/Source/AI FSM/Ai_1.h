@@ -9,7 +9,7 @@ public:
 	CStrategy_AI_1(void);
 	~CStrategy_AI_1(void);
 
-	void Update(Vector3& theDestination, Vector3& theEnemyPosition, double dt);
+	void Update(Vector3& theDestination, Vector3& theEnemyPosition, double speed, double dt);
 	void SetDestination(const float x, const float y);
 
 	int GetDestination_x(void);

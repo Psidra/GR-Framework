@@ -24,6 +24,7 @@
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
+class Mesh;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -226,10 +227,30 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("player_standgunleft2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_standgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_StandGunLeft2.tga");
 
+		//gun held on left
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkgunleft1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkGunLeft1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkgunleft2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkGunLeft2.tga");
+		/*MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunleft1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunleft2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandGunLeft2.tga");/*
+		
+
+
+
+
 		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("minion_walkdown1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("minion_walkdown2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown2.tga");
+
+
+
+
+
+
 
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");

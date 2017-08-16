@@ -18,11 +18,10 @@ class CEnemy :public Collision, public EntityBase, public CAnimation
 {
 protected:
 	Mesh* modelMesh;
-
-	Vector3 defaultPosition;
-	Vector3 position, scale;
+	Vector3 position;
 	Vector3 maxBoundary, minBoundary;
 	Vector3 target;
+	double speed;
 	
 	CStrategy* theStrategy;
 	
@@ -30,12 +29,12 @@ public:
 	CEnemy();
 	virtual ~CEnemy();
 
-	void Init();
 	void Update(double dt = 0.0333f);
 	void SetEnemyGE(GenericEntity* _enemyModel);
+	void SetSpeed(double speed);
 	Vector3 GetPos();
-	GenericEntity* enemyModel;
 
+	GenericEntity* enemyModel;
 	// Strategy
 	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
 };

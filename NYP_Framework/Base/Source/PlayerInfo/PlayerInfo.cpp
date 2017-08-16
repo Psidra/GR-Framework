@@ -6,6 +6,7 @@
 #include "Mtx44.h"
 #include "../WeaponInfo/Pistol.h"
 #include "../WeaponInfo/Shotgun.h"
+#include "MeshList.h"
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
 
@@ -22,6 +23,8 @@ Player::Player(void)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
+	, is_Moving(false)
+	, anim_ElapsedTime(0.0)
 {
 }
 
@@ -270,16 +273,21 @@ void Player::Update(double dt)
 	//lock player movement to the ground only
 	//direction.y = 0;
 	direction.Normalize();
-
+	
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
+		is_Moving = true;
+		anim_ElapsedTime += dt * 10;
 		// Constrain position
 		//Constrain();
 	}
+	else
+		is_Moving = false;
+	animate(dt);
 
 	// If the user presses SPACEBAR, then make him jump
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE) &&
@@ -375,4 +383,18 @@ bool Player::Shoot(const float dt)
 {	
 	primaryWeapon->Discharge(position, Vector3(1,0,0)); //position of player, dir to shoot from
 	return false;
+}
+
+void Player::animate(double dt)
+{
+	if (anim_ElapsedTime > 1.5)
+		anim_ElapsedTime = 0.0;
+	else if (anim_ElapsedTime > 1.0)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+	}	
+	else if (anim_ElapsedTime > 0.5)
+	{
+		Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	}		
 }

@@ -10,7 +10,7 @@
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy() :defaultPosition(0, 0, 0)
+CEnemy::CEnemy() :speed(1.0), position(0,5,0)
 {
 }
 
@@ -28,21 +28,13 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Update(double dt)
 {
-	if (theStrategy != NULL)
+	if (this->theStrategy != NULL)
 	{
-		theStrategy->Update(Player::GetInstance()->GetPos(), position, dt);
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, speed, dt);
 	}
-	enemyModel->SetPosition(position);
-}
-
-void CEnemy::Init()
-{
-	// Set the current values
-	position.Set(0, 5, 0);
-
-	// Set Boundary
-	maxBoundary.Set(1, 1, 1);
-	minBoundary.Set(-1, -1, -1);
+	this->enemyModel->SetPosition(this->position);
+	this->SetPosition(this->position);
+	this->enemyModel->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
 }
 
 void CEnemy::SetEnemyGE(GenericEntity * _enemyModel)
@@ -51,10 +43,16 @@ void CEnemy::SetEnemyGE(GenericEntity * _enemyModel)
 	this->enemyModel->type = GenericEntity::OBJECT_TYPE::ENEMY;
 }
 
+void CEnemy::SetSpeed(double speed)
+{
+	this->speed = speed;
+}
+
 Vector3 CEnemy::GetPos()
 {
 	return position;
 }
+
 
 /********************************************************************************
 Strategy
