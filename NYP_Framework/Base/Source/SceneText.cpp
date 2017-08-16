@@ -211,18 +211,17 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	//Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player"));
 
 	
-	playerAnimated = new GenericEntity*[2];
+	/*playerAnimated = new GenericEntity*[4];
 	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
 	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
 
-	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
 
-	Player::GetInstance()->SetMesh(playerAnimated[Player::GetInstance()->anim_index]->GetMesh());
+	Player::GetInstance()->SetMesh(playerAnimated[Player::GetInstance()->anim_index]->GetMesh());*/
 
 	minion = new CEnemy();
 	minion->SetPosition(Vector3(0, 5, 0));

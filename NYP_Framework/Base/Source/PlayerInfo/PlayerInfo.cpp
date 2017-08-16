@@ -32,8 +32,8 @@ Player::Player(void)
 	, m_bDodge(false)
 	, m_dRollTime(0.0)
 	, is_Moving(false)
-	, anim_ElapsedTime(0.0)
-	, anim_index (0)
+	//, anim_ElapsedTime(0.0)
+	//, anim_index (0)
 {
 }
 
@@ -428,7 +428,7 @@ void Player::Update(double dt)
 	//lock player movement to the ground only
 	//direction.y = 0;
 
-	anim_ElapsedTime += dt * 10;
+	//anim_ElapsedTime += dt * 10;
 
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
@@ -443,7 +443,7 @@ void Player::Update(double dt)
 	}
 	else
 		is_Moving = false;
-	animate(dt);
+	//animate(dt);
 
 
 	//// Update the position if the WASD buttons were activated
@@ -574,26 +574,26 @@ void Player::SetView(Vector3 _view)
 	this->view = _view;
 }
 
-void Player::animate(double dt)
-{
-	double anim_spdoffset = 1.0;
-
-	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
-		anim_ElapsedTime = 0.0;
-	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
-	{
-		if (is_Moving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
-			
-	}
-	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
-	{
-		if (is_Moving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	}
-		
-}
+//void Player::animate(double dt)
+//{
+//	double anim_spdoffset = 1.0;
+//
+//	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
+//		anim_ElapsedTime = 0.0;
+//	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
+//	{
+//		if (is_Moving)
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
+//		else
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
+//			
+//	}
+//	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
+//	{
+//		if (is_Moving)
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
+//		else
+//			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
+//	}
+//		
+//}
