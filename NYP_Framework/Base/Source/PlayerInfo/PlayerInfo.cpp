@@ -337,13 +337,18 @@ void Player::MoveRight()
 		}
 		else
 		{
-			std::cout << "Something is blocking right" << std::endl;
-			if (direction.y == 1)
+
+			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+			if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 			{
-				direction.y = 0;
-				SetMovement(false);
+				std::cout << "Something is blocking right" << std::endl;
+				if (direction.y == 1)
+				{
+					direction.y = 0;
+					SetMovement(false);
+				}
+				break;
 			}
-			break;
 		}
 	}
 
