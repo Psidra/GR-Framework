@@ -6,6 +6,10 @@
 #include "Mtx44.h"
 #include "../WeaponInfo/Pistol.h"
 #include "../WeaponInfo/Shotgun.h"
+#include "../WeaponInfo/Rifle.h"
+#include "../WeaponInfo/Bow.h"
+#include "../WeaponManager.h"
+
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
 
@@ -45,7 +49,7 @@ void Player::Init(void)
 
 	//init weapon
 	primaryWeapon = new Shotgun(GenericEntity::PLAYER_BULLET);
-	primaryWeapon->Init();
+	//primaryWeapon->Init();
 
 	this->SetCollider(true);
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
@@ -325,8 +329,7 @@ void Player::Update(double dt)
 
 	this->SetPosition(position);
 	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
-
-	primaryWeapon->Update(dt);
+	//primaryWeapon->Update(dt);
 }
 
 // Constrain the position within the borders
