@@ -1,5 +1,6 @@
 #include "WeaponInfo.h"
 #include "../Projectile/Projectile.h"
+#include "../WeaponManager.h"
 
 #include <iostream>
 using namespace std;
@@ -13,7 +14,7 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, timeBetweenShots(0.5)
 	, elapsedTime(0.0)
 	, bFire(true)
-{
+{	
 }
 
 CWeaponInfo::~CWeaponInfo()
@@ -108,13 +109,13 @@ bool CWeaponInfo::GetCanFire(void) const
 void CWeaponInfo::Init(void)
 {
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 1;
+	magRounds = 8;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 1;
+	maxMagRounds = 8;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 8;
+	totalRounds = 16;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 8;
+	maxTotalRounds = 16;
 
 	// The time between shots
 	timeBetweenShots = 0.5;
@@ -206,7 +207,7 @@ void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int num
 	{
 		//rotate vector
 		if (angle >= 0)
-		{
+		{	//negative angle counter clockwise positive angle clockwise
 			target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
 			target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
 			totalAngle -= angle;

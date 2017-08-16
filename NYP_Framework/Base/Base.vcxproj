@@ -33,9 +33,12 @@
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
+    <ClCompile Include="Source\WeaponInfo\Bow.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
+    <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
     <ClCompile Include="Source\WeaponInfo\Shotgun.cpp" />
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
+    <ClCompile Include="Source\WeaponManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI FSM\Ai_1.h" />
@@ -59,9 +62,12 @@
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\TextEntity.h" />
+    <ClInclude Include="Source\WeaponInfo\Bow.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
+    <ClInclude Include="Source\WeaponInfo\Rifle.h" />
     <ClInclude Include="Source\WeaponInfo\Shotgun.h" />
     <ClInclude Include="Source\WeaponInfo\WeaponInfo.h" />
+    <ClInclude Include="Source\WeaponManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>
