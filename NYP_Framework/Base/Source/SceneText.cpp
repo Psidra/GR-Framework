@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include "RenderHelper.h"
+#include "WeaponManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -233,10 +234,23 @@ void SceneText::Init()
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
 	//light_depth_mesh->textureID[0] = LoadTGA("Image//calibri.tga");
+
+	//WeaponManager to be init last.
+	//WeaponManager::GetInstance()->init();
 }
 
 void SceneText::Update(double dt)
 {
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	int w = Application::GetInstance().GetWindowWidth();
+	int h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+	float posX = static_cast<float>(x);
+	float posY = (h - static_cast<float>(y));
+	Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
 	minion->Update(dt);
@@ -322,6 +336,8 @@ void SceneText::Update(double dt)
 	ss1.precision(4);
 	ss1 << "Player:";
 	textObj[2]->SetText(ss1.str());
+
+	WeaponManager::GetInstance()->update(dt);
 }
 
 void SceneText::Render()

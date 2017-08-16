@@ -106,7 +106,7 @@ void Application::Init()
 	}
 
 	// Hide the cursor
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	glfwSetMouseButtonCallback(m_window, &Application::MouseButtonCallbacks);
 	glfwSetScrollCallback(m_window, &Application::MouseScrollCallbacks);
 
@@ -162,14 +162,14 @@ void Application::UpdateInput()
 void Application::PostInputUpdate()
 {
 	// If mouse is centered, need to update the center position for next frame
-	if (MouseController::GetInstance()->GetKeepMouseCentered())
+	/*if (MouseController::GetInstance()->GetKeepMouseCentered())
 	{
 		double mouse_currX, mouse_currY;
 		mouse_currX = m_window_width >> 1;
 		mouse_currY = m_window_height >> 1;
 		MouseController::GetInstance()->UpdateMousePosition(mouse_currX, mouse_currY);
 		glfwSetCursorPos(m_window, mouse_currX, mouse_currY);
-	}
+	}*/
 
 	// Call input systems to update at end of frame
 	MouseController::GetInstance()->EndFrameUpdate();

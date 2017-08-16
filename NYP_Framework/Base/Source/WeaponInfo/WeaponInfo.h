@@ -2,6 +2,7 @@
 
 #include "Vector3.h"
 #include "../GenericEntity.h"
+#include "../Projectile/Projectile.h"
 
 class CPlayerInfo;
 

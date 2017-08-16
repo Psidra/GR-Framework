@@ -1,13 +1,13 @@
-#pragma once
+#ifndef _BOW_H
+#define _BOW_H
 
 #include "WeaponInfo.h"
 
-class Pistol :
-	public CWeaponInfo
+class Bow : public CWeaponInfo
 {
 public:
-	Pistol(GenericEntity::OBJECT_TYPE _bulletType);
-	virtual ~Pistol();
+	Bow(GenericEntity::OBJECT_TYPE _bulletType);
+	virtual ~Bow();
 
 	// Initialise this instance to default values
 	void Init(void);
@@ -19,3 +19,5 @@ private:
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
 };
 
+
+#endif

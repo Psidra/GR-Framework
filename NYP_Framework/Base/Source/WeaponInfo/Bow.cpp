@@ -1,32 +1,32 @@
-#include "Pistol.h"
+#include "Bow.h"
 #include "../WeaponManager.h"
 
-Pistol::Pistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+Bow::Bow(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-Pistol::~Pistol()
+Bow::~Bow()
 {
 }
 
 // Initialise this instance to default values
-void Pistol::Init(void)
+void Bow::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 12;
+	magRounds = 1;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 12;
+	maxMagRounds = 1;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 40;
+	totalRounds = 12;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 40;
+	maxTotalRounds = 12;
 
 	// The time between shots
-	timeBetweenShots = 0.3333;
+	timeBetweenShots = 5.0;
 	// The elapsed time (between shots)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
@@ -34,7 +34,7 @@ void Pistol::Init(void)
 }
 
 // Discharge this weapon
-void Pistol::Discharge(Vector3 position, Vector3 target)
+void Bow::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -52,7 +52,7 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 }
 
 // Number of bullet to create and pattern
-void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
@@ -63,8 +63,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 			position,
 			target.Normalized(),
 			2.0f,
-			10.0f);
+			20.0f);
 		aProjectile->type = bulletType;
 	}
 }
-

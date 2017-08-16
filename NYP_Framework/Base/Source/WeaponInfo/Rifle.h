@@ -1,13 +1,12 @@
-#pragma once
+#ifndef _RIFLE_H
+#define _RIFLE_H
+#include "../WeaponInfo/WeaponInfo.h"
 
-#include "WeaponInfo.h"
-
-class Pistol :
-	public CWeaponInfo
+class Rifle : public CWeaponInfo
 {
 public:
-	Pistol(GenericEntity::OBJECT_TYPE _bulletType);
-	virtual ~Pistol();
+	Rifle(GenericEntity::OBJECT_TYPE _bulletType);
+	virtual ~Rifle();
 
 	// Initialise this instance to default values
 	void Init(void);
@@ -15,7 +14,10 @@ public:
 	void Discharge(Vector3 position, Vector3 target);
 
 private:
-	// Number of bullet to create and pattern
+	// generate bullet(num of bullet,dir)
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
+
 };
 
+
+#endif

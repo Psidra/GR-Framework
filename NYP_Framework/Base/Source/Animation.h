@@ -11,7 +11,7 @@ public:
 	void UpdateAnimationIndex(void);
 
 	// Get the LeftRightAnimation status
-	bool GetLeftRightAnimationStatus(void) const;
+	bool GetAnimationStatus(void) const;
 
 
 	// Get the Animation index

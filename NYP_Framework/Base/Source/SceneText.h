@@ -45,6 +45,7 @@ private:
 	Keyboard* keyboard;
 	static SceneText* sInstance; // The pointer to the object that gets registered
 
+	float m_worldWidth, m_worldHeight;
 
 	void RenderPassGPass();//PRE RENDER PASS
 	void RenderPassMain();//MAIN RENDER PASS
