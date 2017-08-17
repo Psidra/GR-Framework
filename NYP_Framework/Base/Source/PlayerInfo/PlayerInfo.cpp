@@ -246,11 +246,6 @@ void Player::CollisionCheck_Movement()
 	this->SetAABB(tempMax, tempMin);
 }
 
-void Player::SetMovement(bool _movement)
-{
-	m_bMoving = _movement;
-}
-
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
