@@ -18,6 +18,8 @@
 #include "GroundEntity.h"
 #include "TextEntity.h"
 #include "SpriteEntity.h"
+#include "LevelStuff/TileEntity.h"
+#include "LevelStuff/Level.h"
 #include "Light.h"
 #include "SkyBox/SkyBoxEntity.h"
 #include "HardwareAbstraction\Keyboard.h"
@@ -241,6 +243,37 @@ void SceneText::Init()
 
 	//WeaponManager to be init last.
 	//WeaponManager::GetInstance()->init();
+
+	//DEBUGGING: Level Cout
+	Math::InitRNG();
+	Level l;
+	l.setMapHeight(25);
+	l.setMapWidth(25);
+	l.setMaxRoomHeight(5);
+	l.setMaxRoomWidth(5);
+	l.generate();
+	l.createMap(20);
+	//l.testCout();
+
+	for (size_t i = 0; i < l.getMapWidth(); ++i)
+	{
+		for (size_t j = 0; j < l.getMapHeight(); ++j)
+		{
+			TileEntity* temp;
+			if (l.getTile(i, j).type == Tile::EMPTY)
+				Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::ROOM)
+				Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::CORRIDOR)
+				Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+			}
+		}
+	}
 }
 
 void SceneText::Update(double dt)

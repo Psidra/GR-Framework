@@ -25,6 +25,9 @@
     <Filter Include="AudioEngine">
       <UniqueIdentifier>{1e05b1b8-6c41-404c-ae51-c9d9d6ec8e0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LevelStuff">
+      <UniqueIdentifier>{56eee484-24e5-4555-a51f-13a31a22f369}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -117,6 +120,15 @@
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LevelStuff\Level.cpp">
+      <Filter>LevelStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelStuff\TileEntity.cpp">
+      <Filter>LevelStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelStuff\TileSet.cpp">
+      <Filter>LevelStuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -202,9 +214,18 @@
     </ClInclude>
     <ClInclude Include="Source\AudioEngine.h">
       <Filter>AudioEngine</Filter>
-        </ClInclude>
+    </ClInclude>
     <ClInclude Include="Source\Inventory.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelStuff\Level.h">
+      <Filter>LevelStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelStuff\TileEntity.h">
+      <Filter>LevelStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelStuff\TileSet.h">
+      <Filter>LevelStuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
