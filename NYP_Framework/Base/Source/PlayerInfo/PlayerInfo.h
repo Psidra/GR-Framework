@@ -5,7 +5,7 @@
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
 #include "../Animation.h"
-#include "../SoundEngine.h"
+#include "../AudioEngine.h"
 
 class CWeaponInfo;
 
