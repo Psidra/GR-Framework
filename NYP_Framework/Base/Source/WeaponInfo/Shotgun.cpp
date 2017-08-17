@@ -32,7 +32,7 @@ void Shotgun::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 	// Weapon Damage 
-	weaponDamage = 10;
+	weaponDamage = 20;
 	// boolean flag for dots
 	isDots = false;
 }
@@ -49,6 +49,7 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target, 5, 10);
 
 			bFire = false;
+			if(bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
 		}
 	}
@@ -76,7 +77,7 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 			2.0f,
 			10.0f);
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setProjectileDamage(weaponDamage / numBullet);
 		aProjectile->setIsDots(isDots);
 	}
 }

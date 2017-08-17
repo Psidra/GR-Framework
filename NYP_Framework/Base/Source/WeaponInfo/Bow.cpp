@@ -32,7 +32,7 @@ void Bow::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 	// Weapon Damage 
-	weaponDamage = 15;
+	weaponDamage = 40;
 	// boolean flag for dots
 	isDots = false;
 }
@@ -50,6 +50,7 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target, 8, 45);
 
 			bFire = false;
+			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
 		}
 	}
@@ -79,7 +80,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 			20.0f);
 
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setProjectileDamage(weaponDamage / numBullet);
 		aProjectile->setIsDots(isDots);
 	}
 }
