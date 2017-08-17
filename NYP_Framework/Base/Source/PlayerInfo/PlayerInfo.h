@@ -113,5 +113,5 @@ private:
 
 	double x, y;
 	int w, h;
-	bool m_bLookingRight, m_bLookingUp; //check looking right / looking up
+	bool m_bLookingUp;		// looking up
 };

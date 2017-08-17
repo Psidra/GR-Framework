@@ -31,6 +31,7 @@ Player::Player(void)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
 	, m_dAnimElapsedTime(0.0)
+	, m_bLookingUp(false)
 {
 	usingOldAnim = false;
 	playerInventory = new Inventory;
@@ -124,7 +125,7 @@ void Player::MoveUp()
 		direction.y = 1;
 	else
 		direction.y = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveDown()
@@ -133,8 +134,7 @@ void Player::MoveDown()
 		direction.y = -1;
 	else
 		direction.y = 0;
-	
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveLeft()
@@ -143,7 +143,7 @@ void Player::MoveLeft()
 		direction.x = -1;
 	else
 		direction.x = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveRight()
@@ -152,7 +152,7 @@ void Player::MoveRight()
 		direction.x = 1;
 	else
 		direction.x = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::SetMovement(bool _movement)
@@ -302,40 +302,37 @@ void Player::Update(double dt)
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
-	//// Update the position if the WASD buttons were activated
-	////( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
-	////( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
-	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('A') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('S') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('D'))
-	//{
-	//	//m_bMoving = true;
-	//}
+	// Update the position if the WASD buttons were activated
+	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
+	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
+	/*if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+		KeyboardController::GetInstance()->IsKeyDown('A') ||
+		KeyboardController::GetInstance()->IsKeyDown('S') ||
+		KeyboardController::GetInstance()->IsKeyDown('D'))
+	{
+		m_bMoving = true;
+	}*/
 	if (usingOldAnim)
 		animate(dt);
-	
+
+
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
 	h = Application::GetInstance().GetWindowHeight();
 	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
-	if (x >= 0)
-		m_bLookingRight = true;
-	else
-		m_bLookingRight = false;
-
-	if (y <= 0)
-		m_bLookingUp = false;
-	else
+	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
 		m_bLookingUp = true;
+	else
+		m_bLookingUp = false;
+	SetAnimationStatus(m_bLookingUp, m_bMoving);
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
 	else
 		SetMovement(true);
-
+	
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
