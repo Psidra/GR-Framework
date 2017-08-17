@@ -32,14 +32,52 @@ void GenericEntity::Render()
 
 void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 {
-	if ((this->type == PLAYER_BULLET && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER_BULLET))
+	GenericEntity* FirstEntity = nullptr;
+	GenericEntity* SecondEntity = nullptr;
+
+	if (this->type == PLAYER_BULLET)
 	{
-		std::cout << "bullet collide\n";
+		FirstEntity = this;
+		SecondEntity = ThatEntity;
+	}
+	else if (ThatEntity->type == PLAYER_BULLET)
+	{
+		FirstEntity = ThatEntity;
+		SecondEntity = this;
+	}
+
+	if (FirstEntity != nullptr)
+	{
+		switch (SecondEntity->type) {
+		case NONE:
+			return;
+		case WALL:
+			std::cout << "bullet collided with wall\n";
+			FirstEntity->SetIsDone(true);
+			return;
+		//case ENEMY:
+		//	std::cout << "bullet collided with enemy\n";
+		//	FirstEntity->SetIsDone(true);
+		//	return;
+
+		default:
+			// Bullet collides with other bullets xd
+			return;
+		}
+	}
+
+	/*if ((this->type == PLAYER_BULLET && ThatEntity->type == WALL) || (this->type == WALL && ThatEntity->type == PLAYER_BULLET))
+	{
+		std::cout << "bullet collided with wall\n";
 		if (this->type == PLAYER_BULLET)
 			this->SetIsDone(true);
 		if (ThatEntity->type == PLAYER_BULLET)
 			ThatEntity->SetIsDone(true);
 	}
+	if ((this->type == PLAYER_BULLET && ThatEntity->type == ENEMY) || (this->type == ENEMY && ThatEntity->type == PLAYER_BULLET))
+	{
+		std::cout << "bullet collided with enemy\n";
+	}*/
 }
 
 // Set the maxAABB and minAABB

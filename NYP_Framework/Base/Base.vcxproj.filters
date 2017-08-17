@@ -22,6 +22,9 @@
     <Filter Include="AI FSM">
       <UniqueIdentifier>{f7832b75-bee4-4028-9eb4-62f92db731e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SoundEngine">
+      <UniqueIdentifier>{1e05b1b8-6c41-404c-ae51-c9d9d6ec8e0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -104,9 +107,12 @@
     </ClCompile>
     <ClCompile Include="Source\WeaponInfo\Bow.cpp">
       <Filter>Header Files</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>AI FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundEngine.cpp">
+      <Filter>SoundEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>AI FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundEngine.h">
+      <Filter>SoundEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

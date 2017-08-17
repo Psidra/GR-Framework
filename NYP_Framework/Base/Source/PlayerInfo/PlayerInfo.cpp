@@ -69,6 +69,10 @@ void Player::Init(void)
 
 	this->SetCollider(true);
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
+
+	CSoundEngine::GetInstance()->Init();
+	CSoundEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
+
 }
 
 // Returns true if the player is on ground
@@ -275,21 +279,26 @@ void Player::UpdateFreeFall(double dt)
  Hero Update
  ********************************************************************************/
 
-void Player::CollisionResponse(GenericEntity* ThatEntity)
+void Player::CollisionResponse(GenericEntity* thatEntity)
 {
-	switch (ThatEntity->type) {
+	switch (thatEntity->type) {
 	case WALL:
 		std::cout << "collide" << std::endl;
-		break;
+		return;
 	case ENEMY:
 		std::cout << "enemy collide" << std::endl;
-		break;
+		return;
+	case ENEMY_BULLET:
+		std::cout << "player hit by enemy bullet" << std::endl;
+		EditHealth(-10);
+		return;
+
 	default:
 		break;
 	}
 }
 
-void Player::CollisionCheck_Wall()
+void Player::CollisionCheck_Movement()
 {
 	Vector3 tempMax = this->GetMaxAABB();
 	Vector3 tempMin = this->GetMinAABB();
@@ -313,9 +322,13 @@ void Player::CollisionCheck_Wall()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
-				std::cout << "Something is blocking up" << std::endl;
-				direction.y = 0;
-				break;
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking up" << std::endl;
+					direction.y = 0;
+					break;
+				}
 			}
 		}
 
@@ -332,9 +345,13 @@ void Player::CollisionCheck_Wall()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
-				std::cout << "Something is blocking down" << std::endl;
-				direction.y = 0;
-				break;
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking down" << std::endl;
+					direction.y = 0;
+					break;
+				}
 			}
 		}
 
@@ -352,9 +369,13 @@ void Player::CollisionCheck_Wall()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
-				std::cout << "Something is blocking right" << std::endl;
-				direction.x = 0;
-				break;
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking right" << std::endl;
+					direction.x = 0;
+					break;
+				}
 			}
 		}
 
@@ -371,9 +392,13 @@ void Player::CollisionCheck_Wall()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
-				std::cout << "Something is blocking left" << std::endl;
-				direction.x = 0;
-				break;
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking left" << std::endl;
+					direction.x = 0;
+					break;
+				}
 			}
 		}
 
@@ -472,7 +497,7 @@ void Player::Update(double dt)
 		m_dSpeed = 10;
 	}
 
-	CollisionCheck_Wall();
+	CollisionCheck_Movement();
 
 	if (m_bMoving)
 	{
@@ -549,6 +574,7 @@ void Player::setDodge(bool _dodge)
 bool Player::Shoot(const float dt)
 {	
 	primaryWeapon->Discharge(position, view); //position of player, dir to shoot from
+	CSoundEngine::GetInstance()->PlayASound("testjump");
 	return false;
 }
 
@@ -565,6 +591,11 @@ void Player::SetHealth(float _health)
 float Player::GetHealth()
 {
 	return m_fHealth;
+}
+
+void Player::EditHealth(float _health)
+{
+	this->m_fHealth += _health;
 }
 
 void Player::animate(double dt)
