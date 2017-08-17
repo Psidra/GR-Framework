@@ -226,28 +226,30 @@ void Application::InitAllMeshes()
 		
 		
 		//-------PLAYER SPRITES
-		//---gun held on left---
 		//lstand
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunl1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontstandgunl1")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandL1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunl2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontstandgunl2")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandL2.tga");
-		//lwalk
-		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkl1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("player_frontwalkl1")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkL1.tga");
-		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkl2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("player_frontwalkl2")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkL2.tga");
+		
 		//---gun held on right---
 		//rstand
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunr1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontstandgunr1")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandR1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontstandgunr2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontstandgunr2")->textureID[0] = LoadTGA("Image/Player/Player_FrontStandR2.tga");
-		//rwalk
+		//lfrontwalk
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkl1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkl1")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkL1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkl2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_frontwalkl2")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkL2.tga");
+		//rfrontwalk
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkr1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontwalkr1")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkR1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_frontwalkr2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("player_frontwalkr2")->textureID[0] = LoadTGA("Image/Player/Player_FrontWalkR2.tga");
+
+
 
 		//-------ENEMY SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown1", Color(1, 1, 1), 1.f);

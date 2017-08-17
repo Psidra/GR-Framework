@@ -83,7 +83,6 @@ public:
 	void EditHealth(float _health);
 
 	bool usingOldAnim; //toggle old animations
-	GenericEntity**	playerAnimated;
 
 private:
 	Vector3 defaultPosition;

@@ -32,7 +32,6 @@ Player::Player(void)
 	, m_fHealth(100.f)
 	, m_dAnimElapsedTime(0.0)
 {
-	//playerAnimated = new GenericEntity*[2];
 	usingOldAnim = false;
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -126,7 +125,6 @@ void Player::MoveUp()
 	else
 		direction.y = 0;
 	SetAnimationStatus(false, m_bLookingRight, false);
-	UpdateAnimationIndex();
 }
 
 void Player::MoveDown()
@@ -135,8 +133,8 @@ void Player::MoveDown()
 		direction.y = -1;
 	else
 		direction.y = 0;
+	
 	SetAnimationStatus(false, m_bLookingRight, false);
-	UpdateAnimationIndex();
 }
 
 void Player::MoveLeft()
@@ -146,7 +144,6 @@ void Player::MoveLeft()
 	else
 		direction.x = 0;
 	SetAnimationStatus(false, m_bLookingRight, false);
-	UpdateAnimationIndex();
 }
 
 void Player::MoveRight()
@@ -156,7 +153,6 @@ void Player::MoveRight()
 	else
 		direction.x = 0;
 	SetAnimationStatus(false, m_bLookingRight, false);
-	UpdateAnimationIndex();
 }
 
 void Player::SetMovement(bool _movement)

@@ -226,6 +226,7 @@ void SceneText::Init()
 	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
 	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
 	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
+
 	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
 	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
 	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
@@ -234,7 +235,6 @@ void SceneText::Init()
 	Player::GetInstance()->SetLeftUpIndices(2, 3);
 	Player::GetInstance()->SetRightDownIndices(4, 5);
 	Player::GetInstance()->SetLeftDownIndices(6, 7);
-	//Player::GetInstance()->SetRightDownIndices(2, 3);
 
 	minion = new CEnemy();
 	minion->Init();
@@ -390,6 +390,8 @@ void SceneText::Update(double dt)
 	textObj[2]->SetText(ss1.str());
 
 	WeaponManager::GetInstance()->update(dt);
+
+	std::cout << Player::GetInstance()->GetAnimationIndex() << std::endl;
 }
 
 void SceneText::Render()
@@ -523,8 +525,11 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	if (Player::GetInstance()->usingOldAnim)
 		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
-	else 
+	else
+	{
+		
 		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
+	}
 	ms.PopMatrix();
 }
 
