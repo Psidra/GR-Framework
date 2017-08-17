@@ -256,8 +256,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("minion_walkdown2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown2.tga");
 
 
-
-
+		// Placeholders for tiles
+		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
+		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
+		MeshBuilder::GetInstance()->GenerateQuad("Coord", Color(0, 0, 1), 1.f);
 
 
 
