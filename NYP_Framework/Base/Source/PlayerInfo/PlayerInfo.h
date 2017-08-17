@@ -66,7 +66,7 @@ public:
 	// Change Weapon
 	bool ChangeWeapon(const float dt);
 
-	void animate(double dt);
+	void animate(double dt); //run animation for player
 	// Set view direction
 	void SetView(Vector3 _view);
 
@@ -81,6 +81,9 @@ public:
 	float GetHealth();
 	// Edit Health
 	void EditHealth(float _health);
+
+	bool usingOldAnim; //toggle old animations
+	GenericEntity**	playerAnimated;
 
 private:
 	Vector3 defaultPosition;
@@ -106,5 +109,10 @@ private:
 
 	int weaponIndex;
 
-	double anim_ElapsedTime;
+	double m_dAnimElapsedTime; //bouncetime for animation sequence
+	
+
+	double x, y;
+	int w, h;
+	bool m_bLookingRight, m_bLookingUp; //check looking right / looking up
 };

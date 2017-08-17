@@ -18,6 +18,8 @@
 #include "GroundEntity.h"
 #include "TextEntity.h"
 #include "SpriteEntity.h"
+#include "LevelStuff/TileEntity.h"
+#include "LevelStuff/Level.h"
 #include "Light.h"
 #include "SkyBox/SkyBoxEntity.h"
 #include "HardwareAbstraction\Keyboard.h"
@@ -211,28 +213,34 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-
-	
-	////playerAnimated = new GenericEntity*[4];
-	//Player::GetInstance()->playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	//Player::GetInstance()->playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
-
-	//Player::GetInstance()->playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	//Player::GetInstance()->playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-
-
-	//Player::GetInstance()->SetMesh(Player::GetInstance()->playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
-	//Player::GetInstance()->SetLeftIndices(2, 3);
-	//Player::GetInstance()->SetRightIndices(2, 3);
-	//Player::GetInstance()->SetUpIndices(2, 3);
-	//Player::GetInstance()->SetDownIndices(2, 3);
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	/*GenericEntity*player = new GenericEntity(); //debug
+	player = Player::GetInstance();
+	player->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));*/
+	playerAnimated = new GenericEntity*[8];
+	for (size_t i = 0; i < 8; i++)
+	{
+		playerAnimated[i] = new GenericEntity();
+	}
+	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
+	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
+	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
+	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
+	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
+	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
+	Player::GetInstance()->SetRightUpIndices(0, 1);
+	Player::GetInstance()->SetLeftUpIndices(2, 3);
+	Player::GetInstance()->SetRightDownIndices(4, 5);
+	Player::GetInstance()->SetLeftDownIndices(6, 7);
+	//Player::GetInstance()->SetRightDownIndices(2, 3);
 
 	minion = new CEnemy();
-	minion->SetPosition(Vector3(0, 5, 0));
-	minion->SetEnemyGE(Create::Entity("player", minion->GetPos(), Vector3(1, 1, 1), true));
+	minion->Init();
 	minion->ChangeStrategy(new CStrategy_AI_1(), false);
-	minion->SetSpeed(2.0);
+	minion->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+	EntityManager::GetInstance()->AddEntity(minion);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -241,6 +249,37 @@ void SceneText::Init()
 
 	//WeaponManager to be init last.
 	//WeaponManager::GetInstance()->init();
+
+	//DEBUGGING: Level Cout
+	Math::InitRNG();
+	Level l;
+	l.setMapHeight(25);
+	l.setMapWidth(25);
+	l.setMaxRoomHeight(5);
+	l.setMaxRoomWidth(5);
+	l.generate();
+	l.createMap(20);
+	//l.testCout();
+
+	for (size_t i = 0; i < l.getMapWidth(); ++i)
+	{
+		for (size_t j = 0; j < l.getMapHeight(); ++j)
+		{
+			TileEntity* temp;
+			if (l.getTile(i, j).type == Tile::EMPTY)
+				Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::ROOM)
+				Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::CORRIDOR)
+				Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (l.getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+			}
+		}
+	}
 }
 
 void SceneText::Update(double dt)
@@ -253,19 +292,20 @@ void SceneText::Update(double dt)
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
-	try
-	{
-		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());throw DivideByZero();
+	
+	try {
+		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+		throw DivideByZero();
 	}
-	catch(DivideByZero)
-	{
+	catch(DivideByZero) {
 		posX = 1;
 		posY = 1;
 	}
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
-	minion->Update(dt);
+	if (!minion->IsDone())
+		minion->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
@@ -481,7 +521,10 @@ void SceneText::RenderWorld()
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
-	RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
+	if (Player::GetInstance()->usingOldAnim)
+		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
+	else 
+		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 

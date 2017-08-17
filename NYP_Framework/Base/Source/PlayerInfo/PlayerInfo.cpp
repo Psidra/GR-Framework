@@ -12,6 +12,7 @@
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
 #include "MeshList.h"
+#include "../Application.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -27,15 +28,18 @@ Player::Player(void)
 	, m_dRollTime(0.0)
 	, m_bMoving(false)
 	, m_iAnimIndex(0)
-	, anim_ElapsedTime(0.0)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
+	, m_dAnimElapsedTime(0.0)
 {
+	//playerAnimated = new GenericEntity*[2];
+	usingOldAnim = false;
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Rifle(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
+
 }
 
 Player::~Player(void)
@@ -121,6 +125,8 @@ void Player::MoveUp()
 		direction.y = 1;
 	else
 		direction.y = 0;
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 }
 
 void Player::MoveDown()
@@ -129,6 +135,8 @@ void Player::MoveDown()
 		direction.y = -1;
 	else
 		direction.y = 0;
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 }
 
 void Player::MoveLeft()
@@ -137,6 +145,8 @@ void Player::MoveLeft()
 		direction.x = -1;
 	else
 		direction.x = 0;
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 }
 
 void Player::MoveRight()
@@ -145,6 +155,8 @@ void Player::MoveRight()
 		direction.x = 1;
 	else
 		direction.x = 0;
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 }
 
 void Player::SetMovement(bool _movement)
@@ -174,7 +186,6 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		break;
 	}
 }
-
 void Player::CollisionCheck_Movement()
 {
 	Vector3 tempMax = this->GetMaxAABB();
@@ -231,88 +242,47 @@ void Player::CollisionCheck_Movement()
 				}
 			}
 		}
-
-		this->SetAABB(tempMax, tempMin);
 	}
-
-	if (direction.x == 1)
-	{
-		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
-
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-
-		for (it = cpy.begin(); it != end; ++it)
-		{
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-				{
-					std::cout << "Something is blocking right" << std::endl;
-					direction.x = 0;
-					break;
-				}
-			}
-		}
-
-		this->SetAABB(tempMax, tempMin);
-	}
-	else if (direction.x == -1)
-	{
-		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
-
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-
-		for (it = cpy.begin(); it != end; ++it)
-		{
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-				{
-					std::cout << "Something is blocking left" << std::endl;
-					direction.x = 0;
-					break;
-				}
-			}
-		}
-
-		this->SetAABB(tempMax, tempMin);
-	}
-
-	if (direction.x == 0 && direction.y == 0)
-		SetMovement(false);
-	else
-		SetMovement(true);
+	this->SetAABB(tempMax, tempMin);
 }
 
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
-	anim_ElapsedTime += dt * 10;
+	m_dAnimElapsedTime += dt * 10;
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
-	// Update the position if the WASD buttons were activated
-	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
-	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
-	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-		KeyboardController::GetInstance()->IsKeyDown('A') ||
-		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D'))
-	{
-		//m_bMoving = true;
-		// m_bMoving is managed and set in collisioncheck_movement function c:
-		// Constrain position
-		//Constrain();
-	}
-	else
-		//m_bMoving = false;
+	
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	w = Application::GetInstance().GetWindowWidth();
+	h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
-	animate(dt);
+	//// Update the position if the WASD buttons were activated
+	////( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
+	////( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
+	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('A') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('S') ||
+	//	KeyboardController::GetInstance()->IsKeyDown('D'))
+	//{
+	//	//m_bMoving = true;
+	//}
+	if (usingOldAnim)
+		animate(dt);
+	
+	if (x >= 0)
+		m_bLookingRight = true;
+	else
+		m_bLookingRight = false;
+
+	if (y <= 0)
+		m_bLookingUp = false;
+	else
+		m_bLookingUp = true;
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
@@ -460,24 +430,51 @@ void Player::EditHealth(float _health)
 
 void Player::animate(double dt)
 {
-	double anim_spdoffset = 1.0;
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	int w = Application::GetInstance().GetWindowWidth();
+	int h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
-	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
-		anim_ElapsedTime = 0.0;
-	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
+	double anim_spdoffset = 1.0;
+	if (m_bMoving)
 	{
-		if (m_bMoving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
-			
+		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
+			m_dAnimElapsedTime = 0.0;
+		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
+			else 
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
+		}
+		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
+		}
 	}
-	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
+	else
 	{
-		if (m_bMoving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	}
-		
+		anim_spdoffset = anim_spdoffset + 1.5;
+		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
+			m_dAnimElapsedTime = 0.0;
+		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
+		}
+		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+		}
+	}		
 }
