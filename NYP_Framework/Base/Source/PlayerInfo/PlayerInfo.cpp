@@ -19,12 +19,6 @@
 Player::Player(void)
 	: m_dSpeed(10.0)
 	, m_dAcceleration(10.0)
-	, m_bJumpUpwards(false)
-	, m_dJumpSpeed(10.0)
-	, m_dJumpAcceleration(-10.0)
-	, m_bFallDownwards(false)
-	, m_dFallSpeed(0.0)
-	, m_dFallAcceleration(-10.0)
 	, m_dElapsedTime(0.0)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
@@ -70,55 +64,9 @@ void Player::Init(void)
 	this->SetCollider(true);
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
 
+	// Audio Related adding sound
 	CSoundEngine::GetInstance()->Init();
 	CSoundEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
-
-}
-
-// Returns true if the player is on ground
-bool Player::isOnGround(void)
-{
-
-
-
-	return false;
-}
-
-// Returns true if the player is jumping upwards
-bool Player::isJumpUpwards(void)
-{
-
-
-
-	return false;
-}
-
-// Returns true if the player is on freefall
-bool Player::isFreeFall(void)
-{
-
-
-
-	return false;
-}
-
-// Set the player's status to free fall mode
-void Player::SetOnFreeFall(bool isOnFreeFall)
-{
-
-
-
-
-
-}
-
-// Set the player to jumping upwards
-void Player::SetToJumpUpwards(bool isOnJumpUpwards)
-{
-
-
-
-
 
 }
 
@@ -126,18 +74,6 @@ void Player::SetToJumpUpwards(bool isOnJumpUpwards)
 void Player::SetPos(const Vector3& pos)
 {
 	position = pos;
-}
-
-// Set m_dJumpAcceleration of the player
-void Player::SetJumpAcceleration(const double m_dJumpAcceleration)
-{
-	this->m_dJumpAcceleration = m_dJumpAcceleration;
-}
-
-// Set Fall Acceleration of the player
-void Player::SetFallAcceleration(const double m_dFallAcceleration)
-{
-	this->m_dFallAcceleration = m_dFallAcceleration;
 }
 
 // Set the boundary for the player info
@@ -158,33 +94,17 @@ void Player::SetTerrain(GroundEntity* m_pTerrain)
 
 }
 
-// Stop the player's movement
-void Player::StopVerticalMovement(void)
-{
-	m_bJumpUpwards = false;
-	m_bFallDownwards = false;
-}
-
 // Reset this player instance to default
 void Player::Reset(void)
 {
 	// Set the current values to default values
 	position = defaultPosition;
-
-	// Stop vertical movement too
-	StopVerticalMovement();
 }
 
 // Get position x of the player
 Vector3 Player::GetPos(void) const
 {
 	return position;
-}
-
-// Get m_dJumpAcceleration of the player
-double Player::GetJumpAcceleration(void) const
-{
-	return m_dJumpAcceleration;
 }
 
 void Player::MoveUp()
@@ -222,57 +142,6 @@ void Player::MoveRight()
 void Player::SetMovement(bool _movement)
 {
 	m_bMoving = _movement;
-}
-
-// Update Jump Upwards
-void Player::UpdateJumpUpwards(double dt)
-{
-	if (m_bJumpUpwards == false)
-		return;
-
-	// Update the jump's elapsed time
-
-	// Update position and target y values
-	// Use SUVAT equation to update the change in position and target
-	// s = u * t + 0.5 * a * t ^ 2
-
-
-	// Use this equation to calculate final velocity, v
-	// SUVAT: v = u + a * t;
-	// v is m_dJumpSpeed AFTER updating using SUVAT where u is the initial speed and is equal to m_dJumpSpeed
-
-	// Check if the jump speed is less than zero, then it should be falling
-	if (m_dJumpSpeed < 0.0)
-	{
-	}
-}
-
-// Update FreeFall
-void Player::UpdateFreeFall(double dt)
-{
-	if (m_bFallDownwards == false)
-		return;
-
-	// Update the jump's elapsed time
-
-	// Update position and target y values
-	// Use SUVAT equation to update the change in position and target
-	// s = u * t + 0.5 * a * t ^ 2
-
-
-	// Use this equation to calculate final velocity, v
-	// SUVAT: v = u + a * t;
-	// v is m_dJumpSpeed AFTER updating using SUVAT where u is the initial speed and is equal to m_dJumpSpeed
-
-	// Check if the jump speed is below terrain, then it should be reset to terrain height
-	if (position.y < m_pTerrain->GetTerrainHeight(position))
-	{
-
-
-
-
-
-	}
 }
 
 /********************************************************************************
@@ -416,62 +285,27 @@ void Player::Update(double dt)
 	m_dElapsedTime += dt;
 	anim_ElapsedTime += dt * 10;
 
-	//CollisionCheck_Wall();
-
-	//double mouse_diff_x, mouse_diff_y;
-	//MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
-
-	//double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
-	//double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
-
-	//double mouse_pos_x, mouse_pos_y;
-	//MouseController::GetInstance()->GetMousePosition(mouse_pos_x, mouse_pos_y);
-	//view.Set(mouse_pos_x, mouse_pos_y, 0);
-
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
-	// This code was for first person camera direction
-	//direction = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-	//lock player movement to the ground only
-	//direction.y = 0;
 
 	// Update the position if the WASD buttons were activated
+	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
+	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
 		//m_bMoving = true;
-		
+		// m_bMoving is managed and set in collisioncheck_movement function c:
 		// Constrain position
 		//Constrain();
 	}
 	else
 		//m_bMoving = false;
+
 	animate(dt);
 
-
-	//// Update the position if the WASD buttons were activated
-	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('A') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('S') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('D'))
-	//{
-	//	// Constrain position
-	//	//Constrain();
-	//}
-
-	//// If the user presses SPACEBAR, then make him jump
-	//if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE) &&
-	//	position.y == m_pTerrain->GetTerrainHeight(position))
-	//{
-
-	//}
-
-	//// Update the weapons
-	//if (KeyboardController::GetInstance()->IsKeyReleased('R'))
-	//{
-	//}
 
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
@@ -513,11 +347,6 @@ void Player::Update(double dt)
 	if (KeyboardController::GetInstance()->IsKeyDown('P'))
 	{
 		Reset();
-	}
-	else
-	{
-
-
 	}
 
 	// If a camera is attached to this playerInfo class, then update it
