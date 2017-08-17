@@ -31,7 +31,7 @@
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
-    <ClCompile Include="Source\SoundEngine.cpp" />
+    <ClCompile Include="Source\AudioEngine.cpp" />
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
@@ -62,7 +62,7 @@
     <ClInclude Include="Source\Projectile\Projectile.h" />
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
-    <ClInclude Include="Source\SoundEngine.h" />
+    <ClInclude Include="Source\AudioEngine.h" />
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\TextEntity.h" />

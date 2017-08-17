@@ -6,7 +6,7 @@
 #include "../GenericEntity.h"
 #include "../Animation.h"
 #include "../Inventory.h"
-#include "../SoundEngine.h"
+#include "../AudioEngine.h"
 
 class CWeaponInfo;
 

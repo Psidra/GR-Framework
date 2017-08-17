@@ -22,7 +22,7 @@
     <Filter Include="AI FSM">
       <UniqueIdentifier>{f7832b75-bee4-4028-9eb4-62f92db731e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SoundEngine">
+    <Filter Include="AudioEngine">
       <UniqueIdentifier>{1e05b1b8-6c41-404c-ae51-c9d9d6ec8e0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -111,12 +111,11 @@
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>AI FSM</Filter>
     </ClCompile>
-
+    <ClCompile Include="Source\AudioEngine.cpp">
+      <Filter>AudioEngine</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SoundEngine.cpp">
-      <Filter>SoundEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,11 +200,11 @@
     <ClInclude Include="Source\Enemy.h">
       <Filter>AI FSM</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AudioEngine.h">
+      <Filter>AudioEngine</Filter>
+        </ClInclude>
     <ClInclude Include="Source\Inventory.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SoundEngine.h">
-      <Filter>SoundEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

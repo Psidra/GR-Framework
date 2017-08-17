@@ -1,43 +1,43 @@
-#include "SoundEngine.h"
+#include "AudioEngine.h"
 #include <iostream>
 
 using namespace std;
 
 // Constructor
-CSoundEngine::CSoundEngine()
-	: SoundEngine(NULL)
+AudioEngine::AudioEngine()
+	: iAudioEngine(NULL)
 {
 }
 
 // Destructor
-CSoundEngine::~CSoundEngine()
+AudioEngine::~AudioEngine()
 {
 	// Clear out the sound map
 	soundMap.clear();
 
 	// Delete the sound engine
-	if (SoundEngine)
+	if (iAudioEngine)
 	{
-		delete SoundEngine;
-		SoundEngine = NULL;
+		delete iAudioEngine;
+		iAudioEngine = NULL;
 	}
 }
 
 // Init this class and it will create the Sound Engine
-bool CSoundEngine::Init(void)
+bool AudioEngine::Init(void)
 {
 	// Create the sound engine
-	SoundEngine = createIrrKlangDevice();
-	if (!SoundEngine)
+	iAudioEngine = createIrrKlangDevice();
+	if (!iAudioEngine)
 		return false;	// error starting up the sound engine
 
 	return true;
 }
 
 // Get the handler to the sound engine
-ISoundEngine* CSoundEngine::GetSoundEngine(void)
+ISoundEngine* AudioEngine::GetAudioEngine(void)
 {
-	if (SoundEngine == NULL)
+	if (iAudioEngine == NULL)
 	{
 		if (Init() == false)
 		{
@@ -46,13 +46,13 @@ ISoundEngine* CSoundEngine::GetSoundEngine(void)
 		}
 	}
 
-	return SoundEngine;
+	return iAudioEngine;
 }
 
 // Add a sound to this library
-void CSoundEngine::AddSound(const std::string& _soundIndex, const std::string& _soundSource)
+void AudioEngine::AddSound(const std::string& _soundIndex, const std::string& _soundSource)
 {
-	if (SoundEngine == NULL)
+	if (iAudioEngine == NULL)
 	{
 		if (Init() == false)
 		{
@@ -69,9 +69,9 @@ void CSoundEngine::AddSound(const std::string& _soundIndex, const std::string& _
 }
 
 // Get a sound from this map 
-std::string CSoundEngine::GetSound(const std::string& _soundIndex)
+std::string AudioEngine::GetSound(const std::string& _soundIndex)
 {
-	if (SoundEngine == NULL)
+	if (iAudioEngine == NULL)
 	{
 		if (Init() == false)
 		{
@@ -89,9 +89,9 @@ std::string CSoundEngine::GetSound(const std::string& _soundIndex)
 }
 
 // Remove a sound from this map
-bool CSoundEngine::RemoveSound(const std::string& _soundIndex)
+bool AudioEngine::RemoveSound(const std::string& _soundIndex)
 {
-	if (SoundEngine == NULL)
+	if (iAudioEngine == NULL)
 	{
 		if (Init() == false)
 		{
@@ -111,12 +111,42 @@ bool CSoundEngine::RemoveSound(const std::string& _soundIndex)
 }
 
 // Play a sound from this map
-void CSoundEngine::PlayASound(const std::string& _soundIndex)
+void AudioEngine::PlayASound(const std::string& _soundIndex, bool _loop)
 {
 	std::string aSound = GetSound(_soundIndex);
-	if (!SoundEngine->isCurrentlyPlaying(aSound.c_str()))
+	if (!iAudioEngine->isCurrentlyPlaying(aSound.c_str()))
 	{
 		// Play a sound
-		SoundEngine->play2D(aSound.c_str(), false, false);
+		iAudioEngine->play2D(aSound.c_str(), _loop, false);
 	}
+}
+
+int AudioEngine::getVolume()
+{
+	return (iAudioEngine->getSoundVolume() * 100);
+}
+
+void AudioEngine::setVolume(int _volume)
+{
+	if (_volume > 100)
+		_volume = 100;
+
+	if (_volume < 0)
+		_volume = 0;
+
+	iAudioEngine->setSoundVolume((float)_volume * 0.01f);
+}
+
+void AudioEngine::editVolume(int _volume)
+{
+	int currentVolume = getVolume();
+	currentVolume += _volume;
+
+	if (currentVolume > 100)
+		currentVolume = 100;
+
+	if (currentVolume < 0)
+		currentVolume = 0;
+
+	iAudioEngine->setSoundVolume((float)currentVolume * 0.01f);
 }

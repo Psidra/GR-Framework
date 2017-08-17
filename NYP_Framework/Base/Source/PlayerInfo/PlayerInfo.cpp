@@ -73,8 +73,8 @@ void Player::Init(void)
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
 
 	// Audio Related adding sound
-	CSoundEngine::GetInstance()->Init();
-	CSoundEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
+	AudioEngine::GetInstance()->Init();
+	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
 
 }
 
@@ -314,6 +314,10 @@ void Player::Update(double dt)
 
 	animate(dt);
 
+	if (direction.x == 0 && direction.y == 0)
+		SetMovement(false);
+	else
+		SetMovement(true);
 
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
@@ -329,6 +333,8 @@ void Player::Update(double dt)
 			m_dSpeed = 30;
 			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
+
+			AudioEngine::GetInstance()->editVolume(-10);
 		}
 	}
 
@@ -410,7 +416,7 @@ void Player::setDodge(bool _dodge)
 bool Player::Shoot(const float dt)
 {	
 	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view); //position of player, dir to shoot from
-	CSoundEngine::GetInstance()->PlayASound("testjump");
+	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
 
