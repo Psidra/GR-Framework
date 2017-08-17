@@ -211,22 +211,28 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-
-	
-	////playerAnimated = new GenericEntity*[4];
-	//Player::GetInstance()->playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	//Player::GetInstance()->playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
-
-	//Player::GetInstance()->playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-	//Player::GetInstance()->playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-
-
-	//Player::GetInstance()->SetMesh(Player::GetInstance()->playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
-	//Player::GetInstance()->SetLeftIndices(2, 3);
-	//Player::GetInstance()->SetRightIndices(2, 3);
-	//Player::GetInstance()->SetUpIndices(2, 3);
-	//Player::GetInstance()->SetDownIndices(2, 3);
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	/*GenericEntity*player = new GenericEntity(); //debug
+	player = Player::GetInstance();
+	player->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));*/
+	playerAnimated = new GenericEntity*[8];
+	for (size_t i = 0; i < 8; i++)
+	{
+		playerAnimated[i] = new GenericEntity();
+	}
+	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
+	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
+	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
+	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
+	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
+	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
+	Player::GetInstance()->SetRightUpIndices(0, 1);
+	Player::GetInstance()->SetLeftUpIndices(2, 3);
+	Player::GetInstance()->SetRightDownIndices(4, 5);
+	Player::GetInstance()->SetLeftDownIndices(6, 7);
+	//Player::GetInstance()->SetRightDownIndices(2, 3);
 
 	minion = new CEnemy();
 	minion->SetPosition(Vector3(0, 5, 0));
@@ -473,7 +479,10 @@ void SceneText::RenderWorld()
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
-	RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
+	if (Player::GetInstance()->usingOldAnim)
+		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
+	else 
+		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 

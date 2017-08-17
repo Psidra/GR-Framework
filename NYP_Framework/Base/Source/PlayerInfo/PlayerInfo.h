@@ -93,7 +93,7 @@ public:
 	bool Shoot(const float dt);
 
 
-	void animate(double dt);
+	void animate(double dt); //run animation for player
 	// Set view direction
 	void SetView(Vector3 _view);
 
@@ -104,6 +104,9 @@ public:
 	void SetHealth(float _health);
 	// Get Health
 	float GetHealth();
+
+	bool usingOldAnim; //toggle old animations
+	GenericEntity**	playerAnimated;
 
 private:
 	Vector3 defaultPosition;
@@ -134,5 +137,10 @@ private:
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
 
-	double anim_ElapsedTime;
+	double m_dAnimElapsedTime; //bouncetime for animation sequence
+	
+
+	double x, y;
+	int w, h;
+	bool m_bLookingRight, m_bLookingUp; //check looking right / looking up
 };

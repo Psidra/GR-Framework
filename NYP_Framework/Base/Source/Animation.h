@@ -1,56 +1,65 @@
-#pragma once
+#ifndef Animation
+#define Animation
+
 class CAnimation
 {
 public:
 	CAnimation();
 	virtual ~CAnimation();
 
-	// Set Animation status; left or right
-	void SetAnimationStatus(bool m_bAnimationInvert);
+	// Set Animation status; leftright or updown
+	void SetAnimationStatus(bool m_bFacingUp, bool m_bFacingRight, bool m_bIsMoving);
 	// Update the Animation Index
-	void UpdateAnimationIndex(void);
+	void UpdateAnimationIndex();
 
-	// Get the LeftRightAnimation status
+	// Get the Animation status
 	bool GetAnimationStatus(void) const;
 
 
 	// Get the Animation index
 	int GetAnimationIndex(void) const;
 
-	// Set right indices
-	void SetRightIndices(const int m_iRight_Start, const int m_iRight_End);
-	// Set left indices
-	void SetLeftIndices(const int m_iLeft_Start, const int m_iLeft_End);
-	// Set Up indices
-	void SetUpIndices(const int m_iUp_Start, const int m_iUp_End);
-	// Set Down indices
-	void SetDownIndices(const int m_iDown_Start, const int m_iDown_End);
+	// Set rightup indices
+	void SetRightUpIndices(const int m_iRightUp_Start, const int m_iRightUp_End);
+	// Set leftup indices
+	void SetLeftUpIndices(const int m_iLeftUp_Start, const int m_iLeftUp_End);
+	// Set rightdown indices
+	void SetRightDownIndices(const int m_iRightDown_Start, const int m_iRightDown_End);
+	// Set leftdown indices
+	void SetLeftDownIndices(const int m_iLeftDown_Start, const int m_iLeftDown_End);
 
 private:
-	// Flag to indicate if the Animation is inverted to the left. 
-	// true==face right, false==face left
-	bool m_bAnimationInvert;
 
-	// 0 == The default hero frame, 1/2/3 == Right facing animations, 
+	bool m_bAnimationInvert;//check if invert
+	bool m_bFacingUp;		//check if facing up
+	bool m_bFacingRight;	//check if facing up
+	bool m_bIsMoving;		//checl of character moving
+
+	// 0 == The default hero frame, 
+	// 1/2/3 == Right facing animations, 
 	// 4/5/6 == Left facing animations
 	int m_iAnimation_Index;
 
-	//Walking
+	//facing direction
+	//-----facing up
 	// Start index of right facing Animations
-	int m_iRight_Start;
+	int m_iRightUp_Start;
 	// End index of right facing Animations
-	int m_iRight_End;
+	int m_iRightUp_End;
 	// Start index of left facing Animations
-	int m_iLeft_Start;
+	int m_iLeftUp_Start;
 	// End index of left facing Animations
-	int m_iLeft_End;
-	// Start index of Up facing Animations
-	int m_iUp_Start;
-	// End index of Up facing Animations
-	int m_iUp_End;
-	// Start index of down facing Animations
-	int m_iDown_Start;
-	// End index of down facing Animations
-	int m_iDown_End;
+	int m_iLeftUp_End;
+
+	//-----facing down
+	// Start index of right facing Animations
+	int m_iRightDown_Start;
+	// End index of right facing Animations
+	int m_iRightDown_End;
+	// Start index of left facing Animations
+	int m_iLeftDown_Start;
+	// End index of left facing Animations
+	int m_iLeftDown_End;
 };
 
+#endif // !Animation

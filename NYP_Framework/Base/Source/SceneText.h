@@ -28,7 +28,7 @@ public:
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-
+	GenericEntity** playerAnimated;
 private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
@@ -50,6 +50,7 @@ private:
 	void RenderPassMain();//MAIN RENDER PASS
 	void RenderWorld();
 	Mesh* light_depth_mesh;
+
 };
 
 #endif

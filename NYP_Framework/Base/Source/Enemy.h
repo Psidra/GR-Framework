@@ -14,7 +14,7 @@
 
 class Mesh;
 
-class CEnemy :public Collision, public EntityBase, public CAnimation
+class CEnemy :public Collision, public GenericEntity, public CAnimation
 {
 protected:
 	Mesh* modelMesh;

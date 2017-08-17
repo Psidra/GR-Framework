@@ -12,6 +12,7 @@
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
 #include "MeshList.h"
+#include "../Application.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -33,9 +34,10 @@ Player::Player(void)
 	, m_dRollTime(0.0)
 	, m_bMoving(false)
 	, m_iAnimIndex(0)
-	, anim_ElapsedTime(0.0)
+	, m_dAnimElapsedTime(0.0)
 {
-	
+	//playerAnimated = new GenericEntity*[2];
+	usingOldAnim = false;
 }
 
 Player::~Player(void)
@@ -216,7 +218,8 @@ void Player::MoveUp()
 			break;
 		}
 	}
-
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 	this->SetAABB(tempMax, tempMin);
 }
 
@@ -254,7 +257,8 @@ void Player::MoveDown()
 			break;
 		}
 	}
-
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 	this->SetAABB(tempMax, tempMin);
 }
 
@@ -300,7 +304,8 @@ void Player::MoveLeft()
 			break;
 		}
 	}
-
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 	this->SetAABB(tempMax, tempMin);
 }
 
@@ -351,6 +356,9 @@ void Player::MoveRight()
 			}
 		}
 	}
+
+	SetAnimationStatus(false, m_bLookingRight, false);
+	UpdateAnimationIndex();
 
 	this->SetAABB(tempMax, tempMin);
 }
@@ -432,7 +440,7 @@ void Player::CollisionResponse(GenericEntity* ThatEntity)
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
-	anim_ElapsedTime += dt * 10;
+	m_dAnimElapsedTime += dt * 10;
 	//double mouse_diff_x, mouse_diff_y;
 	//MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
 
@@ -450,6 +458,13 @@ void Player::Update(double dt)
 	//lock player movement to the ground only
 	//direction.y = 0;
 
+	
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	w = Application::GetInstance().GetWindowWidth();
+	h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+
 	// Update the position if the WASD buttons were activated
 	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
@@ -457,14 +472,25 @@ void Player::Update(double dt)
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
 		m_bMoving = true;
-		
 		// Constrain position
 		//Constrain();
 	}
 	else
 		m_bMoving = false;
-	animate(dt);
+	if (usingOldAnim)
+		animate(dt);
+	
 
+	if (x >= 0)
+		m_bLookingRight = true;
+	else
+		m_bLookingRight = false;
+
+	if (y <= 0)
+		m_bLookingUp = false;
+	else
+		m_bLookingUp = true;
+	
 
 	//// Update the position if the WASD buttons were activated
 	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
@@ -606,24 +632,51 @@ float Player::GetHealth()
 
 void Player::animate(double dt)
 {
-	double anim_spdoffset = 1.0;
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	int w = Application::GetInstance().GetWindowWidth();
+	int h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
-	if (anim_ElapsedTime > 1.5 + anim_spdoffset)
-		anim_ElapsedTime = 0.0;
-	else if (anim_ElapsedTime > 1.0 + anim_spdoffset)
+	double anim_spdoffset = 1.0;
+	if (m_bMoving)
 	{
-		if (m_bMoving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft2"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft2"));
-			
+		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
+			m_dAnimElapsedTime = 0.0;
+		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
+			else 
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
+		}
+		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
+		}
 	}
-	else if (anim_ElapsedTime > 0.5 + anim_spdoffset)
+	else
 	{
-		if (m_bMoving)
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkgunleft1"));
-		else
-			Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunleft1"));
-	}
-		
+		anim_spdoffset = anim_spdoffset + 1.5;
+		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
+			m_dAnimElapsedTime = 0.0;
+		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
+		}
+		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
+		{
+			if (x >= 0)
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
+			else
+				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+		}
+	}		
 }
