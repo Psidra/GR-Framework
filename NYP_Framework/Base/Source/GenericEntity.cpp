@@ -4,6 +4,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "PlayerInfo\PlayerInfo.h"
+#include "Projectile\Projectile.h"
 
 GenericEntity::GenericEntity(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
@@ -54,6 +55,10 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 		case WALL:
 			std::cout << "bullet collided with wall\n";
 			FirstEntity->SetIsDone(true);
+	
+			//Vector3 N(1,0,0);
+			//Vector3 u = dynamic_cast<CProjectile*>(FirstEntity)->GetDirection();
+			//go1->vel = u - 2 * u.Dot(N) * N;
 			return;
 		//case ENEMY:
 		//	std::cout << "bullet collided with enemy\n";

@@ -64,7 +64,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 
 	for (int i = 0;i < numBullet;++i)
 	{
-		CProjectile* aProjectile = Create::Projectile("cube",
+		CProjectile* aProjectile = Create::Projectile("sphere",
 			position,
 			target.Normalized(),
 			2.0f,

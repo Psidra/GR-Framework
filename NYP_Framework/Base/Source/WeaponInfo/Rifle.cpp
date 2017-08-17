@@ -47,7 +47,7 @@ void Rifle::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target, 5);
+			generateBullet(position, target, 5, 3);
 
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
@@ -61,16 +61,17 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 	if (numBullet < 0)
 		return;
 
-	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
-	//Vector3 temp = target;
+	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	Vector3 temp = target;
+
 	float tempSpeed = 10.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
 		//negative angle counter clockwise positive angle clockwise
-		/*target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+		target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
 		target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
-		totalAngle -= angle;*/
+		totalAngle -= angle;
 
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,

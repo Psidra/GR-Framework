@@ -178,7 +178,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
 	result->SetStatus(true);
 	result->SetCollider(true);
-	result->SetScale(Vector3(0.5,0.5,0.5));
+	result->SetScale(Vector3(0.3,0.3,0.3));
 	//result->SetSource(_source); //Removed PlayerInfo from projectile
 	EntityManager::GetInstance()->AddEntity(result);
 
