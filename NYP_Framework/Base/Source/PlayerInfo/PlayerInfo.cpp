@@ -34,6 +34,7 @@ Player::Player(void)
 	, m_bMoving(false)
 	, m_iAnimIndex(0)
 	, anim_ElapsedTime(0.0)
+	, m_fHealth(100.f)
 {
 	
 }
@@ -184,175 +185,34 @@ double Player::GetJumpAcceleration(void) const
 
 void Player::MoveUp()
 {
-	Vector3 tempMax = this->GetMaxAABB();
-	Vector3 tempMin = this->GetMinAABB();
-
-	this->SetAABB(tempMax + Vector3(0.f, 0.1f, 0.f), tempMin + Vector3(0.f, 0.1f, 0.f));
-
-	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
-	std::list<EntityBase*>::iterator it, end;
-
-	end = cpy.end();
-	for (it = cpy.begin(); it != end; ++it)
-	{
-		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-		{
-			if (direction.y != -1)
-			{
-				direction.y = 1;
-				SetMovement(true);
-			}
-			else
-				direction.y = 0;
-		}
-		else
-		{
-			std::cout << "Something is blocking up" << std::endl;
-			if (direction.y == 1)
-			{
-				direction.y = 0;
-				SetMovement(false);
-			}
-			break;
-		}
-	}
-
-	this->SetAABB(tempMax, tempMin);
+	if (direction.y != -1)
+		direction.y = 1;
+	else
+		direction.y = 0;
 }
 
 void Player::MoveDown()
 {
-	Vector3 tempMax = this->GetMaxAABB();
-	Vector3 tempMin = this->GetMinAABB();
-
-	this->SetAABB(tempMax - Vector3(0.f, 0.1f, 0.f), tempMin - Vector3(0.f, 0.1f, 0.f));
-
-	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
-	std::list<EntityBase*>::iterator it, end;
-
-	end = cpy.end();
-	for (it = cpy.begin(); it != end; ++it)
-	{
-		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-		{
-			if (direction.y != 1)
-			{
-				direction.y = -1;
-				SetMovement(true);
-			}
-			else
-				direction.y = 0;
-		}
-		else
-		{
-			std::cout << "Something is blocking down" << std::endl;
-			if (direction.y == -1)
-			{
-				direction.y = 0;
-				SetMovement(false);
-			}
-			break;
-		}
-	}
-
-	this->SetAABB(tempMax, tempMin);
+	if (direction.y != 1)
+		direction.y = -1;
+	else
+		direction.y = 0;
 }
 
 void Player::MoveLeft()
 {
-	//Vector3 up(0, 1, 0);
-	//Vector3 rightUV;
-
-	//rightUV = (direction.Normalized()).Cross(up);
-	//rightUV.y = 0;
-	//rightUV.Normalize();
-	//position -= rightUV * (float)m_dSpeed * (float)dt;
-
-	Vector3 tempMax = this->GetMaxAABB();
-	Vector3 tempMin = this->GetMinAABB();
-
-	this->SetAABB(tempMax - Vector3(0.1f, 0.f, 0.f), tempMin - Vector3(0.1f, 0.f, 0.f));
-
-	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
-	std::list<EntityBase*>::iterator it, end;
-
-	end = cpy.end();
-	for (it = cpy.begin(); it != end; ++it)
-	{
-		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-		{
-			if (direction.x != 1)
-			{
-				direction.x = -1;
-				SetMovement(true);
-			}
-			else
-				direction.x = 0;
-		}
-		else
-		{
-			std::cout << "Something is blocking left" << std::endl;
-			if (direction.x == -1)
-			{
-				direction.x = 0;
-				SetMovement(false);
-			}
-			break;
-		}
-	}
-
-	this->SetAABB(tempMax, tempMin);
+	if (direction.x != 1)
+		direction.x = -1;
+	else
+		direction.x = 0;
 }
 
 void Player::MoveRight()
 {
-	//Vector3 up(0, 1, 0);
-	//Vector3 rightUV;
-
-	//rightUV = (direction.Normalized()).Cross(up);
-	//rightUV.y = 0;
-	//rightUV.Normalize();
-	//position += rightUV * (float)m_dSpeed * (float)dt;
-
-	Vector3 tempMax = this->GetMaxAABB();
-	Vector3 tempMin = this->GetMinAABB();
-
-	this->SetAABB(tempMax + Vector3(0.1f, 0.f, 0.f), tempMin + Vector3(0.1f, 0.f, 0.f));
-
-	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
-	std::list<EntityBase*>::iterator it, end;
-
-	end = cpy.end();
-	for (it = cpy.begin(); it != end; ++it)
-	{
-		if (!CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-		{
-			if (direction.x != -1)
-			{
-				direction.x = 1;
-				SetMovement(true);
-			}
-			else
-				direction.x = 0;
-		}
-		else
-		{
-
-			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-			if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-			{
-				std::cout << "Something is blocking right" << std::endl;
-				if (direction.x == 1)
-				{
-					direction.x = 0;
-					SetMovement(false);
-				}
-				break;
-			}
-		}
-	}
-
-	this->SetAABB(tempMax, tempMin);
+	if (direction.x != -1)
+		direction.x = 1;
+	else
+		direction.x = 0;
 }
 
 void Player::SetMovement(bool _movement)
@@ -429,10 +289,110 @@ void Player::CollisionResponse(GenericEntity* ThatEntity)
 	}
 }
 
+void Player::CollisionCheck_Wall()
+{
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+
+	float checkby = 0;
+	
+	if (!isDodging())
+		checkby = 0.2f;
+	else
+		checkby = 0.4f;
+
+	if (direction.y == 1)
+	{
+		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f), tempMin + Vector3(0.f, checkby, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				std::cout << "Something is blocking up" << std::endl;
+				direction.y = 0;
+				break;
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+	else if (direction.y == -1)
+	{
+		this->SetAABB(tempMax - Vector3(0.f, checkby, 0.f), tempMin - Vector3(0.f, checkby, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				std::cout << "Something is blocking down" << std::endl;
+				direction.y = 0;
+				break;
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+
+	if (direction.x == 1)
+	{
+		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				std::cout << "Something is blocking right" << std::endl;
+				direction.x = 0;
+				break;
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+	else if (direction.x == -1)
+	{
+		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				std::cout << "Something is blocking left" << std::endl;
+				direction.x = 0;
+				break;
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+
+	if (direction.x == 0 && direction.y == 0)
+		SetMovement(false);
+	else
+		SetMovement(true);
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
 	anim_ElapsedTime += dt * 10;
+
+	//CollisionCheck_Wall();
+
 	//double mouse_diff_x, mouse_diff_y;
 	//MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
 
@@ -456,13 +416,13 @@ void Player::Update(double dt)
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
 		KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
-		m_bMoving = true;
+		//m_bMoving = true;
 		
 		// Constrain position
 		//Constrain();
 	}
 	else
-		m_bMoving = false;
+		//m_bMoving = false;
 	animate(dt);
 
 
@@ -496,30 +456,32 @@ void Player::Update(double dt)
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-		if (!m_bDodge)
+		if (m_dElapsedTime > (m_dRollTime + 0.43f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
 		{
 			// SUPAH COOL
 			setDodge(true);
-			m_dSpeed = 50;
-			m_dRollTime = m_dElapsedTime + 0.25f;
-			std::cout << "roll" << std::endl;
+			m_dSpeed = 30;
+			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
+			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 		}
 	}
 
-	if (m_dElapsedTime > m_dRollTime && m_bDodge)
+	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
 		setDodge(false);
 		m_dSpeed = 10;
 	}
 
-	if (m_bMoving) // TODO: Add dodge roll :v
+	CollisionCheck_Wall();
+
+	if (m_bMoving)
 	{
 		position += direction * (float)m_dSpeed * (float)dt;
 		if (!m_bDodge)
 		{
 			direction.SetZero();
 			SetMovement(false);
-		}	
+		}
 	}
 
 	// If the user presses R key, then reset the view to default values
@@ -543,7 +505,8 @@ void Player::Update(double dt)
 	}
 
 	this->SetPosition(position);
-	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
+	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
+		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 	//primaryWeapon->Update(dt);
 }
 

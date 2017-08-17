@@ -99,6 +99,8 @@ public:
 
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
+	// Movement Collision Check
+	void CollisionCheck_Wall();
 
 	// Set Health
 	void SetHealth(float _health);

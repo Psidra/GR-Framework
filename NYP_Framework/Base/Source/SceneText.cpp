@@ -338,7 +338,7 @@ void SceneText::Update(double dt)
 	// Update the player position into textObj[2]
 	std::ostringstream ss1;
 	ss1.precision(4);
-	ss1 << "Player:";
+	ss1 << "Player:" << Player::GetInstance()->GetHealth();
 	textObj[2]->SetText(ss1.str());
 
 	WeaponManager::GetInstance()->update(dt);
