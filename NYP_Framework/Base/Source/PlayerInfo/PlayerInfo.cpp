@@ -219,7 +219,7 @@ void Player::CollisionCheck_Movement()
 				}
 			}
 		}
-
+		
 		this->SetAABB(tempMax, tempMin);
 	}
 	else if (direction.y == -1)
@@ -242,8 +242,60 @@ void Player::CollisionCheck_Movement()
 				}
 			}
 		}
+
+		this->SetAABB(tempMax, tempMin);
 	}
-	this->SetAABB(tempMax, tempMin);
+	if (direction.x == 1)
+	{
+		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
+	
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+	
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking right" << std::endl;
+					direction.x = 0;
+					break;
+				}
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+	else if (direction.x == -1)
+	{
+		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking left" << std::endl;
+					direction.x = 0;
+					break;
+				}
+			}
+		}
+
+		this->SetAABB(tempMax, tempMin);
+	}
+
+	if (direction.x == 0 && direction.y == 0)
+		SetMovement(false);
+	else
+		SetMovement(true);
 }
 
 void Player::Update(double dt)
@@ -253,13 +305,6 @@ void Player::Update(double dt)
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
-
-	
-	MouseController::GetInstance()->GetMousePosition(x, y);
-	w = Application::GetInstance().GetWindowWidth();
-	h = Application::GetInstance().GetWindowHeight();
-	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
-	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
 	//// Update the position if the WASD buttons were activated
 	////( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
@@ -274,6 +319,12 @@ void Player::Update(double dt)
 	if (usingOldAnim)
 		animate(dt);
 	
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	w = Application::GetInstance().GetWindowWidth();
+	h = Application::GetInstance().GetWindowHeight();
+	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+
 	if (x >= 0)
 		m_bLookingRight = true;
 	else
@@ -309,13 +360,13 @@ void Player::Update(double dt)
 		}
 	}
 
+	CollisionCheck_Movement();
+
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
 		setDodge(false);
 		m_dSpeed = 10;
 	}
-
-	CollisionCheck_Movement();
 
 	if (m_bMoving)
 	{
