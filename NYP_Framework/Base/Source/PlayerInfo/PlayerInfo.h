@@ -6,6 +6,7 @@
 #include "../GenericEntity.h"
 #include "../Animation.h"
 #include "../Inventory.h"
+#include "../SoundEngine.h"
 
 class CWeaponInfo;
 
@@ -102,12 +103,16 @@ public:
 	void SetView(Vector3 _view);
 
 	// Collision Response
-	void CollisionResponse(GenericEntity* ThatEntity);
+	void CollisionResponse(GenericEntity* thatEntity);
+	// Movement Collision Check
+	void CollisionCheck_Movement();
 
 	// Set Health
 	void SetHealth(float _health);
 	// Get Health
 	float GetHealth();
+	// Edit Health
+	void EditHealth(float _health);
 
 private:
 	Vector3 defaultPosition;

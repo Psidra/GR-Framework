@@ -37,6 +37,9 @@ public:
 	float GetHP();
 	Vector3 GetPos();
 
+	// Collision Response
+	void CollisionResponse(GenericEntity* ThatEntity);
+
 	GenericEntity* enemyModel;
 	// Strategy
 	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
