@@ -104,9 +104,12 @@
     </ClCompile>
     <ClCompile Include="Source\WeaponInfo\Bow.cpp">
       <Filter>Header Files</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>AI FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inventory.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>AI FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inventory.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

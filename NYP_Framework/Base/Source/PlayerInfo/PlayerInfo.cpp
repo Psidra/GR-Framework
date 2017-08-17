@@ -34,8 +34,13 @@ Player::Player(void)
 	, m_bMoving(false)
 	, m_iAnimIndex(0)
 	, anim_ElapsedTime(0.0)
+	, weaponIndex(0)
 {
-	
+	playerInventory = new Inventory;
+	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new Rifle(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -62,11 +67,14 @@ void Player::Init(void)
 	maxBoundary.Set(1,1,1);
 	minBoundary.Set(-1, -1, -1);
 
+	//set weaponIndex
+	weaponIndex = 0;
 	//init weapon
-	primaryWeapon = new Pistol(GenericEntity::PLAYER_BULLET);
-	primaryWeapon->Init();
+	//primaryWeapon = new Pistol(GenericEntity::PLAYER_BULLET);
+	//primaryWeapon->Init();
 
 	this->SetCollider(true);
+
 	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
 }
 
@@ -491,7 +499,6 @@ void Player::Update(double dt)
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
-
 	}
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
@@ -585,7 +592,24 @@ void Player::setDodge(bool _dodge)
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-	primaryWeapon->Discharge(position, view); //position of player, dir to shoot from
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view); //position of player, dir to shoot from
+	return false;
+}
+
+// Reload Weapon
+bool Player::Reload(const float dt)
+{
+	playerInventory->getWeaponList()[weaponIndex]->Reload(); //reload gun
+	std::cout << "TotalAmmo: " << playerInventory->getWeaponList()[weaponIndex]->GetTotalRound() << std::endl;
+	return false;
+}
+
+// Change Weapon
+bool Player::ChangeWeapon(const float dt)
+{	
+	++weaponIndex;
+	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
+	std::cout << "weaponIndex: " << weaponIndex << std::endl;
 	return false;
 }
 

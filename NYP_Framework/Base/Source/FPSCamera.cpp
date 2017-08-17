@@ -118,10 +118,10 @@ void FPSCamera::Update(double dt)
 		view = rotation * view;
 		target = position + view;
 	}*/
-	if(KeyboardController::GetInstance()->IsKeyDown('R'))
-	{
-		Reset();
-	}
+	//if(KeyboardController::GetInstance()->IsKeyDown('R'))
+	//{
+	//	Reset();
+	//}
 }
 
 Vector3 FPSCamera::GetCameraPos() const

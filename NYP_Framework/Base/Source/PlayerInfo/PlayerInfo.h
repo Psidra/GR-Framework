@@ -5,6 +5,7 @@
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
 #include "../Animation.h"
+#include "../Inventory.h"
 
 class CWeaponInfo;
 
@@ -91,7 +92,10 @@ public:
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
-
+	// Reload Weapon
+	bool Reload(const float dt);
+	// Change Weapon
+	bool ChangeWeapon(const float dt);
 
 	void animate(double dt);
 	// Set view direction
@@ -133,6 +137,9 @@ private:
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
+	Inventory* playerInventory;
+
+	int weaponIndex;
 
 	double anim_ElapsedTime;
 };
