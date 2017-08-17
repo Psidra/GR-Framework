@@ -33,6 +33,8 @@ protected:
 	float weaponDamage;
 	// boolean flag for dots
 	bool isDots;
+	// boolean weapon unlocked by player
+	bool isUnlocked;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);

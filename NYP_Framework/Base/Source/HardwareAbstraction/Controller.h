@@ -16,6 +16,8 @@ public:
         CONTROLLER_MOVELEFT,
         CONTROLLER_MOVERIGHT,
 		CONTROLLER_SHOOT,
+		CONTROLLER_RELOAD,
+		CONTROLLER_CHANGE_WEAPON,
         NUM_CONRTOLLER,
     };
 
@@ -34,6 +36,7 @@ public:
 	virtual bool MoveLeft(double dt);
 	virtual bool MoveRight(double dt);
 	virtual bool Shoot(double dt);
-
+	virtual bool Reload(double dt);
+	virtual bool ChangeWeapon(double dt);
 };
 

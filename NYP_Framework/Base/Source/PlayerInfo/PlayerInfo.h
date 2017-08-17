@@ -5,6 +5,8 @@
 #include "SingletonTemplate.h"
 #include "../GenericEntity.h"
 #include "../Animation.h"
+#include "../Inventory.h"
+#include "../AudioEngine.h"
 
 class CWeaponInfo;
 
@@ -17,31 +19,11 @@ public:
 
 	// Initialise this class instance
 	void Init(void);
-	// Returns true if the player is on ground
-	bool isOnGround(void);
-	// Returns true if the player is jumping upwards
-	bool isJumpUpwards(void);
-	// Returns true if the player is on freefall
-	bool isFreeFall(void);
-	// Set the player's status to free fall mode
-	void SetOnFreeFall(bool isOnFreeFall);
-	// Set the player to jumping upwards
-	void SetToJumpUpwards(bool isOnJumpUpwards);
-	// Stop the player's vertical movement
-	void StopVerticalMovement(void);
 	// Reset this player instance to default
 	void Reset(void);
 
 	// Set position
 	void SetPos(const Vector3& pos);
-	// Set m_dJumpSpeed of the player
-	void SetJumpSpeed(const double m_dJumpSpeed);
-	// Set m_dJumpAcceleration of the player
-	void SetJumpAcceleration(const double m_dJumpAcceleration);
-	// Set Fall Speed of the player
-	void SetFallSpeed(const double m_dFallSpeed);
-	// Set Fall Acceleration of the player
-	void SetFallAcceleration(const double m_dFallAcceleration);
 	// Set the boundary for the player info
 	void SetBoundary(Vector3 max, Vector3 min);
 	// Set the terrain for the player info
@@ -49,14 +31,6 @@ public:
 
 	// Get position
 	Vector3 GetPos(void) const;
-	// Get Jump Speed of the player
-	double GetJumpSpeed(void) const;
-	// Get Jump Acceleration of the player
-	double GetJumpAcceleration(void) const;
-	// Get Fall Speed of the player
-	double GetFallSpeed(void) const;
-	// Get Fall Acceleration of the player
-	double GetFallAcceleration(void) const;
 
 	// Move Up
 	void MoveUp();
@@ -69,10 +43,6 @@ public:
 	// Set Movement
 	void SetMovement(bool _movement);
 
-	// Update Jump Upwards
-	void UpdateJumpUpwards(double dt = 0.0333f);
-	// Update FreeFall
-	void UpdateFreeFall(double dt = 0.0333f);
 	// Update
 	void Update(double dt = 0.0333f);
 
@@ -91,19 +61,26 @@ public:
 
 	// Shoot Weapon
 	bool Shoot(const float dt);
-
+	// Reload Weapon
+	bool Reload(const float dt);
+	// Change Weapon
+	bool ChangeWeapon(const float dt);
 
 	void animate(double dt); //run animation for player
 	// Set view direction
 	void SetView(Vector3 _view);
 
 	// Collision Response
-	void CollisionResponse(GenericEntity* ThatEntity);
+	void CollisionResponse(GenericEntity* thatEntity);
+	// Movement Collision Check
+	void CollisionCheck_Movement();
 
 	// Set Health
 	void SetHealth(float _health);
 	// Get Health
 	float GetHealth();
+	// Edit Health
+	void EditHealth(float _health);
 
 	bool usingOldAnim; //toggle old animations
 	GenericEntity**	playerAnimated;
@@ -117,15 +94,7 @@ private:
 	double m_dSpeed;
 	double m_dAcceleration;
 
-	bool m_bJumpUpwards;
-	double m_dJumpSpeed;
-	double m_dJumpAcceleration;
-
 	double m_dElapsedTime;
-
-	double m_dFallSpeed;
-	bool m_bFallDownwards;
-	double m_dFallAcceleration;
 
 	bool m_bMoving;
 	bool m_bDodge;
@@ -136,6 +105,9 @@ private:
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;
+	Inventory* playerInventory;
+
+	int weaponIndex;
 
 	double m_dAnimElapsedTime; //bouncetime for animation sequence
 	

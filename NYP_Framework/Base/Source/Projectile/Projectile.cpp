@@ -158,7 +158,7 @@ void CProjectile::Render(void)
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
-	//modelStack.Scale(scale.x, scale.y, scale.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
 }
@@ -178,6 +178,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
 	result->SetStatus(true);
 	result->SetCollider(true);
+	result->SetScale(Vector3(0.5,0.5,0.5));
 	//result->SetSource(_source); //Removed PlayerInfo from projectile
 	EntityManager::GetInstance()->AddEntity(result);
 
