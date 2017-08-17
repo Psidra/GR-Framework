@@ -186,7 +186,7 @@ void Player::CollisionCheck_Movement()
 	if (!isDodging())
 		checkby = 0.2f;
 	else
-		checkby = 0.4f;
+		checkby = 0.5f;
 
 	if (direction.y == 1)
 	{
@@ -334,7 +334,7 @@ void Player::Update(double dt)
 			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
-			AudioEngine::GetInstance()->editVolume(-10);
+			AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
 	}
 
@@ -359,7 +359,7 @@ void Player::Update(double dt)
 	// If the user presses R key, then reset the view to default values
 	if (KeyboardController::GetInstance()->IsKeyDown('P'))
 	{
-		Reset();
+		Reset(); // I dont think we need this but w/e maybe we might use it :thinking:
 	}
 
 	// If a camera is attached to this playerInfo class, then update it
