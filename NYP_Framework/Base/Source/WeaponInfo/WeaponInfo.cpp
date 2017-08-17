@@ -16,6 +16,7 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, bFire(true)
 	, weaponDamage(5)
 	, isDots(false)
+	, isUnlocked(true)
 {	
 }
 

@@ -50,6 +50,7 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target);
 
 			bFire = false;
+			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
 		}
 	}
@@ -69,7 +70,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 			2.0f,
 			10.0f);
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage);
+		aProjectile->setProjectileDamage(weaponDamage / numBullet);
 		aProjectile->setIsDots(isDots);
 	}
 }
