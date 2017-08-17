@@ -29,6 +29,8 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_MOVELEFT] = &Controller::MoveLeft;
 	this->controllerfunc[CONTROLLER_MOVERIGHT] = &Controller::MoveRight;
 	this->controllerfunc[CONTROLLER_SHOOT] = &Controller::Shoot;
+	this->controllerfunc[CONTROLLER_RELOAD] = &Controller::Reload;
+	this->controllerfunc[CONTROLLER_CHANGE_WEAPON] = &Controller::ChangeWeapon;
 	return false;
 }
 
@@ -77,5 +79,19 @@ bool Controller::Shoot(double dt)
 	if (!Player::GetInstance()->isDodging())
 		Player::GetInstance()->Shoot(dt);
 	std::cout << "Shoot" << std::endl;
+	return false;
+}
+
+bool Controller::Reload(double dt)
+{
+	Player::GetInstance()->Reload(dt);
+	std::cout << "Reload" << std::endl;
+	return false;
+}
+
+bool Controller::ChangeWeapon(double dt)
+{
+	Player::GetInstance()->ChangeWeapon(dt);
+	std::cout << "ChangeWeapon" << std::endl;
 	return false;
 }

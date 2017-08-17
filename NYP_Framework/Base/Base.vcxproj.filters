@@ -114,6 +114,9 @@
     <ClCompile Include="Source\AudioEngine.cpp">
       <Filter>AudioEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="Source\AudioEngine.h">
       <Filter>AudioEngine</Filter>
+        </ClInclude>
+    <ClInclude Include="Source\Inventory.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

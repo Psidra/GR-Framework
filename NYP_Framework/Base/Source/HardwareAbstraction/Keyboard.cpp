@@ -26,6 +26,8 @@ bool Keyboard::Create(Player* thePlayerInfo)
 	KeyList[CONTROLLER_MOVELEFT] = 'A';
 	KeyList[CONTROLLER_MOVERIGHT] = 'D';
 	KeyList[CONTROLLER_SHOOT] = VK_SPACE;
+	KeyList[CONTROLLER_RELOAD] = 'R';
+	KeyList[CONTROLLER_CHANGE_WEAPON] = 'Q';
 	return false;
 }
 
