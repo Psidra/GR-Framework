@@ -253,7 +253,15 @@ void SceneText::Update(double dt)
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
-	Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+	try
+	{
+		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());throw DivideByZero();
+	}
+	catch(DivideByZero)
+	{
+		posX = 1;
+		posY = 1;
+	}
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
