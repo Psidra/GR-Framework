@@ -231,10 +231,10 @@ void SceneText::Init()
 	//Player::GetInstance()->SetDownIndices(2, 3);
 
 	minion = new CEnemy();
-	minion->SetPosition(Vector3(0, 5, 0));
-	minion->SetEnemyGE(Create::Entity("player", minion->GetPos(), Vector3(1, 1, 1), true));
+	minion->Init();
 	minion->ChangeStrategy(new CStrategy_AI_1(), false);
-	minion->SetSpeed(2.0);
+	minion->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+	EntityManager::GetInstance()->AddEntity(minion);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -286,19 +286,20 @@ void SceneText::Update(double dt)
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
-	try
-	{
-		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());throw DivideByZero();
+	
+	try {
+		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+		throw DivideByZero();
 	}
-	catch(DivideByZero)
-	{
+	catch(DivideByZero) {
 		posX = 1;
 		posY = 1;
 	}
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
-	minion->Update(dt);
+	if (!minion->IsDone())
+		minion->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);

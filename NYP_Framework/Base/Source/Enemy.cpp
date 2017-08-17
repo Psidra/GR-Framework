@@ -6,7 +6,6 @@
 #include "RenderHelper.h"
 
 
-
 /********************************************************************************
 Constructor
 ********************************************************************************/
@@ -26,21 +25,25 @@ CEnemy::~CEnemy(void)
 	}
 }
 
+void CEnemy::Init()
+{
+	this->type = GenericEntity::OBJECT_TYPE::ENEMY;
+	this->SetCollider(true);
+	this->SetSpeed(2.0);
+}
+
 void CEnemy::Update(double dt)
 {
 	if (this->theStrategy != NULL)
 	{
 		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, speed, dt);
 	}
-	this->enemyModel->SetPosition(this->position);
-	this->SetPosition(this->position);
-	this->enemyModel->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
-}
 
-void CEnemy::SetEnemyGE(GenericEntity * _enemyModel)
-{
-	this->enemyModel = _enemyModel;
-	this->enemyModel->type = GenericEntity::OBJECT_TYPE::ENEMY;
+	this->SetPosition(this->position);
+	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
+
+	if (health <= 0)
+		this->SetIsDone(true);
 }
 
 void CEnemy::SetSpeed(double speed)
@@ -63,10 +66,17 @@ Vector3 CEnemy::GetPos()
 	return position;
 }
 
+void CEnemy::editHP(float _health)
+{
+	this->health += _health;
+}
+
 void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 {
 	switch (thatEntity->type) {
 	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+		thatEntity->SetIsDone(true);
+		editHP(-20);
 		std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::WALL:

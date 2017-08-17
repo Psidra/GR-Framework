@@ -14,7 +14,7 @@
 
 class Mesh;
 
-class CEnemy :public Collision, public EntityBase, public CAnimation
+class CEnemy : public GenericEntity, public CAnimation
 {
 protected:
 	Mesh* modelMesh;
@@ -30,17 +30,18 @@ public:
 	CEnemy();
 	virtual ~CEnemy();
 
+	void Init();
+
 	void Update(double dt = 0.0333f);
-	void SetEnemyGE(GenericEntity* _enemyModel);
 	void SetSpeed(double speed);
 	void SetHP(float health);
 	float GetHP();
 	Vector3 GetPos();
+	void editHP(float _health);
 
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
 
-	GenericEntity* enemyModel;
 	// Strategy
 	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
 };
