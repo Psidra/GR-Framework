@@ -14,11 +14,7 @@
 
 class Mesh;
 
-<<<<<<< HEAD
-class CEnemy :public Collision, public GenericEntity, public CAnimation
-=======
 class CEnemy : public GenericEntity, public CAnimation
->>>>>>> 44f8e4bc87483804927345f66645eba5f9b21036
 {
 protected:
 	Mesh* modelMesh;
