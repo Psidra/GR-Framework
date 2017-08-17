@@ -26,7 +26,7 @@ void Bow::Init(void)
 	maxTotalRounds = 12;
 
 	// The time between shots
-	timeBetweenShots = 5.0;
+	timeBetweenShots = 0.0;
 	// The elapsed time (between shots)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
@@ -77,7 +77,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 			position,
 			target.Normalized(),
 			2.0f,
-			20.0f);
+			10.0f);
 
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(weaponDamage / numBullet);
