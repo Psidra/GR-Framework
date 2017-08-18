@@ -47,11 +47,12 @@ void EnemyManager::Render()
 	}
 }
 
-void EnemyManager::spawnEnemy(Vector3 _position, CStrategy* _strategy, const string& _meshName, float _health)
+void EnemyManager::spawnEnemy(Vector3 _position, CStrategy* _strategy, const string& _meshName, float _health, double _speed)
 {
 	CEnemy* Enemy = new CEnemy(_position, _health);
 	Enemy->Init();
 	Enemy->ChangeStrategy(_strategy, false);
 	Enemy->SetMesh(MeshList::GetInstance()->GetMesh(_meshName), GenericEntity::OBJECT_TYPE::ENEMY);
+	Enemy->SetSpeed(_speed);
 	this->EnemyList.push_back(Enemy);
 }

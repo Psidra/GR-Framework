@@ -8,9 +8,9 @@ public:
 	virtual ~CAnimation();
 
 	// Set Animation status; leftright or updown
-	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving);
+	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, double dt);
 	// Update the Animation Index
-	void UpdateAnimationIndex();
+	void UpdateAnimationIndex(double dt);
 
 	// Get the Animation index
 	int GetAnimationIndex(void) const;
@@ -22,6 +22,8 @@ public:
 
 private:
 	int m_iAnimation_Index;
+	double m_dElapsedAnimTime;		//animation time elapsed 
+	double m_dTimeBetweenEachFrame;	//time between frames
 
 	bool m_bFacingUp;		//check if facing up
 	bool m_bIsMoving;		//check if character moving

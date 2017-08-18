@@ -12,6 +12,8 @@ CAnimation::CAnimation()
 	, m_ifWalk_End(0)
 	, m_ibWalk_Start(0)
 	, m_ibWalk_End(0)
+	, m_dElapsedAnimTime(0.0)
+	, m_dTimeBetweenEachFrame(1.0)
 {
 }
 
@@ -21,7 +23,7 @@ CAnimation::~CAnimation()
 }
 
 // Set Animation status; leftright or updown
-void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving)
+void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, double dt)
 {
 	if (this->m_bFacingUp != m_bFacingUp || this->m_bIsMoving != m_bIsMoving)
 	{
@@ -38,36 +40,52 @@ void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving)
 			m_iAnimation_Index = m_ibStand_Start;
 	}
 
-	UpdateAnimationIndex();
+	UpdateAnimationIndex(dt);
 }
 // Update the Animation Index
-void CAnimation::UpdateAnimationIndex()// need dt in param
+void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 {
+	m_dElapsedAnimTime += dt * 10;
 	if (m_bIsMoving && m_bFacingUp)
 	{
-		m_iAnimation_Index += 1;
-		if (m_iAnimation_Index > m_ibWalk_End)
-			m_iAnimation_Index = m_ibWalk_Start;
+		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		{
+			m_iAnimation_Index += 1;
+			if (m_iAnimation_Index > m_ibWalk_End)
+				m_iAnimation_Index = m_ibWalk_Start;
+			m_dElapsedAnimTime = 0.0;
+		}
 	}
 	else if (m_bIsMoving && !m_bFacingUp)
 	{
-		m_iAnimation_Index += 1;
-		if (m_iAnimation_Index > m_ifWalk_End)
-			m_iAnimation_Index = m_ifWalk_Start;
+		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		{
+			m_iAnimation_Index += 1;
+			if (m_iAnimation_Index > m_ifWalk_End)
+				m_iAnimation_Index = m_ifWalk_Start;
+			m_dElapsedAnimTime = 0.0;
+		}
 	}
 	else if (!m_bIsMoving && !m_bFacingUp)
 	{
-		m_iAnimation_Index += 1;
-		if (m_iAnimation_Index > m_ifStand_End)
-			m_iAnimation_Index = m_ifStand_Start;
+		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		{
+			m_iAnimation_Index += 1;
+			if (m_iAnimation_Index > m_ifStand_End)
+				m_iAnimation_Index = m_ifStand_Start;
+			m_dElapsedAnimTime = 0.0;
+		}
 	}
 	else if (!m_bIsMoving && m_bFacingUp)
 	{
-		m_iAnimation_Index += 1;
-		if (m_iAnimation_Index > m_ibStand_End)
-			m_iAnimation_Index = m_ibStand_Start;
+		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		{
+			m_iAnimation_Index += 1;
+			if (m_iAnimation_Index > m_ibStand_End)
+				m_iAnimation_Index = m_ibStand_Start;
+			m_dElapsedAnimTime = 0.0;
+		}
 	}
-
 }
 // Get the Animation index
 int CAnimation::GetAnimationIndex(void) const

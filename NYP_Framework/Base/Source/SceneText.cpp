@@ -212,7 +212,12 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	EnemyManager::GetInstance()->spawnEnemy(Vector3(0, 5, 0), new CStrategy_AI_1(), "player", 100);
+	for (int i = 0; i < 3; ++i)
+	{
+		CEnemy* NewEnemy =  Create::Enemy(Vector3(i, 5, 0), "player");
+		NewEnemy->Init();
+		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+	}
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -276,7 +281,6 @@ void SceneText::Update(double dt)
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
-	EnemyManager::GetInstance()->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
@@ -469,7 +473,6 @@ void SceneText::RenderPassMain()
 void SceneText::RenderWorld()
 {
 	EntityManager::GetInstance()->Render();
-	EnemyManager::GetInstance()->Render();
 
 	MS& ms = GraphicsManager::GetInstance()->GetModelStack();
 

@@ -27,19 +27,16 @@ Player::Player(void)
 	, m_bDodge(false)
 	, m_dRollTime(0.0)
 	, m_bMoving(false)
-	, m_iAnimIndex(0)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
 	, m_dAnimElapsedTime(0.0)
 	, m_bLookingUp(false)
 {
-	usingOldAnim = false;
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Rifle(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
-
 }
 
 Player::~Player(void)
@@ -91,10 +88,10 @@ void Player::Init(void)
 	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
 	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
 	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
-	Player::GetInstance()->SetIndices_fStand(0, 1);
-	Player::GetInstance()->SetIndices_bStand(2, 3);
-	Player::GetInstance()->SetIndices_fWalk(4, 5);
-	Player::GetInstance()->SetIndices_bWalk(6, 7);
+	this->SetIndices_fStand(0, 1);
+	this->SetIndices_bStand(2, 3);
+	this->SetIndices_fWalk(4, 5);
+	this->SetIndices_bWalk(6, 7);
 }
 
 // Set position
@@ -327,9 +324,6 @@ void Player::Update(double dt)
 	{
 		m_bMoving = true;
 	}*/
-	if (usingOldAnim)
-		animate(dt);
-
 
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
@@ -341,7 +335,7 @@ void Player::Update(double dt)
 		m_bLookingUp = true;
 	else
 		m_bLookingUp = false;
-	SetAnimationStatus(m_bLookingUp, m_bMoving);
+	SetAnimationStatus(m_bLookingUp, m_bMoving, dt);
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
@@ -490,56 +484,4 @@ void Player::EditHealth(float _health)
 GenericEntity ** Player::GetPlayerAnimated()
 {
 	return playerAnimated;
-}
-
-
-void Player::animate(double dt)
-{
-	double x, y;
-	MouseController::GetInstance()->GetMousePosition(x, y);
-	int w = Application::GetInstance().GetWindowWidth();
-	int h = Application::GetInstance().GetWindowHeight();
-	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
-	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
-
-	double anim_spdoffset = 1.0;
-	if (m_bMoving)
-	{
-		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
-			m_dAnimElapsedTime = 0.0;
-		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
-		{
-			if (x >= 0)
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
-			else 
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
-		}
-		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
-		{
-			if (x >= 0)
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
-			else
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
-		}
-	}
-	else
-	{
-		anim_spdoffset = anim_spdoffset + 1.5;
-		if (m_dAnimElapsedTime > 1.5 + anim_spdoffset)
-			m_dAnimElapsedTime = 0.0;
-		else if (m_dAnimElapsedTime > 1.0 + anim_spdoffset)
-		{
-			if (x >= 0)
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
-			else
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
-		}
-		else if (m_dAnimElapsedTime > 0.5 + anim_spdoffset)
-		{
-			if (x >= 0)
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
-			else
-				Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
-		}
-	}		
 }
