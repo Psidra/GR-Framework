@@ -17,16 +17,16 @@ void Bow::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 10;
+	magRounds = 50;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 10;
+	maxMagRounds = 50;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 12;
+	totalRounds = 100;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 12;
+	maxTotalRounds = 100;
 
 	// The time between shots
-	timeBetweenShots = 0.0;
+	timeBetweenShots = 0.33333;
 	// The elapsed time (between shots)
 	elapsedTime = 0.0;
 	// Boolean flag to indicate if weapon can fire now
@@ -37,6 +37,8 @@ void Bow::Init(void)
 	isDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
+	// projectile scale
+	scale.Set(0.3, 0.3, 0.3);
 }
 
 // Discharge this weapon
@@ -58,6 +60,9 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			--magRounds;
 		}
 	}
+
+	if (m_fRotateAngle > 360)
+		m_fRotateAngle = 0;
 }
 
 // Number of bullet to create and pattern
@@ -81,6 +86,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
+			scale,
 			2.0f,
 			6.0f);
 

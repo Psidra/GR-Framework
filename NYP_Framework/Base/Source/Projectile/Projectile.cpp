@@ -108,18 +108,6 @@ void CProjectile::setIsDots(bool _isDots)
 	isDots = _isDots;
 }
 
-// Set the source of the projectile
-//void CProjectile::SetSource(CPlayerInfo* _source)
-//{
-//	theSource = _source;
-//}
-//
-// Get the source of the projectile
-//CPlayerInfo* CProjectile::GetSource(void) const
-//{
-//	return theSource;
-//}
-
 // Update the status of this projectile
 void CProjectile::Update(double dt)
 {
@@ -145,7 +133,6 @@ void CProjectile::Update(double dt)
 	SetAABB(position + scale, position - scale);
 }
 
-
 // Render this projectile
 void CProjectile::Render(void)
 {
@@ -166,7 +153,8 @@ void CProjectile::Render(void)
 // Create a projectile and add it into EntityManager
 CProjectile* Create::Projectile(const std::string& _meshName, 
 								const Vector3& _position, 
-								const Vector3& _direction, 
+								const Vector3& _direction,
+								const Vector3& _scale,
 								const float m_fLifetime, 
 								const float m_fSpeed)
 {
@@ -178,8 +166,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
 	result->SetStatus(true);
 	result->SetCollider(true);
-	result->SetScale(Vector3(0.3,0.3,0.3));
-	//result->SetSource(_source); //Removed PlayerInfo from projectile
+	result->SetScale(_scale);
 	EntityManager::GetInstance()->AddEntity(result);
 
 	return result;

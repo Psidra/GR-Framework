@@ -132,6 +132,8 @@ void CWeaponInfo::Init(void)
 	isDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 10.f;
+	// projectile scale
+	scale.Set(0.3, 0.3, 0.3);
 }
 
 // Update the elapsed time
@@ -148,19 +150,6 @@ void CWeaponInfo::Update(const double dt)
 // Discharge this weapon
 void CWeaponInfo::Discharge(Vector3 position, Vector3 target)
 {
-	if (bFire)
-	{
-		// If there is still ammo in the magazine, then fire
-		if (magRounds > 0)
-		{
-			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target);
-
-			bFire = false;
-			magRounds--;
-		}
-	}
 }
 
 // Reload this weapon
@@ -230,30 +219,6 @@ bool CWeaponInfo::getDots()
 
 void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
-	if (numBullet < 0)
-		return;
-
-	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
-	Vector3 temp = target;
-
-	for (int i = 0;i < numBullet;++i)
-	{
-		//rotate vector
-		if (angle >= 0)
-		{	//negative angle counter clockwise positive angle clockwise
-			//target = rotateDirection(temp, totalAngle);
-			target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
-			target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
-			totalAngle -= angle;
-		}
-
-		CProjectile* aProjectile = Create::Projectile("cube",
-			position,
-			target.Normalized(),
-			2.0f,
-			10.0f);
-		aProjectile->type = bulletType;
-	}
 }
 
 Vector3 CWeaponInfo::rotateDirection(Vector3 dir, float angle)

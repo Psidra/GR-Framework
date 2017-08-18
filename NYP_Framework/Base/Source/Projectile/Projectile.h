@@ -41,10 +41,6 @@ public:
 	bool getIsDots();
 	//set isDots
 	void setIsDots(bool _isDots);
-	// Set the source of the projectile
-	//void SetSource(CPlayerInfo* _source);
-	// Get the source of the projectile
-	//CPlayerInfo* GetSource(void) const;
 
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
@@ -61,8 +57,6 @@ protected:
 	float m_fSpeed;
 	// The direction of the projectile
 	Vector3 theDirection;
-	// The character which fired this projectile
-	//CPlayerInfo* theSource;
 	// projectile damage
 	float projectileDamage;
 	// bool flag to indicate if there is DOTS
@@ -73,7 +67,8 @@ namespace Create
 {
 	CProjectile* Projectile(const std::string& _meshName, 
 							const Vector3& _position, 
-							const Vector3& _direction, 
+							const Vector3& _direction,
+							const Vector3& _scale,
 							const float m_fLifetime, 
 							const float m_fSpeed);
 };

@@ -37,6 +37,8 @@ void Rifle::Init(void)
 	isDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
+	// projectile scale
+	scale.Set(0.3, 0.3, 0.3);
 
 }
 
@@ -79,6 +81,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
+			scale,
 			2.0f,
 			tempSpeed);
 		tempSpeed += 3.f;

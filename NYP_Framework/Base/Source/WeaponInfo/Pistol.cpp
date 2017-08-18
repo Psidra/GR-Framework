@@ -37,6 +37,8 @@ void Pistol::Init(void)
 	isDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
+	// projectile scale
+	scale.Set(0.3, 0.3, 0.3);
 }
 
 // Discharge this weapon
@@ -69,6 +71,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		CProjectile* aProjectile = Create::Projectile("sphere",
 			position,
 			target.Normalized(),
+			scale,
 			2.0f,
 			10.0f);
 		aProjectile->type = bulletType;

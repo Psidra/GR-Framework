@@ -68,7 +68,6 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 				NP = -NP;
 
 			Vector3 vel = u - 2 * u.Dot(N) * N;
-
 			dynamic_cast<CProjectile*>(FirstEntity)->SetDirection(vel);
 		
 			if (dynamic_cast<CProjectile*>(FirstEntity)->GetDirection().Dot(N) < 0
@@ -77,16 +76,7 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 	
 				vel = u - 2 * u.Dot(NP) * NP;
 				dynamic_cast<CProjectile*>(FirstEntity)->SetDirection(vel);
-
-
 			}
-
-		
-			
-
-			//vel = u - 2 * u.Dot(NP) * NP; 
-	
-
 		}
 			return;
 		//case ENEMY:
