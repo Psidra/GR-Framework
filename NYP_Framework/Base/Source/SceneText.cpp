@@ -213,30 +213,8 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprite
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
-	playerAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
-	{
-		playerAnimated[i] = new GenericEntity();
-	}
-	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
-	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
-	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
-	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
-	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
-	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
-	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
-	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
-	Player::GetInstance()->SetIndices_fStand(0, 1);
-	Player::GetInstance()->SetIndices_bStand(2, 3);
-	Player::GetInstance()->SetIndices_fWalk(4, 5);
-	Player::GetInstance()->SetIndices_bWalk(6 ,7);
-
-	//Player::GetInstance()->SetRightUpIndices(0, 1);
-	//Player::GetInstance()->SetLeftUpIndices(2, 3);
-	//Player::GetInstance()->SetRightDownIndices(4, 5);
-	//Player::GetInstance()->SetLeftDownIndices(6, 7); //TODO: fix animation indices 
-
+	//Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	
 	minion = new CEnemy();
 	minion->Init();
 	minion->ChangeStrategy(new CStrategy_AI_1(), false);
@@ -525,10 +503,7 @@ void SceneText::RenderWorld()
 	if (Player::GetInstance()->usingOldAnim)
 		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	else
-	{
-		
-		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
-	}
+		RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 

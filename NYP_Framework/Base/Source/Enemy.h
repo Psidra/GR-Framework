@@ -11,6 +11,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "PlayerInfo\PlayerInfo.h"
+#include "Inventory.h"
 
 class Mesh;
 
@@ -25,6 +26,7 @@ protected:
 	float health;
 	
 	CStrategy* theStrategy;
+	GenericEntity** enemyAnimated;
 	
 public:
 	CEnemy();

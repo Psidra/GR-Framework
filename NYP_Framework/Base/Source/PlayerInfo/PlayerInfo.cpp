@@ -80,6 +80,23 @@ void Player::Init(void)
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
 
+	playerAnimated = new GenericEntity*[8];
+	for (size_t i = 0; i < 8; i++)
+	{
+	playerAnimated[i] = new GenericEntity();
+	}
+	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
+	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
+	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
+	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
+	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
+	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	Player::GetInstance()->SetIndices_fStand(0, 1);
+	Player::GetInstance()->SetIndices_bStand(2, 3);
+	Player::GetInstance()->SetIndices_fWalk(4, 5);
+	Player::GetInstance()->SetIndices_bWalk(6, 7);
 }
 
 // Set position
@@ -471,6 +488,12 @@ void Player::EditHealth(float _health)
 {
 	this->m_fHealth += _health;
 }
+
+GenericEntity ** Player::GetPlayerAnimated()
+{
+	return playerAnimated;
+}
+
 
 void Player::animate(double dt)
 {

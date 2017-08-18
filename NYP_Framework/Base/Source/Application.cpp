@@ -241,7 +241,6 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("Player_fwalk1")->textureID[0] = LoadTGA("Image/Player/Player_fwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_fwalk2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_fwalk2")->textureID[0] = LoadTGA("Image/Player/Player_fwalk2.tga");
-		
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bwalk1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_bwalk1")->textureID[0] = LoadTGA("Image/Player/Player_bwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bwalk2", Color(1, 1, 1), 1.f);
