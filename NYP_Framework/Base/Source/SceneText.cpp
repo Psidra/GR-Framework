@@ -472,10 +472,9 @@ void SceneText::RenderPassMain()
 
 void SceneText::RenderWorld()
 {
-	EntityManager::GetInstance()->Render();
-
 	MS& ms = GraphicsManager::GetInstance()->GetModelStack();
 
+	//-----Do we even need this ?
 	//ms.PushMatrix();
 	//ms.Scale(0.1f, 0.1f, 0.1f);
 	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("sphere"));
@@ -493,6 +492,8 @@ void SceneText::RenderWorld()
 	ms.Scale(70, 50, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
 	ms.PopMatrix();
+
+	EntityManager::GetInstance()->Render(); //place render entity after render map
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);

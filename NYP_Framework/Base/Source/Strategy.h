@@ -1,4 +1,6 @@
-#pragma once
+#ifndef Strategy
+#define Strategy
+
 #include "Vector3.h"
 
 class CStrategy
@@ -7,10 +9,9 @@ public:
 	CStrategy(void);
 	~CStrategy(void);
 
-	virtual void Update(Vector3& theDestination, Vector3& theEnemyPosition, double speed, double dt) = 0;
+	virtual void Update(Vector3& theDestination, Vector3& theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt) = 0;
 
 	virtual void SetDestination(const float x, const float y) = 0;
-
 	virtual int GetDestination_x(void) = 0;
 	virtual int GetDestination_y(void) = 0;
 	virtual Vector3 GetDestination(void) = 0;
@@ -23,4 +24,4 @@ protected:
 	Vector3 theDestination;
 	bool m_bIsMoving;
 };
-
+#endif // !

@@ -8,6 +8,7 @@
 #include "Animation.h"
 
 #include "MeshBuilder.h"
+#include "EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "PlayerInfo\PlayerInfo.h"
@@ -43,6 +44,7 @@ public:
 	Vector3 GetPos();
 	void editHP(float _health);
 
+	void CollisionCheck();
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
 
