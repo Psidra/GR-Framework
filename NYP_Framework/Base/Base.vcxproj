@@ -38,6 +38,8 @@
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
+    <ClCompile Include="Source\UIElement.cpp" />
+    <ClCompile Include="Source\UIManager.cpp" />
     <ClCompile Include="Source\WeaponInfo\Bow.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
@@ -72,6 +74,8 @@
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\TextEntity.h" />
+    <ClInclude Include="Source\UIElement.h" />
+    <ClInclude Include="Source\UIManager.h" />
     <ClInclude Include="Source\WeaponInfo\Bow.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />
