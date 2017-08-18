@@ -345,7 +345,6 @@ void Player::Update(double dt)
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
-
 	}
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
