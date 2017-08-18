@@ -11,7 +11,6 @@
 #include "GenericEntity.h"
 #include "Enemy.h"
 #include "AI FSM\Ai_1.h"
-#include "EnemyManager.h"
 
 class ShaderProgram;
 class SceneManager;

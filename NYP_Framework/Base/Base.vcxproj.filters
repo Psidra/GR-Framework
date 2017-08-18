@@ -111,9 +111,6 @@
     <ClCompile Include="Source\LevelStuff\TileSet.cpp">
       <Filter>LevelStuff</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnemyManager.cpp">
-      <Filter>Enemy Related</Filter>
-    </ClCompile>
     <ClCompile Include="Source\HardwareAbstraction\Controller.cpp">
       <Filter>Controller</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="Source\LevelStuff\Level.h">
       <Filter>LevelStuff\LevelStuffHeader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyManager.h">
-      <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
