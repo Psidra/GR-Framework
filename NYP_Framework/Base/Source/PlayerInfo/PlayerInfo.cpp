@@ -73,8 +73,6 @@ void Player::Init(void)
 
 	this->SetCollider(true);
 
-	//this->type = GenericEntity::OBJECT_TYPE::PLAYER; // this doesnt even fuccin work lol
-
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");

@@ -28,6 +28,7 @@ protected:
 	
 public:
 	CEnemy();
+	CEnemy(Vector3 pos, float _health);
 	virtual ~CEnemy();
 
 	void Init();

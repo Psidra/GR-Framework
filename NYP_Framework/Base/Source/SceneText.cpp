@@ -213,7 +213,7 @@ void SceneText::Init()
 	playerControl.Create(Player::GetInstance());
 
 	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
+	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"), GenericEntity::OBJECT_TYPE::PLAYER);
 	/*GenericEntity*player = new GenericEntity(); //debug
 	player = Player::GetInstance();
 	player->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));*/
@@ -236,11 +236,7 @@ void SceneText::Init()
 	Player::GetInstance()->SetRightDownIndices(4, 5);
 	Player::GetInstance()->SetLeftDownIndices(6, 7);
 
-	minion = new CEnemy();
-	minion->Init();
-	minion->ChangeStrategy(new CStrategy_AI_1(), false);
-	minion->SetMesh(MeshList::GetInstance()->GetMesh("player"));
-	EntityManager::GetInstance()->AddEntity(minion);
+	EnemyManager::GetInstance()->spawnEnemy(Vector3(0, 5, 0), new CStrategy_AI_1(), "player", 100);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -304,8 +300,7 @@ void SceneText::Update(double dt)
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
-	if (!minion->IsDone())
-		minion->Update(dt);
+	EnemyManager::GetInstance()->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
@@ -500,6 +495,7 @@ void SceneText::RenderPassMain()
 void SceneText::RenderWorld()
 {
 	EntityManager::GetInstance()->Render();
+	EnemyManager::GetInstance()->Render();
 
 	MS& ms = GraphicsManager::GetInstance()->GetModelStack();
 

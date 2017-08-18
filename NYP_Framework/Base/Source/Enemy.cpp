@@ -13,6 +13,10 @@ CEnemy::CEnemy() :speed(1.0), position(0,5,0), health(100.f)
 {
 }
 
+CEnemy::CEnemy(Vector3 pos, float _health) : position(pos), health(_health)
+{
+}
+
 /********************************************************************************
 Destructor
 ********************************************************************************/
@@ -27,7 +31,6 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Init()
 {
-	this->type = GenericEntity::OBJECT_TYPE::ENEMY;
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
 }
