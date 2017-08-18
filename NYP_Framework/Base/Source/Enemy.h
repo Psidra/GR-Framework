@@ -36,6 +36,8 @@ public:
 	void Init();
 
 	void Update(double dt = 0.0333f);
+	void Render();
+
 	void SetSpeed(double speed);
 	float GetHP();
 	Vector3 GetPos();
