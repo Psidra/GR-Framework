@@ -28,9 +28,9 @@ void Rifle::Init(void)
 	// The time between shots
 	timeBetweenShots = 0.1111;
 	// The elapsed time (between shots)
-	elapsedTime = 0.0;
+	elapsedTime = 0.1111;
 	// Boolean flag to indicate if weapon can fire now
-	bFire = true;
+	bFire = false;
 	// Weapon Damage 
 	weaponDamage = 3;
 	// boolean flag for dots

@@ -4,8 +4,6 @@
 #include "../GenericEntity.h"
 #include "../Projectile/Projectile.h"
 
-class CPlayerInfo;
-
 class CWeaponInfo
 {
 public:
