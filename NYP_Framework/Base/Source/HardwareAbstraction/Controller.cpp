@@ -1,5 +1,7 @@
 #include "Controller.h"
 #include <iostream>
+#include "../AI FSM/Ai_1.h"
+
 using namespace std;
 
 const bool _CONTROLLER_DEBUG = false;
@@ -31,6 +33,7 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_SHOOT] = &Controller::Shoot;
 	this->controllerfunc[CONTROLLER_RELOAD] = &Controller::Reload;
 	this->controllerfunc[CONTROLLER_CHANGE_WEAPON] = &Controller::ChangeWeapon;
+	this->controllerfunc[CONTROLLER_SPAWN_ENEMY] = &Controller::SpawnEnemy;
 	return false;
 }
 
@@ -93,5 +96,12 @@ bool Controller::ChangeWeapon(double dt)
 {
 	Player::GetInstance()->ChangeWeapon(dt);
 	std::cout << "ChangeWeapon" << std::endl;
+	return false;
+}
+
+bool Controller::SpawnEnemy(double dt)
+{
+	EnemyManager::GetInstance()->spawnEnemy(Vector3(Math::RandFloatMinMax(-20, 20), Math::RandFloatMinMax(-20, 20), 0), new CStrategy_AI_1(), "player", 100);
+	std::cout << "Enemy Spawned" << std::endl;
 	return false;
 }

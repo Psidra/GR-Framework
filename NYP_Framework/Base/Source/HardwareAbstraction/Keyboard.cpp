@@ -28,6 +28,7 @@ bool Keyboard::Create(Player* thePlayerInfo)
 	KeyList[CONTROLLER_SHOOT] = VK_SPACE;
 	KeyList[CONTROLLER_RELOAD] = 'R';
 	KeyList[CONTROLLER_CHANGE_WEAPON] = 'Q';
+	KeyList[CONTROLLER_SPAWN_ENEMY] = 'M';
 	return false;
 }
 
