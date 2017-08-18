@@ -44,10 +44,8 @@ void Pistol::Init(void)
 // Discharge this weapon
 void Pistol::Discharge(Vector3 position, Vector3 target)
 {
-	std::cout << elapsedTime << std::endl;
 	if (bFire)
 	{
-		std::cout << "------\n";
 		// If there is still ammo in the magazine, then fire
 		if (magRounds > 0)
 		{

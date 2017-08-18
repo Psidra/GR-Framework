@@ -208,6 +208,8 @@ void SceneText::Init()
 	GraphicsManager::GetInstance()->AttachCamera(Player::GetInstance()->getCamera());
 	this->keyboard = new Keyboard();
 	keyboard->Create();
+	//load from file (uses hex)
+	keyboard->Load("Keybind//keyconfig.txt");
 
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
