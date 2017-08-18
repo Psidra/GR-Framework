@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../PlayerInfo/PlayerInfo.h"
+#include "../EnemyManager.h"
 
 class Controller
 {
@@ -9,17 +10,18 @@ protected:
 public:
 
 	//Add more based on how many functions you have
-    enum CONTROLLER_STATES
-    {
-        CONTROLLER_MOVEUP = 0,
-        CONTROLLER_MOVEDOWN,
-        CONTROLLER_MOVELEFT,
-        CONTROLLER_MOVERIGHT,
+	enum CONTROLLER_STATES
+	{
+		CONTROLLER_MOVEUP = 0,
+		CONTROLLER_MOVEDOWN,
+		CONTROLLER_MOVELEFT,
+		CONTROLLER_MOVERIGHT,
 		CONTROLLER_SHOOT,
 		CONTROLLER_RELOAD,
 		CONTROLLER_CHANGE_WEAPON,
-        NUM_CONRTOLLER,
-    };
+		CONTROLLER_SPAWN_ENEMY,
+		NUM_CONRTOLLER,
+	};
 
 	Controller();
 	virtual ~Controller();
@@ -38,5 +40,6 @@ public:
 	virtual bool Shoot(double dt);
 	virtual bool Reload(double dt);
 	virtual bool ChangeWeapon(double dt);
+	virtual bool SpawnEnemy(double dt);
 };
 

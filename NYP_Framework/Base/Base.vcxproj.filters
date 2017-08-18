@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="PlayerInfo">
-      <UniqueIdentifier>{ee63a848-364d-4119-9628-05cc3d6a4b17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SkyBox">
       <UniqueIdentifier>{37a125cd-b9e3-4b31-923e-1226145f54a1}</UniqueIdentifier>
     </Filter>
@@ -25,8 +22,47 @@
     <Filter Include="LevelStuff">
       <UniqueIdentifier>{56eee484-24e5-4555-a51f-13a31a22f369}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{bf82d618-6c39-4533-9d3f-bfc0f0862aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{31163f11-ed4e-4a8a-b7ad-d3e1a6f6aa6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{bd90367f-a391-4ca4-ad29-d2416555f437}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Enemy Related">
       <UniqueIdentifier>{f7832b75-bee4-4028-9eb4-62f92db731e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon">
+      <UniqueIdentifier>{4fd85bba-9369-418a-951d-2af6a01e66ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\Guns">
+      <UniqueIdentifier>{43f9afa9-a770-45f0-a23d-46735415e519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\WeaponHeader">
+      <UniqueIdentifier>{ead247b1-1d99-4a9e-9e13-bbed799b62fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\Guns\GunsHeader">
+      <UniqueIdentifier>{73d09e6c-e415-4cfa-8d77-282aa2ffe26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity\EntityHeader">
+      <UniqueIdentifier>{bb5ad7db-e4c8-4f17-8a15-42de9aed7e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller\ControllerHeader">
+      <UniqueIdentifier>{c4e657b2-0103-4c90-8858-f3f99e9b2331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LevelStuff\LevelStuffHeader">
+      <UniqueIdentifier>{541672eb-5453-4fce-b234-8f0b841efdd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy Related\EnemyHeader">
+      <UniqueIdentifier>{dd4538be-5227-4ef6-839b-90922f18a563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player Related">
+      <UniqueIdentifier>{ee63a848-364d-4119-9628-05cc3d6a4b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player Related\Inventory">
+      <UniqueIdentifier>{513b6ecc-bb11-4f60-a6bd-6ace1ac51044}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,80 +81,26 @@
     <ClCompile Include="Source\OBJMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GroundEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TextEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpriteEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp">
-      <Filter>PlayerInfo</Filter>
+      <Filter>Player Related</Filter>
     </ClCompile>
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp">
       <Filter>SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GenericEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CollisionManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\HardwareAbstraction\Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\HardwareAbstraction\Keyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\HardwareAbstraction\Mouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile\Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponInfo\Pistol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Strategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\AI FSM\Ai_1.cpp">
       <Filter>Enemy Related</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponInfo\Shotgun.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponInfo\Rifle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\WeaponInfo\Bow.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
     <ClCompile Include="Source\AudioEngine.cpp">
       <Filter>AudioEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Inventory.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\LevelStuff\Level.cpp">
       <Filter>LevelStuff</Filter>
@@ -131,6 +113,60 @@
     </ClCompile>
     <ClCompile Include="Source\EnemyManager.cpp">
       <Filter>Enemy Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HardwareAbstraction\Controller.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HardwareAbstraction\Mouse.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HardwareAbstraction\Keyboard.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionManager.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GenericEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GroundEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpriteEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\Shotgun.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\Bow.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\Pistol.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\Rifle.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Projectile\Projectile.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponManager.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Strategy.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inventory.cpp">
+      <Filter>Player Related\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,92 +182,92 @@
     <ClInclude Include="Source\OBJMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GroundEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SpriteEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Light.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerInfo\PlayerInfo.h">
-      <Filter>PlayerInfo</Filter>
     </ClInclude>
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h">
       <Filter>SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GenericEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CollisionManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HardwareAbstraction\Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HardwareAbstraction\Keyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HardwareAbstraction\Mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile\Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponInfo\Pistol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponInfo\WeaponInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Strategy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AI FSM\Ai_1.h">
-      <Filter>Enemy Related</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponInfo\Shotgun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponInfo\Rifle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponInfo\Bow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Enemy Related</Filter>
     </ClInclude>
     <ClInclude Include="Source\AudioEngine.h">
       <Filter>AudioEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Inventory.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\CollisionManager.h">
+      <Filter>Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LevelStuff\Level.h">
-      <Filter>LevelStuff</Filter>
+    <ClInclude Include="Source\Projectile\Projectile.h">
+      <Filter>Weapon\WeaponHeader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LevelStuff\TileEntity.h">
-      <Filter>LevelStuff</Filter>
+    <ClInclude Include="Source\WeaponInfo\WeaponInfo.h">
+      <Filter>Weapon\WeaponHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponManager.h">
+      <Filter>Weapon\WeaponHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\Bow.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\Pistol.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\Rifle.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\Shotgun.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GenericEntity.h">
+      <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GroundEntity.h">
+      <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpriteEntity.h">
+      <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextEntity.h">
+      <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HardwareAbstraction\Mouse.h">
+      <Filter>Controller\ControllerHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HardwareAbstraction\Keyboard.h">
+      <Filter>Controller\ControllerHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HardwareAbstraction\Controller.h">
+      <Filter>Controller\ControllerHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\LevelStuff\TileSet.h">
-      <Filter>LevelStuff</Filter>
+      <Filter>LevelStuff\LevelStuffHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelStuff\TileEntity.h">
+      <Filter>LevelStuff\LevelStuffHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelStuff\Level.h">
+      <Filter>LevelStuff\LevelStuffHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\EnemyManager.h">
-      <Filter>Enemy Related</Filter>
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI FSM\Ai_1.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Strategy.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inventory.h">
+      <Filter>Player Related\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerInfo\PlayerInfo.h">
+      <Filter>Player Related</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
