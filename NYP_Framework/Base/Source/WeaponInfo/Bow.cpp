@@ -28,9 +28,9 @@ void Bow::Init(void)
 	// The time between shots
 	timeBetweenShots = 0.33333;
 	// The elapsed time (between shots)
-	elapsedTime = 0.0;
+	elapsedTime = 0.33333;
 	// Boolean flag to indicate if weapon can fire now
-	bFire = true;
+	bFire = false;
 	// Weapon Damage 
 	weaponDamage = 40;
 	// boolean flag for dots
@@ -77,9 +77,6 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
-		//negative angle counter clockwise positive angle clockwise
-		//target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
-		//target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
 		target = rotateDirection(temp, totalAngle);
 		totalAngle -= angle;
 

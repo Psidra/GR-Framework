@@ -28,9 +28,9 @@ void Pistol::Init(void)
 	// The time between shots
 	timeBetweenShots = 0.3333;
 	// The elapsed time (between shots)
-	elapsedTime = 0.0;
+	elapsedTime = 0.3333;
 	// Boolean flag to indicate if weapon can fire now
-	bFire = true;
+	bFire = false;
 	// Weapon Damage 
 	weaponDamage = 5;
 	// boolean flag for dots
@@ -44,8 +44,10 @@ void Pistol::Init(void)
 // Discharge this weapon
 void Pistol::Discharge(Vector3 position, Vector3 target)
 {
+	std::cout << elapsedTime << std::endl;
 	if (bFire)
 	{
+		std::cout << "------\n";
 		// If there is still ammo in the magazine, then fire
 		if (magRounds > 0)
 		{
