@@ -35,6 +35,8 @@ protected:
 	bool isDots;
 	// boolean weapon unlocked by player
 	bool isUnlocked;
+	// Player/enemy angle to rotate
+	float m_fRotateAngle;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -94,6 +96,6 @@ public:
 protected:
 	// Number of bullet to create
 	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0);
-	// bullet pattern(using angle)
-	//Vector3 bulletPattern(Vector3 target, float angle = 10.f);
+	// bullet pattern(using angle) by rotating dir
+	Vector3 rotateDirection(Vector3 dir, float angle = 10.f);
 };

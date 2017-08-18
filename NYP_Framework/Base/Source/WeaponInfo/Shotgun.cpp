@@ -35,6 +35,8 @@ void Shotgun::Init(void)
 	weaponDamage = 20;
 	// boolean flag for dots
 	isDots = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
 }
 
 void Shotgun::Discharge(Vector3 position, Vector3 target)
@@ -67,8 +69,9 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 	{
 		//rotate vector
 		//negative angle counter clockwise positive angle clockwise
-		target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
-		target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+		//target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+		//target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+		target = rotateDirection(temp, totalAngle);
 		totalAngle -= angle;
 
 		CProjectile* aProjectile = Create::Projectile("cube",

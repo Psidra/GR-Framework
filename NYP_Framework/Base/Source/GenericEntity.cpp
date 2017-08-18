@@ -53,12 +53,41 @@ void GenericEntity::CollisionResponse(GenericEntity * ThatEntity)
 		case NONE:
 			return;
 		case WALL:
+		{
 			std::cout << "bullet collided with wall\n";
-			FirstEntity->SetIsDone(true);
+			//FirstEntity->SetIsDone(true);
+			//Vector3 temp = dynamic_cast<CProjectile*>(FirstEntity)->GetDirection();
+			Vector3 N = SecondEntity->normal;
+			Vector3 NP = SecondEntity->normal.Cross(Vector3(0, 0, 1));
+			Vector3 u = dynamic_cast<CProjectile*>(FirstEntity)->GetDirection();
+			Vector3 relativePos = FirstEntity->position - SecondEntity->position;
+
+			if (relativePos.Dot(N) < 0)
+				N = -N;
+			if (relativePos.Dot(NP) > 0)
+				NP = -NP;
+
+			Vector3 vel = u - 2 * u.Dot(N) * N;
+
+			dynamic_cast<CProjectile*>(FirstEntity)->SetDirection(vel);
+		
+			if (dynamic_cast<CProjectile*>(FirstEntity)->GetDirection().Dot(N) < 0
+				&& dynamic_cast<CProjectile*>(FirstEntity)->GetDirection().Dot(NP) > 0)
+			{
 	
-			//Vector3 N(1,0,0);
-			//Vector3 u = dynamic_cast<CProjectile*>(FirstEntity)->GetDirection();
-			//go1->vel = u - 2 * u.Dot(N) * N;
+				vel = u - 2 * u.Dot(NP) * NP;
+				dynamic_cast<CProjectile*>(FirstEntity)->SetDirection(vel);
+
+
+			}
+
+		
+			
+
+			//vel = u - 2 * u.Dot(NP) * NP; 
+	
+
+		}
 			return;
 		//case ENEMY:
 		//	std::cout << "bullet collided with enemy\n";
@@ -101,6 +130,16 @@ void GenericEntity::SetMesh(Mesh * _modelMesh, OBJECT_TYPE _type)
 Mesh * GenericEntity::GetMesh()
 {
 	return modelMesh;
+}
+
+Vector3 GenericEntity::getNormal()
+{
+	return this->normal;
+}
+
+void GenericEntity::setNormal(Vector3 _normal)
+{
+	this->normal = _normal;
 }
 
 GenericEntity* Create::Entity(	const std::string& _meshName, 

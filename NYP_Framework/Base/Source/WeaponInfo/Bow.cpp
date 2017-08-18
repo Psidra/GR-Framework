@@ -17,9 +17,9 @@ void Bow::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 1;
+	magRounds = 10;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 1;
+	maxMagRounds = 10;
 	// The current total number of rounds currently carried by this player
 	totalRounds = 12;
 	// The max total number of rounds currently carried by this player
@@ -35,6 +35,8 @@ void Bow::Init(void)
 	weaponDamage = 40;
 	// boolean flag for dots
 	isDots = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
 }
 
 // Discharge this weapon
@@ -46,10 +48,12 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second			
+			// It will last for 3.0 seconds and travel at 500 units per second	
+			target = rotateDirection(target, m_fRotateAngle);
 			generateBullet(position, target, 8, 45);
 
 			bFire = false;
+			m_fRotateAngle += 10;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
 		}
@@ -69,15 +73,16 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 	{
 		//rotate vector
 		//negative angle counter clockwise positive angle clockwise
-		target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
-		target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+		//target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+		//target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+		target = rotateDirection(temp, totalAngle);
 		totalAngle -= angle;
 
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			2.0f,
-			10.0f);
+			6.0f);
 
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(weaponDamage / numBullet);

@@ -35,6 +35,8 @@ void Pistol::Init(void)
 	weaponDamage = 5;
 	// boolean flag for dots
 	isDots = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
 }
 
 // Discharge this weapon

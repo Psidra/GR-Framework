@@ -35,9 +35,13 @@ public:
 	void SetMesh(Mesh* _modelMesh, OBJECT_TYPE _type = NONE);
 	// Get mesh
 	Mesh* GetMesh();
-
+	// Get normal
+	Vector3 getNormal();
+	//set normal
+	void setNormal(Vector3 _normal);
 private:
 	Mesh* modelMesh;
+	Vector3 normal;
 };
 
 namespace Create

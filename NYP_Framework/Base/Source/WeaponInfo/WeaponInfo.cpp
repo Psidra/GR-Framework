@@ -130,6 +130,8 @@ void CWeaponInfo::Init(void)
 	weaponDamage = 5;
 	// boolean flag for dots
 	isDots = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 10.f;
 }
 
 // Update the elapsed time
@@ -239,6 +241,7 @@ void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int num
 		//rotate vector
 		if (angle >= 0)
 		{	//negative angle counter clockwise positive angle clockwise
+			//target = rotateDirection(temp, totalAngle);
 			target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
 			target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
 			totalAngle -= angle;
@@ -251,4 +254,13 @@ void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int num
 			10.0f);
 		aProjectile->type = bulletType;
 	}
+}
+
+Vector3 CWeaponInfo::rotateDirection(Vector3 dir, float angle)
+{
+	Vector3 temp = dir;
+	dir.x = temp.x * cos(Math::DegreeToRadian(angle)) - temp.y * sin(Math::DegreeToRadian(angle));
+	dir.y = temp.x * sin(Math::DegreeToRadian(angle)) + temp.y * cos(Math::DegreeToRadian(angle));
+
+	return dir;
 }
