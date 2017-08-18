@@ -9,7 +9,7 @@ public:
 	CStrategy(void);
 	~CStrategy(void);
 
-	virtual void Update(Vector3& theDestination, Vector3& theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt) = 0;
+	virtual void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt) = 0;
 
 	virtual void SetDestination(const float x, const float y) = 0;
 	virtual int GetDestination_x(void) = 0;

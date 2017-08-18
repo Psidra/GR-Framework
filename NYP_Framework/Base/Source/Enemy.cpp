@@ -52,14 +52,19 @@ void CEnemy::Init()
 
 void CEnemy::Update(double dt)
 {
-	if (this->theStrategy != NULL)
-	{
-		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, speed, dt);
-	}
 	this->SetPosition(this->position);
 	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
 
-	CollisionCheck();
+	if (this->theStrategy != NULL)
+	{
+		
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, speed, dt);
+		CollisionCheck();
+		this->position += this->direction * this->speed * (float)dt;
+	}
+
+
+	
 	if (health <= 0)
 		this->SetIsDone(true);
 
@@ -114,7 +119,11 @@ void CEnemy::CollisionCheck()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
+				if (this == (*it))
+					continue;
+
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
 					std::cout << "Something is blocking up" << std::endl;
@@ -136,6 +145,9 @@ void CEnemy::CollisionCheck()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
+				if (this == (*it))
+					continue;
+
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
@@ -158,6 +170,9 @@ void CEnemy::CollisionCheck()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
+				if (this == (*it))
+					continue;
+
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
@@ -180,6 +195,9 @@ void CEnemy::CollisionCheck()
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
+				if (this == (*it))
+					continue;
+
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
