@@ -19,14 +19,14 @@
     <Filter Include="SkyBox">
       <UniqueIdentifier>{37a125cd-b9e3-4b31-923e-1226145f54a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AI FSM">
-      <UniqueIdentifier>{f7832b75-bee4-4028-9eb4-62f92db731e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="AudioEngine">
       <UniqueIdentifier>{1e05b1b8-6c41-404c-ae51-c9d9d6ec8e0b}</UniqueIdentifier>
     </Filter>
     <Filter Include="LevelStuff">
       <UniqueIdentifier>{56eee484-24e5-4555-a51f-13a31a22f369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy Related">
+      <UniqueIdentifier>{f7832b75-bee4-4028-9eb4-62f92db731e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +97,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\AI FSM\Ai_1.cpp">
-      <Filter>AI FSM</Filter>
+      <Filter>Enemy Related</Filter>
     </ClCompile>
     <ClCompile Include="Source\WeaponInfo\Shotgun.cpp">
       <Filter>Header Files</Filter>
@@ -112,7 +112,7 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
-      <Filter>AI FSM</Filter>
+      <Filter>Enemy Related</Filter>
     </ClCompile>
     <ClCompile Include="Source\AudioEngine.cpp">
       <Filter>AudioEngine</Filter>
@@ -128,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Source\LevelStuff\TileSet.cpp">
       <Filter>LevelStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyManager.cpp">
+      <Filter>Enemy Related</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +198,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_1.h">
-      <Filter>AI FSM</Filter>
+      <Filter>Enemy Related</Filter>
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\Shotgun.h">
       <Filter>Header Files</Filter>
@@ -210,7 +213,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
-      <Filter>AI FSM</Filter>
+      <Filter>Enemy Related</Filter>
     </ClInclude>
     <ClInclude Include="Source\AudioEngine.h">
       <Filter>AudioEngine</Filter>
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Source\LevelStuff\TileSet.h">
       <Filter>LevelStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyManager.h">
+      <Filter>Enemy Related</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

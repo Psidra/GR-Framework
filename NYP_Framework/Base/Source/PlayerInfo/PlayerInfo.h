@@ -83,6 +83,7 @@ public:
 	void EditHealth(float _health);
 
 	bool usingOldAnim; //toggle old animations
+	GenericEntity** GetPlayerAnimated(); //Get player animation
 
 private:
 	Vector3 defaultPosition;
@@ -108,10 +109,10 @@ private:
 
 	int weaponIndex;
 
-	double m_dAnimElapsedTime; //bouncetime for animation sequence
-	
+	double m_dAnimElapsedTime; //bouncetime for animation sequence - used in old anim for now
+	GenericEntity** playerAnimated;
 
-	double x, y;
-	int w, h;
-	bool m_bLookingUp;		// looking up
+	double x, y;			//cursor pos
+	int w, h;				//screen width & height	
+	bool m_bLookingUp;		//checks if player is looking up or down
 };

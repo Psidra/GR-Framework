@@ -13,6 +13,10 @@ CEnemy::CEnemy() :speed(1.0), position(0,5,0), health(100.f)
 {
 }
 
+CEnemy::CEnemy(Vector3 pos, float _health) : position(pos), health(_health)
+{
+}
+
 /********************************************************************************
 Destructor
 ********************************************************************************/
@@ -27,9 +31,26 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Init()
 {
-	this->type = GenericEntity::OBJECT_TYPE::ENEMY;
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
+
+	//enemyAnimated = new GenericEntity*[8];
+	//for (size_t i = 0; i < 8; i++)
+	//{
+	//	enemyAnimated[i] = new GenericEntity();
+	//}
+	//enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
+	//enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
+	//enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
+	//enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
+	//enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
+	//enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
+	//enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
+	//enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	///*Player::GetInstance()->SetIndices_fStand(0, 1);
+	//Player::GetInstance()->SetIndices_bStand(2, 3);
+	//Player::GetInstance()->SetIndices_fWalk(4, 5);
+	//Player::GetInstance()->SetIndices_bWalk(6, 7);*/
 }
 
 void CEnemy::Update(double dt)

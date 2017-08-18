@@ -212,36 +212,7 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	// Create player sprite
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
-	playerAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
-	{
-		playerAnimated[i] = new GenericEntity();
-	}
-	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
-	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
-	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
-	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
-	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
-	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
-	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
-	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
-	Player::GetInstance()->SetIndices_fStand(0, 1);
-	Player::GetInstance()->SetIndices_bStand(2, 3);
-	Player::GetInstance()->SetIndices_fWalk(4, 5);
-	Player::GetInstance()->SetIndices_bWalk(6 ,7);
-
-	//Player::GetInstance()->SetRightUpIndices(0, 1);
-	//Player::GetInstance()->SetLeftUpIndices(2, 3);
-	//Player::GetInstance()->SetRightDownIndices(4, 5);
-	//Player::GetInstance()->SetLeftDownIndices(6, 7); //TODO: fix animation indices 
-
-	minion = new CEnemy();
-	minion->Init();
-	minion->ChangeStrategy(new CStrategy_AI_1(), false);
-	minion->SetMesh(MeshList::GetInstance()->GetMesh("player"));
-	EntityManager::GetInstance()->AddEntity(minion);
+	EnemyManager::GetInstance()->spawnEnemy(Vector3(0, 5, 0), new CStrategy_AI_1(), "player", 100);
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -305,8 +276,7 @@ void SceneText::Update(double dt)
 
 	// Update the player position and other details based on keyboard and mouse inputs
 	Player::GetInstance()->Update(dt);
-	if (!minion->IsDone())
-		minion->Update(dt);
+	EnemyManager::GetInstance()->Update(dt);
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
@@ -499,6 +469,7 @@ void SceneText::RenderPassMain()
 void SceneText::RenderWorld()
 {
 	EntityManager::GetInstance()->Render();
+	EnemyManager::GetInstance()->Render();
 
 	MS& ms = GraphicsManager::GetInstance()->GetModelStack();
 
@@ -507,7 +478,7 @@ void SceneText::RenderWorld()
 	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("sphere"));
 	//ms.PopMatrix();
 
-	//ms.PushMatrix();
+	//ms.PushMatrix();	
 	//ms.Translate(0, -5, 0);
 	//ms.Rotate(-90, 1, 0, 0);
 	//ms.Scale(10, 10, 10);
@@ -525,10 +496,7 @@ void SceneText::RenderWorld()
 	if (Player::GetInstance()->usingOldAnim)
 		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	else
-	{
-		
-		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
-	}
+		RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 
