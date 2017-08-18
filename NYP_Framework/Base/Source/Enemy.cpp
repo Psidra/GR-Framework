@@ -34,7 +34,7 @@ void CEnemy::Init()
 	direction.SetZero();
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
-	this->SetHP(100.f);
+	this->health = 100.f;
 
 	enemyAnimated = new GenericEntity*[8];
 	for (size_t i = 0; i < 8; i++)

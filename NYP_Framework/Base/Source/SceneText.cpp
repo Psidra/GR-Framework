@@ -496,10 +496,7 @@ void SceneText::RenderWorld()
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
-	if (Player::GetInstance()->usingOldAnim)
-		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
-	else
-		RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
+	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 
