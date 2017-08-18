@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../PlayerInfo/PlayerInfo.h"
-#include "../EnemyManager.h"
+#include "../Enemy.h"
 
 class Controller
 {

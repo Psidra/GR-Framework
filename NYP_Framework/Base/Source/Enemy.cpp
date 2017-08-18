@@ -13,7 +13,7 @@ CEnemy::CEnemy() :speed(1.0), position(0,5,0), health(100.f)
 {
 }
 
-CEnemy::CEnemy(Vector3 pos, float _health) : position(pos), health(_health)
+CEnemy::CEnemy(Vector3 pos) : position(pos)
 {
 }
 
@@ -34,6 +34,7 @@ void CEnemy::Init()
 	direction.SetZero();
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
+	this->SetHP(100.f);
 
 	enemyAnimated = new GenericEntity*[8];
 	for (size_t i = 0; i < 8; i++)
@@ -122,4 +123,16 @@ void CEnemy::ChangeStrategy(CStrategy* theNewStrategy, bool bDelete)
 	}
 
 	theStrategy = theNewStrategy;
+}
+
+CEnemy * Create::Enemy(Vector3 position, const string & _meshName, Vector3 scale)
+{
+	CEnemy* result = new CEnemy(position);
+	result->SetMesh(MeshList::GetInstance()->GetMesh(_meshName));
+	result->SetPosition(position);
+	result->SetScale(scale);
+	result->SetCollider(true);
+	result->type = GenericEntity::OBJECT_TYPE::ENEMY;
+	EntityManager::GetInstance()->AddEntity(result);
+	return result;
 }

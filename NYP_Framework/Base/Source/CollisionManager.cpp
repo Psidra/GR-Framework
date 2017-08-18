@@ -1,6 +1,5 @@
 #include "CollisionManager.h"
 #include "PlayerInfo\PlayerInfo.h"
-#include "EnemyManager.h"
 
 bool CollisionManager::CheckPointToSphereCollision(Vector3 point, EntityBase * ThatEntity)
 {
@@ -86,9 +85,6 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 {
 	std::list<EntityBase*>::iterator it, it2, end;
 	end = collisionList.end();
-
-	std::list<CEnemy*>::iterator ite, ende;
-	ende = EnemyManager::GetInstance()->EnemyList.end();
 	
 	for (it = collisionList.begin(); it != end; ++it) 
 	{
@@ -100,8 +96,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 				GenericEntity* thisEntity = dynamic_cast<GenericEntity*>(*it);
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it2);
 
+				// I HAVE NO IDEA IF I NEED THIS OR NOT
 				//GenericEntity* tempEntity = nullptr;
-
 				//if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
 				//{
 				//	tempEntity = thatEntity;
@@ -112,17 +108,6 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);
 
-			}
-		}
-
-		for (ite = EnemyManager::GetInstance()->EnemyList.begin(); ite != ende; ++ite)
-		{
-			if (CheckAABBCollision(*ite, *it))
-			{
-				GenericEntity* Enemy = dynamic_cast<GenericEntity*>(*ite);
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-
-				Enemy->CollisionResponse(thatEntity);
 			}
 		}
 
