@@ -31,6 +31,7 @@ Player::Player(void)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
 	, m_dAnimElapsedTime(0.0)
+	, m_bLookingUp(false)
 {
 	usingOldAnim = false;
 	playerInventory = new Inventory;
@@ -77,6 +78,23 @@ void Player::Init(void)
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
 
+	playerAnimated = new GenericEntity*[8];
+	for (size_t i = 0; i < 8; i++)
+	{
+	playerAnimated[i] = new GenericEntity();
+	}
+	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
+	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
+	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
+	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
+	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
+	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
+	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
+	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	Player::GetInstance()->SetIndices_fStand(0, 1);
+	Player::GetInstance()->SetIndices_bStand(2, 3);
+	Player::GetInstance()->SetIndices_fWalk(4, 5);
+	Player::GetInstance()->SetIndices_bWalk(6, 7);
 }
 
 // Set position
@@ -122,7 +140,7 @@ void Player::MoveUp()
 		direction.y = 1;
 	else
 		direction.y = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveDown()
@@ -131,8 +149,7 @@ void Player::MoveDown()
 		direction.y = -1;
 	else
 		direction.y = 0;
-	
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveLeft()
@@ -141,7 +158,7 @@ void Player::MoveLeft()
 		direction.x = -1;
 	else
 		direction.x = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::MoveRight()
@@ -150,7 +167,7 @@ void Player::MoveRight()
 		direction.x = 1;
 	else
 		direction.x = 0;
-	SetAnimationStatus(false, m_bLookingRight, false);
+	m_bMoving = true;
 }
 
 void Player::SetMovement(bool _movement)
@@ -300,40 +317,37 @@ void Player::Update(double dt)
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
-	//// Update the position if the WASD buttons were activated
-	////( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
-	////( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
-	//if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('A') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('S') ||
-	//	KeyboardController::GetInstance()->IsKeyDown('D'))
-	//{
-	//	//m_bMoving = true;
-	//}
+	// Update the position if the WASD buttons were activated
+	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
+	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
+	/*if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+		KeyboardController::GetInstance()->IsKeyDown('A') ||
+		KeyboardController::GetInstance()->IsKeyDown('S') ||
+		KeyboardController::GetInstance()->IsKeyDown('D'))
+	{
+		m_bMoving = true;
+	}*/
 	if (usingOldAnim)
 		animate(dt);
-	
+
+
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
 	h = Application::GetInstance().GetWindowHeight();
 	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 
-	if (x >= 0)
-		m_bLookingRight = true;
-	else
-		m_bLookingRight = false;
-
-	if (y <= 0)
-		m_bLookingUp = false;
-	else
+	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
 		m_bLookingUp = true;
+	else
+		m_bLookingUp = false;
+	SetAnimationStatus(m_bLookingUp, m_bMoving);
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
 	else
 		SetMovement(true);
-
+	
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
@@ -472,6 +486,12 @@ void Player::EditHealth(float _health)
 {
 	this->m_fHealth += _health;
 }
+
+GenericEntity ** Player::GetPlayerAnimated()
+{
+	return playerAnimated;
+}
+
 
 void Player::animate(double dt)
 {

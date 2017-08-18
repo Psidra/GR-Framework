@@ -212,30 +212,6 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	// Create player sprit
-	Player::GetInstance()->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"), GenericEntity::OBJECT_TYPE::PLAYER);
-	/*GenericEntity*player = new GenericEntity(); //debug
-	player = Player::GetInstance();
-	player->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));*/
-	playerAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
-	{
-		playerAnimated[i] = new GenericEntity();
-	}
-	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr1"));
-	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunr2"));
-	playerAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl1"));
-	playerAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontstandgunl2"));
-
-	playerAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl1"));
-	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkl2"));
-	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr1"));
-	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("player_frontwalkr2"));
-	Player::GetInstance()->SetRightUpIndices(0, 1);
-	Player::GetInstance()->SetLeftUpIndices(2, 3);
-	Player::GetInstance()->SetRightDownIndices(4, 5);
-	Player::GetInstance()->SetLeftDownIndices(6, 7);
-
 	EnemyManager::GetInstance()->spawnEnemy(Vector3(0, 5, 0), new CStrategy_AI_1(), "player", 100);
 
 	//light testing
@@ -385,8 +361,6 @@ void SceneText::Update(double dt)
 	textObj[2]->SetText(ss1.str());
 
 	WeaponManager::GetInstance()->update(dt);
-
-	std::cout << Player::GetInstance()->GetAnimationIndex() << std::endl;
 }
 
 void SceneText::Render()
@@ -504,7 +478,7 @@ void SceneText::RenderWorld()
 	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("sphere"));
 	//ms.PopMatrix();
 
-	//ms.PushMatrix();
+	//ms.PushMatrix();	
 	//ms.Translate(0, -5, 0);
 	//ms.Rotate(-90, 1, 0, 0);
 	//ms.Scale(10, 10, 10);
@@ -522,10 +496,7 @@ void SceneText::RenderWorld()
 	if (Player::GetInstance()->usingOldAnim)
 		RenderHelper::RenderMesh(Player::GetInstance()->GetMesh());
 	else
-	{
-		
-		RenderHelper::RenderMesh(playerAnimated[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
-	}
+		RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 }
 
