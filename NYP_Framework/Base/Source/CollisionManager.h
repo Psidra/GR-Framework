@@ -7,6 +7,7 @@
 #include "SingletonTemplate.h"
 #include "Vector3.h"
 #include "GenericEntity.h"
+#include "UIElement.h"
 
 class CollisionManager : public Singleton<CollisionManager> {
 	friend Singleton<CollisionManager>;
@@ -19,6 +20,8 @@ public:
 	bool CheckAABBCollision(EntityBase *ThisEntity, EntityBase *ThatEntity);
 	// Check if a point is within an AABB, one must have collider
 	bool CheckPointToAABBCollision(Vector3 point, EntityBase *ThatEntity);
+	// UI Related Check if Cursor AABB collide with Button AABB
+	bool UI_CheckAABBCollision(UIElement *ThisElement, UIElement *ThatElement);
 
 	// Check all objects with collision
 	void Update(std::list<EntityBase*> collisionList);

@@ -1,10 +1,5 @@
 #include "Enemy.h"
-
-#include "MeshBuilder.h"
-#include "EntityManager.h"
-#include "GraphicsManager.h"
-#include "RenderHelper.h"
-
+#include "CollisionManager.h"
 
 /********************************************************************************
 Constructor
@@ -59,16 +54,26 @@ void CEnemy::Update(double dt)
 {
 	if (this->theStrategy != NULL)
 	{
-		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, speed, dt);
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, speed, dt);
 	}
-
 	this->SetPosition(this->position);
 	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
 
+	CollisionCheck();
 	if (health <= 0)
 		this->SetIsDone(true);
 
-	
+	this->SetAnimationStatus(false, this->theStrategy->GetIsMoving(), dt);
+}
+
+void CEnemy::Render()
+{
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
+	RenderHelper::RenderMesh(enemyAnimated[GetAnimationIndex()]->GetMesh());
+	modelStack.PopMatrix();
 }
 
 void CEnemy::SetSpeed(double speed)
@@ -91,6 +96,103 @@ void CEnemy::editHP(float _health)
 	this->health += _health;
 }
 
+void CEnemy::CollisionCheck()
+{
+	Vector3 tempMax = this->GetMaxAABB();
+	Vector3 tempMin = this->GetMinAABB();
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+
+	float checkoffset = 0.5f;
+
+	if (direction.y == 1) //up
+	{
+		this->SetAABB(tempMax + Vector3(0.f, checkoffset, 0.f), tempMin + Vector3(0.f, checkoffset, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking up" << std::endl;
+					direction.y = 0;
+					break;
+				}
+			}
+		}
+		this->SetAABB(tempMax, tempMin);
+	}
+	else if (direction.y == -1)
+	{
+		this->SetAABB(tempMax - Vector3(0.f, checkoffset, 0.f), tempMin - Vector3(0.f, checkoffset, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking down" << std::endl;
+					direction.y = 0;
+					break;
+				}
+			}
+		}
+		this->SetAABB(tempMax, tempMin);
+	}
+	if (direction.x == 1)
+	{
+		this->SetAABB(tempMax + Vector3(checkoffset, 0.f, 0.f), tempMin + Vector3(checkoffset, 0.f, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking right" << std::endl;
+					direction.x = 0;
+					break;
+				}
+			}
+		}
+		this->SetAABB(tempMax, tempMin);
+	}
+	else if (direction.x == -1)
+	{
+		this->SetAABB(tempMax - Vector3(checkoffset, 0.f, 0.f), tempMin - Vector3(checkoffset, 0.f, 0.f));
+
+		std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+
+		for (it = cpy.begin(); it != end; ++it)
+		{
+			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
+			{
+				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				{
+					std::cout << "Something is blocking left" << std::endl;
+					direction.x = 0;
+					break;
+				}
+			}
+		}
+		this->SetAABB(tempMax, tempMin);
+	}
+}
+
 void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 {
 	switch (thatEntity->type) {
@@ -101,6 +203,9 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 		break;
 	case GenericEntity::OBJECT_TYPE::WALL:
 		std::cout << "enemy collide with wall" << std::endl;
+		break;
+	case GenericEntity::OBJECT_TYPE::ENEMY:
+		std::cout << "enemy collide with enemy" << std::endl;
 		break;
 	default:
 		break;

@@ -64,6 +64,15 @@
     <Filter Include="Player Related\Inventory">
       <UniqueIdentifier>{513b6ecc-bb11-4f60-a6bd-6ace1ac51044}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{6764532c-86d9-4f0a-9aa3-c03b266a5db6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI Manager">
+      <UniqueIdentifier>{82a684c6-9b5d-4486-949c-d38b2777ae1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI Element">
+      <UniqueIdentifier>{c88d2293-9725-4941-8119-7ed5b1700b98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -165,6 +174,12 @@
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Player Related\Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UIManager.cpp">
+      <Filter>UI\UI Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIElement.cpp">
+      <Filter>UI\UI Element</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -262,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h">
       <Filter>Player Related</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIManager.h">
+      <Filter>UI\UI Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIElement.h">
+      <Filter>UI\UI Element</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

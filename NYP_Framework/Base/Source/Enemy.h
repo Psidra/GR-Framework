@@ -8,6 +8,7 @@
 #include "Animation.h"
 
 #include "MeshBuilder.h"
+#include "EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "PlayerInfo\PlayerInfo.h"
@@ -36,11 +37,14 @@ public:
 	void Init();
 
 	void Update(double dt = 0.0333f);
+	void Render();
+
 	void SetSpeed(double speed);
 	float GetHP();
 	Vector3 GetPos();
 	void editHP(float _health);
 
+	void CollisionCheck();
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
 

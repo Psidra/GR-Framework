@@ -81,6 +81,18 @@ bool CollisionManager::CheckPointToAABBCollision(Vector3 point, EntityBase * Tha
 		(point.z <= thatHitbox->GetMaxAABB().z && point.z >= thatHitbox->GetMinAABB().z);
 }
 
+bool CollisionManager::UI_CheckAABBCollision(UIElement * ThisElement, UIElement * ThatElement)
+{
+	if (!ThisElement->HasAABB() || !ThatElement->HasAABB())
+	{
+		std::cout << "One or more Elements do not have AABB!" << std::endl;
+	}
+
+	return (ThisElement->GetMinAABB().x <= ThatElement->GetMaxAABB().x && ThisElement->GetMaxAABB().x >= ThatElement->GetMinAABB().x) &&
+		(ThisElement->GetMinAABB().y <= ThatElement->GetMaxAABB().y && ThisElement->GetMaxAABB().y >= ThatElement->GetMinAABB().y) &&
+		(ThisElement->GetMinAABB().z <= ThatElement->GetMaxAABB().z && ThisElement->GetMaxAABB().z >= ThatElement->GetMinAABB().z);
+}
+
 void CollisionManager::Update(std::list<EntityBase*> collisionList)
 {
 	std::list<EntityBase*>::iterator it, it2, end;
@@ -97,13 +109,13 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it2);
 
 				// I HAVE NO IDEA IF I NEED THIS OR NOT
-				//GenericEntity* tempEntity = nullptr;
-				//if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
-				//{
-				//	tempEntity = thatEntity;
-				//	thisEntity = thatEntity;
-				//	thatEntity = tempEntity;
-				//}
+				GenericEntity* tempEntity = nullptr;
+				if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
+				{
+					tempEntity = thisEntity;
+					thisEntity = thatEntity;
+					thatEntity = tempEntity;
+				}
 
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);
