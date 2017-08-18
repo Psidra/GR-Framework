@@ -15,6 +15,8 @@ public:
 	int GetDestination_x(void);
 	int GetDestination_y(void);
 	Vector3 GetDestination(void);
+	bool GetIsMoving(void);
+	void SetIsMoving(bool _isMoving);
 
 	// The AI states of the enemy
 	enum CURRENT_STATE
@@ -26,7 +28,7 @@ public:
 	};
 	enum AI_STATE_RANGE
 	{
-		AI_STATE_ATTACK = 125,
+		AI_ATTACK_RANGE = 125,
 		NUM_AI_STATE_RANGE,
 	};
 	CStrategy_AI_1::CURRENT_STATE GetState(void);

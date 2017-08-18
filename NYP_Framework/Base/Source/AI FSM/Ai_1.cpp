@@ -24,10 +24,8 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, 
 {
 	// Decide which state to change to
 	int distanceHeroToEnemy = CalculateDistance(theDestination, theEnemyPosition);
-	if (distanceHeroToEnemy < AI_STATE_ATTACK)
-	{
+	if (distanceHeroToEnemy < AI_ATTACK_RANGE)
 		CurrentState = CHASE;
-	}
 	else
 		CurrentState = IDLE;
 
@@ -35,6 +33,7 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, 
 	switch (CurrentState)
 	{
 	case CHASE:
+		SetIsMoving(true);
 		if (theDestination.x - 2 > theEnemyPosition.x)
 			theEnemyPosition.x += dt * speed;
 		else if (theDestination.x + 2 < theEnemyPosition.x)
@@ -90,6 +89,16 @@ Get the destination for this strategy
 Vector3 CStrategy_AI_1::GetDestination(void)
 {
 	return theDestination;
+}
+
+bool CStrategy_AI_1::GetIsMoving(void)
+{
+	return m_bIsMoving;
+}
+
+void CStrategy_AI_1::SetIsMoving(bool _isMoving)
+{
+	m_bIsMoving = _isMoving;
 }
 
 /********************************************************************************

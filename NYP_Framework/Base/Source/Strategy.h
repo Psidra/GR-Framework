@@ -14,11 +14,13 @@ public:
 	virtual int GetDestination_x(void) = 0;
 	virtual int GetDestination_y(void) = 0;
 	virtual Vector3 GetDestination(void) = 0;
+	virtual bool GetIsMoving(void) = 0;
 
 protected:
 	int CalculateDistance(Vector3 theDestination, Vector3 theEnemyPosition);
 
 	// The Destination for this Strategy
 	Vector3 theDestination;
+	bool m_bIsMoving;
 };
 

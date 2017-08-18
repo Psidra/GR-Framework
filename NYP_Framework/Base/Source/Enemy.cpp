@@ -31,26 +31,27 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Init()
 {
+	direction.SetZero();
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
 
-	//enemyAnimated = new GenericEntity*[8];
-	//for (size_t i = 0; i < 8; i++)
-	//{
-	//	enemyAnimated[i] = new GenericEntity();
-	//}
-	//enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
-	//enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
-	//enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
-	//enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
-	//enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
-	//enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
-	//enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
-	//enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
-	///*Player::GetInstance()->SetIndices_fStand(0, 1);
-	//Player::GetInstance()->SetIndices_bStand(2, 3);
-	//Player::GetInstance()->SetIndices_fWalk(4, 5);
-	//Player::GetInstance()->SetIndices_bWalk(6, 7);*/
+	enemyAnimated = new GenericEntity*[8];
+	for (size_t i = 0; i < 8; i++)
+	{
+		enemyAnimated[i] = new GenericEntity();
+	}
+	enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
+	enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
+	enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
+	enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
+	enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
+	enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
+	enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
+	enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	this->SetIndices_fStand(0, 1);
+	this->SetIndices_bStand(2, 3);
+	this->SetIndices_fWalk(4, 5);
+	this->SetIndices_bWalk(6, 7);
 }
 
 void CEnemy::Update(double dt)
@@ -65,16 +66,13 @@ void CEnemy::Update(double dt)
 
 	if (health <= 0)
 		this->SetIsDone(true);
+
+	
 }
 
 void CEnemy::SetSpeed(double speed)
 {
 	this->speed = speed;
-}
-
-void CEnemy::SetHP(float _health)
-{
-	health = _health;
 }
 
 float CEnemy::GetHP()

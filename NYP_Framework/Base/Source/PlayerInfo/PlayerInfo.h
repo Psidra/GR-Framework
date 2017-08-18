@@ -65,8 +65,6 @@ public:
 	bool Reload(const float dt);
 	// Change Weapon
 	bool ChangeWeapon(const float dt);
-
-	void animate(double dt); //run animation for player
 	// Set view direction
 	void SetView(Vector3 _view);
 
@@ -81,9 +79,8 @@ public:
 	float GetHealth();
 	// Edit Health
 	void EditHealth(float _health);
-
-	bool usingOldAnim; //toggle old animations
-	GenericEntity** GetPlayerAnimated(); //Get player animation
+	//Get player animation
+	GenericEntity** GetPlayerAnimated(); 
 
 private:
 	Vector3 defaultPosition;
@@ -100,7 +97,6 @@ private:
 	bool m_bDodge;
 	double m_dRollTime; // Bouncetime for rolling
 
-	int m_iAnimIndex;
 	float m_fHealth;
 
 	FPSCamera* attachedCamera;
