@@ -68,7 +68,7 @@ void CEnemy::Update(double dt)
 	if (health <= 0)
 		this->SetIsDone(true);
 
-	
+	this->SetAnimationStatus(false, this->theStrategy->GetIsMoving(), dt);
 }
 
 void CEnemy::SetSpeed(double speed)
