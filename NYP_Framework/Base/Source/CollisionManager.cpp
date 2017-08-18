@@ -97,13 +97,13 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it2);
 
 				// I HAVE NO IDEA IF I NEED THIS OR NOT
-				//GenericEntity* tempEntity = nullptr;
-				//if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
-				//{
-				//	tempEntity = thatEntity;
-				//	thisEntity = thatEntity;
-				//	thatEntity = tempEntity;
-				//}
+				GenericEntity* tempEntity = nullptr;
+				if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
+				{
+					tempEntity = thisEntity;
+					thisEntity = thatEntity;
+					thatEntity = tempEntity;
+				}
 
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);

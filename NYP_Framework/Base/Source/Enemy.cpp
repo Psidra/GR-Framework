@@ -71,6 +71,16 @@ void CEnemy::Update(double dt)
 	
 }
 
+void CEnemy::Render()
+{
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
+	RenderHelper::RenderMesh(this->GetMesh());
+	modelStack.PopMatrix();
+}
+
 void CEnemy::SetSpeed(double speed)
 {
 	this->speed = speed;
