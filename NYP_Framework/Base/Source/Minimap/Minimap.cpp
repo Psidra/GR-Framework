@@ -46,8 +46,10 @@ bool CMinimap::Init(void)
 	m_iAngle = 0;
 	position.Set(335.f, 235.f, 0.0f);
 	scale.Set(100.0f, 100.0f, 100.0f);
-	playerMapScale = Player::GetInstance()->GetScale() * (0.1);
-
+	//playerMapScale = Player::GetInstance()->GetScale() * (0.1);
+	playerMapScale = Vector3(10,10,10) * (1 / scale.x);
+	m_iNumObject = 0;
+	m_bEnlarged = false;
 	return true;
 }
 
@@ -160,20 +162,83 @@ void CMinimap::setObject(Vector3 _pos ,Vector3 _scale)
 	objScale = _scale;
 }
 
-std::map<std::string, std::list<Vector3>> CMinimap::getMinimapData()
+std::map<std::string, std::vector<Vector3>> CMinimap::getMinimapData()
 {
 	return minimapData;
 }
+// set minimap map pos
+void CMinimap::setObjectPos(std::string _type, Vector3 _pos)
+{
+	minimapData[_type].push_back(_pos);
+}
+// set minimap map scale
+void CMinimap::setObjectScale(std::string _type, Vector3 _scale)
+{
+	minimapData[_type].push_back(_scale);
+}
+// get player map scale
+Vector3 CMinimap::getPlayerMapScale()
+{
+	return playerMapScale;
+}
+// set player map scale
+void CMinimap::setPlayerMapScale(Vector3 _scale)
+{
+	playerMapScale = _scale;
+}
+// get bool enlarged
+bool CMinimap::getIsEnlarged()
+{
+	return m_bEnlarged;
+}
+// set bool enlarged
+void CMinimap::setIsEnlarged(bool _isEnlarged)
+{
+	m_bEnlarged = _isEnlarged;
+}
+// enlarge minimap
+void CMinimap::EnlargeMap(bool _isEnlarged)
+{
+	if (_isEnlarged)
+	{
+		scale.Set(500, 500, 500);
+		position.Set(0, 0, 0);
+	}
+	else
+	{
+		scale.Set(100, 100, 100);
+		position.Set(335.f, 235.f, 0.0f);
+	}
+}
 
+//update minimap
+void CMinimap::Update(double dt)
+{	//temp storing method to be changed for storing the individual walls to instead the room only
+	for (std::vector<Vector3>::iterator it = minimapData["wallpos"].begin();
+		it != minimapData["wallpos"].end();++it)
+	{
+		(*it) = (*it) * (1.0f / (scale.x * 0.5));
+	}
+	for (std::vector<Vector3>::iterator it = minimapData["wallscale"].begin();
+		it != minimapData["wallscale"].end();++it)
+	{
+		//(*it) = (*it) * 0.02f;
+		(*it) = (*it) * (1.0f / (scale.x * 0.5));
+	}
+
+	m_iNumObject = minimapData["wallpos"].size();
+
+	playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
+}
 
 void CMinimap::RenderUI()
 {
 	if (mode == MODE_3D)
 		return;
 
-
-	objPos = objPos * (1.0f / scale.x);
-	objScale = objScale * (1.0f / 50.f);
+	
+	//objPos = objPos * (1.0f / scale.x);
+	//objScale = objScale * (1.0f / 50.f);
 
 	//std::cout << map_ePos << std::endl;
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
@@ -217,13 +282,13 @@ void CMinimap::RenderUI()
 			
 				// Render walls
 				glDisable(GL_DEPTH_TEST);
-				for (int i = 0; i < 10; ++i)
+				for (int i = 0; i < m_iNumObject; ++i)
 				{
 					modelStack.PushMatrix();
-					modelStack.Translate(objPos.x, objPos.y, 0);
+					modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
 					// Rotate the current transformation
 					modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
-					modelStack.Scale(objScale.x, objScale.y, objScale.z);
+					modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
 					// Render an enemy
 					RenderHelper::RenderMesh(m_cMinimap_Enemy);
 					modelStack.PopMatrix();
@@ -255,6 +320,8 @@ void CMinimap::RenderUI()
 			RenderHelper::RenderMesh(m_cMinimap_Border);
 
 	modelStack.PopMatrix();
+
+	minimapData.clear();
 }
 
 CMinimap* Create::Minimap(const bool m_bAddToLibrary)

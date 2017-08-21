@@ -39,6 +39,8 @@ void Rifle::Init(void)
 	m_fRotateAngle = 0.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
+	// projectile ricochet
+	m_bRicochet = true;
 
 }
 
@@ -86,5 +88,6 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
+		aProjectile->setIsRicochet(m_bRicochet);
 	}
 }

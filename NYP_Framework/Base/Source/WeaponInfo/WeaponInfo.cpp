@@ -16,6 +16,7 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, bFire(true)
 	, m_fWeaponDamage(5)
 	, m_bDots(false)
+	, m_bRicochet(true)
 {	
 }
 
@@ -133,6 +134,8 @@ void CWeaponInfo::Init(void)
 	m_fRotateAngle = 10.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
+	// projectile ricochet
+	m_bRicochet = true;
 }
 
 // Update the elapsed time

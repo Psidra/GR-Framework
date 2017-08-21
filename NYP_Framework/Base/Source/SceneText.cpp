@@ -245,10 +245,7 @@ void SceneText::Init()
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
-	//light_depth_mesh->textureID[0] = LoadTGA("Image//calibri.tga");
-
-	//WeaponManager to be init last.
-	//WeaponManager::GetInstance()->init();
+	//light_depth_mesh->textureID[0] = LoadTGA("Image//calibri.tga");s
 
 	//DEBUGGING: Level Cout
 	//Math::InitRNG();
@@ -269,9 +266,9 @@ void SceneText::Init()
 	//		if (l.getTile(i, j).type == Tile::EMPTY)
 	//			Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
 	//		else if (l.getTile(i, j).type == Tile::ROOM)
-	//			Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//			temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
 	//		else if (l.getTile(i, j).type == Tile::CORRIDOR)
-	//			Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//			temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
 	//		else if (l.getTile(i, j).type == Tile::WALL)
 	//		{
 	//			temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
@@ -405,6 +402,7 @@ void SceneText::Update(double dt)
 	}
 
 	WeaponManager::GetInstance()->update(dt);
+	minimap->Update(dt);
 }
 
 void SceneText::Render()

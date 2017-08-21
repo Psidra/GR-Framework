@@ -20,6 +20,7 @@ public:
 		CONTROLLER_RELOAD,
 		CONTROLLER_CHANGE_WEAPON,
 		CONTROLLER_SPAWN_ENEMY,
+		CONTROLLER_ENLARGE_MAP,
 		NUM_CONRTOLLER,
 	};
 
@@ -41,5 +42,6 @@ public:
 	virtual bool Reload(double dt);
 	virtual bool ChangeWeapon(double dt);
 	virtual bool SpawnEnemy(double dt);
+	virtual bool EnlargeMap(double dt);
 };
 

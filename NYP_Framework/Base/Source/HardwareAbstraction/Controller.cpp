@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include <iostream>
 #include "../AI FSM/Ai_1.h"
+#include "../Minimap/Minimap.h"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_RELOAD] = &Controller::Reload;
 	this->controllerfunc[CONTROLLER_CHANGE_WEAPON] = &Controller::ChangeWeapon;
 	this->controllerfunc[CONTROLLER_SPAWN_ENEMY] = &Controller::SpawnEnemy;
+	this->controllerfunc[CONTROLLER_ENLARGE_MAP] = &Controller::EnlargeMap;
 	return false;
 }
 
@@ -105,5 +107,24 @@ bool Controller::SpawnEnemy(double dt)
 	NewEnemy->Init();
 	NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	std::cout << "Enemy Spawned" << std::endl;
+
 	return false;
 }
+
+bool Controller::EnlargeMap(double dt)
+{
+	if (!CMinimap::GetInstance()->getIsEnlarged())
+	{
+		CMinimap::GetInstance()->setIsEnlarged(true);
+		CMinimap::GetInstance()->EnlargeMap(true);
+		return false;
+	}
+	else
+	{
+		CMinimap::GetInstance()->setIsEnlarged(false);
+		CMinimap::GetInstance()->EnlargeMap(false);
+		return false;
+	}
+	return false;
+}
+
