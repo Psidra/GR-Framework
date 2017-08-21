@@ -70,6 +70,8 @@ void Player::Init(void)
 	//primaryWeapon = new Pistol(GenericEntity::PLAYER_BULLET);
 	//primaryWeapon->Init();
 
+	this->SetMaxHealth(100.f);
+
 	this->SetCollider(true);
 
 	// Audio Related adding sound
@@ -506,7 +508,8 @@ float Player::GetHealth()
 
 void Player::EditHealth(float _health)
 {
-	this->m_fHealth += _health;
+	if (m_fHealth > 0)
+		this->m_fHealth += _health;
 }
 
 GenericEntity ** Player::GetPlayerAnimated()

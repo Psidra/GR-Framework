@@ -119,8 +119,12 @@ void UIElement::Render()
 			displace_x += scale.x + 0.1f;
 		}
 
+		displace_x = (-w * 0.5f) / (w / (16.f * aspectdiff)) + (scale.x * 5 + 0.5f);
+
 		for (float i = (Player::GetInstance()->GetMaxHealth() - Player::GetInstance()->GetHealth()); i > 0; i -= 20.f)
 		{
+
+
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
 			modelStack.Translate((displace_x * (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight()) + Player::GetInstance()->GetPos().x,
@@ -129,7 +133,7 @@ void UIElement::Render()
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("no_hp"));
 			modelStack.PopMatrix();
 
-			displace_x += scale.x + 0.1f;
+			displace_x -= scale.x - 0.1f;
 		}
 
 		break;
