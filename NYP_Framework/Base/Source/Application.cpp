@@ -24,6 +24,9 @@
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
+ // Should make these not hard-coded :P
+int m_window_width = 800;
+int m_window_height = 600;
 class Mesh;
 
 //Define an error callback
@@ -42,7 +45,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
-
+	m_window_width = w;
+	m_window_height = h;
 	glViewport(0, 0, w, h);
 }
 

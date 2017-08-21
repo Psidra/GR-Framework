@@ -22,7 +22,7 @@ CStrategy_AI_1::~CStrategy_AI_1()
 /********************************************************************************
 Update method
 ********************************************************************************/
-void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
+void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
 {
 	// Decide which state to change to
 	int distanceHeroToEnemy = CalculateDistance(theDestination, theEnemyPosition);
@@ -33,7 +33,7 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, 
 		//SetIsMoving(false);
 		CurrentState = ATTACK;
 	}
-	else if (distanceHeroToEnemy < AI_CHASE_RANGE)
+	else if (distanceHeroToEnemy <= AI_CHASE_RANGE)
 	{
 		SetIsMoving(true);
 		CurrentState = CHASE;
@@ -70,7 +70,6 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3& theEnemyPosition, 
 			MoveDown(theEnemyDirection);
 			//theEnemyPosition.y -= dt * speed;
 		}
-		theEnemyPosition += theEnemyDirection * speed * (float)dt;
 		break;
 	case ATTACK:
 		//TODO - enemy shoot

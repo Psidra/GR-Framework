@@ -10,7 +10,7 @@ public:
 	~CStrategy_AI_1(void);
 
 
-	void Update(Vector3& theDestination, Vector3& theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt);
+	void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt);
 
 	void MoveUp(Vector3& theEnemyDirection);
 	void MoveDown(Vector3& theEnemyDirection);
