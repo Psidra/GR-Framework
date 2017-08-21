@@ -37,12 +37,14 @@ bool Keyboard::Load(std::string _filePath)
 {	//using hexadecimal
 	Loader::GetInstance()->LoadData(_filePath);
 	std::vector<std::string> temp = Loader::GetInstance()->GetData();
-	for (size_t i = 0; i < Loader::GetInstance()->GetData().size();++i)
+	for (size_t i = 0; i < Loader::GetInstance()->GetData().size() - 1;++i)
 	{
 		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
 		std::stringstream ss;
-		ss << std::hex << temp[i].substr(temp[i].find('=') + 1, std::string::npos);
+		ss << std::hex << temp[i].substr(temp[i].find('=') + 1, temp[i].find(','));
 		ss >> KeyList[index];
+		int methodIndex = atoi(temp[i].substr(temp[i].find(',') + 1, std::string::npos).c_str());
+		pressMethod[index] = methodIndex;
 	}
     return false;
 }
@@ -56,9 +58,34 @@ int Keyboard::Read(const float deltaTime)
 
 	for (int i = 0;i < NUM_CONRTOLLER;++i)
 	{
-		if (KeyboardController::GetInstance()->IsKeyDown(KeyList[i]))
+		switch (pressMethod[i])
 		{
-			(this->*(controllerfunc[i]))(deltaTime);
+		case 1:
+			if (KeyboardController::GetInstance()->IsKeyDown(KeyList[i]))
+			{
+				(this->*(controllerfunc[i]))(deltaTime);
+			}
+			break;
+		case 2:
+			if (KeyboardController::GetInstance()->IsKeyUp(KeyList[i]))
+			{
+				(this->*(controllerfunc[i]))(deltaTime);
+			}
+			break;
+		case 3:
+			if (KeyboardController::GetInstance()->IsKeyPressed(KeyList[i]))
+			{
+				(this->*(controllerfunc[i]))(deltaTime);
+			}
+			break;
+		case 4:
+			if (KeyboardController::GetInstance()->IsKeyReleased(KeyList[i]))
+			{
+				(this->*(controllerfunc[i]))(deltaTime);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }

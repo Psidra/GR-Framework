@@ -14,3 +14,6 @@ shift,ctrl,alt 	0x10, 0x11, 0x12
 backspace,Tab	0x08,0x09
 
 LMB, RMB, MMB 	0x01, 0x02, 0x04
+
+(indexing for key down,up,press,released)
+1,2,3,4

@@ -71,6 +71,8 @@ void Player::Init(void)
 	//primaryWeapon = new Pistol(GenericEntity::PLAYER_BULLET);
 	//primaryWeapon->Init();
 
+	this->SetMaxHealth(100.f);
+
 	this->SetCollider(true);
 
 	// Audio Related adding sound
@@ -311,6 +313,21 @@ void Player::CollisionCheck_Movement()
 		SetMovement(true);
 }
 
+void Player::SetMaxHealth(float _maxHealth)
+{
+	this->m_fMaxHealth = _maxHealth;
+}
+
+float Player::GetMaxHealth()
+{
+	return this->m_fMaxHealth;
+}
+
+void Player::EditMaxHealth(float _value)
+{
+	this->m_fMaxHealth += _value;
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
@@ -333,8 +350,8 @@ void Player::Update(double dt)
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
 	h = Application::GetInstance().GetWindowHeight();
-	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
-	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+	x = x - (w * 0.5f);
+	y = y + (h * 0.5f);
 
 	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
 		m_bLookingUp = true;
@@ -362,7 +379,7 @@ void Player::Update(double dt)
 			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
-			AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
+			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
 	}
 
@@ -403,24 +420,19 @@ void Player::Update(double dt)
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
-
+	//update minimap to render rooms here to be changed
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
 		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
 			continue;
 
-		CMinimap::GetInstance()->setObject((*it)->GetPosition() - position,(*it)->GetScale());
+		if (((*it)->GetPosition() - position).LengthSquared() < CMinimap::GetInstance()->GetScale().LengthSquared())
+		{
+			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
+			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
+		}
 	}
-	//for (int i = 0; i < NUM_ENEMY; ++i)
-	//{
-	//	//if ((anEnemy3D[i]->GetPos() - playerInfo->GetPos()).LengthSquared() < 100 * 100)
-	//	//{
-	//	//cout << "IN RANGE: " << (anEnemy3D->GetPos() - playerInfo->GetPos()).Length() << endl;
-	//	theMinimap->setEnemyPos(anEnemy3D[i]->GetPos() - playerInfo->GetPos(), i);
-	//	//cout << anEnemy3D->GetPos() - playerInfo->GetPos() << endl;
-	//	//}
-	//}
 }
 
 // Constrain the position within the borders
@@ -500,7 +512,8 @@ float Player::GetHealth()
 
 void Player::EditHealth(float _health)
 {
-	this->m_fHealth += _health;
+	if (m_fHealth > 0)
+		this->m_fHealth += _health;
 }
 
 GenericEntity ** Player::GetPlayerAnimated()

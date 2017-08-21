@@ -35,6 +35,8 @@ protected:
 	float m_fRotateAngle;
 	// projectile scale
 	Vector3 scale;
+	// projectile ricochet
+	bool m_bRicochet;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);

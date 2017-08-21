@@ -9,6 +9,7 @@ class Keyboard :
 {
 private:
     unsigned int KeyList[NUM_CONRTOLLER];
+	unsigned int pressMethod[NUM_CONRTOLLER];
 public:
 	Keyboard();
 	virtual ~Keyboard();

@@ -39,6 +39,8 @@ void Pistol::Init(void)
 	m_fRotateAngle = 0.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
+	// projectile ricochet
+	m_bRicochet = false;
 }
 
 // Discharge this weapon
@@ -77,6 +79,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
+		aProjectile->setIsRicochet(m_bRicochet);
 	}
 }
 
