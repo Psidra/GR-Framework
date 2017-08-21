@@ -46,6 +46,8 @@ public:
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
 	virtual void Render(void);
+	// Collision Response
+	void CollisionResponse(GenericEntity* ThatEntity);
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;

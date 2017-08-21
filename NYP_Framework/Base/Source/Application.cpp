@@ -265,7 +265,21 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Coord", Color(0, 0, 1), 1.f);
 
-
+		//--------UI
+		MeshBuilder::GetInstance()->GenerateQuad("full_hp", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("full_hp")->textureID[0] = LoadTGA("Image/UI/PlayerFullHealth.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("half_hp", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("half_hp")->textureID[0] = LoadTGA("Image/UI/PlayerHalfHealth.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("no_hp", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("no_hp")->textureID[0] = LoadTGA("Image/UI/PlayerEmptyHealth.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("blank", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("blank")->textureID[0] = LoadTGA("Image/UI/Blank.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("currency", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("currency")->textureID[0] = LoadTGA("Image/UI/Currency.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("player_cursor", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("boss_hp_border", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("boss_hp_border")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
 
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
