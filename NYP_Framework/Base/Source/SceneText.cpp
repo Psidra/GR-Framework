@@ -437,7 +437,7 @@ void SceneText::RenderPassMain()
 
 	GraphicsManager::GetInstance()->UpdateLightUniforms();
 
-	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight(), 0.1f, 10000.0f);
 	GraphicsManager::GetInstance()->AttachCamera(Player::GetInstance()->getCamera());
 
 	ms.LoadIdentity();
