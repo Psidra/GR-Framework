@@ -13,12 +13,13 @@
 #include "RenderHelper.h"
 #include "PlayerInfo\PlayerInfo.h"
 #include "Inventory.h"
+#include "WeaponInfo\WeaponInfo.h"
 
 class Mesh;
 
 class CEnemy : public GenericEntity, public CAnimation
 {
-protected:
+private:
 	Mesh* modelMesh;
 	Vector3 position, direction;
 	Vector3 maxBoundary, minBoundary;
@@ -28,6 +29,10 @@ protected:
 	
 	CStrategy* theStrategy;
 	GenericEntity** enemyAnimated;
+	Inventory* enemyInventory;
+	CWeaponInfo* primaryWeapon;
+	int weaponIndex;
+	bool isShooting;
 	
 public:
 	CEnemy();
@@ -38,6 +43,7 @@ public:
 
 	void Update(double dt = 0.0333f);
 	void Render();
+	void Shoot(double dt);
 
 	void SetSpeed(double speed);
 	float GetHP();

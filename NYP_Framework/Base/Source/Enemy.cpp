@@ -1,11 +1,19 @@
 #include "Enemy.h"
 #include "CollisionManager.h"
+#include "WeaponInfo\Pistol.h"
 
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy() :speed(1.0), position(0,5,0), health(100.f)
+CEnemy::CEnemy() 
+	:speed(1.0), 
+	position(0,5,0), 
+	health(100.f),
+	weaponIndex(0),
+	isShooting(false)
 {
+	enemyInventory = new Inventory;
+	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 }
 
 CEnemy::CEnemy(Vector3 pos) : position(pos)
@@ -30,11 +38,12 @@ void CEnemy::Init()
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
 	this->health = 100.f;
+	weaponIndex = 0;
 
 	enemyAnimated = new GenericEntity*[8];
 	for (size_t i = 0; i < 8; i++)
 	{
-		enemyAnimated[i] = new GenericEntity();
+		this->enemyAnimated[i] = new GenericEntity();
 	}
 	enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
 	enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
@@ -57,10 +66,12 @@ void CEnemy::Update(double dt)
 
 	if (this->theStrategy != NULL)
 	{
-		
-		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, speed, dt);
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->isShooting, speed, dt);
 		CollisionCheck();
 		this->position += this->direction * this->speed * (float)dt;
+
+		if (this->isShooting)
+			this->Shoot(dt);
 	}
 
 
@@ -79,6 +90,12 @@ void CEnemy::Render()
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	RenderHelper::RenderMesh(enemyAnimated[GetAnimationIndex()]->GetMesh());
 	modelStack.PopMatrix();
+}
+
+void CEnemy::Shoot(double dt)
+{
+	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos());
+	std::cout << "Enemy Shoot" << std::endl;
 }
 
 void CEnemy::SetSpeed(double speed)
@@ -124,7 +141,7 @@ void CEnemy::CollisionCheck()
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER )
 				{
 					std::cout << "Something is blocking up" << std::endl;
 					direction.y = 0;
@@ -149,7 +166,7 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
 				{
 					std::cout << "Something is blocking down" << std::endl;
 					direction.y = 0;
@@ -174,7 +191,7 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
 				{
 					std::cout << "Something is blocking right" << std::endl;
 					direction.x = 0;
@@ -199,7 +216,7 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
 				{
 					std::cout << "Something is blocking left" << std::endl;
 					direction.x = 0;
@@ -217,13 +234,13 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
 		thatEntity->SetIsDone(true);
 		editHP(-20);
-		std::cout << "player bullet collide with enemy" << std::endl;
+		//std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::WALL:
-		std::cout << "enemy collide with wall" << std::endl;
+		//std::cout << "enemy collide with wall" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::ENEMY:
-		std::cout << "enemy collide with enemy" << std::endl;
+		//std::cout << "enemy collide with enemy" << std::endl;
 		break;
 	default:
 		break;
