@@ -41,7 +41,10 @@ public:
 	bool getIsDots();
 	//set isDots
 	void setIsDots(bool _isDots);
-
+	// get m_bProjectileRicochet
+	bool getIsRicochet();
+	//set m_bProjectileRicochet
+	void setIsRicochet(bool _isRicochet);
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
@@ -63,6 +66,8 @@ protected:
 	float projectileDamage;
 	// bool flag to indicate if there is DOTS
 	bool isDots;
+	// bool flag if ricochet
+	bool m_bProjectileRicochet;
 };
 
 namespace Create

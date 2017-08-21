@@ -6,6 +6,8 @@
 #include "Mesh.h"
 #include <map>
 #include <list>
+#include <vector>
+
 class CMinimap : public EntityBase, public Singleton<CMinimap>
 {
 public:
@@ -66,7 +68,21 @@ public:
 	// Set object pos
 	void setObject(Vector3 _pos, Vector3 _scale);
 	// Get minimap map
-	std::map <std::string, std::list<Vector3>> getMinimapData();
+	std::map <std::string, std::vector<Vector3>> getMinimapData();
+	// set minimap map pos
+	void setObjectPos(std::string _type, Vector3 _pos);
+	// set minimap map scale
+	void setObjectScale(std::string _type, Vector3 _scale);
+	// get player map scale
+	Vector3 getPlayerMapScale();
+	// set player map scale
+	void setPlayerMapScale(Vector3 _scale);
+	// get bool enlarged
+	bool getIsEnlarged();
+	// set bool enlarged
+	void setIsEnlarged(bool _isEnlarged);
+	// enlarge minimap
+	void EnlargeMap(bool _isEnlarged);
 	//// Set position of avatar in minimap
 	//bool SetPosition(const int x, const int y);
 	//// Get position x of avatar in minimap
@@ -80,19 +96,22 @@ public:
 	//int GetSize_x(void) const;
 	//// Get size of minimap (for calculation of avatar in minimap)
 	//int GetSize_y(void) const;
-
+	virtual void Update(double dt);
 	virtual void RenderUI();
 protected:
 	// Rotation from First Angle
 	int m_iAngle;
-	//// Offset in the minimap
-	//int m_iPos_x, m_iPos_y;
-	//// Minimap size
-	//int m_iSize_x, m_iSize_y;
+	// Number of obj
+	int m_iNumObject;
+	//bool is enlarged
+	bool m_bEnlarged;
+	//obj pos & scale on map
 	Vector3 objPos;
 	Vector3 objScale;
+	// player scale on map
 	Vector3 playerMapScale;
-	std::map <std::string, std::list<Vector3>> minimapData;
+	//temporary storage method for render of map (will be changed)
+	std::map <std::string, std::vector<Vector3>> minimapData;
 	SPRITE_RENDERMODE mode;
 };
 

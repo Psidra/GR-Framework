@@ -107,6 +107,16 @@ void CProjectile::setIsDots(bool _isDots)
 {
 	isDots = _isDots;
 }
+// get m_bProjectileRicochet
+bool CProjectile::getIsRicochet()
+{
+	return m_bProjectileRicochet;
+}
+//set m_bProjectileRicochet
+void CProjectile::setIsRicochet(bool _isRicochet)
+{
+	m_bProjectileRicochet = _isRicochet;
+}
 
 // Update the status of this projectile
 void CProjectile::Update(double dt)
@@ -157,27 +167,32 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 	case GenericEntity::OBJECT_TYPE::WALL:
 	{
 		std::cout << "bullet collided with wall\n";
-		//FirstEntity->SetIsDone(true);
-		Vector3 N = ThatEntity->getNormal();
-		Vector3 NP = ThatEntity->getNormal().Cross(Vector3(0, 0, 1));
-		Vector3 u = theDirection;
-		Vector3 relativePos = position - ThatEntity->GetPosition();
-
-		if (relativePos.Dot(N) < 0)
-			N = -N;
-		if (relativePos.Dot(NP) > 0)
-			NP = -NP;
-
-		Vector3 vel = u - 2 * u.Dot(N) * N;
-		theDirection = vel;;
-
-		if (theDirection.Dot(N) < 0
-			&& theDirection.Dot(NP) > 0)
+		//if can ricochet
+		if (m_bProjectileRicochet)
 		{
+			Vector3 N = ThatEntity->getNormal();
+			Vector3 NP = ThatEntity->getNormal().Cross(Vector3(0, 0, 1));
+			Vector3 u = theDirection;
+			Vector3 relativePos = position - ThatEntity->GetPosition();
 
-			vel = u - 2 * u.Dot(NP) * NP;
-			theDirection = vel;
+			if (relativePos.Dot(N) < 0)
+				N = -N;
+			if (relativePos.Dot(NP) > 0)
+				NP = -NP;
+
+			Vector3 vel = u - 2 * u.Dot(N) * N;
+			theDirection = vel;;
+
+			if (theDirection.Dot(N) < 0
+				&& theDirection.Dot(NP) > 0)
+			{
+
+				vel = u - 2 * u.Dot(NP) * NP;
+				theDirection = vel;
+			}
 		}
+		else
+			this->isDone = true;
 	}
 		break;
 	default:
