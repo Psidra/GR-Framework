@@ -8,7 +8,7 @@ using namespace std;
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CStrategy_AI_1::CStrategy_AI_1():maxDistFromPlayer(2)
+CStrategy_AI_1::CStrategy_AI_1():maxDistFromPlayer(2), shootElapsedTime(0.0), timeBetweenShots(5.0)
 {
 }
 
@@ -24,20 +24,19 @@ Update method
 ********************************************************************************/
 void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection,  bool& isShooting, double speed, double dt)
 {
+	shootElapsedTime += dt * 10;
 	// Decide which state to change to
-	int distanceHeroToEnemy = CalculateDistance(theDestination, theEnemyPosition);
+	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
 
 
-	if (distanceHeroToEnemy <= AI_ATTACK_RANGE)
-	{
-		CurrentState = ATTACK;
-	}
-	else if (distanceHeroToEnemy >= AI_ATTACK_RANGE)
+	if (distancePlayerToEnemy > AI_ATTACK_RANGE)
 	{
 		CurrentState = CHASE;
 	}
-	else
-		CurrentState = IDLE;
+	else if (distancePlayerToEnemy < AI_ATTACK_RANGE)
+	{
+		CurrentState = ATTACK;
+	}
 
 	// Based on the current state, move the enemy
 	switch (CurrentState)
@@ -57,10 +56,14 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 			else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
 				MoveDown(theEnemyDirection);
 		}
-		
+
 		break;
 	case ATTACK:
-		isShooting = true;
+		if (shootElapsedTime > timeBetweenShots)
+		{
+			isShooting = true;
+			shootElapsedTime = 0.0;
+		}
 		break;
 	default:
 		// Do nothing if idling

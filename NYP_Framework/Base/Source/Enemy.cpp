@@ -10,10 +10,9 @@ CEnemy::CEnemy()
 	position(0,5,0), 
 	health(100.f),
 	weaponIndex(0),
-	isShooting(false)
+	isShooting(false),
+	m_bLookingUp(false)
 {
-	//enemyInventory = new Inventory;
-	//enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 }
 
 CEnemy::CEnemy(Vector3 pos) : position(pos)
@@ -32,7 +31,7 @@ CEnemy::~CEnemy(void)
 	}
 }
 
-void CEnemy::Init()
+void CEnemy::Init(float _hp, double _speed, int _enemyType)
 {
 	direction.SetZero();
 	this->SetCollider(true);
@@ -40,19 +39,32 @@ void CEnemy::Init()
 	this->health = 100.f;
 	weaponIndex = 0;
 
+	SetTypeOfEnemy(_enemyType);
+}
+
+void CEnemy::SetTypeOfEnemy(int _enemyType)
+{
 	enemyAnimated = new GenericEntity*[8];
 	for (size_t i = 0; i < 8; i++)
 	{
 		this->enemyAnimated[i] = new GenericEntity();
 	}
-	enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
-	enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
-	enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand1"));
-	enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bstand2"));
-	enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk1"));
-	enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
-	enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
-	enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+
+	switch (_enemyType) //WIP - set choice of units to spawn
+	{
+	case 1: //red minion
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
+		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
+		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
+		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand2"));
+		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk1"));
+		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
+		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
+		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
+		break;
+	default:
+		break;
+	}
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
@@ -69,20 +81,22 @@ void CEnemy::Update(double dt)
 
 	if (this->theStrategy != NULL)
 	{
-		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->isShooting, speed, dt);
-		CollisionCheck();
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->isShooting, this->speed, dt);
+		this->CollisionCheck();
 		this->position += this->direction * this->speed * (float)dt;
 
 		if (this->isShooting)
 			this->Shoot(dt);
+
+		if (Player::GetInstance()->GetPos().y > this->GetPos().y)
+			m_bLookingUp = true;
+		else
+			m_bLookingUp = false;
 	}
-
-
-	
 	if (health <= 0)
 		this->SetIsDone(true);
-
-	this->SetAnimationStatus(false, this->theStrategy->GetIsMoving(), dt);
+	
+	this->SetAnimationStatus(m_bLookingUp, this->theStrategy->GetIsMoving(), dt);
 }
 
 void CEnemy::Render()
@@ -98,7 +112,7 @@ void CEnemy::Render()
 void CEnemy::Shoot(double dt)
 {
 	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
-	std::cout << "Enemy Shoot" << std::endl;
+	//std::cout << "Enemy Shoot" << std::endl;
 }
 
 void CEnemy::SetSpeed(double speed)
@@ -144,9 +158,15 @@ void CEnemy::CollisionCheck()
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER )
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY )
 				{
 					std::cout << "Something is blocking up" << std::endl;
+					direction.y = 0;
+					break;
+				}
+				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+				{
+					std::cout << "Something is blocking enemy up" << std::endl;
 					direction.y = 0;
 					break;
 				}
@@ -169,9 +189,15 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY )
 				{
 					std::cout << "Something is blocking down" << std::endl;
+					direction.y = 0;
+					break;
+				}
+				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+				{
+					std::cout << "Something is blocking enemy down" << std::endl;
 					direction.y = 0;
 					break;
 				}
@@ -194,9 +220,15 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
 					std::cout << "Something is blocking right" << std::endl;
+					direction.x = 0;
+					break;
+				}
+				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+				{
+					std::cout << "Something is blocking enemy right" << std::endl;
 					direction.x = 0;
 					break;
 				}
@@ -219,12 +251,18 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY || thatEntity->type == PLAYER)
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
 					std::cout << "Something is blocking left" << std::endl;
 					direction.x = 0;
 					break;
 				}
+			}
+			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+			{
+				std::cout << "Something is blocking enemy left" << std::endl;
+				direction.x = 0;
+				break;
 			}
 		}
 		this->SetAABB(tempMax, tempMin);
@@ -237,13 +275,16 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
 		thatEntity->SetIsDone(true);
 		editHP(-20);
-		//std::cout << "player bullet collide with enemy" << std::endl;
+		std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::WALL:
 		//std::cout << "enemy collide with wall" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::ENEMY:
 		//std::cout << "enemy collide with enemy" << std::endl;
+		break;
+	case GenericEntity::OBJECT_TYPE::PLAYER:
+		std::cout << "enemy collide with player" << std::endl;
 		break;
 	default:
 		break;

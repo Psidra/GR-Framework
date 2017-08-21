@@ -32,7 +32,7 @@ public:
 	enum AI_STATE_RANGE
 	{
 		AI_CHASE_RANGE = 1500,
-		AI_ATTACK_RANGE = 15,
+		AI_ATTACK_RANGE = 45,
 		NUM_AI_STATE_RANGE,
 	};
 	CStrategy_AI_1::CURRENT_STATE GetState(void);
@@ -42,4 +42,5 @@ private:
 	// Enemy AI State
 	CStrategy_AI_1::CURRENT_STATE CurrentState;
 	int maxDistFromPlayer;
+	double shootElapsedTime, timeBetweenShots;
 };

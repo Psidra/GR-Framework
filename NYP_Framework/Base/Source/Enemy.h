@@ -32,14 +32,16 @@ private:
 	CWeaponInfo* primaryWeapon;
 	int weaponIndex;
 	bool isShooting;
+	bool m_bLookingUp;
+
 	
 public:
 	CEnemy();
 	CEnemy(Vector3 pos);
 	virtual ~CEnemy();
 
-	void Init();
-
+	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1);
+	void SetTypeOfEnemy(int _enemyType);
 	void Update(double dt = 0.0333f);
 	void Render();
 	void Shoot(double dt);

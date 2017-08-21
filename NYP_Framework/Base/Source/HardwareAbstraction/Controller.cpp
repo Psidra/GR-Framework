@@ -49,7 +49,7 @@ bool Controller::MoveUp(double dt)
 {
 	if (!Player::GetInstance()->isDodging())
 		Player::GetInstance()->MoveUp();
-	std::cout << "Front" << std::endl;
+	//std::cout << "Front" << std::endl;
 	return false;
 }
 
@@ -57,7 +57,7 @@ bool Controller::MoveDown(double dt)
 {
 	if (!Player::GetInstance()->isDodging())
 		Player::GetInstance()->MoveDown();
-	std::cout << "Back" << std::endl;
+	//std::cout << "Back" << std::endl;
 	return false;
 }
 
@@ -65,7 +65,7 @@ bool Controller::MoveLeft(double dt)
 {
 	if (!Player::GetInstance()->isDodging())
 		Player::GetInstance()->MoveLeft();
-	std::cout << "Left" << std::endl;
+	//std::cout << "Left" << std::endl;
 	return false;
 }
 
@@ -73,7 +73,7 @@ bool Controller::MoveRight(double dt)
 {
 	if (!Player::GetInstance()->isDodging())
 		Player::GetInstance()->MoveRight();
-	std::cout << "Right" << std::endl;
+	//std::cout << "Right" << std::endl;
 	return false;
 }
 

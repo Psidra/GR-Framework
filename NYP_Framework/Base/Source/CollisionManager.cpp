@@ -122,7 +122,12 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 					thisEntity = thatEntity;
 					thatEntity = tempEntity;
 				}
-
+				else if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY_BULLET)
+				{
+					tempEntity = thisEntity;
+					thisEntity = thatEntity;
+					thatEntity = tempEntity;
+				}
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);
 
@@ -131,6 +136,7 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 
 		if (CheckAABBCollision(Player::GetInstance(), *it))
 		{
+
 			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 			Player::GetInstance()->CollisionResponse(thatEntity);
 		}

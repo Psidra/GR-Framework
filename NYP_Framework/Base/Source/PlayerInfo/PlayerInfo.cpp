@@ -63,6 +63,7 @@ void Player::Init(void)
 	// Set Boundary
 	maxBoundary.Set(1,1,1);
 	minBoundary.Set(-1, -1, -1);
+	this->type == GenericEntity::OBJECT_TYPE::PLAYER;
 
 	//set weaponIndex
 	weaponIndex = 0;
@@ -184,11 +185,14 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		std::cout << "collide" << std::endl;
 		return;
 	case ENEMY:
-		std::cout << "enemy collide" << std::endl;
+		//std::cout << "enemy collide" << std::endl;
 		return;
 	case ENEMY_BULLET:
-		std::cout << "player hit by enemy bullet" << std::endl;
-		EditHealth(-10);
+		//std::cout << "player hit by enemy bullet" << std::endl;
+		thatEntity->SetIsDone(true);
+		if (this->m_fHealth >= 10)
+			EditHealth(-10);
+		
 		return;
 
 	default:
@@ -222,7 +226,7 @@ void Player::CollisionCheck_Movement()
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking up" << std::endl;
+					//std::cout << "Something is blocking up" << std::endl;
 					direction.y = 0;
 					break;
 				}
@@ -245,7 +249,7 @@ void Player::CollisionCheck_Movement()
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking down" << std::endl;
+					//std::cout << "Something is blocking down" << std::endl;
 					direction.y = 0;
 					break;
 				}
@@ -268,7 +272,7 @@ void Player::CollisionCheck_Movement()
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking right" << std::endl;
+					//std::cout << "Something is blocking right" << std::endl;
 					direction.x = 0;
 					break;
 				}
@@ -291,7 +295,7 @@ void Player::CollisionCheck_Movement()
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking left" << std::endl;
+					//std::cout << "Something is blocking left" << std::endl;
 					direction.x = 0;
 					break;
 				}

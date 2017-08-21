@@ -254,13 +254,26 @@ void Application::InitAllMeshes()
 
 
 		//-------ENEMY SPRITES
-		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("minion_walkdown1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown1.tga");
-		MeshBuilder::GetInstance()->GenerateQuad("minion_walkdown2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("minion_walkdown2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2_WalkDown2.tga");
+		//-------enemy1
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_fstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_fstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bstand1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_bstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bstand2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_bstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand2.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_fwalk2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fwalk2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk2.tga");
 
 
-		// Placeholders for tiles
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Coord", Color(0, 0, 1), 1.f);
