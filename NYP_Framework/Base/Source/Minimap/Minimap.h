@@ -1,14 +1,15 @@
 #ifndef _MINIMAP_H
 #define _MINIMAP_H
 
-#include "EntityBase.h"
+//#include "EntityBase.h"
+#include "../GenericEntity.h"
 #include "SingletonTemplate.h"
 #include "Mesh.h"
 #include <map>
 #include <list>
 #include <vector>
 
-class CMinimap : public EntityBase, public Singleton<CMinimap>
+class CMinimap : public GenericEntity, public Singleton<CMinimap>
 {
 public:
 	enum SPRITE_RENDERMODE
@@ -26,7 +27,7 @@ public:
 	Mesh* m_cMinimap_Avatar;
 	Mesh* m_cMinimap_Target;
 	Mesh* m_cMinimap_Stencil;
-	Mesh* m_cMinimap_Enemy;
+	Mesh* m_cMinimap_Object;
 
 	// Initialise this class instance
 	bool Init(void);
@@ -62,9 +63,9 @@ public:
 	Mesh* GetStencil(void) const;
 
 	// Set the Enemy mesh to this class
-	bool SetEnemyMesh(Mesh* _mesh);
+	bool SetObjectMesh(Mesh* _mesh);
 	// Get the Enemy mesh to this class
-	Mesh* GetEnemyMesh(void) const;
+	Mesh* GetObjectMesh(void) const;
 	// Set object pos
 	void setObject(Vector3 _pos, Vector3 _scale);
 	// Get minimap map

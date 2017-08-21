@@ -4,6 +4,7 @@
 #include "../EntityManager.h"
 #include "GL\glew.h"
 #include "../PlayerInfo/PlayerInfo.h"
+#include "../Application.h"
 
 CMinimap::CMinimap(void)
 	: m_cMinimap_Background(NULL)
@@ -43,7 +44,12 @@ CMinimap::~CMinimap(void)
 // Initialise this class instance
 bool CMinimap::Init(void)
 {
+	// Setup the 2D entities
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	m_iAngle = 0;
+
+	//position.Set(halfWindowWidth, halfWindowHeight, 0.0f);
 	position.Set(335.f, 235.f, 0.0f);
 	scale.Set(100.0f, 100.0f, 100.0f);
 	//playerMapScale = Player::GetInstance()->GetScale() * (0.1);
@@ -141,19 +147,19 @@ Mesh* CMinimap::GetStencil(void) const
 }
 
 // Set the Enemy mesh to this class
-bool CMinimap::SetEnemyMesh(Mesh* _mesh)
+bool CMinimap::SetObjectMesh(Mesh* _mesh)
 {
 	if (_mesh == NULL)
 		return false;
 
-	m_cMinimap_Enemy = _mesh;
+	m_cMinimap_Object = _mesh;
 	return true;
 }
 
 // Get the Enemy mesh to this class
-Mesh* CMinimap::GetEnemyMesh(void) const
+Mesh* CMinimap::GetObjectMesh(void) const
 {
-	return m_cMinimap_Enemy;
+	return m_cMinimap_Object;
 }
 
 void CMinimap::setObject(Vector3 _pos ,Vector3 _scale)
@@ -199,6 +205,9 @@ void CMinimap::setIsEnlarged(bool _isEnlarged)
 // enlarge minimap
 void CMinimap::EnlargeMap(bool _isEnlarged)
 {
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+
 	if (_isEnlarged)
 	{
 		scale.Set(500, 500, 500);
@@ -207,13 +216,21 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 	else
 	{
 		scale.Set(100, 100, 100);
-		position.Set(335.f, 235.f, 0.0f);
+		//position.Set(335.f, 235.f, 0.0f);
+		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
 	}
 }
 
 //update minimap
 void CMinimap::Update(double dt)
 {	//temp storing method to be changed for storing the individual walls to instead the room only
+
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+
+	if(!m_bEnlarged)
+		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
+
 	for (std::vector<Vector3>::iterator it = minimapData["wallpos"].begin();
 		it != minimapData["wallpos"].end();++it)
 	{
@@ -290,7 +307,7 @@ void CMinimap::RenderUI()
 					modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
 					modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
 					// Render an enemy
-					RenderHelper::RenderMesh(m_cMinimap_Enemy);
+					RenderHelper::RenderMesh(m_cMinimap_Object);
 					modelStack.PopMatrix();
 				}
 				glEnable(GL_DEPTH_TEST);
