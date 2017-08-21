@@ -28,6 +28,8 @@ public:
 	void Update();
 	void Render();
 
+	void AddEntity(UIElement* result);
+
 private:
 	std::list<UIElement*> UIList;
 };

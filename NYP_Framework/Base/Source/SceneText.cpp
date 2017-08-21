@@ -13,11 +13,13 @@
 #include "GraphicsManager.h"
 #include "ShaderProgram.h"
 #include "EntityManager.h"
+#include "UIManager.h"
 
 #include "GenericEntity.h"
 #include "GroundEntity.h"
 #include "TextEntity.h"
 #include "SpriteEntity.h"
+#include "UIElement.h"
 #include "LevelStuff/TileEntity.h"
 #include "LevelStuff/Level.h"
 #include "Light.h"
@@ -180,6 +182,8 @@ void SceneText::Init()
 //	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
+	UIManager::GetInstance()->state = UIManager::GAME_STATE::PLAYING;
+
 	// test walls
 	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 10, 2), true);
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
@@ -189,12 +193,16 @@ void SceneText::Init()
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
+	// Make UI
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(1, 1, 1), true);
+	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
+	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
-	float fontSize = 25.0f;
-	float halfFontSize = fontSize / 2.0f;
+	fontSize = 25.0f;
+	halfFontSize = fontSize / 2.0f;
 	for (int i = 0; i < 3; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
@@ -279,6 +287,15 @@ void SceneText::Update(double dt)
 	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
+
+	//double x, y;
+	//MouseController::GetInstance()->GetMousePosition(x, y);
+	//float w = Application::GetInstance().GetWindowWidth();
+	//float h = Application::GetInstance().GetWindowHeight();
+	//x -= (w * 0.5f);
+	//y += (h * 0.5f);
+	//float posX = (static_cast<float>(x) / 50.f) + Player::GetInstance()->GetPos().x; // dont even ask me why its 50.f, okay? I don't know either.
+	//float posY = ((h - static_cast<float>(y)) / 50.f) + Player::GetInstance()->GetPos().y;
 	
 	try {
 		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
@@ -294,6 +311,7 @@ void SceneText::Update(double dt)
 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
+	UIManager::GetInstance()->Update();
 
 	keyboard->Read(dt);
 
@@ -362,6 +380,7 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
+
 	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
@@ -373,6 +392,12 @@ void SceneText::Update(double dt)
 	ss1.precision(4);
 	ss1 << "Player:" << Player::GetInstance()->GetHealth();
 	textObj[2]->SetText(ss1.str());
+
+	// Update textpos for fullscreening
+	for (int i = 0; i < 3; ++i)
+	{
+		textObj[i]->SetPosition(Vector3(-w * 0.5f, -h * 0.5f + fontSize*i + halfFontSize, 0.0f));
+	}
 
 	WeaponManager::GetInstance()->update(dt);
 	minimap->Update(dt);
@@ -505,6 +530,7 @@ void SceneText::RenderWorld()
 	ms.PopMatrix();
 
 	EntityManager::GetInstance()->Render(); //place render entity after render map
+	UIManager::GetInstance()->Render();
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);

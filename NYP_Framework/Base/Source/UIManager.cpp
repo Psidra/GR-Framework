@@ -45,17 +45,24 @@ void UIManager::Playing()
 
 void UIManager::Update()
 {
+	std::list<UIElement*>::iterator it, end;
+	end = UIList.end();
+	for (it = UIList.begin(); it != end; ++it)
+	{
+		(*it)->Update();
+	}
+
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 	{
 		std::list<UIElement*>::iterator it, it2, end;
 		end = UIList.end();
 		for (it = UIList.begin(); it != end; ++it)
 		{
-			if (!(*it)->type == UIElement::ELEMENT_TYPE::CURSOR)
-				continue;
-
 			for (it2 = std::next(it, 1); it2 != end; ++it2)
 			{
+				if ((*it)->type != UIElement::ELEMENT_TYPE::CURSOR) // (*it) is always cursor
+					continue;
+
 				if (CollisionManager::GetInstance()->UI_CheckAABBCollision((*it), (*it2)))
 				{
 
@@ -78,4 +85,9 @@ void UIManager::Render()
 	{
 		(*it)->Render();
 	}
+}
+
+void UIManager::AddEntity(UIElement * result)
+{
+	this->UIList.push_back(result);
 }
