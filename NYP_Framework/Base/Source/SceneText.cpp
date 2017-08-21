@@ -193,6 +193,8 @@ void SceneText::Init()
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
+	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
+
 	// Make UI
 	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(1, 1, 1), true);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
