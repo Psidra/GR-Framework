@@ -13,6 +13,7 @@
 #include "../EntityManager.h"
 #include "MeshList.h"
 #include "../Application.h"
+#include "../Minimap/Minimap.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -397,7 +398,25 @@ void Player::Update(double dt)
 	this->SetPosition(position);
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
-	//primaryWeapon->Update(dt);
+
+
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
+		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
+	{
+		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
+			continue;
+
+		CMinimap::GetInstance()->setObject((*it)->GetPosition() - position,(*it)->GetScale());
+	}
+	//for (int i = 0; i < NUM_ENEMY; ++i)
+	//{
+	//	//if ((anEnemy3D[i]->GetPos() - playerInfo->GetPos()).LengthSquared() < 100 * 100)
+	//	//{
+	//	//cout << "IN RANGE: " << (anEnemy3D->GetPos() - playerInfo->GetPos()).Length() << endl;
+	//	theMinimap->setEnemyPos(anEnemy3D[i]->GetPos() - playerInfo->GetPos(), i);
+	//	//cout << anEnemy3D->GetPos() - playerInfo->GetPos() << endl;
+	//	//}
+	//}
 }
 
 // Constrain the position within the borders

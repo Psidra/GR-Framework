@@ -32,9 +32,9 @@ void Bow::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	weaponDamage = 40;
+	m_fWeaponDamage = 40;
 	// boolean flag for dots
-	isDots = false;
+	m_bDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// projectile scale
@@ -88,7 +88,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 			6.0f);
 
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage / numBullet);
-		aProjectile->setIsDots(isDots);
+		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		aProjectile->setIsDots(m_bDots);
 	}
 }

@@ -14,9 +14,8 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, timeBetweenShots(0.5)
 	, elapsedTime(0.0)
 	, bFire(true)
-	, weaponDamage(5)
-	, isDots(false)
-	, isUnlocked(true)
+	, m_fWeaponDamage(5)
+	, m_bDots(false)
 {	
 }
 
@@ -127,9 +126,9 @@ void CWeaponInfo::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 	// Weapon Damage 
-	weaponDamage = 5;
+	m_fWeaponDamage = 5;
 	// boolean flag for dots
-	isDots = false;
+	m_bDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 10.f;
 	// projectile scale
@@ -196,25 +195,25 @@ void CWeaponInfo::PrintSelf(void)
 //Set weapon damage
 void CWeaponInfo::setWeaponDamage(const float _weaponDamage)
 {
-	weaponDamage = _weaponDamage;
+	m_fWeaponDamage = _weaponDamage;
 }
 
 //get weapon damage
 float CWeaponInfo::getWeaponDamage()
 {
-	return this->weaponDamage;
+	return this->m_fWeaponDamage;
 }
 
 //set bool bDots
 void CWeaponInfo::setIsDots(bool _isDots)
 {
-	isDots = _isDots;
+	m_bDots = _isDots;
 }
 
 //get bDots
 bool CWeaponInfo::getDots()
 {
-	return this->isDots;
+	return this->m_bDots;
 }
 
 void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)

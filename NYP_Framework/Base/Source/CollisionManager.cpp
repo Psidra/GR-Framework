@@ -116,6 +116,12 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 					thisEntity = thatEntity;
 					thatEntity = tempEntity;
 				}
+				else if (thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET)
+				{
+					tempEntity = thisEntity;
+					thisEntity = thatEntity;
+					thatEntity = tempEntity;
+				}
 
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);

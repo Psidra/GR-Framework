@@ -26,15 +26,15 @@ void Rifle::Init(void)
 	maxTotalRounds = 150;
 
 	// The time between shots
-	timeBetweenShots = 0.1111;
+	timeBetweenShots = 0.05;
 	// The elapsed time (between shots)
-	elapsedTime = 0.1111;
+	elapsedTime = 0.05;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	weaponDamage = 3;
+	m_fWeaponDamage = 3;
 	// boolean flag for dots
-	isDots = false;
+	m_bDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// projectile scale
@@ -51,7 +51,7 @@ void Rifle::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target, 5, 3);
+			generateBullet(position, target, 1);
 
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
@@ -65,18 +65,16 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 	if (numBullet < 0)
 		return;
 
-	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
-	Vector3 temp = target;
+	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	//Vector3 temp = target;
 
 	float tempSpeed = 10.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
 		//negative angle counter clockwise positive angle clockwise
-		//target.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
-		//target.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
-		target = rotateDirection(temp, totalAngle);
-		totalAngle -= angle;
+		//target = rotateDirection(temp, totalAngle);
+		//totalAngle -= angle;
 
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
@@ -86,7 +84,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 			tempSpeed);
 		tempSpeed += 3.f;
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage / numBullet);
-		aProjectile->setIsDots(isDots);
+		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		aProjectile->setIsDots(m_bDots);
 	}
 }

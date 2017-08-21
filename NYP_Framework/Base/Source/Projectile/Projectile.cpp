@@ -153,37 +153,36 @@ void CProjectile::Render(void)
 // Collision Response
 void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 {
-	//switch (ThatEntity->type) {
-	//case GenericEntity::OBJECT_TYPE::WALL:
-	//{
-	//	std::cout << "bullet collided with wall\n";
-	//	//FirstEntity->SetIsDone(true);
-	//	//Vector3 temp = dynamic_cast<CProjectile*>(FirstEntity)->GetDirection();
-	//	Vector3 N = ThatEntity->getNormal();
-	//	Vector3 NP = ThatEntity->getNormal().Cross(Vector3(0, 0, 1));
-	//	Vector3 u = theDirection;
-	//	Vector3 relativePos = position - ThatEntity->GetPosition();
+	switch (ThatEntity->type) {
+	case GenericEntity::OBJECT_TYPE::WALL:
+	{
+		std::cout << "bullet collided with wall\n";
+		//FirstEntity->SetIsDone(true);
+		Vector3 N = ThatEntity->getNormal();
+		Vector3 NP = ThatEntity->getNormal().Cross(Vector3(0, 0, 1));
+		Vector3 u = theDirection;
+		Vector3 relativePos = position - ThatEntity->GetPosition();
 
-	//	if (relativePos.Dot(N) < 0)
-	//		N = -N;
-	//	if (relativePos.Dot(NP) > 0)
-	//		NP = -NP;
+		if (relativePos.Dot(N) < 0)
+			N = -N;
+		if (relativePos.Dot(NP) > 0)
+			NP = -NP;
 
-	//	Vector3 vel = u - 2 * u.Dot(N) * N;
-	//	theDirection = vel;;
+		Vector3 vel = u - 2 * u.Dot(N) * N;
+		theDirection = vel;;
 
-	//	if (theDirection.Dot(N) < 0
-	//		&& theDirection.Dot(NP) > 0)
-	//	{
+		if (theDirection.Dot(N) < 0
+			&& theDirection.Dot(NP) > 0)
+		{
 
-	//		vel = u - 2 * u.Dot(NP) * NP;
-	//		theDirection = vel;
-	//	}
-	//}
-	//	break;
-	//default:
-	//	break;
-	//}
+			vel = u - 2 * u.Dot(NP) * NP;
+			theDirection = vel;
+		}
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 // Create a projectile and add it into EntityManager
