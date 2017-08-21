@@ -28,11 +28,9 @@ protected:
 	// Bullet type (player/enemy)
 	GenericEntity::OBJECT_TYPE bulletType;
 	// Weapon Damage 
-	float weaponDamage;
+	float m_fWeaponDamage;
 	// boolean flag for dots
-	bool isDots;
-	// boolean weapon unlocked by player
-	bool isUnlocked;
+	bool m_bDots;
 	// Player/enemy angle to rotate
 	float m_fRotateAngle;
 	// projectile scale

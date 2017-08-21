@@ -17,6 +17,7 @@ class SceneManager;
 class TextEntity;
 class Light;
 class Keyboard;
+class CMinimap;
 
 class SceneText : public Scene
 {	
@@ -50,7 +51,7 @@ private:
 	void RenderPassMain();//MAIN RENDER PASS
 	void RenderWorld();
 	Mesh* light_depth_mesh;
-
+	CMinimap* minimap;
 };
 
 #endif

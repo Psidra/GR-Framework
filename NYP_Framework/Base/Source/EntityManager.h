@@ -18,7 +18,7 @@ public:
 	void AddEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
 
-	std::list<EntityBase*> getCollisionList();
+	std::list<EntityBase*>& getCollisionList();
 	
 private:
 	EntityManager();

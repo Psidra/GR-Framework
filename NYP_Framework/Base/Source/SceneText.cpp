@@ -27,6 +27,7 @@
 #include <iostream>
 #include "RenderHelper.h"
 #include "WeaponManager.h"
+#include "Minimap\Minimap.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -220,6 +221,16 @@ void SceneText::Init()
 		NewEnemy->Init();
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
+
+	// Minimap
+	minimap = Create::Minimap(false);
+	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
+	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
+	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
+	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
+	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
+	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
+	minimap->SetEnemyMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_ENEMY", Color(1, 0, 0), 1.0f));
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -468,7 +479,7 @@ void SceneText::RenderPassMain()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
-
+	minimap->RenderUI();
 	//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 }
 

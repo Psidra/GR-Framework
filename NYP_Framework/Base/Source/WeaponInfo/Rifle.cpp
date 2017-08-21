@@ -32,9 +32,9 @@ void Rifle::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	weaponDamage = 3;
+	m_fWeaponDamage = 3;
 	// boolean flag for dots
-	isDots = false;
+	m_bDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// projectile scale
@@ -84,7 +84,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 			tempSpeed);
 		tempSpeed += 3.f;
 		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(weaponDamage / numBullet);
-		aProjectile->setIsDots(isDots);
+		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		aProjectile->setIsDots(m_bDots);
 	}
 }

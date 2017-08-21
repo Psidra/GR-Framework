@@ -73,6 +73,9 @@
     <Filter Include="UI\UI Element">
       <UniqueIdentifier>{c88d2293-9725-4941-8119-7ed5b1700b98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Minimap">
+      <UniqueIdentifier>{eb34a95d-cc3f-4208-8a70-5ad1a81f78d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -180,6 +183,9 @@
     <ClCompile Include="Source\UIElement.cpp">
       <Filter>UI\UI Element</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Minimap\Minimap.cpp">
+      <Filter>Minimap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -283,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="Source\UIElement.h">
       <Filter>UI\UI Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Minimap\Minimap.h">
+      <Filter>Minimap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
