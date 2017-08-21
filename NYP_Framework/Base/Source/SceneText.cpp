@@ -182,6 +182,8 @@ void SceneText::Init()
 //	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
+	UIManager::GetInstance()->state = UIManager::GAME_STATE::PLAYING;
+
 	// test walls
 	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 10, 2), true);
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
@@ -193,6 +195,7 @@ void SceneText::Init()
 
 	// Make UI
 	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(1, 1, 1), true);
+	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
 	// Setup the 2D entities

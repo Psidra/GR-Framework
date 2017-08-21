@@ -51,6 +51,21 @@ void UIElement::SetCollider(const bool _value)
 
 void UIElement::Update()
 {
+	switch (elestate) {
+	case MAIN_MENU:
+		break;
+	case PLAYING:
+		break;
+	case PAUSE:
+		break;
+	case OPTIONS:
+		break;
+
+	default:
+		// nothing should be here.
+		break;
+	}
+
 	if (this->type == CURSOR)
 	{
 		double x, y;
@@ -66,23 +81,68 @@ void UIElement::Update()
 
 void UIElement::Render()
 {
-	//switch (UIManager::GetInstance()->state) {
-	//case UIManager::GAME_STATE::MAIN_MENU:
+	float w = Application::GetInstance().GetWindowWidth();
+	float h = Application::GetInstance().GetWindowHeight();
 
-	//	break;
-	//case UIManager::GAME_STATE::PLAYING:
+	switch (UIManager::GetInstance()->state) {
+	case UIManager::GAME_STATE::MAIN_MENU:
 
-	//	break;
-	//case UIManager::GAME_STATE::PAUSE:
+		break;
+	case UIManager::GAME_STATE::PLAYING:
+	{
+		float displace_x = (-5.75f * w/h); // magic math bullshit that is totally hardcoded i have no idea how to fix this ples halp
 
-	//	break;
-	//case UIManager::GAME_STATE::OPTIONS:
+		for (float i = Player::GetInstance()->GetHealth(); i > 10.f; i -= 20.f)
+		{
+			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+			modelStack.PushMatrix();
+			modelStack.Translate(displace_x + Player::GetInstance()->GetPos().x,
+				5.6f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Scale(scale.x, scale.y, scale.z);
+			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("full_hp"));
+			modelStack.PopMatrix();
 
-	//	break;
+			displace_x += scale.x;
+		}
 
-	//default:
-	//	break;
-	//}
+		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 9)
+		{
+			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+			modelStack.PushMatrix();
+			modelStack.Translate((displace_x * (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight()) + Player::GetInstance()->GetPos().x,
+				5.6f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Scale(scale.x, scale.y, scale.z);
+			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("half_hp"));
+			modelStack.PopMatrix();
+
+			displace_x += scale.x;
+		}
+
+		for (float i = (Player::GetInstance()->GetMaxHealth() - Player::GetInstance()->GetHealth()); i > 0; i -= 20.f)
+		{
+			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+			modelStack.PushMatrix();
+			modelStack.Translate((displace_x * (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight()) + Player::GetInstance()->GetPos().x,
+				5.6f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Scale(scale.x, scale.y, scale.z);
+			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("no_hp"));
+			modelStack.PopMatrix();
+
+			displace_x += scale.x;
+		}
+
+		break;
+	}
+	case UIManager::GAME_STATE::PAUSE:
+
+		break;
+	case UIManager::GAME_STATE::OPTIONS:
+
+		break;
+
+	default:
+		break;
+	}
 
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();

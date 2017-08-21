@@ -73,6 +73,13 @@ public:
 	// Movement Collision Check
 	void CollisionCheck_Movement();
 
+	// Set Max Health
+	void SetMaxHealth(float _maxHealth);
+	// Get Max Health
+	float GetMaxHealth();
+	// Edit Max Health
+	void EditMaxHealth(float _value);
+
 	// Set Health
 	void SetHealth(float _health);
 	// Get Health
@@ -98,6 +105,7 @@ private:
 	double m_dRollTime; // Bouncetime for rolling
 
 	float m_fHealth;
+	float m_fMaxHealth;
 
 	FPSCamera* attachedCamera;
 	CWeaponInfo* primaryWeapon;

@@ -307,6 +307,21 @@ void Player::CollisionCheck_Movement()
 		SetMovement(true);
 }
 
+void Player::SetMaxHealth(float _maxHealth)
+{
+	this->m_fMaxHealth = _maxHealth;
+}
+
+float Player::GetMaxHealth()
+{
+	return this->m_fMaxHealth;
+}
+
+void Player::EditMaxHealth(float _value)
+{
+	this->m_fMaxHealth += _value;
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
@@ -358,7 +373,7 @@ void Player::Update(double dt)
 			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
-			AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
+			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
 	}
 

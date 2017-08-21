@@ -11,6 +11,14 @@ public:
 	UIElement(Mesh* _mesh);
 	~UIElement();
 
+	enum ELEMENT_STATE {
+		MAIN_MENU = 0,
+		PLAYING,
+		PAUSE,
+		OPTIONS,
+		ALL,
+	}elestate;
+
 	enum ELEMENT_TYPE {
 		NONE = 0,
 		CURSOR,
