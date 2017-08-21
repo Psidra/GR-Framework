@@ -238,7 +238,7 @@ void SceneText::Init()
 	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
-	minimap->SetEnemyMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_ENEMY", Color(1, 0, 0), 1.0f));
+	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_ENEMY", Color(1, 0, 0), 1.0f));
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -288,6 +288,9 @@ void SceneText::Update(double dt)
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
 
+
+	std::cout << posX << std::endl;
+	std::cout << posY << std::endl;
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);
 	//float w = Application::GetInstance().GetWindowWidth();
