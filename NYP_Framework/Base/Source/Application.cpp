@@ -277,7 +277,7 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("currency", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("currency")->textureID[0] = LoadTGA("Image/UI/Currency.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("player_cursor", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
+		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/PlayerCursorV2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("boss_hp_border", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("boss_hp_border")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
 

@@ -328,8 +328,8 @@ void Player::Update(double dt)
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
 	h = Application::GetInstance().GetWindowHeight();
-	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
-	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+	x = x - (w * 0.5f);
+	y = y + (h * 0.5f);
 
 	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
 		m_bLookingUp = true;
