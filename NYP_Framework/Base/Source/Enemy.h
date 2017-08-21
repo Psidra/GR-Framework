@@ -14,7 +14,6 @@
 #include "PlayerInfo\PlayerInfo.h"
 #include "Inventory.h"
 #include "WeaponInfo\WeaponInfo.h"
-
 class Mesh;
 
 class CEnemy : public GenericEntity, public CAnimation

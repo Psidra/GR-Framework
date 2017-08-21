@@ -12,8 +12,8 @@ CEnemy::CEnemy()
 	weaponIndex(0),
 	isShooting(false)
 {
-	enemyInventory = new Inventory;
-	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
+	//enemyInventory = new Inventory;
+	//enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 }
 
 CEnemy::CEnemy(Vector3 pos) : position(pos)
@@ -57,6 +57,9 @@ void CEnemy::Init()
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
+
+	enemyInventory = new Inventory;
+	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 }
 
 void CEnemy::Update(double dt)
@@ -94,7 +97,7 @@ void CEnemy::Render()
 
 void CEnemy::Shoot(double dt)
 {
-	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos());
+	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
 	std::cout << "Enemy Shoot" << std::endl;
 }
 
