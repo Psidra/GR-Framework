@@ -339,7 +339,8 @@ void CMinimap::RenderUI()
 
 	modelStack.PopMatrix();
 
-	minimapData.clear();
+	minimapData["wallpos"].clear();
+	minimapData["wallscale"].clear();
 }
 
 CMinimap* Create::Minimap(const bool m_bAddToLibrary)

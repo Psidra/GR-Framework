@@ -1,34 +1,34 @@
-#include "Pistol.h"
+#include "../Projectile/Projectile.h"
+#include "LaserBeam.h"
 #include "../WeaponManager.h"
 
-Pistol::Pistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+LaserBeam::LaserBeam(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-Pistol::~Pistol()
+LaserBeam::~LaserBeam()
 {
 }
 
-// Initialise this instance to default values
-void Pistol::Init(void)
+void LaserBeam::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 12;
+	magRounds = 1000;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 12;
+	maxMagRounds = 1000;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 40;
+	totalRounds = 10000;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 40;
+	maxTotalRounds = 10000;
 
 	// The time between shots
-	timeBetweenShots = 0.3333;
+	timeBetweenShots = 0.01;
 	// The elapsed time (between shots)
-	elapsedTime = 0.3333;
+	elapsedTime = 0.01;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
@@ -40,13 +40,12 @@ void Pistol::Init(void)
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
-	m_bRicochet = false;
+	m_bRicochet = true;
 	// is laserBeam
-	m_bLaserBeam = false;
+	m_bLaserBeam = true;
 }
 
-// Discharge this weapon
-void Pistol::Discharge(Vector3 position, Vector3 target)
+void LaserBeam::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -54,30 +53,38 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second			
-			generateBullet(position, target);
+			// It will last for 3.0 seconds and travel at 500 units per second
+			generateBullet(position, target, 1);
 
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
-			--magRounds;
+				--magRounds;
 		}
 	}
 }
 
-// Number of bullet to create and pattern
-void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
 
+	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	//Vector3 temp = target;
+
 	for (int i = 0;i < numBullet;++i)
 	{
-		CProjectile* aProjectile = Create::Projectile("sphere",
+		//rotate vector
+		//negative angle counter clockwise positive angle clockwise
+		//target = rotateDirection(temp, totalAngle);
+		//totalAngle -= angle;
+
+		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			scale,
 			2.0f,
-			10.0f);
+			0.f);
+
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
@@ -85,4 +92,3 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
 }
-

@@ -4,6 +4,7 @@
 #include "../EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -118,6 +119,17 @@ void CProjectile::setIsRicochet(bool _isRicochet)
 	m_bProjectileRicochet = _isRicochet;
 }
 
+// get m_bProjectileLaserBeam
+bool CProjectile::getIsLaserbeam()
+{
+	return m_bProjectileLaserBeam;
+}
+//set m_bProjectileLaserBeam
+void CProjectile::setIsLaserbeam(bool _isLaserBeam)
+{
+	m_bProjectileLaserBeam = _isLaserBeam;
+}
+
 // Update the status of this projectile
 void CProjectile::Update(double dt)
 {
@@ -134,7 +146,8 @@ void CProjectile::Update(double dt)
 	}
 
 	// Update Position
-	position += theDirection * (float)(dt * m_fSpeed);
+	if(!m_bProjectileLaserBeam)
+		position += theDirection * (float)(dt * m_fSpeed);
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
 	//				position.y + (float)(theDirection.y * dt * m_fSpeed),
 	//				position.z + (float)(theDirection.z * dt * m_fSpeed));

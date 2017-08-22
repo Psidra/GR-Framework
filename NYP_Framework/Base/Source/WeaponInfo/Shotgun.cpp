@@ -41,6 +41,8 @@ void Shotgun::Init(void)
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
 	m_bRicochet = true;
+	// is laserBeam
+	m_bLaserBeam = false;
 }
 
 void Shotgun::Discharge(Vector3 position, Vector3 target)
@@ -88,5 +90,6 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
+		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
 }
