@@ -45,6 +45,10 @@ public:
 	bool getIsRicochet();
 	//set m_bProjectileRicochet
 	void setIsRicochet(bool _isRicochet);
+	// get m_bProjectileLaserBeam
+	bool getIsLaserbeam();
+	//set m_bProjectileLaserBeam
+	void setIsLaserbeam(bool _isLaserBeam);
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
@@ -68,6 +72,8 @@ protected:
 	bool isDots;
 	// bool flag if ricochet
 	bool m_bProjectileRicochet;
+	// bool flag is laserbeam
+	bool m_bProjectileLaserBeam;
 };
 
 namespace Create

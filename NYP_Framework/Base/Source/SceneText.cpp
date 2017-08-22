@@ -158,7 +158,7 @@ void SceneText::Init()
 	// Create the playerinfo instance, which manages all information about the player
 
 	std::cout << _DEBUG << std::endl;
-	int a;
+	//int a;
 
 	// Create and attach the camera to the scene
 	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));

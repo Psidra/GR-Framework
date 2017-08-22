@@ -37,6 +37,8 @@ protected:
 	Vector3 scale;
 	// projectile ricochet
 	bool m_bRicochet;
+	// is laserBeam
+	bool m_bLaserBeam;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);

@@ -186,6 +186,9 @@
     <ClCompile Include="Source\Minimap\Minimap.cpp">
       <Filter>Minimap</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\LaserBeam.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Boss.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="Source\Minimap\Minimap.h">
       <Filter>Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\LaserBeam.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Boss.h">
       <Filter>Enemy Related\EnemyHeader</Filter>

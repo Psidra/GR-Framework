@@ -136,6 +136,8 @@ void CWeaponInfo::Init(void)
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
 	m_bRicochet = true;
+	// is laserBeam
+	m_bLaserBeam = false;
 }
 
 // Update the elapsed time
