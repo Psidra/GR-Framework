@@ -67,6 +67,8 @@ public:
 	bool ChangeWeapon(const float dt);
 	// Set view direction
 	void SetView(Vector3 _view);
+	// Get view direction
+	Vector3 GetView();
 
 	// Collision Response
 	void CollisionResponse(GenericEntity* thatEntity);

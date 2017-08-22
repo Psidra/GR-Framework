@@ -16,6 +16,7 @@ public:
 	void Discharge(Vector3 position, Vector3 target);
 
 private:
+	float increment;
 	// Number of bullet to create and pattern
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
 };

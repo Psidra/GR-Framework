@@ -14,6 +14,7 @@
 #include "MeshList.h"
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
+#include "../WeaponInfo/LaserBeam.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -38,6 +39,7 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Rifle(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -498,9 +500,16 @@ bool Player::ChangeWeapon(const float dt)
 	return false;
 }
 
+// Set view direction
 void Player::SetView(Vector3 _view)
 {
 	this->view = _view;
+}
+
+// Get view direction
+Vector3 Player::GetView()
+{
+	return this->view;
 }
 
 void Player::SetHealth(float _health)

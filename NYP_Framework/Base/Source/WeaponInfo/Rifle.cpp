@@ -72,7 +72,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	//Vector3 temp = target;
 
-	float tempSpeed = 10.0f;
+	float tempSpeed = 15.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector

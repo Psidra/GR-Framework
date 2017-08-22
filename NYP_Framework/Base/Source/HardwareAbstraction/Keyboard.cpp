@@ -37,7 +37,7 @@ bool Keyboard::Load(std::string _filePath)
 {	//using hexadecimal
 	Loader::GetInstance()->LoadData(_filePath);
 	std::vector<std::string> temp = Loader::GetInstance()->GetData();
-	for (size_t i = 0; i < Loader::GetInstance()->GetData().size() - 1;++i)
+	for (size_t i = 0; i < Loader::GetInstance()->GetData().size();++i)
 	{
 		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
 		std::stringstream ss;
