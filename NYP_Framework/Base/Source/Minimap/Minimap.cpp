@@ -50,7 +50,8 @@ bool CMinimap::Init(void)
 	m_iAngle = 0;
 
 	//position.Set(halfWindowWidth, halfWindowHeight, 0.0f);
-	position.Set(335.f, 235.f, 0.0f);
+	//magical numbers here 
+	position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
 	scale.Set(100.0f, 100.0f, 100.0f);
 	//playerMapScale = Player::GetInstance()->GetScale() * (0.1);
 	playerMapScale = Vector3(10,10,10) * (1 / scale.x);

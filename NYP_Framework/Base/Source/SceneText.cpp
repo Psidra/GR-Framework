@@ -290,9 +290,6 @@ void SceneText::Update(double dt)
 	float posX = static_cast<float>(x);
 	float posY = (h - static_cast<float>(y));
 
-
-	std::cout << posX << std::endl;
-	std::cout << posY << std::endl;
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);
 	//float w = Application::GetInstance().GetWindowWidth();
