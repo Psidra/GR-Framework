@@ -88,6 +88,21 @@ public:
 	float GetHealth();
 	// Edit Health
 	void EditHealth(float _health);
+
+	// Set Blanks
+	void SetBlanks(int _blanks); // blank doesnt even look like a word anymore
+	// Get Blanks				 // thanks semanic satiation
+	int GetBlanks();
+	// Edit Blanks
+	void EditBlanks(int _blanks);
+
+	// Set Money
+	void SetMoney(int _money);
+	// Get Money
+	int GetMoney();
+	// Edit Money
+	void EditMoney(int _money);
+
 	//Get player animation
 	GenericEntity** GetPlayerAnimated(); 
 
@@ -114,6 +129,9 @@ private:
 	Inventory* playerInventory;
 
 	int weaponIndex;
+	int m_iBlank; // projectile remover 101
+	int m_iMoney; // doshhhh
+	int m_iKeys; // Not sure if we will keep this or not
 
 	double m_dAnimElapsedTime; //bouncetime for animation sequence - used in old anim for now
 	GenericEntity** playerAnimated;

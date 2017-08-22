@@ -212,7 +212,7 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 	if (_isEnlarged)
 	{
 		scale.Set(500, 500, 500);
-		position.Set(0, 0, 0);
+		position.Set(0, 0, 9.f);
 	}
 	else
 	{

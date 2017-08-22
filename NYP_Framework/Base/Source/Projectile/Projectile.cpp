@@ -226,7 +226,8 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 
 		this->SetIsDone(true);
 		CEnemy* HitEnemy = dynamic_cast<CEnemy*>(ThatEntity);
-		HitEnemy->editHP(-20);
+		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
+		HitEnemy->editHP(-Proj->getProjectileDamage());
 		std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	}

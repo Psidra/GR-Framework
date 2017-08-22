@@ -20,9 +20,12 @@ void UIManager::Pause()
 		break;
 	case OPTIONS:
 		this->state = PAUSE;
+		break;
+	case PAUSE:
+		this->state = PLAYING;
+		break;
 
 	default:
-		std::cout << "Already paused!" << std::endl;
 		break;
 	}
 }
@@ -38,7 +41,6 @@ void UIManager::Playing()
 		break;
 
 	default:
-		std::cout << "Already playing!" << std::endl;
 		break;
 	}
 }

@@ -32,7 +32,7 @@ void Pistol::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 5;
+	m_fWeaponDamage = 10;
 	// boolean flag for dots
 	m_bDots = false;
 	// Player/enemy angle to rotate
