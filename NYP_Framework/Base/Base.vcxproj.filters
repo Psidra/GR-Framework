@@ -189,6 +189,9 @@
     <ClCompile Include="Source\WeaponInfo\LaserBeam.cpp">
       <Filter>Weapon\Guns</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Boss.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\LaserBeam.h">
       <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Boss.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

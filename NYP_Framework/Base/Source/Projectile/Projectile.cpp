@@ -5,6 +5,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "../PlayerInfo/PlayerInfo.h"
+#include "../Enemy.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -208,6 +209,17 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			this->isDone = true;
 	}
 		break;
+	case GenericEntity::OBJECT_TYPE::ENEMY:
+	{
+		if (this->type != PLAYER_BULLET)
+			break;
+
+		this->SetIsDone(true);
+		CEnemy* HitEnemy = dynamic_cast<CEnemy*>(ThatEntity);
+		HitEnemy->editHP(-20);
+		std::cout << "player bullet collide with enemy" << std::endl;
+		break;
+	}
 	default:
 		break;
 	}

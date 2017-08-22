@@ -272,11 +272,11 @@ void CEnemy::CollisionCheck()
 void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 {
 	switch (thatEntity->type) {
-	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
-		thatEntity->SetIsDone(true);
-		editHP(-20);
-		std::cout << "player bullet collide with enemy" << std::endl;
-		break;
+	//case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+	//	thatEntity->SetIsDone(true);
+	//	editHP(-20);
+	//	std::cout << "player bullet collide with enemy" << std::endl;
+	//	break;
 	case GenericEntity::OBJECT_TYPE::WALL:
 		//std::cout << "enemy collide with wall" << std::endl;
 		break;

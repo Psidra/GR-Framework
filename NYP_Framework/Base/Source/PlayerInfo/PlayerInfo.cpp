@@ -185,17 +185,20 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 	switch (thatEntity->type) {
 	case WALL:
 		std::cout << "collide" << std::endl;
-		return;
+		break;
 	case ENEMY:
 		//std::cout << "enemy collide" << std::endl;
-		return;
+		break;
 	case ENEMY_BULLET:
+		if (this->m_bDodge)
+			break;
+		
 		//std::cout << "player hit by enemy bullet" << std::endl;
 		thatEntity->SetIsDone(true);
 		if (this->m_fHealth >= 10)
 			EditHealth(-10);
 		
-		return;
+		break;
 
 	default:
 		break;
