@@ -110,24 +110,15 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 
 				// I HAVE NO IDEA IF I NEED THIS OR NOT
 				GenericEntity* tempEntity = nullptr;
-				if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY)
+				if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY
+					|| thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET
+					|| thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY_BULLET)
 				{
 					tempEntity = thisEntity;
 					thisEntity = thatEntity;
 					thatEntity = tempEntity;
 				}
-				else if (thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET)
-				{
-					tempEntity = thisEntity;
-					thisEntity = thatEntity;
-					thatEntity = tempEntity;
-				}
-				else if (thatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY_BULLET)
-				{
-					tempEntity = thisEntity;
-					thisEntity = thatEntity;
-					thatEntity = tempEntity;
-				}
+
 				//create collison response code to settle what to do
 				thisEntity->CollisionResponse(thatEntity);
 

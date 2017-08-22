@@ -2,9 +2,11 @@
 #define UIELEMENT_H
 
 #include "Collider\Collider.h"
-#include "Mesh.h"
+#include "EntityBase.h"
 
-class UIElement : public Collision // Not inheriting generic entity or entity base as I wanted UI element to be separate
+class Mesh;
+
+class UIElement : public EntityBase, public Collision // Not inheriting generic entity or entity base as I wanted UI element to be separate
 {
 public:
 	UIElement();
@@ -30,14 +32,14 @@ public:
 		VOL_DOWN,
 	}type;
 
-	void SetPosition(const Vector3& _value);
-	Vector3 GetPosition();
+	//void SetPosition(const Vector3& _value);
+	//Vector3 GetPosition();
 
-	void SetScale(const Vector3& _value);
-	Vector3 GetScale();
+	//void SetScale(const Vector3& _value);
+	//Vector3 GetScale();
 
-	bool HasCollider(void) const;
-	void SetCollider(const bool _value);
+	//bool HasCollider(void) const;
+	//void SetCollider(const bool _value);
 
 	void Update();
 	void Render();
@@ -46,10 +48,10 @@ public:
 private:
 	Mesh* mesh;
 
-	Vector3 position;
-	Vector3 scale;
+	//Vector3 position;
+	//Vector3 scale;
 
-	bool m_bCollider;
+	//bool m_bCollider;
 };
 
 namespace Create

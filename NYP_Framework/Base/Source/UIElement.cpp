@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "MouseController.h"
 #include "PlayerInfo\PlayerInfo.h"
+#include "GL\glew.h"
 
 UIElement::UIElement()
 {
@@ -17,36 +18,6 @@ UIElement::UIElement(Mesh* _mesh) : mesh(_mesh)
 
 UIElement::~UIElement()
 {
-}
-
-void UIElement::SetPosition(const Vector3 & _value)
-{
-	this->position = _value;
-}
-
-Vector3 UIElement::GetPosition()
-{
-	return this->position;
-}
-
-void UIElement::SetScale(const Vector3 & _value)
-{
-	this->scale = _value;
-}
-
-Vector3 UIElement::GetScale()
-{
-	return this->scale;
-}
-
-bool UIElement::HasCollider(void) const
-{
-	return this->m_bCollider;
-}
-
-void UIElement::SetCollider(const bool _value)
-{
-	this->m_bCollider = _value;
 }
 
 void UIElement::Update()
@@ -68,21 +39,28 @@ void UIElement::Update()
 
 	if (this->type == CURSOR)
 	{
+		//double x, y;
+		//MouseController::GetInstance()->GetMousePosition(x, y);
+		//float w = Application::GetInstance().GetWindowWidth();
+		//float h = Application::GetInstance().GetWindowHeight();
+		//float posX = (static_cast<float>(x) - (w * 0.5f)) / w * (12.5f * w/h);
+		//float posY = ((h - static_cast<float>(y)) - (h * 0.5f)) / h * 12.5f;
+
 		double x, y;
 		MouseController::GetInstance()->GetMousePosition(x, y);
-		float w = Application::GetInstance().GetWindowWidth();
-		float h = Application::GetInstance().GetWindowHeight();
-		float posX = (static_cast<float>(x) - (w * 0.5f)) / w * (12.5f * w/h);	// WTF DOES 12.5f EVEN MEAN
-		float posY = ((h - static_cast<float>(y)) - (h * 0.5f)) / h * 12.5f;	// WHY DOES IT MAKE IT WORK
-																				// HOW DOES THE EQUATION EVEN WORK ACTUALLY NEVERMIND 12.5f
-		this->SetPosition(Vector3(posX + Player::GetInstance()->GetPos().x, posY + Player::GetInstance()->GetPos().y, 0));
+		float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+		float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+		float posX = (static_cast<float>(x) - halfWindowWidth);
+		float posY = (halfWindowHeight - static_cast<float>(y));
+
+		this->SetPosition(Vector3(posX, posY, 0));
 	}
 }
 
 void UIElement::Render()
 {
-	float w = Application::GetInstance().GetWindowWidth();
-	float h = Application::GetInstance().GetWindowHeight();
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::MAIN_MENU:
@@ -90,36 +68,34 @@ void UIElement::Render()
 		break;
 	case UIManager::GAME_STATE::PLAYING:
 	{
-		float aspectdiff = ((w / h) - (1.f / 3.f));
-		float displace_x = (-w * 0.5f) / (w / (16.f * aspectdiff)); // magic math bullshit that is totally hardcoded i have no idea how to fix this ples halp
+		Vector3 HPposition(-halfWindowWidth + 65.f, halfWindowHeight - 65.f, 0.0f);
 
 		for (float i = Player::GetInstance()->GetHealth(); i > 10.f; i -= 20.f)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate(displace_x + Player::GetInstance()->GetPos().x,
-				5.5f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("full_hp"));
 			modelStack.PopMatrix();
 
-			displace_x += scale.x + 0.1f;
+			HPposition.x += scale.x + 0.1f;
 		}
 
 		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 9)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate((displace_x * (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight()) + Player::GetInstance()->GetPos().x,
-				5.5f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("half_hp"));
 			modelStack.PopMatrix();
 
-			displace_x += scale.x + 0.1f;
+			HPposition.x += scale.x + 0.1f;
 		}
 
-		displace_x = (-w * 0.5f) / (w / (16.f * aspectdiff)) + (scale.x * 5 + 0.5f);
+		float displace_x = Player::GetInstance()->GetMaxHealth() * 0.05f;
+		HPposition.Set(-halfWindowWidth + 65.f + displace_x, halfWindowHeight - 65.f, 0.0f);
 
 		for (float i = (Player::GetInstance()->GetMaxHealth() - Player::GetInstance()->GetHealth()); i > 0; i -= 20.f)
 		{
@@ -127,13 +103,12 @@ void UIElement::Render()
 
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate((displace_x * (float)Application::GetInstance().GetWindowWidth() / (float)Application::GetInstance().GetWindowHeight()) + Player::GetInstance()->GetPos().x,
-				5.5f + Player::GetInstance()->GetPos().y, 0);
+			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("no_hp"));
 			modelStack.PopMatrix();
 
-			displace_x -= scale.x - 0.1f;
+			HPposition -= scale.x - 0.1f;
 		}
 
 		break;

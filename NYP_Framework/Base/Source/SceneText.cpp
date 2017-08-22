@@ -196,7 +196,7 @@ void SceneText::Init()
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
-	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(1, 1, 1), true);
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(50, 50, 1), true);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
@@ -507,6 +507,7 @@ void SceneText::RenderPassMain()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
+	UIManager::GetInstance()->Render();
 	minimap->RenderUI();
 	//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 }
@@ -535,7 +536,6 @@ void SceneText::RenderWorld()
 	ms.PopMatrix();
 
 	EntityManager::GetInstance()->Render(); //place render entity after render map
-	UIManager::GetInstance()->Render();
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
