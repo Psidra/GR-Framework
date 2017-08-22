@@ -68,47 +68,45 @@ void UIElement::Render()
 		break;
 	case UIManager::GAME_STATE::PLAYING:
 	{
-		Vector3 HPposition(-halfWindowWidth + 65.f, halfWindowHeight - 65.f, 0.0f);
+		Vector3 HUDposition(-halfWindowWidth + 65.f, halfWindowHeight - 65.f, 0.0f);
 
 		for (float i = Player::GetInstance()->GetHealth(); i > 10.f; i -= 20.f)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
+			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("full_hp"));
 			modelStack.PopMatrix();
 
-			HPposition.x += scale.x + 0.1f;
+			HUDposition.x += scale.x + 0.1f;
 		}
 
 		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 9)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
+			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("half_hp"));
 			modelStack.PopMatrix();
 
-			HPposition.x += scale.x + 0.1f;
+			HUDposition.x += scale.x + 0.1f;
 		}
 
-		float displace_x = Player::GetInstance()->GetMaxHealth() * 0.05f;
-		HPposition.Set(-halfWindowWidth + 65.f + displace_x, halfWindowHeight - 65.f, 0.0f);
+		float displace_x = scale.x * Player::GetInstance()->GetMaxHealth() * 0.05f;
+		HUDposition.Set(-halfWindowWidth + 65.f + displace_x, halfWindowHeight - 65.f, 0.0f);
 
 		for (float i = (Player::GetInstance()->GetMaxHealth() - Player::GetInstance()->GetHealth()); i > 0; i -= 20.f)
 		{
-
+			HUDposition -= scale.x - 0.1f;
 
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
-			modelStack.Translate(HPposition.x, HPposition.y, HPposition.z);
+			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 			modelStack.Scale(scale.x, scale.y, scale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("no_hp"));
 			modelStack.PopMatrix();
-
-			HPposition -= scale.x - 0.1f;
 		}
 
 		break;
