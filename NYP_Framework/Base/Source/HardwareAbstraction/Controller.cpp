@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../AI FSM/Ai_1.h"
 #include "../Minimap/Minimap.h"
+#include "../Enemy.h"
+#include "../UIManager.h"
 
 using namespace std;
 
@@ -36,6 +38,7 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_CHANGE_WEAPON] = &Controller::ChangeWeapon;
 	this->controllerfunc[CONTROLLER_SPAWN_ENEMY] = &Controller::SpawnEnemy;
 	this->controllerfunc[CONTROLLER_ENLARGE_MAP] = &Controller::EnlargeMap;
+	this->controllerfunc[CONTROLLER_PAUSE] = &Controller::Pause;
 	return false;
 }
 
@@ -81,8 +84,8 @@ bool Controller::MoveRight(double dt)
 
 bool Controller::Shoot(double dt)
 {
-	if (!Player::GetInstance()->isDodging())
-		Player::GetInstance()->Shoot(dt);
+	//if (!Player::GetInstance()->isDodging())
+	//	Player::GetInstance()->Shoot(dt);
 	//std::cout << "Shoot" << std::endl;
 	return false;
 }
@@ -125,6 +128,12 @@ bool Controller::EnlargeMap(double dt)
 		CMinimap::GetInstance()->EnlargeMap(false);
 		return false;
 	}
+	return false;
+}
+
+bool Controller::Pause(double dt)
+{
+	UIManager::GetInstance()->Pause();
 	return false;
 }
 

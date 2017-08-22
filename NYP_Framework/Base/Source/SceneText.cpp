@@ -196,7 +196,7 @@ void SceneText::Init()
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
-	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 0), Vector3(50, 50, 1), true);
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(50, 50, 1), true);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
@@ -205,7 +205,7 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	fontSize = 25.0f;
 	halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
@@ -394,6 +394,11 @@ void SceneText::Update(double dt)
 	ss1.precision(4);
 	ss1 << "Player:" << Player::GetInstance()->GetHealth();
 	textObj[2]->SetText(ss1.str());
+
+	std::ostringstream curr;
+	curr << Player::GetInstance()->GetMoney();
+	textObj[3]->SetText(curr.str());
+	textObj[3]->SetPosition(Vector3(-w * 0.5f + 60.f, h * 0.5f - 150.f, 0.0f));
 
 	// Update textpos for fullscreening
 	for (int i = 0; i < 3; ++i)

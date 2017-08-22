@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../PlayerInfo/PlayerInfo.h"
-#include "../Enemy.h"
 
 class Controller
 {
@@ -21,6 +20,7 @@ public:
 		CONTROLLER_CHANGE_WEAPON,
 		CONTROLLER_SPAWN_ENEMY,
 		CONTROLLER_ENLARGE_MAP,
+		CONTROLLER_PAUSE,
 		NUM_CONRTOLLER,
 	};
 
@@ -43,5 +43,6 @@ public:
 	virtual bool ChangeWeapon(double dt);
 	virtual bool SpawnEnemy(double dt);
 	virtual bool EnlargeMap(double dt);
+	virtual bool Pause(double dt);
 };
 

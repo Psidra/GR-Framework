@@ -32,6 +32,8 @@ Player::Player(void)
 	, m_fHealth(100.f)
 	, m_dAnimElapsedTime(0.0)
 	, m_bLookingUp(false)
+	, m_iMoney(0) // me_irl
+	, m_iBlank(2)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -190,15 +192,18 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		//std::cout << "enemy collide" << std::endl;
 		break;
 	case ENEMY_BULLET:
+	{
 		if (this->m_bDodge)
 			break;
-		
+
 		//std::cout << "player hit by enemy bullet" << std::endl;
 		thatEntity->SetIsDone(true);
-		if (this->m_fHealth >= 10)
-			EditHealth(-10);
-		
+		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
+		if (this->m_fHealth > 0)
+			EditHealth(-Proj->getProjectileDamage());
+
 		break;
+	}
 
 	default:
 		break;
@@ -368,8 +373,10 @@ void Player::Update(double dt)
 		SetMovement(true);
 	
 	// if Mouse Buttons were activated, then act on them
-	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
+	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 	{
+		if (!Player::GetInstance()->isDodging())
+			Player::GetInstance()->Shoot(dt);
 	}
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
@@ -405,10 +412,10 @@ void Player::Update(double dt)
 	}
 
 	// If the user presses R key, then reset the view to default values
-	if (KeyboardController::GetInstance()->IsKeyDown('P'))
-	{
-		Reset(); // I dont think we need this but w/e maybe we might use it :thinking:
-	}
+	//if (KeyboardController::GetInstance()->IsKeyDown('P'))
+	//{
+	//	Reset(); // I dont think we need this but w/e maybe we might use it :thinking:
+	//}
 
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)
@@ -517,6 +524,36 @@ void Player::EditHealth(float _health)
 {
 	if (m_fHealth > 0)
 		this->m_fHealth += _health;
+}
+
+void Player::SetBlanks(int _blanks)
+{
+	this->m_iBlank = _blanks;
+}
+
+int Player::GetBlanks()
+{
+	return this->m_iBlank;
+}
+
+void Player::EditBlanks(int _blanks)
+{
+	this->m_iBlank += _blanks;
+}
+
+void Player::SetMoney(int _money)
+{
+	this->m_iMoney = _money;
+}
+
+int Player::GetMoney()
+{
+	return this->m_iMoney;
+}
+
+void Player::EditMoney(int _money)
+{
+	this->m_iMoney += _money;
 }
 
 GenericEntity ** Player::GetPlayerAnimated()

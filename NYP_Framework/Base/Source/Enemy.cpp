@@ -8,7 +8,7 @@ Constructor
 CEnemy::CEnemy() 
 	:speed(1.0), 
 	position(0,5,0), 
-	health(100.f),
+	health(50.f),
 	weaponIndex(0),
 	isShooting(false),
 	m_bLookingUp(false)
@@ -36,7 +36,7 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType)
 	direction.SetZero();
 	this->SetCollider(true);
 	this->SetSpeed(2.0);
-	this->health = 100.f;
+	this->health = 50.f;
 	weaponIndex = 0;
 
 	SetTypeOfEnemy(_enemyType);
