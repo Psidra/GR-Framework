@@ -27,11 +27,20 @@ void CStrategy_AI_Obstacle::Update(Vector3& theDestination, Vector3 theEnemyPosi
 {
 	shootElapsedTime += dt * 10;
 
+	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
+
+	if (distancePlayerToEnemy > 20) // TODO : Not make this hardcoded lmao
+		this->SetState(IDLE);
+	else
+		this->SetState(ATTACK);
+
 	if (CurrentState == ATTACK && shootElapsedTime > timeBetweenShots)
 	{
 		isShooting = true;
 		shootElapsedTime = 0.0;
 	}
+	else
+		isShooting = false;
 }
 
 /********************************************************************************
