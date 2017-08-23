@@ -260,9 +260,9 @@ void SceneText::Init()
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 
-	//CEnemy* NewObstacle = Create::Enemy(Vector3(-10, -10, 0), "player");
-	//NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
-	//NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
+	NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
