@@ -21,6 +21,7 @@ public:
 		CONTROLLER_SPAWN_ENEMY,
 		CONTROLLER_ENLARGE_MAP,
 		CONTROLLER_PAUSE,
+		CONTROLLER_BLANK,
 		NUM_CONRTOLLER,
 	};
 
@@ -44,5 +45,6 @@ public:
 	virtual bool SpawnEnemy(double dt);
 	virtual bool EnlargeMap(double dt);
 	virtual bool Pause(double dt);
+	virtual bool Blank(double dt); // It would be funny if this was left empty huh
 };
 

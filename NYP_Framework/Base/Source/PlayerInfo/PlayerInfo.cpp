@@ -421,8 +421,8 @@ void Player::Update(double dt)
 	if (attachedCamera)
 	{
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position + Vector3(0, 0, 15));
-		attachedCamera->SetCameraTarget(position);
+		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 15));
+		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 0));
 		attachedCamera->Update(dt);
 	}
 
@@ -508,6 +508,23 @@ bool Player::ChangeWeapon(const float dt)
 void Player::SetView(Vector3 _view)
 {
 	this->view = _view;
+}
+
+void Player::UseBlank()
+{
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+	end = cpy.end();
+
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+
+		if (thatEntity->type == ENEMY_BULLET)
+			thatEntity->SetIsDone(true);
+	}
+
+	--this->m_iBlank;
 }
 
 void Player::SetHealth(float _health)

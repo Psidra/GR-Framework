@@ -31,7 +31,7 @@ CEnemy::~CEnemy(void)
 	}
 }
 
-void CEnemy::Init(float _hp, double _speed, int _enemyType)
+void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _enemy_type)
 {
 	direction.SetZero();
 	this->SetCollider(true);
@@ -40,6 +40,8 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType)
 	weaponIndex = 0;
 
 	SetTypeOfEnemy(_enemyType);
+
+	this->enemy_type = _enemy_type;
 }
 
 void CEnemy::SetTypeOfEnemy(int _enemyType)
@@ -62,6 +64,11 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
 		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
 		break;
+	case 2:
+		for (size_t i = 0; i < 8; i++)
+		{
+			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+		}
 	default:
 		break;
 	}

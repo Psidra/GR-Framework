@@ -5,6 +5,10 @@ Boss::Boss()
 
 }
 
+Boss::Boss(Vector3 pos) : position(pos)
+{
+}
+
 Boss::~Boss()
 {
 
@@ -42,4 +46,16 @@ float Boss::getHealth()
 void Boss::editHealth(float _health)
 {
 	this->m_fHealth += _health;
+}
+
+Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale)
+{
+	Boss* result = new Boss(position);
+	result->SetMesh(MeshList::GetInstance()->GetMesh(_meshName));
+	result->SetPosition(position);
+	result->SetScale(scale);
+	result->SetCollider(true);
+	result->type = GenericEntity::OBJECT_TYPE::ENEMY;
+	EntityManager::GetInstance()->AddEntity(result);
+	return result;
 }
