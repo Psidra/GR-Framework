@@ -23,6 +23,7 @@ Player::Player(void)
 	: m_dSpeed(10.0)
 	, m_dAcceleration(10.0)
 	, m_dElapsedTime(0.0)
+	, hurtElapsedTime(0.0)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
@@ -31,10 +32,10 @@ Player::Player(void)
 	, m_bMoving(false)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
-	, m_dAnimElapsedTime(0.0)
 	, m_bLookingUp(false)
 	, m_iMoney(0) // me_irl
 	, m_iBlank(2)
+	, isHurt(false)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -83,8 +84,8 @@ void Player::Init(void)
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
 
-	playerAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
+	playerAnimated = new GenericEntity*[10];
+	for (size_t i = 0; i < 10; i++)
 	{
 	playerAnimated[i] = new GenericEntity();
 	}
@@ -96,10 +97,14 @@ void Player::Init(void)
 	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
 	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
 	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	playerAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
+	playerAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
+	this->SetIndices_fHurt(8, 8);
+	this->SetIndices_bHurt(9, 9);
 }
 
 // Set position
@@ -203,7 +208,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
 		if (this->m_fHealth > 0)
 			EditHealth(-Proj->getProjectileDamage());
-
+		isHurt = true;
 		break;
 	}
 
@@ -341,7 +346,7 @@ void Player::EditMaxHealth(float _value)
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
-	m_dAnimElapsedTime += dt * 10;
+	hurtElapsedTime += dt;
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
@@ -363,16 +368,21 @@ void Player::Update(double dt)
 	x = x - (w * 0.5f);
 	y = y + (h * 0.5f);
 
-	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
-		m_bLookingUp = true;
-	else
-		m_bLookingUp = false;
-	SetAnimationStatus(m_bLookingUp, m_bMoving, dt);
+	//(y <= h) //W.I.P - to compare cursor pos.y with mid of screen size
+	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt);
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
 	else
 		SetMovement(true);
+
+	if (isHurt == true)
+		hurtElapsedTime += dt;
+	if (hurtElapsedTime > 1.5)
+	{
+		hurtElapsedTime = 0.0;
+		isHurt = false;
+	}
 	
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB))

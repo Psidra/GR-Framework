@@ -17,5 +17,6 @@ public:
 private:
 	// Number of bullet to create and pattern
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
+	//void generateEnemyBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
 };
 

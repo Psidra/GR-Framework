@@ -251,6 +251,10 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bwalk2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_bwalk2")->textureID[0] = LoadTGA("Image/Player/Player_bwalk2.tga");
 
+		MeshBuilder::GetInstance()->GenerateQuad("Player_fHurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_fHurt")->textureID[0] = LoadTGA("Image/Player/Player_fHurt.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("Player_bHurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_bHurt")->textureID[0] = LoadTGA("Image/Player/Player_bHurt.tga");
 
 
 		//-------ENEMY SPRITES

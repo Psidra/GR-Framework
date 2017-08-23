@@ -228,7 +228,7 @@ void SceneText::Init()
 	for (int i = 0; i < 1; ++i)
 	{
 		CEnemy* NewEnemy =  Create::Enemy(Vector3(i+5, 5, 0), "player");
-		NewEnemy->Init(100.0f, 2.0, 1);
+		NewEnemy->Init(50.0f, 1.5, 1);
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 

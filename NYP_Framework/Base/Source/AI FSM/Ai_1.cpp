@@ -8,7 +8,7 @@ using namespace std;
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CStrategy_AI_1::CStrategy_AI_1():maxDistFromPlayer(2), shootElapsedTime(0.0), timeBetweenShots(5.0)
+CStrategy_AI_1::CStrategy_AI_1():maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(1.0)
 {
 }
 
@@ -22,48 +22,49 @@ CStrategy_AI_1::~CStrategy_AI_1()
 /********************************************************************************
 Update method
 ********************************************************************************/
-void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection,  bool& isShooting, double speed, double dt)
+void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
 {
-	shootElapsedTime += dt * 10;
 	// Decide which state to change to
 	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
-
+	shootElapsedTime += dt;
 
 	if (distancePlayerToEnemy > AI_ATTACK_RANGE)
 	{
+		SetIsMoving(true);
 		CurrentState = CHASE;
 	}
-	else if (distancePlayerToEnemy < AI_ATTACK_RANGE)
+	else if (distancePlayerToEnemy <= AI_ATTACK_RANGE)
 	{
+		theEnemyDirection = 0;
 		CurrentState = ATTACK;
 	}
+	
+	
 
 	// Based on the current state, move the enemy
 	switch (CurrentState)
 	{
 	case CHASE:
-		
-		isShooting = false;
+		SetIsShooting(false);
 
-		if (SetIsMoving(true))
-		{
-			if (theDestination.x - maxDistFromPlayer > theEnemyPosition.x)
-				MoveRight(theEnemyDirection);
-			else if (theDestination.x + maxDistFromPlayer < theEnemyPosition.x)
-				MoveLeft(theEnemyDirection);
-			else if (theDestination.y - maxDistFromPlayer > theEnemyPosition.y)
-				MoveUp(theEnemyDirection);
-			else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
-				MoveDown(theEnemyDirection);
-		}
-
+		if (theDestination.x - maxDistFromPlayer > theEnemyPosition.x)
+			MoveRight(theEnemyDirection);
+		else if (theDestination.x + maxDistFromPlayer < theEnemyPosition.x)
+			MoveLeft(theEnemyDirection);
+		if (theDestination.y - maxDistFromPlayer > theEnemyPosition.y)
+			MoveUp(theEnemyDirection);
+		else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
+			MoveDown(theEnemyDirection);
 		break;
 	case ATTACK:
 		if (shootElapsedTime > timeBetweenShots)
 		{
-			isShooting = true;
+			SetIsMoving(false);		//stop animate moving
+			SetIsShooting(true);	//set animate shoot & enable shoot
 			shootElapsedTime = 0.0;
 		}
+		else
+			SetIsShooting(false);	//stop animate shoot & disable shoot
 		break;
 	default:
 		// Do nothing if idling
@@ -114,6 +115,17 @@ bool CStrategy_AI_1::SetIsMoving(bool _isMoving)
 {
 	m_bIsMoving = _isMoving;
 	return _isMoving;
+}
+
+bool CStrategy_AI_1::GetIsShooting(void)
+{
+	return m_bIsShooting;
+}
+
+bool CStrategy_AI_1::SetIsShooting(bool _isShooting)
+{
+	m_bIsShooting = _isShooting;
+	return _isShooting;
 }
 
 /********************************************************************************

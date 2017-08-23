@@ -10,7 +10,7 @@ public:
 	~CStrategy_AI_1(void);
 
 
-	void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, bool& isShooting,double speed, double dt);
+	void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt);
 
 	void SetDestination(const float x, const float y);
 	int GetDestination_x(void);
@@ -18,8 +18,8 @@ public:
 	Vector3 GetDestination(void);
 	bool GetIsMoving(void);
 	bool SetIsMoving(bool _isMoving);
-
-	
+	bool GetIsShooting(void);
+	bool SetIsShooting(bool _isShooting);	
 
 	// The AI states of the enemy
 	enum CURRENT_STATE
@@ -31,8 +31,7 @@ public:
 	};
 	enum AI_STATE_RANGE
 	{
-		AI_CHASE_RANGE = 1500,
-		AI_ATTACK_RANGE = 45,
+		AI_ATTACK_RANGE = 35,
 		NUM_AI_STATE_RANGE,
 	};
 	CStrategy_AI_1::CURRENT_STATE GetState(void);

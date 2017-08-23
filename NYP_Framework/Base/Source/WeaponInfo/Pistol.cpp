@@ -54,11 +54,11 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second			
+			// It will last for 3.0 seconds and travel at 500 units per second
 			generateBullet(position, target);
 
 			bFire = false;
-			if (bulletType == GenericEntity::PLAYER_BULLET)
+			if (bulletType == GenericEntity::PLAYER_BULLET || bulletType == GenericEntity::ENEMY_BULLET)
 			--magRounds;
 		}
 	}
@@ -72,17 +72,33 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 
 	for (int i = 0;i < numBullet;++i)
 	{
-		CProjectile* aProjectile = Create::Projectile("sphere",
-			position,
-			target.Normalized(),
-			scale,
-			2.0f,
-			10.0f);
-		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
-		aProjectile->setIsDots(m_bDots);
-		aProjectile->setIsRicochet(m_bRicochet);
-		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		if (bulletType == GenericEntity::PLAYER_BULLET)
+		{
+			CProjectile* aProjectile = Create::Projectile("sphere",
+				position,
+				target.Normalized(),
+				scale,
+				2.0f,
+				10.0);
+			aProjectile->type = bulletType;
+			aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+			aProjectile->setIsDots(m_bDots);
+			aProjectile->setIsRicochet(m_bRicochet);
+			aProjectile->setIsLaserbeam(m_bLaserBeam);
+		}
+		else if (bulletType == GenericEntity::ENEMY_BULLET)
+		{
+			CProjectile* aProjectile = Create::Projectile("sphere",
+				position,
+				target.Normalized(),
+				scale,
+				2.0f,
+				5.0);
+			aProjectile->type = bulletType;
+			aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+			aProjectile->setIsDots(m_bDots);
+			aProjectile->setIsRicochet(m_bRicochet);
+			aProjectile->setIsLaserbeam(m_bLaserBeam);
+		}
 	}
 }
-
