@@ -22,6 +22,7 @@
 #include "UIElement.h"
 #include "LevelStuff/TileEntity.h"
 #include "LevelStuff/Level.h"
+#include "LevelStuff\QuadTree.h"
 #include "Light.h"
 #include "SkyBox/SkyBoxEntity.h"
 #include "HardwareAbstraction\Keyboard.h"
@@ -193,6 +194,21 @@ void SceneText::Init()
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
+	// test fire
+	GenericEntity* fire = Create::Entity("cube", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	fire->type = GenericEntity::OBJECT_TYPE::FIRE;
+	fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
+
+	// test slow
+	GenericEntity* slow = Create::Entity("cube", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	slow->type = GenericEntity::OBJECT_TYPE::SLOW;
+	slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
+
+	// test poison
+	GenericEntity* poison = Create::Entity("cube", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	poison->type = GenericEntity::OBJECT_TYPE::POISON;
+	poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
+
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
@@ -244,9 +260,9 @@ void SceneText::Init()
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 
-	CEnemy* NewBoss = Create::Enemy(Vector3(-10, -10, 0), "player");
-	NewBoss->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
-	NewBoss->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+	//CEnemy* NewObstacle = Create::Enemy(Vector3(-10, -10, 0), "player");
+	//NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	//NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
@@ -294,6 +310,32 @@ void SceneText::Init()
 	//		}
 	//	}
 	//}
+	
+	/*level = Level::GetInstance();
+	level->init(25.f, 25.f, 5.f, 5.f, 20);
+
+	quadTree = new QuadTree(0.f, 0.f, level->getMapWidth(), level->getMapHeight(), 0, 3);
+
+	for (size_t i = 0; i < level->getMapWidth(); ++i)
+	{
+		for (size_t j = 0; j < level->getMapHeight(); ++j)
+		{
+			TileEntity* temp;
+			if (level->getTile(i, j).type == Tile::EMPTY)
+				Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (level->getTile(i, j).type == Tile::ROOM)
+				Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (level->getTile(i, j).type == Tile::CORRIDOR)
+				Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+			else if (level->getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * 0.5f + temp->GetPosition());
+				quadTree->addObject(temp);
+			}
+		}
+	}*/
 }
 
 void SceneText::Update(double dt)
@@ -304,6 +346,11 @@ void SceneText::Update(double dt)
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float posX = (static_cast<float>(x) - halfWindowWidth) + Player::GetInstance()->GetPos().x;
 	float posY = (halfWindowHeight - static_cast<float>(y)) + Player::GetInstance()->GetPos().y;
+
+	/*list<EntityBase*> temp = quadTree->getObjectsAt(Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y);
+	std::cout << temp.size();
+	EntityManager::GetInstance()->setCollisionList(temp);*/
+	//quadTree->getObjectsAt(playerInfo->GetMinAABB().x, playerInfo->GetMinAABB().y);
 
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);

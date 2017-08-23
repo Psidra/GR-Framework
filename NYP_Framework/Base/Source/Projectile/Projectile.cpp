@@ -7,6 +7,7 @@
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../Enemy.h"
 #include "../CollisionManager.h"
+#include "../Particle/ParticleEffect.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -269,6 +270,7 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 
 		if (HitEnemy->enemy_type != CEnemy::ENEMY_TYPE::OBSTACLE_INVUL)
 		{
+			Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, HitEnemy);
 			HitEnemy->editHP(-Proj->getProjectileDamage());
 		}
 		else

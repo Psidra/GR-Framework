@@ -27,12 +27,16 @@
     <ClCompile Include="Source\HardwareAbstraction\Mouse.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LevelStuff\Level.cpp" />
+    <ClCompile Include="Source\LevelStuff\QuadTree.cpp" />
     <ClCompile Include="Source\LevelStuff\TileEntity.cpp" />
     <ClCompile Include="Source\LevelStuff\TileSet.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Minimap\Minimap.cpp" />
     <ClCompile Include="Source\OBJMesh.cpp" />
+    <ClCompile Include="Source\Particle\Emitter.cpp" />
+    <ClCompile Include="Source\Particle\Particle.cpp" />
+    <ClCompile Include="Source\Particle\ParticleEffect.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
@@ -74,6 +78,9 @@
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />
     <ClInclude Include="Source\OBJMesh.h" />
+    <ClInclude Include="Source\Particle\Emitter.h" />
+    <ClInclude Include="Source\Particle\Particle.h" />
+    <ClInclude Include="Source\Particle\ParticleEffect.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
     <ClInclude Include="Source\SceneText.h" />
