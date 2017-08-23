@@ -507,8 +507,10 @@ void Player::Update(double dt)
 			continue;
 
 		Vector3 temp = CMinimap::GetInstance()->GetScale();
-		if (position.LengthSquared() <= temp.x * temp.x)
+
+		if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
 		{
+			//std::cout << "in range\n";
 			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
 		}
