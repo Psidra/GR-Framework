@@ -43,6 +43,19 @@ void WeaponManager::update(double dt)
 	}
 }
 
+//Render all weapon in list
+void WeaponManager::Render()
+{
+	for (std::list<CWeaponInfo*>::iterator it = weaponList.begin(); it != weaponList.end(); ++it)
+	{
+		if ((*it) == NULL)
+			continue;
+
+		if((*it)->getIsActive())
+			(*it)->Render();
+	}
+}
+
 // Constructor
 WeaponManager::WeaponManager()
 {

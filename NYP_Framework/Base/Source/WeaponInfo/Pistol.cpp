@@ -1,5 +1,8 @@
 #include "Pistol.h"
 #include "../WeaponManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 Pistol::Pistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -45,6 +48,35 @@ void Pistol::Init(void)
 	m_bLaserBeam = false;
 	// projectile speed
 	m_fSpeed = 10.f;
+	// is active
+	m_bActive = false;
+}
+
+// render the weapon
+void Pistol::Render()
+{
+	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
+	//std::cout << rotate << std::endl;
+	if (rotate < 120 && rotate > -120) //right side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(1, 1, 1);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistol"));
+		modelStack.PopMatrix();
+	}
+	else//left side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(-1, -1, 1);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistolLeft"));
+		modelStack.PopMatrix();
+	}
 }
 
 // Discharge this weapon
@@ -56,11 +88,11 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second			
+			// It will last for 3.0 seconds and travel at 500 units per second
 			generateBullet(position, target);
 
 			bFire = false;
-			if (bulletType == GenericEntity::PLAYER_BULLET)
+			if (bulletType == GenericEntity::PLAYER_BULLET || bulletType == GenericEntity::ENEMY_BULLET)
 			--magRounds;
 		}
 	}
@@ -87,4 +119,3 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
 }
-

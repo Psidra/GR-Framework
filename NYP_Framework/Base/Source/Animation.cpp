@@ -22,22 +22,33 @@ CAnimation::~CAnimation()
 {
 }
 
-// Set Animation status; leftright or updown
-void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, double dt)
+// Set Animation status
+void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt)
 {
-	if (this->m_bFacingUp != m_bFacingUp || this->m_bIsMoving != m_bIsMoving)
+	if (this->m_bFacingUp != m_bFacingUp || this->m_bIsMoving != m_bIsMoving || this->m_bIsHurt != m_bIsHurt)
 	{
 		this->m_bFacingUp = m_bFacingUp;
 		this->m_bIsMoving = m_bIsMoving;
+		this->m_bIsHurt = m_bIsHurt;
 
-		if (m_bIsMoving && !m_bFacingUp)
-			m_iAnimation_Index = m_ifWalk_Start;
-		else if (m_bIsMoving && m_bFacingUp)
+		if (m_bIsHurt)
+		{
+			if (m_bFacingUp)
+				m_iAnimation_Index = m_ibHurt_Start;
+			else
+				m_iAnimation_Index = m_ifHurt_Start;
+		}
+		else
+		{
+			if (m_bIsMoving && !m_bFacingUp)
+				m_iAnimation_Index = m_ifWalk_Start;
+			else if (m_bIsMoving && m_bFacingUp)
 				m_iAnimation_Index = m_ibWalk_Start;
-		else if (!m_bIsMoving && !m_bFacingUp)
-			m_iAnimation_Index = m_ifStand_Start;
-		else if (!m_bIsMoving && m_bFacingUp)
-			m_iAnimation_Index = m_ibStand_Start;
+			else if (!m_bIsMoving && !m_bFacingUp)
+				m_iAnimation_Index = m_ifStand_Start;
+			else if (!m_bIsMoving && m_bFacingUp)
+				m_iAnimation_Index = m_ibStand_Start;
+		}
 	}
 
 	UpdateAnimationIndex(dt);
@@ -46,44 +57,58 @@ void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, double d
 void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 {
 	m_dElapsedAnimTime += dt * 10;
-	if (m_bIsMoving && m_bFacingUp)
+
+	//if (m_bIsHurt)
+
+	if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
 	{
-		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		if (m_bIsHurt)	//character hurt
 		{
-			m_iAnimation_Index += 1;
-			if (m_iAnimation_Index > m_ibWalk_End)
-				m_iAnimation_Index = m_ibWalk_Start;
-			m_dElapsedAnimTime = 0.0;
+			if (m_bFacingUp)
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ibHurt_End)
+					m_iAnimation_Index = m_ibHurt_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+			else
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ifHurt_End)
+					m_iAnimation_Index = m_ifHurt_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
 		}
-	}
-	else if (m_bIsMoving && !m_bFacingUp)
-	{
-		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
+		else
 		{
-			m_iAnimation_Index += 1;
-			if (m_iAnimation_Index > m_ifWalk_End)
-				m_iAnimation_Index = m_ifWalk_Start;
-			m_dElapsedAnimTime = 0.0;
-		}
-	}
-	else if (!m_bIsMoving && !m_bFacingUp)
-	{
-		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
-		{
-			m_iAnimation_Index += 1;
-			if (m_iAnimation_Index > m_ifStand_End)
-				m_iAnimation_Index = m_ifStand_Start;
-			m_dElapsedAnimTime = 0.0;
-		}
-	}
-	else if (!m_bIsMoving && m_bFacingUp)
-	{
-		if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
-		{
-			m_iAnimation_Index += 1;
-			if (m_iAnimation_Index > m_ibStand_End)
-				m_iAnimation_Index = m_ibStand_Start;
-			m_dElapsedAnimTime = 0.0;
+			if (m_bIsMoving && m_bFacingUp)		//moving while looking up
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ibWalk_End)
+					m_iAnimation_Index = m_ibWalk_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+			else if (m_bIsMoving && !m_bFacingUp)	//moving while looking down
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ifWalk_End)
+					m_iAnimation_Index = m_ifWalk_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+			else if (!m_bIsMoving && !m_bFacingUp)	//standing while looking down
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ifStand_End)
+					m_iAnimation_Index = m_ifStand_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+			else if (!m_bIsMoving && m_bFacingUp)	//standing while looking up
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ibStand_End)
+					m_iAnimation_Index = m_ibStand_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
 		}
 	}
 }
@@ -115,4 +140,16 @@ void CAnimation::SetIndices_bWalk(const int m_ibWalk_Start, const int m_ibWalk_E
 {
 	this->m_ibWalk_Start = m_ibWalk_Start;
 	this->m_ibWalk_End = m_ibWalk_End;
+}
+
+void CAnimation::SetIndices_fHurt(const int m_ifHurt_Start, const int m_ifHurt_End)
+{	
+	this->m_ifHurt_Start = m_ifHurt_Start;
+	this->m_ifHurt_End = m_ifHurt_End;
+}
+
+void CAnimation::SetIndices_bHurt(const int m_ibHurt_Start, const int m_ibHurt_End)
+{
+	this->m_ibHurt_Start = m_ibHurt_Start;
+	this->m_ibHurt_End = m_ibHurt_End;
 }

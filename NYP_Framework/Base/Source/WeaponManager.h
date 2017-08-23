@@ -20,6 +20,8 @@ public:
 	bool removeWeapon(CWeaponInfo* _existingWeapon);
 	//Update all weapon from list
 	void update(double dt);
+	//Render all weapon in list
+	void Render();
 };
 
 

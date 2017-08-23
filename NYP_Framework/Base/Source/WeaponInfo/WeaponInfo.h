@@ -41,6 +41,12 @@ protected:
 	bool m_bLaserBeam;
 	// projectile speed
 	float m_fSpeed;
+	// gunPos
+	Vector3 gunPos;
+	// gunDir
+	Vector3 gunDir;
+	// bool flag is gun in use
+	bool m_bActive;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -78,6 +84,8 @@ public:
 	virtual void Init(void);
 	// Update the elapsed time
 	void Update(const double dt);
+	// render the weapon
+	virtual void Render() = 0;
 	// Discharge this weapon
 	virtual void Discharge(Vector3 position, Vector3 target) = 0;
 	// Reload this weapon
@@ -100,6 +108,18 @@ public:
 	void setSpeed(float _speed);
 	//get speed
 	float getSpeed();
+	//set gun pos
+	void setGunPos(Vector3 _gunPos);
+	//get gun pos
+	Vector3 getGunPos();
+	//set gun dir
+	void setGunDir(Vector3 _gunDir);
+	//get gun dir
+	Vector3 getGunDir();
+	//set gun dir
+	void setIsActive(bool _isActive);
+	//get gun dir
+	bool getIsActive();
 protected:
 	// Number of bullet to create
 	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle) = 0;

@@ -23,15 +23,24 @@ CStrategy_AI_Obstacle::~CStrategy_AI_Obstacle()
 /********************************************************************************
 Update method
 ********************************************************************************/
-void CStrategy_AI_Obstacle::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, bool& isShooting, double speed, double dt)
+void CStrategy_AI_Obstacle::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
 {
 	shootElapsedTime += dt * 10;
 
+	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
+
+	if (distancePlayerToEnemy > 20) // TODO : Not make this hardcoded lmao
+		this->SetState(IDLE);
+	else
+		this->SetState(ATTACK);
+
 	if (CurrentState == ATTACK && shootElapsedTime > timeBetweenShots)
 	{
-		isShooting = true;
+		SetIsShooting(true);
 		shootElapsedTime = 0.0;
 	}
+	else
+		SetIsShooting(false);
 }
 
 /********************************************************************************

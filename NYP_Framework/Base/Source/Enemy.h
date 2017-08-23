@@ -33,6 +33,10 @@ private:
 	int weaponIndex;
 	bool isShooting;
 	bool m_bLookingUp;
+	double reloadElapsedTime;
+	double hurtElapsedTime;
+	double reloadDuration;
+	bool isHurt;
 
 	
 public:
@@ -51,6 +55,7 @@ public:
 	void Update(double dt = 0.0333f);
 	void Render();
 	void Shoot(double dt);
+	void Reload(double dt);
 
 	void SetSpeed(double speed);
 	float GetHP();

@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "CollisionManager.h"
 #include "WeaponInfo\Pistol.h"
+#include "WeaponInfo\Shotgun.h"
+#include "WeaponManager.h"
 
 /********************************************************************************
 Constructor
@@ -11,7 +13,11 @@ CEnemy::CEnemy()
 	health(50.f),
 	weaponIndex(0),
 	isShooting(false),
-	m_bLookingUp(false)
+	m_bLookingUp(false),
+	reloadElapsedTime(0.0),
+	reloadDuration(3.0),
+	hurtElapsedTime(0.0),
+	isHurt(false)
 {
 }
 
@@ -29,28 +35,40 @@ CEnemy::~CEnemy(void)
 		delete theStrategy;
 		theStrategy = NULL;
 	}
+	for (int i = 0; i < 10; i++)
+	{
+		delete enemyAnimated[i];
+		enemyAnimated[i] = NULL;
+	}
+	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 }
 
 void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _enemy_type)
 {
 	direction.SetZero();
 	this->SetCollider(true);
-	this->SetSpeed(2.0);
-	this->health = 50.f;
+	this->SetSpeed(_speed);
+	this->health = _hp;
 	weaponIndex = 0;
+	reloadElapsedTime = 0.0;
+	reloadDuration = 3.0;
+	hurtElapsedTime = 0.0;
+	isHurt = false;
 
 	SetTypeOfEnemy(_enemyType);
 
 	this->enemy_type = _enemy_type;
+	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 void CEnemy::SetTypeOfEnemy(int _enemyType)
 {
-	enemyAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
+	enemyAnimated = new GenericEntity*[10];
+	for (size_t i = 0; i < 10; i++)
 	{
 		this->enemyAnimated[i] = new GenericEntity();
 	}
+	enemyInventory = new Inventory;
 
 	switch (_enemyType) //WIP - set choice of units to spawn
 	{
@@ -63,12 +81,17 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
 		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
 		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
+		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
+		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		break;
 	case 2:
 		for (size_t i = 0; i < 8; i++)
 		{
 			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
 		}
+		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
+		break;
 	default:
 		break;
 	}
@@ -76,34 +99,47 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
-
-	enemyInventory = new Inventory;
-	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
+	this->SetIndices_fHurt(8, 8);
+	this->SetIndices_bHurt(9, 9);
 }
 
 void CEnemy::Update(double dt)
 {
 	this->SetPosition(this->position);
 	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
-
+	
 	if (this->theStrategy != NULL)
 	{
-		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->isShooting, this->speed, dt);
+		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->speed, dt);
 		this->CollisionCheck();
 		this->position += this->direction * this->speed * (float)dt;
-
-		if (this->isShooting)
+		
+		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
 			this->Shoot(dt);
 
-		if (Player::GetInstance()->GetPos().y > this->GetPos().y)
-			m_bLookingUp = true;
-		else
-			m_bLookingUp = false;
+		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
+			reloadElapsedTime += dt;
+		if (reloadElapsedTime > reloadDuration)
+		{
+			Reload(dt);
+			reloadElapsedTime = 0.0;
+		}
 	}
 	if (health <= 0)
 		this->SetIsDone(true);
-	
-	this->SetAnimationStatus(m_bLookingUp, this->theStrategy->GetIsMoving(), dt);
+	if (isHurt == true)
+		hurtElapsedTime += dt;
+	if (hurtElapsedTime > 1.5)
+	{
+		hurtElapsedTime = 0.0;
+		isHurt = false;
+	}
+
+	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y) ? true : false, 
+							this->theStrategy->GetIsMoving(), isHurt, dt);
+	//set gun pos to enemy pos
+	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
 }
 
 void CEnemy::Render()
@@ -127,8 +163,14 @@ void CEnemy::Shoot(double dt)
 		break;
 	}
 	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
-	//std::cout << "Enemy Shoot" << std::endl;
+	//std::cout << enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() << "/" << enemyInventory->getWeaponList()[weaponIndex]->GetMaxMagRound() << std::endl;
 }
+
+void CEnemy::Reload(double dt)
+{
+	enemyInventory->getWeaponList()[weaponIndex]->Reload();
+}
+
 
 void CEnemy::SetSpeed(double speed)
 {
@@ -179,12 +221,12 @@ void CEnemy::CollisionCheck()
 					direction.y = 0;
 					break;
 				}
-				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
-				{
-					std::cout << "Something is blocking enemy up" << std::endl;
-					direction.y = 0;
-					break;
-				}
+			}
+			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+			{
+				std::cout << "Something is blocking enemy up" << std::endl;
+				direction.y = 0;
+				break;
 			}
 		}
 		this->SetAABB(tempMax, tempMin);
@@ -210,12 +252,12 @@ void CEnemy::CollisionCheck()
 					direction.y = 0;
 					break;
 				}
-				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
-				{
-					std::cout << "Something is blocking enemy down" << std::endl;
-					direction.y = 0;
-					break;
-				}
+			}
+			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+			{
+				std::cout << "Something is blocking enemy down" << std::endl;
+				direction.y = 0;
+				break;
 			}
 		}
 		this->SetAABB(tempMax, tempMin);
@@ -241,12 +283,12 @@ void CEnemy::CollisionCheck()
 					direction.x = 0;
 					break;
 				}
-				else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
-				{
-					std::cout << "Something is blocking enemy right" << std::endl;
-					direction.x = 0;
-					break;
-				}
+			}
+			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
+			{
+				std::cout << "Something is blocking enemy right" << std::endl;
+				direction.x = 0;
+				break;
 			}
 		}
 		this->SetAABB(tempMax, tempMin);
@@ -299,8 +341,13 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 		//std::cout << "enemy collide with enemy" << std::endl;
 		break;
 	case GenericEntity::OBJECT_TYPE::PLAYER:
-		std::cout << "enemy collide with player" << std::endl;
+		//std::cout << "enemy collide with player" << std::endl;
 		break;
+	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+		isHurt = true;
+		std::cout << "enemy collide with player bullet" << std::endl;
+		break;
+
 	default:
 		break;
 	}

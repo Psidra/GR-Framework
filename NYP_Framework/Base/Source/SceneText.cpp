@@ -256,13 +256,13 @@ void SceneText::Init()
 	for (int i = 0; i < 1; ++i)
 	{
 		CEnemy* NewEnemy =  Create::Enemy(Vector3(i+5, 5, 0), "player");
-		NewEnemy->Init(100.0f, 2.0, 1);
+		NewEnemy->Init(50.0f, 1.5, 1);
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 
-	//CEnemy* NewObstacle = Create::Enemy(Vector3(-10, -10, 0), "player");
-	//NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
-	//NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
+	NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
@@ -622,6 +622,7 @@ void SceneText::RenderWorld()
 	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("quad"));
 	//ms.PopMatrix();
 
+
 	ms.PushMatrix();
 	ms.Translate(0, 0, -5);
 	ms.Scale(70, 50, 1);
@@ -629,6 +630,8 @@ void SceneText::RenderWorld()
 	ms.PopMatrix();
 
 	EntityManager::GetInstance()->Render(); //place render entity after render map
+
+	WeaponManager::GetInstance()->Render();
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);

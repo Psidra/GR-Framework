@@ -1,5 +1,8 @@
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 Rifle::Rifle(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -45,7 +48,34 @@ void Rifle::Init(void)
 	m_bLaserBeam = false;
 	// projectile speed
 	m_fSpeed = 15.f;
+	// is active
+	m_bActive = false;
+}
 
+void Rifle::Render()
+{
+	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
+	//std::cout << rotate << std::endl;
+	if (rotate < 120 && rotate > -120) //right side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(1.5, 1.5, 1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		modelStack.PopMatrix();
+	}
+	else//left side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(-1.5, -1.5, 1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifleLeft"));
+		modelStack.PopMatrix();
+	}
 }
 
 void Rifle::Discharge(Vector3 position, Vector3 target)

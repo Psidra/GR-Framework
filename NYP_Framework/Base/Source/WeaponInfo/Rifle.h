@@ -10,6 +10,8 @@ public:
 
 	// Initialise this instance to default values
 	void Init(void);
+	//render weapon
+	void Render();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
 

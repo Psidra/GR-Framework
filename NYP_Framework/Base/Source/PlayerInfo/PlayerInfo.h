@@ -153,10 +153,11 @@ private:
 	int m_iMoney; // doshhhh
 	int m_iKeys; // Not sure if we will keep this or not
 
-	double m_dAnimElapsedTime; //bouncetime for animation sequence - used in old anim for now
+	double hurtElapsedTime;		//bouncetime for hurt animation
 	GenericEntity** playerAnimated;
 
 	double x, y;			//cursor pos
 	int w, h;				//screen width & height	
 	bool m_bLookingUp;		//checks if player is looking up or down
+	bool isHurt;
 };

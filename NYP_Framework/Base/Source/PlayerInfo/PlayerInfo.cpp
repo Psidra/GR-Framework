@@ -24,6 +24,7 @@ Player::Player(void)
 	: m_dSpeed(10.0)
 	, m_dAcceleration(10.0)
 	, m_dElapsedTime(0.0)
+	, hurtElapsedTime(0.0)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
@@ -32,10 +33,10 @@ Player::Player(void)
 	, m_bMoving(false)
 	, weaponIndex(0)
 	, m_fHealth(100.f)
-	, m_dAnimElapsedTime(0.0)
 	, m_bLookingUp(false)
 	, m_iMoney(0) // me_irl
 	, m_iBlank(2)
+	, isHurt(false)
 	, m_bFire(false)
 	, m_bSlow(false)
 	, m_bPoison(false)
@@ -89,8 +90,8 @@ void Player::Init(void)
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
 
-	playerAnimated = new GenericEntity*[8];
-	for (size_t i = 0; i < 8; i++)
+	playerAnimated = new GenericEntity*[10];
+	for (size_t i = 0; i < 10; i++)
 	{
 	playerAnimated[i] = new GenericEntity();
 	}
@@ -102,10 +103,15 @@ void Player::Init(void)
 	playerAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fwalk2"));
 	playerAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk1"));
 	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
+	playerAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
+	playerAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
+	this->SetIndices_fHurt(8, 8);
+	this->SetIndices_bHurt(9, 9);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 // Set position
@@ -212,6 +218,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 
 		if (this->m_fHealth > 0)
 			EditHealth(-Proj->getProjectileDamage());
+		isHurt = true;
 		break;
 	}
 	case PIT:
@@ -372,7 +379,7 @@ void Player::EditMaxHealth(float _value)
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
-	m_dAnimElapsedTime += dt * 10;
+	hurtElapsedTime += dt;
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
@@ -420,16 +427,21 @@ void Player::Update(double dt)
 	x = x - (w * 0.5f);
 	y = y + (h * 0.5f);
 
-	if (y <= h) //W.I.P - my got shitty math to compare cursor pos.y with mid of screen size
-		m_bLookingUp = true;
-	else
-		m_bLookingUp = false;
-	SetAnimationStatus(m_bLookingUp, m_bMoving, dt);
+	//(y <= h) //W.I.P - to compare cursor pos.y with mid of screen size
+	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt);
 
 	if (direction.x == 0 && direction.y == 0)
 		SetMovement(false);
 	else
 		SetMovement(true);
+
+	if (isHurt == true)
+		hurtElapsedTime += dt;
+	if (hurtElapsedTime > 1.5)
+	{
+		hurtElapsedTime = 0.0;
+		isHurt = false;
+	}
 	
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
@@ -440,18 +452,20 @@ void Player::Update(double dt)
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-		if (m_dElapsedTime > (m_dRollTime + 0.43f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
+		if (m_dElapsedTime > (m_dRollTime + 0.35f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
 		{
 			// SUPAH COOL
 			setDodge(true);
 			m_dSpeed = 30;
-			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
+			m_dRollTime = m_dElapsedTime + 0.15f;
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
 			if (this->m_bFire)
 			{
 				m_dFireTickUp = m_dElapsedTime + 2.f;
 				--FireIntensity;
+
+				std::cout << "Fire Intensity:" << FireIntensity << std::endl;
 			}
 
 			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
@@ -499,7 +513,6 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//update minimap to render rooms here to be changed
-
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -507,12 +520,18 @@ void Player::Update(double dt)
 			continue;
 
 		Vector3 temp = CMinimap::GetInstance()->GetScale();
-		if (position.LengthSquared() <= temp.x * temp.x)
+
+		if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
 		{
+			//std::cout << "in range\n";
 			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
 		}
 	}
+
+	//set weapon pos
+	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }
 
 // Constrain the position within the borders
@@ -569,8 +588,10 @@ bool Player::Reload(const float dt)
 // Change Weapon
 bool Player::ChangeWeapon(const float dt)
 {	
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 	++weaponIndex;
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
 	return false;
 }
