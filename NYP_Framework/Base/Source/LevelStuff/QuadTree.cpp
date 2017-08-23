@@ -36,7 +36,7 @@ QuadTree::~QuadTree()
 	delete SE;
 }
 
-void QuadTree::addObject(GenericEntity * object)
+void QuadTree::addObject(EntityBase * object)
 {
 	if (level == maxLevel)
 		objects.push_back(object);
@@ -52,9 +52,9 @@ void QuadTree::addObject(GenericEntity * object)
 		objects.push_back(object);
 }
 
-list<GenericEntity*> QuadTree::getObjectsAt(float _x, float _y)
+list<EntityBase*> QuadTree::getObjectsAt(float _x, float _y)
 {
-	list<GenericEntity*> returnObjects, childReturnObjects;
+	list<EntityBase*> returnObjects, childReturnObjects;
 
 	if (level == maxLevel)
 		return objects;
@@ -86,14 +86,14 @@ list<GenericEntity*> QuadTree::getObjectsAt(float _x, float _y)
 	return returnObjects;
 }
 
-bool QuadTree::contains(QuadTree * child, GenericEntity * object)
+bool QuadTree::contains(QuadTree * child, EntityBase * object)
 {
 	return !(object->GetPosition().x < child->x ||
 		object->GetPosition().y < child->y ||
 		object->GetPosition().x > child->x + child->width ||
 		object->GetPosition().y > child->y + child->height ||
-		object->GetPosition().x + object->GetMinAABB().x  < child->x ||
-		object->GetPosition().y + object->GetMinAABB().y < child->y ||
-		object->GetPosition().x + object->GetMinAABB().x  > child->x + child->width ||
-		object->GetPosition().y + object->GetMinAABB().y > child->y + child->height);
+		object->GetPosition().x + object->GetScale().x * 0.5f < child->x ||
+		object->GetPosition().y + object->GetScale().y * 0.5f < child->y ||
+		object->GetPosition().x + object->GetScale().x * 0.5f > child->x + child->width ||
+		object->GetPosition().y + object->GetScale().y * 0.5f > child->y + child->height);
 }

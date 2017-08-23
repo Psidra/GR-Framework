@@ -20,6 +20,8 @@ class TextEntity;
 class Light;
 class Keyboard;
 class CMinimap;
+class Level;
+class QuadTree;
 
 class SceneText : public Scene
 {	
@@ -54,6 +56,9 @@ private:
 	void RenderWorld();
 	Mesh* light_depth_mesh;
 	CMinimap* minimap;
+
+	QuadTree* quadTree;
+	Level* level;
 };
 
 #endif

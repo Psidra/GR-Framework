@@ -22,6 +22,7 @@
 #include "UIElement.h"
 #include "LevelStuff/TileEntity.h"
 #include "LevelStuff/Level.h"
+#include "LevelStuff\QuadTree.h"
 #include "Light.h"
 #include "SkyBox/SkyBoxEntity.h"
 #include "HardwareAbstraction\Keyboard.h"
@@ -309,6 +310,32 @@ void SceneText::Init()
 	//		}
 	//	}
 	//}
+	
+	/*level = Level::GetInstance();
+	level->init(25.f, 25.f, 5.f, 5.f, 20);
+
+	quadTree = new QuadTree(0.f, 0.f, level->getMapWidth(), level->getMapHeight(), 0, 3);
+
+	for (size_t i = 0; i < level->getMapWidth(); ++i)
+	{
+		for (size_t j = 0; j < level->getMapHeight(); ++j)
+		{
+			TileEntity* temp;
+			if (level->getTile(i, j).type == Tile::EMPTY)
+				Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (level->getTile(i, j).type == Tile::ROOM)
+				Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+			else if (level->getTile(i, j).type == Tile::CORRIDOR)
+				Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+			else if (level->getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * 0.5f + temp->GetPosition());
+				quadTree->addObject(temp);
+			}
+		}
+	}*/
 }
 
 void SceneText::Update(double dt)
@@ -319,6 +346,11 @@ void SceneText::Update(double dt)
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float posX = (static_cast<float>(x) - halfWindowWidth) + Player::GetInstance()->GetPos().x;
 	float posY = (halfWindowHeight - static_cast<float>(y)) + Player::GetInstance()->GetPos().y;
+
+	/*list<EntityBase*> temp = quadTree->getObjectsAt(Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y);
+	std::cout << temp.size();
+	EntityManager::GetInstance()->setCollisionList(temp);*/
+	//quadTree->getObjectsAt(playerInfo->GetMinAABB().x, playerInfo->GetMinAABB().y);
 
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);

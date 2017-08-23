@@ -201,6 +201,9 @@
     <ClCompile Include="Source\AI FSM\Ai_obstacle.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LevelStuff\QuadTree.cpp">
+      <Filter>LevelStuff</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Particle\Emitter.cpp">
       <Filter>Particle</Filter>
     </ClCompile>
@@ -325,7 +328,7 @@
     </ClInclude>
     <ClInclude Include="Source\LevelStuff\QuadTree.h">
       <Filter>LevelStuff\LevelStuffHeader</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_obstacle.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>

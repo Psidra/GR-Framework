@@ -27,6 +27,7 @@
     <ClCompile Include="Source\HardwareAbstraction\Mouse.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LevelStuff\Level.cpp" />
+    <ClCompile Include="Source\LevelStuff\QuadTree.cpp" />
     <ClCompile Include="Source\LevelStuff\TileEntity.cpp" />
     <ClCompile Include="Source\LevelStuff\TileSet.cpp" />
     <ClCompile Include="Source\Light.cpp" />

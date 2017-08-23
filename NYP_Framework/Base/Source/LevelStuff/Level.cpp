@@ -4,12 +4,27 @@
 #include "Vector3.h"
 #include <algorithm>
 
+#include "TileEntity.h"
+
 Level::Level() : roomCount(0)
 {
 }
 
 Level::~Level()
 {
+}
+
+void Level::init(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts)
+{
+	this->mapHeight = mapHeight;
+	this->mapWidth = mapWidth;
+	this->maxRoomHeight = maxRoomHeight;
+	this->maxRoomWidth = maxRoomWidth;
+	generate();
+	createMap(maxAttempts);
+	testCout();
+
+	//Level* level = Level::GetInstance();
 }
 
 void Level::setMaxRooms(int num)
@@ -22,42 +37,42 @@ int Level::getMaxRooms()
 	return maxRooms;
 }
 
-void Level::setMapWidth(int size)
+void Level::setMapWidth(float size)
 {
 	mapWidth = size;
 }
 
-int Level::getMapWidth()
+float Level::getMapWidth()
 {
 	return mapWidth;
 }
 
-void Level::setMapHeight(int size)
+void Level::setMapHeight(float size)
 {
 	mapHeight = size;
 }
 
-int Level::getMapHeight()
+float Level::getMapHeight()
 {
 	return mapHeight;
 }
 
-void Level::setMaxRoomHeight(int size)
+void Level::setMaxRoomHeight(float size)
 {
 	maxRoomHeight = size;
 }
 
-int Level::getMaxRoomHeight()
+float Level::getMaxRoomHeight()
 {
 	return maxRoomHeight;
 }
 
-void Level::setMaxRoomWidth(int size)
+void Level::setMaxRoomWidth(float size)
 {
 	maxRoomWidth = size;
 }
 
-int Level::getMaxRoomWidth()
+float Level::getMaxRoomWidth()
 {
 	return maxRoomWidth;
 }
@@ -74,7 +89,7 @@ void Level::generateRooms()
 	
 }
 
-void Level::addRoom(int roomPosX, int roomPosY, int roomWidth, int roomHeight)
+void Level::addRoom(float roomPosX, float roomPosY, float roomWidth, float roomHeight)
 {
 	for (int i = roomPosX; i < (roomWidth + roomPosX) ; ++i)
 	{
@@ -88,7 +103,7 @@ void Level::addRoom(int roomPosX, int roomPosY, int roomWidth, int roomHeight)
 	roomCount++;
 }
 
-bool Level::isRoomOverlap(int roomPosX, int roomPosY, int roomWidth, int roomHeight)
+bool Level::isRoomOverlap(float roomPosX, float roomPosY, float roomWidth, float roomHeight)
 {
 	for (int i = roomPosX; i < (roomWidth + roomPosX); ++i)
 	{
@@ -153,7 +168,7 @@ void Level::generateCorridors()
 	}
 }
 
-void Level::addCorridor(int x, int y, int dir, int l)
+void Level::addCorridor(float x, float y, int dir, int l)
 {
 	if (dir == 3) {
 		for (int i = y; i < y + l + 1; ++i) setTile(x, i, Tile::CORRIDOR);
