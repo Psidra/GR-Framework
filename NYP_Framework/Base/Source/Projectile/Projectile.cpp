@@ -227,7 +227,16 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		this->SetIsDone(true);
 		CEnemy* HitEnemy = dynamic_cast<CEnemy*>(ThatEntity);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
-		HitEnemy->editHP(-Proj->getProjectileDamage());
+
+		if (HitEnemy->enemy_type != CEnemy::ENEMY_TYPE::OBSTACLE_INVUL)
+		{
+			HitEnemy->editHP(-Proj->getProjectileDamage());
+		}
+		else
+		{
+			std::cout << "enemy is invulnerable!" << std::endl;
+		}
+
 		std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	}

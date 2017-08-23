@@ -26,6 +26,7 @@ public:
 		CURSOR,
 		START,
 		RESUME,
+		OPTION,
 		BACK,
 		EXIT,
 		VOL_UP,

@@ -37,6 +37,9 @@ void UIElement::Update()
 		break;
 	}
 
+	if (this->m_bCollider)
+		this->SetAABB(Vector3((this->scale * 0.5f) + this->position), Vector3((this->scale * -0.5f) + this->position));
+
 	if (this->type == CURSOR)
 	{
 		//double x, y;
@@ -69,17 +72,18 @@ void UIElement::Render()
 	case UIManager::GAME_STATE::PLAYING:
 	{
 		Vector3 HUDposition(-halfWindowWidth + 45.f, halfWindowHeight - 45.f, 8.0f);
+		Vector3 HUDscale(50, 50, 1);
 
 		for (float i = Player::GetInstance()->GetHealth(); i > 10.f; i -= 20.f)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
 			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
-			modelStack.Scale(scale.x, scale.y, scale.z);
+			modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("full_hp"));
 			modelStack.PopMatrix();
 
-			HUDposition.x += scale.x + 0.1f;
+			HUDposition.x += HUDscale.x + 0.1f;
 		}
 
 		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 == 10)
@@ -87,24 +91,24 @@ void UIElement::Render()
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
 			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
-			modelStack.Scale(scale.x, scale.y, scale.z);
+			modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("half_hp"));
 			modelStack.PopMatrix();
 
-			HUDposition.x += scale.x + 0.1f;
+			HUDposition.x += HUDscale.x + 0.1f;
 		}
 
-		float displace_x = scale.x * Player::GetInstance()->GetMaxHealth() * 0.05f;
+		float displace_x = HUDscale.x * Player::GetInstance()->GetMaxHealth() * 0.05f;
 		HUDposition.Set(-halfWindowWidth + 45.f + displace_x, halfWindowHeight - 45.f, 8.0f);
 
 		for (float i = (Player::GetInstance()->GetMaxHealth() - Player::GetInstance()->GetHealth()); i > 0; i -= 20.f)
 		{
-			HUDposition -= scale.x - 0.1f;
+			HUDposition -= HUDscale.x - 0.1f;
 
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
 			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
-			modelStack.Scale(scale.x, scale.y, scale.z);
+			modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("no_hp"));
 			modelStack.PopMatrix();
 		}
@@ -116,11 +120,11 @@ void UIElement::Render()
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
 			modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
-			modelStack.Scale(scale.x * 0.7f, scale.y * 0.7f, scale.z);
+			modelStack.Scale(HUDscale.x * 0.7f, HUDscale.y * 0.7f, HUDscale.z);
 			RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("blank"));
 			modelStack.PopMatrix();
 
-			HUDposition += scale.x * 0.7f;
+			HUDposition += HUDscale.x * 0.7f;
 		}
 
 		HUDposition.Set(-halfWindowWidth + 40.f, halfWindowHeight - 150.f, 8.0f);
@@ -128,15 +132,29 @@ void UIElement::Render()
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
 		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
-		modelStack.Scale(scale.x * 0.6f, scale.y * 0.6f, scale.z);
+		modelStack.Scale(HUDscale.x * 0.6f, HUDscale.y * 0.6f, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("currency"));
 		modelStack.PopMatrix();
 
 		break;
 	}
 	case UIManager::GAME_STATE::PAUSE:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(1000.f, 1000.f, 1000.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pause_menu"));
+		modelStack.PopMatrix();
+
+		//if (this->type == CURSOR)
+		//	return;
 
 		break;
+	}
 	case UIManager::GAME_STATE::OPTIONS:
 
 		break;

@@ -39,6 +39,7 @@ bool Controller::Create(Player* thePlayerInfo)
 	this->controllerfunc[CONTROLLER_SPAWN_ENEMY] = &Controller::SpawnEnemy;
 	this->controllerfunc[CONTROLLER_ENLARGE_MAP] = &Controller::EnlargeMap;
 	this->controllerfunc[CONTROLLER_PAUSE] = &Controller::Pause;
+	this->controllerfunc[CONTROLLER_BLANK] = &Controller::Blank;
 	return false;
 }
 
@@ -134,6 +135,14 @@ bool Controller::EnlargeMap(double dt)
 bool Controller::Pause(double dt)
 {
 	UIManager::GetInstance()->Pause();
+	return false;
+}
+
+bool Controller::Blank(double dt)
+{
+	if (Player::GetInstance()->GetBlanks() > 0)
+		Player::GetInstance()->UseBlank();
+
 	return false;
 }
 

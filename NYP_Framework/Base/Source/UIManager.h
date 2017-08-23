@@ -15,11 +15,11 @@ public:
 	~UIManager();
 
 	enum GAME_STATE {
-		NONE = 0,
-		MAIN_MENU,
+		MAIN_MENU = 0,
 		PLAYING,
 		PAUSE,
 		OPTIONS,
+		ALL,
 	}state;
 
 	void Pause();

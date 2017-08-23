@@ -4,11 +4,14 @@
 #include "GenericEntity.h"
 #include "Strategy.h"
 #include "Animation.h"
+#include "MeshBuilder.h"
+#include "EntityManager.h"
 
 class Boss : public GenericEntity, public CAnimation
 {
 public:
 	Boss();
+	Boss(Vector3 pos);
 	~Boss();
 
 	// Collision Response
@@ -38,6 +41,11 @@ private:
 	float m_fMaxHealth;
 
 	CStrategy* theStrategy;
+};
+
+namespace Create
+{
+	Boss* SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1));
 };
 
 #endif // !BOSS_H
