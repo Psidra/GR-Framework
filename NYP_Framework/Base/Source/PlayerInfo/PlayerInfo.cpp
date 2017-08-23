@@ -440,18 +440,20 @@ void Player::Update(double dt)
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-		if (m_dElapsedTime > (m_dRollTime + 0.43f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
+		if (m_dElapsedTime > (m_dRollTime + 0.35f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
 		{
 			// SUPAH COOL
 			setDodge(true);
 			m_dSpeed = 30;
-			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
+			m_dRollTime = m_dElapsedTime + 0.15f;
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
 			if (this->m_bFire)
 			{
 				m_dFireTickUp = m_dElapsedTime + 2.f;
 				--FireIntensity;
+
+				std::cout << "Fire Intensity:" << FireIntensity << std::endl;
 			}
 
 			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
