@@ -327,6 +327,7 @@ void CMinimap::RenderUI()
 			{
 				modelStack.PushMatrix();
 				//modelStack.Translate(Player::GetInstance()->GetPos().x  * (1 / scale.x), Player::GetInstance()->GetPos().y  * (1 / scale.x), Player::GetInstance()->GetPos().z);
+				modelStack.Rotate(Math::RadianToDegree(atan2(Player::GetInstance()->GetView().y, Player::GetInstance()->GetView().x)) - 90, 0, 0, 1);
 				modelStack.Scale(playerMapScale.x, playerMapScale.y, playerMapScale.z);
 				RenderHelper::RenderMesh(m_cMinimap_Avatar);
 				modelStack.PopMatrix();

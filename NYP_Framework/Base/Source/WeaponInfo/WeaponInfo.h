@@ -39,6 +39,8 @@ protected:
 	bool m_bRicochet;
 	// is laserBeam
 	bool m_bLaserBeam;
+	// projectile speed
+	float m_fSpeed;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -94,7 +96,10 @@ public:
 	void setIsDots(bool _isDots);
 	//get bDots
 	bool getDots();
-
+	//set speed
+	void setSpeed(float _speed);
+	//get speed
+	float getSpeed();
 protected:
 	// Number of bullet to create
 	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle) = 0;

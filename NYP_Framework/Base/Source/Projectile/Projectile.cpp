@@ -6,6 +6,7 @@
 #include "RenderHelper.h"
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../Enemy.h"
+#include "../CollisionManager.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -147,24 +148,48 @@ void CProjectile::Update(double dt)
 	}
 
 	// Update Position
-	if(!m_bProjectileLaserBeam)
-		position += theDirection * (float)(dt * m_fSpeed);
-	/*else
-	{
-		position = Player::GetInstance()->GetPos();
-		theDirection = Player::GetInstance()->GetView();
+	//if(!m_bProjectileLaserBeam)
+	//if (m_bProjectileLaserBeam)
+	//{
+	//	EntityManager* temp = EntityManager::GetInstance();
+	//	for (std::list<EntityBase*>::iterator it = temp->getCollisionList().begin();
+	//		it != temp->getCollisionList().end(); ++it)
+	//	{
+	//		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::ENEMY)
+	//			continue;
 
-	}*/
-	if (m_bProjectileLaserBeam)
-	{
+	//		//if ((*it)->GetPosition() >= Player::GetInstance()->GetPos() &&
+	//		//	(*it)->GetPosition() <= position)
+	//		//	std::cout << "A: " << (*it)->GetPosition() << "\n";
 
-	}
+	//		// (A + (0.1 * AB.normalise))
+	//		Vector3 AB = (position - Player::GetInstance()->GetPos()).Normalize();
+	//		Vector3 A = Player::GetInstance()->GetPos();
+	//		while(A <= position)
+	//		{
+	//			if (CollisionManager::GetInstance()->CheckPointToAABBCollision(A, (*it)))
+	//				std::cout << "hit\n";
+	//				//CollisionResponse(dynamic_cast<GenericEntity*>(*it));
+	//			A = A + (0.1f * AB);
+	//			std::cout << "A: " << A << std::endl;
+	//		}
+
+	//		//std::cout << "pPos: " << Player::GetInstance()->GetPos() << "\n";
+	//		//std::cout << "ePos: " << (*it)->GetPosition() << std::endl;
+	//		//std::cout << "tPos: " << position << std::endl;
+	//	}
+
+	//}
+
+	position += theDirection * (float)(dt * m_fSpeed);
+
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
 	//				position.y + (float)(theDirection.y * dt * m_fSpeed),
 	//				position.z + (float)(theDirection.z * dt * m_fSpeed));
 
 	//set projectile AABB
-	SetAABB(position + scale, position - scale);
+	if(!m_bProjectileLaserBeam)
+		SetAABB(position + scale * 0.5, position - scale * 0.5);
 }
 
 // Render this projectile
@@ -179,9 +204,23 @@ void CProjectile::Render(void)
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Rotate(Math::RadianToDegree(atan2(theDirection.y, theDirection.x)), 0, 0, 1);
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
+
+	//display AABB range
+	//modelStack.PushMatrix();
+	//modelStack.Translate(this->GetMaxAABB().x, this->GetMaxAABB().y, this->GetMaxAABB().z);
+	//modelStack.Scale(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5);
+	//RenderHelper::RenderMesh(modelMesh);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//modelStack.Translate(this->GetMinAABB().x, this->GetMinAABB().y, this->GetMinAABB().z);
+	//modelStack.Scale(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5);
+	//RenderHelper::RenderMesh(modelMesh);
+	//modelStack.PopMatrix();
 }
 
 // Collision Response
@@ -215,7 +254,7 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 				theDirection = vel;
 			}
 		}
-		else
+		else if(!m_bProjectileRicochet && !m_bProjectileLaserBeam)
 			this->isDone = true;
 	}
 		break;

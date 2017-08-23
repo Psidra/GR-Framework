@@ -43,6 +43,8 @@ void Shotgun::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 10.f;
 }
 
 void Shotgun::Discharge(Vector3 position, Vector3 target)
@@ -85,7 +87,7 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 			target.Normalized(),
 			scale,
 			2.0f,
-			10.0f);
+			m_fSpeed);
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
