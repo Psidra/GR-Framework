@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "TileSet.h"
+#include "SingletonTemplate.h"
 
 #include <map>
 #include <vector>
@@ -12,26 +13,26 @@ using std::vector;
 using std::string;
 using std::pair;
 
-class Level
+class Level : public Singleton<Level>
 {
 public:
 	struct Point {
-		int x;
-		int y;
-		Point(int _x, int _y) { x = _x; y = _y; };
+		float x;
+		float y;
+		Point(float _x, float _y) { x = _x; y = _y; };
 		Point() {};
 	};
 
 	struct Rectangle {
 
-		int x = 0;
-		int y = 0;
-		int width = 0;
-		int height = 0;
-		int x2 = 0;
-		int y2 = 0;
+		float x = 0;
+		float y = 0;
+		float width = 0;
+		float height = 0;
+		float x2 = 0;
+		float y2 = 0;
 
-		Rectangle(int _x, int _y, int _width, int _height) 
+		Rectangle(float _x, float _y, float _width, float _height)
 		{ 
 			x = _x; 
 			y = _y;
@@ -83,17 +84,18 @@ public:
 	Level();
 	~Level();
 
+	void init(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts);
 
 	void setMaxRooms(int num);
 	int getMaxRooms();
-	void setMapWidth(int size);
-	int getMapWidth();
-	void setMapHeight(int size);
-	int getMapHeight();
-	void setMaxRoomHeight(int size);
-	int getMaxRoomHeight();
-	void setMaxRoomWidth(int size);
-	int getMaxRoomWidth();
+	void setMapWidth(float size);
+	float getMapWidth();
+	void setMapHeight(float size);
+	float getMapHeight();
+	void setMaxRoomHeight(float size);
+	float getMaxRoomHeight();
+	void setMaxRoomWidth(float size);
+	float getMaxRoomWidth();
 
 
 	void testCout();
@@ -102,10 +104,10 @@ public:
 	void generate();
 	void createMap(int spawnAttempts);
 	void generateCorridors();
-	void addCorridor(int x, int y, int dir, int l);
+	void addCorridor(float x, float y, int dir, int l);
 	void generateRooms();
-	void addRoom(int roomPosX, int roomPosY, int roomWidth, int roomHeight);
-	bool isRoomOverlap(int roomPosX, int roomPosY, int roomWidth, int roomHeight);
+	void addRoom(float roomPosX, float roomPosY, float roomWidth, float roomHeight);
+	bool isRoomOverlap(float roomPosX, float roomPosY, float roomWidth, float roomHeight);
 	void generateWalls();
 
 	bool isTileWall(Tile t);
@@ -113,7 +115,8 @@ public:
 	Tile getTile(int x, int y);
 
 private:
-	int maxRooms, mapWidth, mapHeight, maxRoomWidth, maxRoomHeight;
+	int maxRooms;
+	float mapWidth, mapHeight, maxRoomWidth, maxRoomHeight;
 	int roomCount, corrCount;
 	map<pair<int, int>, Tile> levelMap;
 	vector<Rectangle> rooms;

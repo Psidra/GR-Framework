@@ -15,6 +15,7 @@
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
 #include "../WeaponInfo/LaserBeam.h"
+#include "../Particle/ParticleEffect.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -36,6 +37,9 @@ Player::Player(void)
 	, m_iMoney(0) // me_irl
 	, m_iBlank(2)
 	, isHurt(false)
+	, m_bFire(false)
+	, m_bSlow(false)
+	, m_bPoison(false)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -80,6 +84,8 @@ void Player::Init(void)
 
 	this->SetCollider(true);
 
+	this->FireIntensity = 0;
+
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
@@ -105,6 +111,7 @@ void Player::Init(void)
 	this->SetIndices_bWalk(6, 7);
 	this->SetIndices_fHurt(8, 8);
 	this->SetIndices_bHurt(9, 9);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 // Set position
@@ -204,13 +211,39 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 			break;
 
 		//std::cout << "player hit by enemy bullet" << std::endl;
+		Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, this);
+
 		thatEntity->SetIsDone(true);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
+
 		if (this->m_fHealth > 0)
 			EditHealth(-Proj->getProjectileDamage());
 		isHurt = true;
 		break;
 	}
+	case PIT:
+		// TODO
+		break;
+	case SPIKE:
+		// TODO
+		break;
+	case FIRE:
+		if (!this->m_bFire)
+		{
+			this->FireIntensity = 1;
+			m_dFireTickUp = m_dElapsedTime + 2.f;
+		}
+
+		this->m_bFire = true;
+		// oh shit nigga
+		break;
+	case SLOW:
+		this->m_bSlow = true;
+		break;
+	case POISON:
+		this->m_bPoison = true;
+		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
+		break;
 
 	default:
 		break;
@@ -351,16 +384,42 @@ void Player::Update(double dt)
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
-	// Update the position if the WASD buttons were activated
-	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
-	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
-	/*if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-		KeyboardController::GetInstance()->IsKeyDown('A') ||
-		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D'))
+	// STATUS EFFECTS
+	if (FireIntensity == 0)
+		this->m_bFire = false;
+
+	if (this->m_bFire && m_dElapsedTime > m_dFireTickUp)
 	{
-		m_bMoving = true;
-	}*/
+		m_dFireTickUp = m_dElapsedTime + 2.f;
+
+		if (FireIntensity < 5)
+			++FireIntensity;
+
+		std::cout << "ROLL YOU STUPID SHIT" << std::endl;
+		std::cout << FireIntensity << std::endl;
+	}
+
+	if (this->m_bSlow)
+	{
+		this->m_dSpeed = 5.0;
+		std::cout << "You are slowed!" << std::endl;
+	}
+	else
+		this->m_dSpeed = 10.0;
+
+	if (this->m_bPoison && m_dElapsedTime > m_dPoisonDuration)
+	{
+		this->m_bPoison = false;
+	}
+
+	if (this->m_bPoison)
+		std::cout << "You are Poisoned for: " << m_dPoisonDuration - m_dElapsedTime << std::endl;
+
+	if ((this->m_bFire || this->m_bPoison) && m_dElapsedTime > m_dDmgOverTimeTick)
+	{
+		m_dDmgOverTimeTick = m_dElapsedTime + 1.f;
+		this->EditHealth(-10.f); // lol rekt
+	}
 
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
@@ -393,13 +452,21 @@ void Player::Update(double dt)
 	
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
-		if (m_dElapsedTime > (m_dRollTime + 0.43f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
+		if (m_dElapsedTime > (m_dRollTime + 0.35f) && !m_bDodge && m_bMoving) // cooldown on spamming roll really quickly
 		{
 			// SUPAH COOL
 			setDodge(true);
 			m_dSpeed = 30;
-			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
+			m_dRollTime = m_dElapsedTime + 0.15f;
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
+
+			if (this->m_bFire)
+			{
+				m_dFireTickUp = m_dElapsedTime + 2.f;
+				--FireIntensity;
+
+				std::cout << "Fire Intensity:" << FireIntensity << std::endl;
+			}
 
 			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
@@ -423,6 +490,9 @@ void Player::Update(double dt)
 		}
 	}
 
+	if (this->m_bSlow)
+		this->m_bSlow = false;
+
 	// If the user presses R key, then reset the view to default values
 	//if (KeyboardController::GetInstance()->IsKeyDown('P'))
 	//{
@@ -433,8 +503,8 @@ void Player::Update(double dt)
 	if (attachedCamera)
 	{
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position + Vector3(0, 0, 15));
-		attachedCamera->SetCameraTarget(position);
+		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 15));
+		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 0));
 		attachedCamera->Update(dt);
 	}
 
@@ -443,7 +513,6 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//update minimap to render rooms here to be changed
-
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -451,12 +520,18 @@ void Player::Update(double dt)
 			continue;
 
 		Vector3 temp = CMinimap::GetInstance()->GetScale();
-		if (position.LengthSquared() <= temp.x * temp.x)
+
+		if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
 		{
+			//std::cout << "in range\n";
 			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
 		}
 	}
+
+	//set weapon pos
+	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }
 
 // Constrain the position within the borders
@@ -513,10 +588,31 @@ bool Player::Reload(const float dt)
 // Change Weapon
 bool Player::ChangeWeapon(const float dt)
 {	
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 	++weaponIndex;
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
 	return false;
+}
+
+void Player::UseBlank()
+{
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it, end;
+	end = cpy.end();
+
+	for (it = cpy.begin(); it != end; ++it)
+	{
+		GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+
+		if (thatEntity->type == ENEMY_BULLET)
+		{
+			thatEntity->SetIsDone(true);
+		}
+	}
+
+	--this->m_iBlank;
 }
 
 // Set view direction
@@ -580,4 +676,19 @@ void Player::EditMoney(int _money)
 GenericEntity ** Player::GetPlayerAnimated()
 {
 	return playerAnimated;
+}
+
+void Player::setFire(bool _lit)
+{
+	this->m_bFire = _lit;
+}
+
+void Player::setSlow(bool _slow)
+{
+	this->m_bSlow = _slow;
+}
+
+void Player::setPoison(bool _poison)
+{
+	this->m_bPoison = _poison;
 }

@@ -21,7 +21,7 @@ public:
 	// Check if a point is within an AABB, one must have collider
 	bool CheckPointToAABBCollision(Vector3 point, EntityBase *ThatEntity);
 	// UI Related Check if Cursor AABB collide with Button AABB
-	bool UI_CheckAABBCollision(UIElement *ThisElement, UIElement *ThatElement);
+	bool UI_CheckAABBCollision(Vector3 point, UIElement *ThatElement);
 
 	// Check all objects with collision
 	void Update(std::list<EntityBase*> collisionList);

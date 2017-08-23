@@ -44,7 +44,13 @@ public:
 	CEnemy(Vector3 pos);
 	virtual ~CEnemy();
 
-	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1);
+	enum ENEMY_TYPE {
+		NORMAL = 0,
+		OBSTACLE_INVUL,
+		BOSS,
+	}enemy_type;
+
+	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1, ENEMY_TYPE _enemy_type = NORMAL);
 	void SetTypeOfEnemy(int _enemyType);
 	void Update(double dt = 0.0333f);
 	void Render();

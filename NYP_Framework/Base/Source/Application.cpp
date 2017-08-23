@@ -297,6 +297,37 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/PlayerCursorV2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("boss_hp_border", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("boss_hp_border")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("pause_menu", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("pause_menu")->textureID[0] = LoadTGA("Image/UI/PauseMenu.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("resume_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("resume_button")->textureID[0] = LoadTGA("Image/UI/ResumeButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("option_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("option_button")->textureID[0] = LoadTGA("Image/UI/OptionButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("exit_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("exit_button")->textureID[0] = LoadTGA("Image/UI/ExitButton.tga");
+
+		//----------GUN SPRITES
+		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("pistol")->textureID[0] = LoadTGA("Image/Weapon/pistol.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("shotgun", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("shotgun")->textureID[0] = LoadTGA("Image/Weapon/shotgun.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rifle", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rifle")->textureID[0] = LoadTGA("Image/Weapon/rifle.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("bow", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("bow")->textureID[0] = LoadTGA("Image/Weapon/bow.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("pistolLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("pistolLeft")->textureID[0] = LoadTGA("Image/Weapon/pistolLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("shotgunLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("shotgunLeft")->textureID[0] = LoadTGA("Image/Weapon/shotgunLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rifleLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rifleLeft")->textureID[0] = LoadTGA("Image/Weapon/rifleLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("bowLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("bowLeft")->textureID[0] = LoadTGA("Image/Weapon/bowLeft.tga");
+
+		//--------Particles
+		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
+
 
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");

@@ -1,6 +1,7 @@
 #include "WeaponInfo.h"
 #include "../Projectile/Projectile.h"
 #include "../WeaponManager.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -17,6 +18,7 @@ CWeaponInfo::CWeaponInfo(GenericEntity::OBJECT_TYPE _bulletType)
 	, m_fWeaponDamage(5)
 	, m_bDots(false)
 	, m_bRicochet(true)
+	, m_bActive(false)
 {	
 }
 
@@ -138,6 +140,10 @@ void CWeaponInfo::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 10.f;
+	// is active
+	m_bActive = false;
 }
 
 // Update the elapsed time
@@ -149,6 +155,11 @@ void CWeaponInfo::Update(const double dt)
 		bFire = true;
 		elapsedTime = 0.0;
 	}
+}
+
+//render
+void CWeaponInfo::Render()
+{
 }
 
 // Discharge this weapon
@@ -219,6 +230,46 @@ void CWeaponInfo::setIsDots(bool _isDots)
 bool CWeaponInfo::getDots()
 {
 	return this->m_bDots;
+}
+
+void CWeaponInfo::setSpeed(float _speed)
+{
+	m_fSpeed = _speed;
+}
+
+float CWeaponInfo::getSpeed()
+{
+	return m_fSpeed;
+}
+
+void CWeaponInfo::setGunPos(Vector3 _gunPos)
+{
+	gunPos = _gunPos;
+}
+
+Vector3 CWeaponInfo::getGunPos()
+{
+	return gunPos;
+}
+
+void CWeaponInfo::setGunDir(Vector3 _gunDir)
+{
+	gunDir = _gunDir;
+}
+
+Vector3 CWeaponInfo::getGunDir()
+{
+	return gunDir;
+}
+
+void CWeaponInfo::setIsActive(bool _isActive)
+{
+	m_bActive = _isActive;
+}
+
+bool CWeaponInfo::getIsActive()
+{
+	return m_bActive;
 }
 
 void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)

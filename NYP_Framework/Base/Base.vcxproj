@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI FSM\Ai_1.cpp" />
+    <ClCompile Include="Source\AI FSM\Ai_obstacle.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Boss.cpp" />
@@ -26,12 +27,16 @@
     <ClCompile Include="Source\HardwareAbstraction\Mouse.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LevelStuff\Level.cpp" />
+    <ClCompile Include="Source\LevelStuff\QuadTree.cpp" />
     <ClCompile Include="Source\LevelStuff\TileEntity.cpp" />
     <ClCompile Include="Source\LevelStuff\TileSet.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Minimap\Minimap.cpp" />
     <ClCompile Include="Source\OBJMesh.cpp" />
+    <ClCompile Include="Source\Particle\Emitter.cpp" />
+    <ClCompile Include="Source\Particle\Particle.cpp" />
+    <ClCompile Include="Source\Particle\ParticleEffect.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
@@ -52,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI FSM\Ai_1.h" />
+    <ClInclude Include="Source\AI FSM\Ai_obstacle.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Boss.h" />
@@ -66,11 +72,15 @@
     <ClInclude Include="Source\HardwareAbstraction\Mouse.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\LevelStuff\Level.h" />
+    <ClInclude Include="Source\LevelStuff\QuadTree.h" />
     <ClInclude Include="Source\LevelStuff\TileEntity.h" />
     <ClInclude Include="Source\LevelStuff\TileSet.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Minimap\Minimap.h" />
     <ClInclude Include="Source\OBJMesh.h" />
+    <ClInclude Include="Source\Particle\Emitter.h" />
+    <ClInclude Include="Source\Particle\Particle.h" />
+    <ClInclude Include="Source\Particle\ParticleEffect.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
     <ClInclude Include="Source\SceneText.h" />

@@ -65,6 +65,9 @@ public:
 	bool Reload(const float dt);
 	// Change Weapon
 	bool ChangeWeapon(const float dt);
+	// Use Blank
+	void UseBlank();
+
 	// Set view direction
 	void SetView(Vector3 _view);
 	// Get view direction
@@ -104,7 +107,14 @@ public:
 	void EditMoney(int _money);
 
 	//Get player animation
-	GenericEntity** GetPlayerAnimated(); 
+	GenericEntity** GetPlayerAnimated();
+
+	// Set Fire (to the rain)
+	void setFire(bool _lit); // fam
+	// Set Slow
+	void setSlow(bool _slow);
+	// Set Poison
+	void setPoison(bool _poison);
 
 private:
 	Vector3 defaultPosition;
@@ -120,6 +130,16 @@ private:
 	bool m_bMoving;
 	bool m_bDodge;
 	double m_dRollTime; // Bouncetime for rolling
+
+	int FireIntensity; // 0-5, 0 being not on fire, 5 being need to roll 5 times to put it out.
+
+	bool m_bFire;	// STOP DROP AND ROLL (literally)
+	bool m_bSlow;
+	bool m_bPoison;
+
+	double m_dFireTickUp;
+	double m_dDmgOverTimeTick;
+	double m_dPoisonDuration;
 
 	float m_fHealth;
 	float m_fMaxHealth;

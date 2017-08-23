@@ -1,6 +1,9 @@
 #include "../Projectile/Projectile.h"
 #include "LaserBeam.h"
 #include "../WeaponManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 LaserBeam::LaserBeam(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -38,11 +41,43 @@ void LaserBeam::Init(void)
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// projectile scale
-	scale.Set(0.5, 0.5, 0.5);
+	scale.Set(6.0, 0.3, 0.3);
 	// projectile ricochet
-	m_bRicochet = true;
+	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = true;
+	//increment pos spawning of projectile
+	m_fIncrement = 0;
+	// projectile speed
+	m_fSpeed = 10.f;
+	// is active
+	m_bActive = false;
+}
+
+void LaserBeam::Render()
+{
+	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
+	//std::cout << rotate << std::endl;
+	if (rotate < 120 && rotate > -120) //right side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(1.5, 1.5, 1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		modelStack.PopMatrix();
+	}
+	else //left side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(-1.5, -1.5, -1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifleLeft"));
+		modelStack.PopMatrix();
+	}
 }
 
 void LaserBeam::Discharge(Vector3 position, Vector3 target)
@@ -76,21 +111,37 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		//negative angle counter clockwise positive angle clockwise
 		//target = rotateDirection(temp, totalAngle);
 		//totalAngle -= angle;
-		increment += 0.5f;
-		CProjectile* aProjectile = Create::Projectile("sphere",
-			position + target * 5,
+		CProjectile* aProjectile = Create::Projectile("cube",
+			position + target * 3.5,
 			target.Normalized(),
 			scale,
 			0.05f,
 			0.f);
 		
-
-
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
-	increment = 0;
+
+	//magic number (base of scale)
+	for (int i = 0; i < (int)scale.x; ++i)
+	{
+
+		m_fIncrement += 1;
+		CProjectile* aProjectile = Create::Projectile("cube",
+			position + target * m_fIncrement,
+			target.Normalized(),
+			Vector3(0.3,0.3,0.3),
+			0.05f,
+			0.f);
+
+		aProjectile->type = bulletType;
+		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		aProjectile->setIsDots(m_bDots);
+		aProjectile->setIsRicochet(m_bRicochet);
+		aProjectile->setIsLaserbeam(false);
+	}
+	m_fIncrement = 0;
 }

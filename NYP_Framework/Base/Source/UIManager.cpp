@@ -3,6 +3,9 @@
 #include "MouseController.h"
 #include "KeyboardController.h"
 #include "CollisionManager.h"
+#include "PlayerInfo\PlayerInfo.h"
+#include "Application.h"
+#include "GLFW\glfw3.h"
 
 UIManager::UIManager()
 {
@@ -14,6 +17,8 @@ UIManager::~UIManager()
 
 void UIManager::Pause()
 {
+	//glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 	switch (this->state) {
 	case PLAYING:
 		this->state = PAUSE;
@@ -22,7 +27,7 @@ void UIManager::Pause()
 		this->state = PAUSE;
 		break;
 	case PAUSE:
-		this->state = PLAYING;
+		this->Playing();
 		break;
 
 	default:
@@ -32,6 +37,8 @@ void UIManager::Pause()
 
 void UIManager::Playing()
 {
+	//glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 	switch (this->state) {
 	case MAIN_MENU:
 		this->state = PLAYING;
@@ -56,18 +63,35 @@ void UIManager::Update()
 
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 	{
+		double x, y;
+		MouseController::GetInstance()->GetMousePosition(x, y);
+		int w = Application::GetInstance().GetWindowWidth();
+		int h = Application::GetInstance().GetWindowHeight();
+		x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
+		y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
+		float posX = static_cast<float>(x);
+		float posY = (h - static_cast<float>(y));
+
 		std::list<UIElement*>::iterator it, it2, end;
 		end = UIList.end();
 		for (it = UIList.begin(); it != end; ++it)
 		{
-			for (it2 = std::next(it, 1); it2 != end; ++it2)
+			if ((*it)->type == UIElement::ELEMENT_TYPE::CURSOR) // (*it) is always cursor
+				continue;
+
+			if (CollisionManager::GetInstance()->UI_CheckAABBCollision(Vector3(posX, posY, 0), (*it)))
 			{
-				if ((*it)->type != UIElement::ELEMENT_TYPE::CURSOR) // (*it) is always cursor
-					continue;
-
-				if (CollisionManager::GetInstance()->UI_CheckAABBCollision((*it), (*it2)))
-				{
-
+				switch ((*it)->type) {
+				case UIElement::ELEMENT_TYPE::RESUME:
+					this->Playing();
+					break;
+				case UIElement::ELEMENT_TYPE::OPTION:
+					std::cout << "Opened options menu! not really. Kind of." << std::endl;
+					// TODO
+					break;
+				case UIElement::ELEMENT_TYPE::EXIT:
+					exit(0);
+					break;
 				}
 			}
 		}
@@ -85,6 +109,9 @@ void UIManager::Render()
 	end = UIList.end();
 	for (it = UIList.begin(); it != end; ++it)
 	{
+		if ((*it)->elestate != ALL && this->state != (*it)->elestate)
+			continue;
+
 		(*it)->Render();
 	}
 }

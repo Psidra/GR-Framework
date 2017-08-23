@@ -227,8 +227,8 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 void CMinimap::Update(double dt)
 {	//temp storing method to be changed for storing the individual walls to instead the room only
 
-	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f; //400
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f; //300
 
 	if(!m_bEnlarged)
 		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
@@ -248,6 +248,7 @@ void CMinimap::Update(double dt)
 	m_iNumObject = minimapData["wallpos"].size();
 
 	playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
+	playerMapPos = Player::GetInstance()->GetPos() * (1.0f / (scale.x * 0.2));
 }
 
 void CMinimap::RenderUI()
@@ -303,14 +304,15 @@ void CMinimap::RenderUI()
 				glDisable(GL_DEPTH_TEST);
 				for (int i = 0; i < m_iNumObject; ++i)
 				{
-					if ((Player::GetInstance()->GetPos() - minimapData["wallpos"][i]).LengthSquared() < (scale.x * 0.2) * (scale.x * 0.2))
+					//if (playerMapPos.LengthSquared() > minimapData["wallpos"][i].LengthSquared())
+					if((minimapData["wallpos"][i] -playerMapPos).LengthSquared() < (scale.x * 0.2))
 					{
 						modelStack.PushMatrix();
 						modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
 						// Rotate the current transformation
 						modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
 						modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
-						// Render an enemy
+						// Render an object
 						RenderHelper::RenderMesh(m_cMinimap_Object);
 						modelStack.PopMatrix();
 					}
@@ -327,6 +329,7 @@ void CMinimap::RenderUI()
 			{
 				modelStack.PushMatrix();
 				//modelStack.Translate(Player::GetInstance()->GetPos().x  * (1 / scale.x), Player::GetInstance()->GetPos().y  * (1 / scale.x), Player::GetInstance()->GetPos().z);
+				modelStack.Rotate(Math::RadianToDegree(atan2(Player::GetInstance()->GetView().y, Player::GetInstance()->GetView().x)) - 90, 0, 0, 1);
 				modelStack.Scale(playerMapScale.x, playerMapScale.y, playerMapScale.z);
 				RenderHelper::RenderMesh(m_cMinimap_Avatar);
 				modelStack.PopMatrix();

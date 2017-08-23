@@ -99,6 +99,7 @@ public:
 	//int GetSize_y(void) const;
 	virtual void Update(double dt);
 	virtual void RenderUI();
+
 protected:
 	// Rotation from First Angle
 	int m_iAngle;
@@ -111,6 +112,7 @@ protected:
 	Vector3 objScale;
 	// player scale on map
 	Vector3 playerMapScale;
+	Vector3 playerMapPos;
 	//temporary storage method for render of map (will be changed)
 	std::map <std::string, std::vector<Vector3>> minimapData;
 	SPRITE_RENDERMODE mode;

@@ -2,6 +2,7 @@
 #include "CollisionManager.h"
 #include "WeaponInfo\Pistol.h"
 #include "WeaponInfo\Shotgun.h"
+#include "WeaponManager.h"
 
 /********************************************************************************
 Constructor
@@ -39,9 +40,10 @@ CEnemy::~CEnemy(void)
 		delete enemyAnimated[i];
 		enemyAnimated[i] = NULL;
 	}
+	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 }
 
-void CEnemy::Init(float _hp, double _speed, int _enemyType)
+void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _enemy_type)
 {
 	direction.SetZero();
 	this->SetCollider(true);
@@ -54,6 +56,9 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType)
 	isHurt = false;
 
 	SetTypeOfEnemy(_enemyType);
+
+	this->enemy_type = _enemy_type;
+	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 void CEnemy::SetTypeOfEnemy(int _enemyType)
@@ -81,16 +86,10 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		break;
 	case 2:
-		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
-		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
-		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
-		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand2"));
-		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk1"));
-		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
-		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
-		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
-		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
-		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
+		for (size_t i = 0; i < 8; i++)
+		{
+			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+		}
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
 		break;
 	default:
@@ -138,6 +137,9 @@ void CEnemy::Update(double dt)
 
 	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y) ? true : false, 
 							this->theStrategy->GetIsMoving(), isHurt, dt);
+	//set gun pos to enemy pos
+	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
 }
 
 void CEnemy::Render()
@@ -152,6 +154,14 @@ void CEnemy::Render()
 
 void CEnemy::Shoot(double dt)
 {
+	switch (this->enemy_type) {
+	case NORMAL:
+		
+		break;
+	case OBSTACLE_INVUL:
+		//enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, direction);
+		break;
+	}
 	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
 	//std::cout << enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() << "/" << enemyInventory->getWeaponList()[weaponIndex]->GetMaxMagRound() << std::endl;
 }

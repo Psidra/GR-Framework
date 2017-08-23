@@ -1,5 +1,8 @@
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "MeshBuilder.h"
 
 Rifle::Rifle(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -43,7 +46,36 @@ void Rifle::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 15.f;
+	// is active
+	m_bActive = false;
+}
 
+void Rifle::Render()
+{
+	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
+	//std::cout << rotate << std::endl;
+	if (rotate < 120 && rotate > -120) //right side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(1.5, 1.5, 1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		modelStack.PopMatrix();
+	}
+	else//left side
+	{
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Rotate(rotate, 0, 0, 1);
+		modelStack.Scale(-1.5, -1.5, 1.5);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifleLeft"));
+		modelStack.PopMatrix();
+	}
 }
 
 void Rifle::Discharge(Vector3 position, Vector3 target)
@@ -72,7 +104,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	//Vector3 temp = target;
 
-	float tempSpeed = 15.0f;
+	//float tempSpeed = 15.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
@@ -85,12 +117,14 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 			target.Normalized(),
 			scale,
 			2.0f,
-			tempSpeed);
-		tempSpeed += 3.f;
+			m_fSpeed);
+		m_fSpeed += 3.f;
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
+
+	m_fSpeed = 15.f;
 }
