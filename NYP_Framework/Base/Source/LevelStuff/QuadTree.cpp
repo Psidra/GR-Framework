@@ -30,10 +30,23 @@ QuadTree::~QuadTree()
 	if (level == maxLevel)
 		return;
 
+	if (!objects.empty())
+	{
+		for (list<EntityBase*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+			delete *it;
+
+		objects.clear();
+	}
+
 	delete NW;
 	delete NE;
 	delete SW;
 	delete SE;
+
+	NW = NULL;
+	NE = NULL;
+	SW = NULL;
+	SE = NULL;
 }
 
 void QuadTree::addObject(EntityBase * object)
@@ -50,6 +63,24 @@ void QuadTree::addObject(EntityBase * object)
 		SE->addObject(object);
 	else if (contains(this, object))
 		objects.push_back(object);
+}
+
+void QuadTree::clear()
+{
+	if (level < maxLevel) {
+		NW->clear();
+		NE->clear();
+		SW->clear();
+		SE->clear();
+	}
+
+	if (!objects.empty())
+	{
+		for (list<EntityBase*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+			delete *it;
+
+		objects.clear();
+	}
 }
 
 list<EntityBase*> QuadTree::getObjectsAt(float _x, float _y)
@@ -92,8 +123,12 @@ bool QuadTree::contains(QuadTree * child, EntityBase * object)
 		object->GetPosition().y < child->y ||
 		object->GetPosition().x > child->x + child->width ||
 		object->GetPosition().y > child->y + child->height ||
-		object->GetPosition().x + object->GetScale().x * 0.5f < child->x ||
+		dynamic_cast<GenericEntity*>(object)->GetMaxAABB().x < child->x ||
+		dynamic_cast<GenericEntity*>(object)->GetMaxAABB().y < child->y ||
+		dynamic_cast<GenericEntity*>(object)->GetMaxAABB().x > child->x + child->width ||
+		dynamic_cast<GenericEntity*>(object)->GetMaxAABB().y > child->y + child->height);
+		/*object->GetPosition().x + object->GetScale().x * 0.5f < child->x ||
 		object->GetPosition().y + object->GetScale().y * 0.5f < child->y ||
 		object->GetPosition().x + object->GetScale().x * 0.5f > child->x + child->width ||
-		object->GetPosition().y + object->GetScale().y * 0.5f > child->y + child->height);
+		object->GetPosition().y + object->GetScale().y * 0.5f > child->y + child->height);*/
 }

@@ -17,6 +17,7 @@ public:
 	~QuadTree();
 
 	void addObject(EntityBase *object);
+	void clear();
 	list<EntityBase*> getObjectsAt(float _x, float _y);
 
 private:
@@ -26,6 +27,8 @@ private:
 	float height;
 	int level;
 	int maxLevel;
+	int maxObjects;
+
 	list<EntityBase*> objects;
 
 	QuadTree* NW;

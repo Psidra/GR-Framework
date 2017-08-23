@@ -108,6 +108,16 @@ std::list<EntityBase*>& EntityManager::getCollisionList()
 	return collisionList;
 }
 
+void EntityManager::setCollisionList(std::list<EntityBase*>& newList)
+{
+	collisionList = newList;
+}
+
+void EntityManager::setEntityList(std::list<EntityBase*>& newList)
+{
+	entityList = newList;
+}
+
 // Constructor
 EntityManager::EntityManager()
 {
