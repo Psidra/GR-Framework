@@ -16,7 +16,8 @@ public:
 	void Discharge(Vector3 position, Vector3 target);
 
 private:
-	float increment;
+	//increment pos spawning of projectile
+	float m_fIncrement;
 	// Number of bullet to create and pattern
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 0.f);
 };

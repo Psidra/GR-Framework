@@ -323,6 +323,9 @@
     <ClInclude Include="Source\Boss.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LevelStuff\QuadTree.h">
+      <Filter>LevelStuff\LevelStuffHeader</Filter>
+	</ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_obstacle.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>

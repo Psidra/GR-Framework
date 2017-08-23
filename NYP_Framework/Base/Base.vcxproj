@@ -71,6 +71,7 @@
     <ClInclude Include="Source\HardwareAbstraction\Mouse.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\LevelStuff\Level.h" />
+    <ClInclude Include="Source\LevelStuff\QuadTree.h" />
     <ClInclude Include="Source\LevelStuff\TileEntity.h" />
     <ClInclude Include="Source\LevelStuff\TileSet.h" />
     <ClInclude Include="Source\Light.h" />

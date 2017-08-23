@@ -43,6 +43,8 @@ void Bow::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 6.0f;
 }
 
 // Discharge this weapon
@@ -89,7 +91,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 			target.Normalized(),
 			scale,
 			2.0f,
-			6.0f);
+			m_fSpeed);
 
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);

@@ -43,6 +43,8 @@ void Rifle::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 15.f;
 
 }
 
@@ -72,7 +74,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	//Vector3 temp = target;
 
-	float tempSpeed = 15.0f;
+	//float tempSpeed = 15.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
@@ -85,12 +87,14 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 			target.Normalized(),
 			scale,
 			2.0f,
-			tempSpeed);
-		tempSpeed += 3.f;
+			m_fSpeed);
+		m_fSpeed += 3.f;
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
+
+	m_fSpeed = 15.f;
 }
