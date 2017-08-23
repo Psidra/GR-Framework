@@ -57,6 +57,7 @@ bool CMinimap::Init(void)
 	playerMapScale = Vector3(10,10,10) * (1 / scale.x);
 	m_iNumObject = 0;
 	m_bEnlarged = false;
+
 	return true;
 }
 
@@ -235,13 +236,13 @@ void CMinimap::Update(double dt)
 	for (std::vector<Vector3>::iterator it = minimapData["wallpos"].begin();
 		it != minimapData["wallpos"].end();++it)
 	{
-		(*it) = (*it) * (1.0f / (scale.x * 0.5));
+		(*it) = (*it) * (1.0f / (scale.x * 0.2));
 	}
 	for (std::vector<Vector3>::iterator it = minimapData["wallscale"].begin();
 		it != minimapData["wallscale"].end();++it)
 	{
 		//(*it) = (*it) * 0.02f;
-		(*it) = (*it) * (1.0f / (scale.x * 0.5));
+		(*it) = (*it) * (1.0f / (scale.x * 0.2));
 	}
 
 	m_iNumObject = minimapData["wallpos"].size();
@@ -302,14 +303,17 @@ void CMinimap::RenderUI()
 				glDisable(GL_DEPTH_TEST);
 				for (int i = 0; i < m_iNumObject; ++i)
 				{
-					modelStack.PushMatrix();
-					modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
-					// Rotate the current transformation
-					modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
-					modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
-					// Render an enemy
-					RenderHelper::RenderMesh(m_cMinimap_Object);
-					modelStack.PopMatrix();
+					if ((Player::GetInstance()->GetPos() - minimapData["wallpos"][i]).LengthSquared() < (scale.x * 0.2) * (scale.x * 0.2))
+					{
+						modelStack.PushMatrix();
+						modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
+						// Rotate the current transformation
+						modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
+						modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
+						// Render an enemy
+						RenderHelper::RenderMesh(m_cMinimap_Object);
+						modelStack.PopMatrix();
+					}
 				}
 				glEnable(GL_DEPTH_TEST);
 
@@ -322,6 +326,7 @@ void CMinimap::RenderUI()
 			if (m_cMinimap_Avatar)
 			{
 				modelStack.PushMatrix();
+				//modelStack.Translate(Player::GetInstance()->GetPos().x  * (1 / scale.x), Player::GetInstance()->GetPos().y  * (1 / scale.x), Player::GetInstance()->GetPos().z);
 				modelStack.Scale(playerMapScale.x, playerMapScale.y, playerMapScale.z);
 				RenderHelper::RenderMesh(m_cMinimap_Avatar);
 				modelStack.PopMatrix();

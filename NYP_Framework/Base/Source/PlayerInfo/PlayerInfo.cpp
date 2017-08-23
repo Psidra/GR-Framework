@@ -433,13 +433,15 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//update minimap to render rooms here to be changed
+
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
 		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
 			continue;
 
-		if (((*it)->GetPosition() - position).LengthSquared() < CMinimap::GetInstance()->GetScale().LengthSquared())
+		Vector3 temp = CMinimap::GetInstance()->GetScale();
+		if (position.LengthSquared() <= temp.x * temp.x)
 		{
 			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());

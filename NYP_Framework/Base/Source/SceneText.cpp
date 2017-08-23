@@ -234,13 +234,14 @@ void SceneText::Init()
 
 	// Minimap
 	minimap = Create::Minimap(false);
+	minimap->Init();
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
 	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
 	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
-	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_ENEMY", Color(1, 0, 0), 1.0f));
+	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
@@ -256,7 +257,7 @@ void SceneText::Init()
 	//l.setMaxRoomWidth(5);
 	//l.generate();
 	//l.createMap(20);
-	////l.testCout();
+	//l.testCout();
 
 	//for (size_t i = 0; i < l.getMapWidth(); ++i)
 	//{
@@ -266,9 +267,9 @@ void SceneText::Init()
 	//		if (l.getTile(i, j).type == Tile::EMPTY)
 	//			Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
 	//		else if (l.getTile(i, j).type == Tile::ROOM)
-	//			temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//			Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
 	//		else if (l.getTile(i, j).type == Tile::CORRIDOR)
-	//			temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//			Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 	//		else if (l.getTile(i, j).type == Tile::WALL)
 	//		{
 	//			temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);

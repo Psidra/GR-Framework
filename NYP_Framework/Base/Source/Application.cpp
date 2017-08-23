@@ -282,7 +282,7 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("full_hp", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("full_hp")->textureID[0] = LoadTGA("Image/UI/PlayerFullHealth.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("half_hp", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("half_hp")->textureID[0] = LoadTGA("Image/UI/PlayerHalfHealth02.tga");
+		MeshList::GetInstance()->GetMesh("half_hp")->textureID[0] = LoadTGA("Image/UI/PlayerHalfHealth.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("no_hp", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("no_hp")->textureID[0] = LoadTGA("Image/UI/PlayerEmptyHealth.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("blank", Color(1, 1, 1), 1.f);
