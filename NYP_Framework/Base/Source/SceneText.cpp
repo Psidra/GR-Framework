@@ -566,6 +566,7 @@ void SceneText::RenderWorld()
 	//RenderHelper::RenderMeshWithLight(MeshList::GetInstance()->GetMesh("quad"));
 	//ms.PopMatrix();
 
+
 	ms.PushMatrix();
 	ms.Translate(0, 0, -5);
 	ms.Scale(70, 50, 1);
@@ -573,6 +574,8 @@ void SceneText::RenderWorld()
 	ms.PopMatrix();
 
 	EntityManager::GetInstance()->Render(); //place render entity after render map
+
+	WeaponManager::GetInstance()->Render();
 
 	ms.PushMatrix();
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);

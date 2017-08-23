@@ -100,6 +100,7 @@ void Player::Init(void)
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 // Set position
@@ -433,7 +434,6 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//update minimap to render rooms here to be changed
-
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -447,6 +447,10 @@ void Player::Update(double dt)
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
 		}
 	}
+
+	//set weapon pos
+	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }
 
 // Constrain the position within the borders
@@ -503,8 +507,10 @@ bool Player::Reload(const float dt)
 // Change Weapon
 bool Player::ChangeWeapon(const float dt)
 {	
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 	++weaponIndex;
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
+	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
 	return false;
 }

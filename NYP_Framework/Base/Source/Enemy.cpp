@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "CollisionManager.h"
 #include "WeaponInfo\Pistol.h"
+#include "WeaponManager.h"
 
 /********************************************************************************
 Constructor
@@ -29,6 +30,7 @@ CEnemy::~CEnemy(void)
 		delete theStrategy;
 		theStrategy = NULL;
 	}
+	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 }
 
 void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _enemy_type)
@@ -42,6 +44,7 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _
 	SetTypeOfEnemy(_enemyType);
 
 	this->enemy_type = _enemy_type;
+	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
 void CEnemy::SetTypeOfEnemy(int _enemyType)
@@ -104,6 +107,9 @@ void CEnemy::Update(double dt)
 		this->SetIsDone(true);
 	
 	this->SetAnimationStatus(m_bLookingUp, this->theStrategy->GetIsMoving(), dt);
+	//set gun pos to enemy pos
+	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
 }
 
 void CEnemy::Render()
