@@ -141,7 +141,7 @@ void UIElement::Render()
 	case UIManager::GAME_STATE::PAUSE:
 	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
-		Vector3 HUDscale(1000.f, 1000.f, 1000.f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
 
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
