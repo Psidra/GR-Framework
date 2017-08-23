@@ -196,9 +196,21 @@ void SceneText::Init()
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
-	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(50, 50, 1), true);
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(50, 50, 1), false);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
+
+	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 150, 9.5f), Vector3(175, 25, 1), true);
+	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	resume->type = UIElement::ELEMENT_TYPE::RESUME;
+
+	UIElement* option = Create::UIEntity("option_button", Vector3(0, 75, 9.5f), Vector3(175, 25, 1), true);
+	option->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	option->type = UIElement::ELEMENT_TYPE::OPTION;
+
+	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, 0, 9.5f), Vector3(175, 25, 1), true);
+	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	exit->type = UIElement::ELEMENT_TYPE::EXIT;
 
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
@@ -231,6 +243,10 @@ void SceneText::Init()
 		NewEnemy->Init(100.0f, 2.0, 1);
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
+
+	CEnemy* NewBoss = Create::Enemy(Vector3(-10, -10, 0), "player");
+	NewBoss->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	NewBoss->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
@@ -284,12 +300,10 @@ void SceneText::Update(double dt)
 {
 	double x, y;
 	MouseController::GetInstance()->GetMousePosition(x, y);
-	int w = Application::GetInstance().GetWindowWidth();
-	int h = Application::GetInstance().GetWindowHeight();
-	x = x + Player::GetInstance()->GetPos().x - (w * 0.5f);
-	y = y - Player::GetInstance()->GetPos().y + (h * 0.5f);
-	float posX = static_cast<float>(x);
-	float posY = (h - static_cast<float>(y));
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+	float posX = (static_cast<float>(x) - halfWindowWidth) + Player::GetInstance()->GetPos().x;
+	float posY = (halfWindowHeight - static_cast<float>(y)) + Player::GetInstance()->GetPos().y;
 
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);
@@ -309,106 +323,113 @@ void SceneText::Update(double dt)
 		posY = 1;
 	}
 
-	// Update the player position and other details based on keyboard and mouse inputs
-	Player::GetInstance()->Update(dt);
-
-	// Update our entities
-	EntityManager::GetInstance()->Update(dt);
 	UIManager::GetInstance()->Update();
-
 	keyboard->Read(dt);
 
-	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
-	if(KeyboardController::GetInstance()->IsKeyDown('1'))
-		glEnable(GL_CULL_FACE);
-	if(KeyboardController::GetInstance()->IsKeyDown('2'))
-		glDisable(GL_CULL_FACE);
-	if(KeyboardController::GetInstance()->IsKeyDown('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	if(KeyboardController::GetInstance()->IsKeyDown('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	
-	if(KeyboardController::GetInstance()->IsKeyDown('5'))
+	switch (UIManager::GetInstance()->state) {
+	case UIManager::GAME_STATE::PLAYING:
 	{
-		lights[0]->type = Light::LIGHT_POINT;
+		// Update the player position and other details based on keyboard and mouse inputs
+		Player::GetInstance()->Update(dt);
+
+		// Update our entities
+		EntityManager::GetInstance()->Update(dt);
+
+
+		// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
+		if (KeyboardController::GetInstance()->IsKeyDown('1'))
+			glEnable(GL_CULL_FACE);
+		if (KeyboardController::GetInstance()->IsKeyDown('2'))
+			glDisable(GL_CULL_FACE);
+		if (KeyboardController::GetInstance()->IsKeyDown('3'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		if (KeyboardController::GetInstance()->IsKeyDown('4'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		if (KeyboardController::GetInstance()->IsKeyDown('5'))
+		{
+			lights[0]->type = Light::LIGHT_POINT;
+		}
+		else if (KeyboardController::GetInstance()->IsKeyDown('6'))
+		{
+			lights[0]->type = Light::LIGHT_DIRECTIONAL;
+		}
+		else if (KeyboardController::GetInstance()->IsKeyDown('7'))
+		{
+			lights[0]->type = Light::LIGHT_SPOT;
+		}
+
+		if (KeyboardController::GetInstance()->IsKeyDown('I'))
+			lights[0]->position.z -= (float)(10.f * dt);
+		if (KeyboardController::GetInstance()->IsKeyDown('K'))
+			lights[0]->position.z += (float)(10.f * dt);
+		if (KeyboardController::GetInstance()->IsKeyDown('J'))
+			lights[0]->position.x -= (float)(10.f * dt);
+		if (KeyboardController::GetInstance()->IsKeyDown('L'))
+			lights[0]->position.x += (float)(10.f * dt);
+		if (KeyboardController::GetInstance()->IsKeyDown('O'))
+			lights[0]->position.y -= (float)(10.f * dt);
+		if (KeyboardController::GetInstance()->IsKeyDown('P'))
+			lights[0]->position.y += (float)(10.f * dt);
+
+		// if the left mouse button was released
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
+		{
+			std::cout << "Left Mouse Button was released!" << std::endl;
+		}
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
+		{
+			std::cout << "Right Mouse Button was released!" << std::endl;
+		}
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::MMB))
+		{
+			std::cout << "Middle Mouse Button was released!" << std::endl;
+		}
+		if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) != 0.0)
+		{
+			std::cout << "Mouse Wheel has offset in X-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) << std::endl;
+		}
+		if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) != 0.0)
+		{
+			std::cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << std::endl;
+		}
+		// <THERE>
+
+		//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
+
+		GraphicsManager::GetInstance()->UpdateLights(dt);
+
+		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
+		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
+
+		std::ostringstream ss;
+		ss.precision(5);
+		float fps = (float)(1.f / dt);
+		ss << "FPS: " << fps;
+		textObj[1]->SetText(ss.str());
+
+		// Update the player position into textObj[2]
+		std::ostringstream ss1;
+		ss1.precision(4);
+		ss1 << "Player:" << Player::GetInstance()->GetHealth();
+		textObj[2]->SetText(ss1.str());
+
+		std::ostringstream curr;
+		curr << Player::GetInstance()->GetMoney();
+		textObj[3]->SetText(curr.str());
+		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 0.0f));
+
+		// Update textpos for fullscreening
+		for (int i = 0; i < 3; ++i)
+		{
+			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
+		}
+
+		WeaponManager::GetInstance()->update(dt);
+		minimap->Update(dt);
+		break;
 	}
-	else if(KeyboardController::GetInstance()->IsKeyDown('6'))
-	{
-		lights[0]->type = Light::LIGHT_DIRECTIONAL;
 	}
-	else if(KeyboardController::GetInstance()->IsKeyDown('7'))
-	{
-		lights[0]->type = Light::LIGHT_SPOT;
-	}
-
-	if(KeyboardController::GetInstance()->IsKeyDown('I'))
-		lights[0]->position.z -= (float)(10.f * dt);
-	if(KeyboardController::GetInstance()->IsKeyDown('K'))
-		lights[0]->position.z += (float)(10.f * dt);
-	if(KeyboardController::GetInstance()->IsKeyDown('J'))
-		lights[0]->position.x -= (float)(10.f * dt);
-	if(KeyboardController::GetInstance()->IsKeyDown('L'))
-		lights[0]->position.x += (float)(10.f * dt);
-	if(KeyboardController::GetInstance()->IsKeyDown('O'))
-		lights[0]->position.y -= (float)(10.f * dt);
-	if(KeyboardController::GetInstance()->IsKeyDown('P'))
-		lights[0]->position.y += (float)(10.f * dt);
-
-	// if the left mouse button was released
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
-	{
-		std::cout << "Left Mouse Button was released!" << std::endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
-	{
-		std::cout << "Right Mouse Button was released!" << std::endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::MMB))
-	{
-		std::cout << "Middle Mouse Button was released!" << std::endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) != 0.0)
-	{
-		std::cout << "Mouse Wheel has offset in X-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) << std::endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) != 0.0)
-	{
-		std::cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << std::endl;
-	}
-	// <THERE>
-
-	//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
-
-	GraphicsManager::GetInstance()->UpdateLights(dt);
-
-	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
-	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-
-	std::ostringstream ss;
-	ss.precision(5);
-	float fps = (float)(1.f / dt);
-	ss << "FPS: " << fps;
-	textObj[1]->SetText(ss.str());
-
-	// Update the player position into textObj[2]
-	std::ostringstream ss1;
-	ss1.precision(4);
-	ss1 << "Player:" << Player::GetInstance()->GetHealth();
-	textObj[2]->SetText(ss1.str());
-
-	std::ostringstream curr;
-	curr << Player::GetInstance()->GetMoney();
-	textObj[3]->SetText(curr.str());
-	textObj[3]->SetPosition(Vector3(-w * 0.5f + 60.f, h * 0.5f - 150.f, 0.0f));
-
-	// Update textpos for fullscreening
-	for (int i = 0; i < 3; ++i)
-	{
-		textObj[i]->SetPosition(Vector3(-w * 0.5f, -h * 0.5f + fontSize*i + halfFontSize, 0.0f));
-	}
-
-	WeaponManager::GetInstance()->update(dt);
-	minimap->Update(dt);
 }
 
 void SceneText::Render()
@@ -503,16 +524,29 @@ void SceneText::RenderPassMain()
 	//ms.PopMatrix();
 
 	//placed down so alpha will work properly on ldq.
-	RenderWorld();
+	switch (UIManager::GetInstance()->state) {
+	case UIManager::GAME_STATE::PLAYING:
+	{
+		RenderWorld();
+		break;
+	}
+	}
 
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
-	EntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
-	minimap->RenderUI();
-	//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
+
+	switch (UIManager::GetInstance()->state) {
+	case UIManager::GAME_STATE::PLAYING:
+	{
+		EntityManager::GetInstance()->RenderUI();
+		minimap->RenderUI();
+		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
+		break;
+	}
+	}
 }
 
 void SceneText::RenderWorld()

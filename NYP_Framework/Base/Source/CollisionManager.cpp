@@ -58,8 +58,7 @@ bool CollisionManager::CheckAABBCollision(EntityBase * ThisEntity, EntityBase * 
 	}
 
 	return (thisHitbox->GetMinAABB().x <= thatHitbox->GetMaxAABB().x && thisHitbox->GetMaxAABB().x >= thatHitbox->GetMinAABB().x) &&
-		(thisHitbox->GetMinAABB().y <= thatHitbox->GetMaxAABB().y && thisHitbox->GetMaxAABB().y >= thatHitbox->GetMinAABB().y) &&
-		(thisHitbox->GetMinAABB().z <= thatHitbox->GetMaxAABB().z && thisHitbox->GetMaxAABB().z >= thatHitbox->GetMinAABB().z);
+		(thisHitbox->GetMinAABB().y <= thatHitbox->GetMaxAABB().y && thisHitbox->GetMaxAABB().y >= thatHitbox->GetMinAABB().y);
 }
 
 bool CollisionManager::CheckPointToAABBCollision(Vector3 point, EntityBase * ThatEntity)
@@ -77,20 +76,25 @@ bool CollisionManager::CheckPointToAABBCollision(Vector3 point, EntityBase * Tha
 	}
 
 	return (point.x <= thatHitbox->GetMaxAABB().x && point.x >= thatHitbox->GetMinAABB().x) &&
-		(point.y <= thatHitbox->GetMaxAABB().y && point.y >= thatHitbox->GetMinAABB().y) &&
-		(point.z <= thatHitbox->GetMaxAABB().z && point.z >= thatHitbox->GetMinAABB().z);
+		(point.y <= thatHitbox->GetMaxAABB().y && point.y >= thatHitbox->GetMinAABB().y);
 }
 
-bool CollisionManager::UI_CheckAABBCollision(UIElement * ThisElement, UIElement * ThatElement)
+bool CollisionManager::UI_CheckAABBCollision(Vector3 point, UIElement * ThatElement)
 {
-	if (!ThisElement->HasAABB() || !ThatElement->HasAABB())
-	{
-		std::cout << "One or more Elements do not have AABB!" << std::endl;
+	if (!ThatElement->HasCollider()) {
+		std::cout << "Entity does not have Collider" << std::endl;
+		return false;
 	}
 
-	return (ThisElement->GetMinAABB().x <= ThatElement->GetMaxAABB().x && ThisElement->GetMaxAABB().x >= ThatElement->GetMinAABB().x) &&
-		(ThisElement->GetMinAABB().y <= ThatElement->GetMaxAABB().y && ThisElement->GetMaxAABB().y >= ThatElement->GetMinAABB().y) &&
-		(ThisElement->GetMinAABB().z <= ThatElement->GetMaxAABB().z && ThisElement->GetMaxAABB().z >= ThatElement->GetMinAABB().z);
+	UIElement* thatHitbox = dynamic_cast<UIElement*>(ThatElement);
+
+	if (!thatHitbox->HasAABB()) {
+		std::cout << "Entity does not have AABB" << std::endl;
+		return false;
+	}
+
+	return (point.x <= thatHitbox->GetMaxAABB().x && point.x >= thatHitbox->GetMinAABB().x) &&
+		(point.y <= thatHitbox->GetMaxAABB().y && point.y >= thatHitbox->GetMinAABB().y); // Would check Z but 2d game so w/e (removed for all)
 }
 
 void CollisionManager::Update(std::list<EntityBase*> collisionList)

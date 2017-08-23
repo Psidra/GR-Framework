@@ -65,6 +65,9 @@ public:
 	bool Reload(const float dt);
 	// Change Weapon
 	bool ChangeWeapon(const float dt);
+	// Use Blank
+	void UseBlank();
+
 	// Set view direction
 	void SetView(Vector3 _view);
 	// Get view direction
