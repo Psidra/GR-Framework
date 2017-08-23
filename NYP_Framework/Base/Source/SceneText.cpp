@@ -193,6 +193,21 @@ void SceneText::Init()
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
+	// test fire
+	GenericEntity* fire = Create::Entity("cube", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	fire->type = GenericEntity::OBJECT_TYPE::FIRE;
+	fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
+
+	// test slow
+	GenericEntity* slow = Create::Entity("cube", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	slow->type = GenericEntity::OBJECT_TYPE::SLOW;
+	slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
+
+	// test poison
+	GenericEntity* poison = Create::Entity("cube", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	poison->type = GenericEntity::OBJECT_TYPE::POISON;
+	poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
+
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
@@ -244,9 +259,9 @@ void SceneText::Init()
 		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 
-	CEnemy* NewBoss = Create::Enemy(Vector3(-10, -10, 0), "player");
-	NewBoss->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
-	NewBoss->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+	//CEnemy* NewObstacle = Create::Enemy(Vector3(-10, -10, 0), "player");
+	//NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	//NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);

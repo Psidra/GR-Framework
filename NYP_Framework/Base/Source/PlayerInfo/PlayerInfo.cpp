@@ -36,6 +36,9 @@ Player::Player(void)
 	, m_bLookingUp(false)
 	, m_iMoney(0) // me_irl
 	, m_iBlank(2)
+	, m_bFire(false)
+	, m_bSlow(false)
+	, m_bPoison(false)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -79,6 +82,8 @@ void Player::Init(void)
 	this->SetMaxHealth(100.f);
 
 	this->SetCollider(true);
+
+	this->FireIntensity = 0;
 
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
@@ -207,9 +212,31 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 
 		if (this->m_fHealth > 0)
 			EditHealth(-Proj->getProjectileDamage());
-
 		break;
 	}
+	case PIT:
+		// TODO
+		break;
+	case SPIKE:
+		// TODO
+		break;
+	case FIRE:
+		if (!this->m_bFire)
+		{
+			this->FireIntensity = 1;
+			m_dFireTickUp = m_dElapsedTime + 2.f;
+		}
+
+		this->m_bFire = true;
+		// oh shit nigga
+		break;
+	case SLOW:
+		this->m_bSlow = true;
+		break;
+	case POISON:
+		this->m_bPoison = true;
+		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
+		break;
 
 	default:
 		break;
@@ -350,16 +377,42 @@ void Player::Update(double dt)
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
-	// Update the position if the WASD buttons were activated
-	//( SHOULDNT BE USING THIS SINCE WE HAVE CONTROLLER )
-	//( *ONLY APPLIES TO KEYBOARD INPUT, MOUSE STILL WRITE HERE* )
-	/*if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-		KeyboardController::GetInstance()->IsKeyDown('A') ||
-		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D'))
+	// STATUS EFFECTS
+	if (FireIntensity == 0)
+		this->m_bFire = false;
+
+	if (this->m_bFire && m_dElapsedTime > m_dFireTickUp)
 	{
-		m_bMoving = true;
-	}*/
+		m_dFireTickUp = m_dElapsedTime + 2.f;
+
+		if (FireIntensity < 5)
+			++FireIntensity;
+
+		std::cout << "ROLL YOU STUPID SHIT" << std::endl;
+		std::cout << FireIntensity << std::endl;
+	}
+
+	if (this->m_bSlow)
+	{
+		this->m_dSpeed = 5.0;
+		std::cout << "You are slowed!" << std::endl;
+	}
+	else
+		this->m_dSpeed = 10.0;
+
+	if (this->m_bPoison && m_dElapsedTime > m_dPoisonDuration)
+	{
+		this->m_bPoison = false;
+	}
+
+	if (this->m_bPoison)
+		std::cout << "You are Poisoned for: " << m_dPoisonDuration - m_dElapsedTime << std::endl;
+
+	if ((this->m_bFire || this->m_bPoison) && m_dElapsedTime > m_dDmgOverTimeTick)
+	{
+		m_dDmgOverTimeTick = m_dElapsedTime + 1.f;
+		this->EditHealth(-10.f); // lol rekt
+	}
 
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	w = Application::GetInstance().GetWindowWidth();
@@ -395,6 +448,12 @@ void Player::Update(double dt)
 			m_dRollTime = m_dElapsedTime + 0.07f; // 0.07 seems like a good time tbh
 			std::cout << "ROLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL" << std::endl;
 
+			if (this->m_bFire)
+			{
+				m_dFireTickUp = m_dElapsedTime + 2.f;
+				--FireIntensity;
+			}
+
 			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
 	}
@@ -416,6 +475,9 @@ void Player::Update(double dt)
 			SetMovement(false);
 		}
 	}
+
+	if (this->m_bSlow)
+		this->m_bSlow = false;
 
 	// If the user presses R key, then reset the view to default values
 	//if (KeyboardController::GetInstance()->IsKeyDown('P'))
@@ -593,4 +655,19 @@ void Player::EditMoney(int _money)
 GenericEntity ** Player::GetPlayerAnimated()
 {
 	return playerAnimated;
+}
+
+void Player::setFire(bool _lit)
+{
+	this->m_bFire = _lit;
+}
+
+void Player::setSlow(bool _slow)
+{
+	this->m_bSlow = _slow;
+}
+
+void Player::setPoison(bool _poison)
+{
+	this->m_bPoison = _poison;
 }
