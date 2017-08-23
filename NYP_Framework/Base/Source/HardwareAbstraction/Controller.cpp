@@ -86,7 +86,7 @@ bool Controller::MoveRight(double dt)
 bool Controller::Shoot(double dt)
 {
 	//if (!Player::GetInstance()->isDodging())
-	//	Player::GetInstance()->Shoot(dt);
+		//Player::GetInstance()->Shoot(dt);
 	//std::cout << "Shoot" << std::endl;
 	return false;
 }

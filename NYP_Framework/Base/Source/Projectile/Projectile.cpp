@@ -149,6 +149,16 @@ void CProjectile::Update(double dt)
 	// Update Position
 	if(!m_bProjectileLaserBeam)
 		position += theDirection * (float)(dt * m_fSpeed);
+	/*else
+	{
+		position = Player::GetInstance()->GetPos();
+		theDirection = Player::GetInstance()->GetView();
+
+	}*/
+	if (m_bProjectileLaserBeam)
+	{
+
+	}
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
 	//				position.y + (float)(theDirection.y * dt * m_fSpeed),
 	//				position.z + (float)(theDirection.z * dt * m_fSpeed));

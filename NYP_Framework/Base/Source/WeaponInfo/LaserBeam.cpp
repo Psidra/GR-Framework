@@ -17,13 +17,13 @@ void LaserBeam::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 1000;
+	magRounds = 500;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 1000;
+	maxMagRounds = 500;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 10000;
+	totalRounds = 2000;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 10000;
+	maxTotalRounds = 2000;
 
 	// The time between shots
 	timeBetweenShots = 0.01;
@@ -32,13 +32,13 @@ void LaserBeam::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 5;
+	m_fWeaponDamage = 60;
 	// boolean flag for dots
 	m_bDots = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// projectile scale
-	scale.Set(0.3, 0.3, 0.3);
+	scale.Set(0.5, 0.5, 0.5);
 	// projectile ricochet
 	m_bRicochet = true;
 	// is laserBeam
@@ -55,7 +55,6 @@ void LaserBeam::Discharge(Vector3 position, Vector3 target)
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
 			generateBullet(position, target, 1);
-
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 				--magRounds;
@@ -77,13 +76,15 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		//negative angle counter clockwise positive angle clockwise
 		//target = rotateDirection(temp, totalAngle);
 		//totalAngle -= angle;
-
-		CProjectile* aProjectile = Create::Projectile("cube",
-			position,
+		increment += 0.5f;
+		CProjectile* aProjectile = Create::Projectile("sphere",
+			position + target * 5,
 			target.Normalized(),
 			scale,
-			2.0f,
+			0.05f,
 			0.f);
+		
+
 
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
@@ -91,4 +92,5 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
+	increment = 0;
 }

@@ -14,6 +14,7 @@
 #include "MeshList.h"
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
+#include "../WeaponInfo/LaserBeam.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -40,6 +41,7 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Rifle(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -431,13 +433,15 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//update minimap to render rooms here to be changed
+
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
 		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
 		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
 			continue;
 
-		if (((*it)->GetPosition() - position).LengthSquared() < CMinimap::GetInstance()->GetScale().LengthSquared())
+		Vector3 temp = CMinimap::GetInstance()->GetScale();
+		if (position.LengthSquared() <= temp.x * temp.x)
 		{
 			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
 			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
@@ -505,11 +509,6 @@ bool Player::ChangeWeapon(const float dt)
 	return false;
 }
 
-void Player::SetView(Vector3 _view)
-{
-	this->view = _view;
-}
-
 void Player::UseBlank()
 {
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
@@ -525,6 +524,18 @@ void Player::UseBlank()
 	}
 
 	--this->m_iBlank;
+}
+
+// Set view direction
+void Player::SetView(Vector3 _view)
+{
+	this->view = _view;
+}
+
+// Get view direction
+Vector3 Player::GetView()
+{
+	return this->view;
 }
 
 void Player::SetHealth(float _health)
