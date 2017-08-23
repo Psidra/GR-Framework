@@ -15,6 +15,7 @@
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
 #include "../WeaponInfo/LaserBeam.h"
+#include "../Particle/ParticleEffect.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -199,8 +200,11 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 			break;
 
 		//std::cout << "player hit by enemy bullet" << std::endl;
+		Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, this);
+
 		thatEntity->SetIsDone(true);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
+
 		if (this->m_fHealth > 0)
 			EditHealth(-Proj->getProjectileDamage());
 
@@ -520,7 +524,9 @@ void Player::UseBlank()
 		GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 
 		if (thatEntity->type == ENEMY_BULLET)
+		{
 			thatEntity->SetIsDone(true);
+		}
 	}
 
 	--this->m_iBlank;

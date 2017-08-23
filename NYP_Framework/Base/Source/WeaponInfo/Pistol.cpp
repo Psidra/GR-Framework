@@ -43,6 +43,8 @@ void Pistol::Init(void)
 	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 10.f;
 }
 
 // Discharge this weapon
@@ -72,12 +74,12 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 
 	for (int i = 0;i < numBullet;++i)
 	{
-		CProjectile* aProjectile = Create::Projectile("sphere",
+		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			scale,
 			2.0f,
-			10.0f);
+			m_fSpeed);
 		aProjectile->type = bulletType;
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);

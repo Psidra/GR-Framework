@@ -118,6 +118,14 @@ void CEnemy::Render()
 
 void CEnemy::Shoot(double dt)
 {
+	switch (this->enemy_type) {
+	case NORMAL:
+		
+		break;
+	case OBSTACLE_INVUL:
+		//enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, direction);
+		break;
+	}
 	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
 	//std::cout << "Enemy Shoot" << std::endl;
 }

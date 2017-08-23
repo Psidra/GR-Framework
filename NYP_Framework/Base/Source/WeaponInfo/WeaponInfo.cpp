@@ -138,6 +138,8 @@ void CWeaponInfo::Init(void)
 	m_bRicochet = true;
 	// is laserBeam
 	m_bLaserBeam = false;
+	// projectile speed
+	m_fSpeed = 10.f;
 }
 
 // Update the elapsed time
@@ -219,6 +221,16 @@ void CWeaponInfo::setIsDots(bool _isDots)
 bool CWeaponInfo::getDots()
 {
 	return this->m_bDots;
+}
+
+void CWeaponInfo::setSpeed(float _speed)
+{
+	m_fSpeed = _speed;
+}
+
+float CWeaponInfo::getSpeed()
+{
+	return m_fSpeed;
 }
 
 void CWeaponInfo::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
