@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "TileSet.h"
+#include "SingletonTemplate.h"
 
 #include <map>
 #include <vector>
@@ -12,7 +13,7 @@ using std::vector;
 using std::string;
 using std::pair;
 
-class Level
+class Level : public Singleton<Level>
 {
 public:
 	struct Point {
