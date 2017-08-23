@@ -76,6 +76,12 @@
     <Filter Include="Minimap">
       <UniqueIdentifier>{eb34a95d-cc3f-4208-8a70-5ad1a81f78d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{1d389891-ab98-4056-8112-5d74b2ff3b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle\Particle Header">
+      <UniqueIdentifier>{7da91861-2b31-4a86-a324-421e34475dc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -195,6 +201,15 @@
     <ClCompile Include="Source\AI FSM\Ai_obstacle.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Particle\Emitter.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Particle\Particle.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Particle\ParticleEffect.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -310,6 +325,15 @@
     </ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_obstacle.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Particle\Emitter.h">
+      <Filter>Particle\Particle Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Particle\Particle.h">
+      <Filter>Particle\Particle Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Particle\ParticleEffect.h">
+      <Filter>Particle\Particle Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
