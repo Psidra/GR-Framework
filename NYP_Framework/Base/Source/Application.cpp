@@ -223,6 +223,7 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+		MeshBuilder::GetInstance()->GenerateCube("greenCube", Color(0.0f, 1.0f, 0.0f), 1.0f);
 
 		// Player sprite
 		MeshBuilder::GetInstance()->GenerateQuad("player", Color(1, 1, 1), 1.f);
@@ -297,8 +298,12 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/PlayerCursorV2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("boss_hp_border", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("boss_hp_border")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("main_menu", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("main_menu")->textureID[0] = LoadTGA("Image/UI/MainMenu.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("pause_menu", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("pause_menu")->textureID[0] = LoadTGA("Image/UI/PauseMenu.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("start_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("start_button")->textureID[0] = LoadTGA("Image/UI/StartButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("resume_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("resume_button")->textureID[0] = LoadTGA("Image/UI/ResumeButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("option_button", Color(1, 1, 1), 1.f);

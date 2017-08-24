@@ -11,6 +11,8 @@
 
 class CMinimap : public GenericEntity, public Singleton<CMinimap>
 {
+private:
+	static const int NUM_TYPE = 4;
 public:
 	enum SPRITE_RENDERMODE
 	{
@@ -18,6 +20,13 @@ public:
 		MODE_3D,
 		NUM_MODE
 	};
+
+	enum MINIMAP_STATE
+	{
+		NONE,
+		NORMAL,
+		ENLARGED,
+	} mapState;
 
 	CMinimap(void);
 	virtual ~CMinimap(void);
@@ -84,6 +93,8 @@ public:
 	void setIsEnlarged(bool _isEnlarged);
 	// enlarge minimap
 	void EnlargeMap(bool _isEnlarged);
+	//Add all telepos to list
+	void addTeleporterPos(Vector3 _pos);
 	//// Set position of avatar in minimap
 	//bool SetPosition(const int x, const int y);
 	//// Get position x of avatar in minimap
@@ -103,8 +114,10 @@ public:
 protected:
 	// Rotation from First Angle
 	int m_iAngle;
-	// Number of obj
-	int m_iNumObject;
+	// Number of wall
+	int m_iNumWall;
+	// Number of tele
+	int m_iNumTele;
 	//bool is enlarged
 	bool m_bEnlarged;
 	//obj pos & scale on map
@@ -112,9 +125,16 @@ protected:
 	Vector3 objScale;
 	// player scale on map
 	Vector3 playerMapScale;
+	//player pos relative to map
 	Vector3 playerMapPos;
-	//temporary storage method for render of map (will be changed)
+	//range of minimap
+	float m_fRange;
+	//temporary storage method for render of map (will be changed maybe)
 	std::map <std::string, std::vector<Vector3>> minimapData;
+	//storing string id of map
+	std::string mapID[NUM_TYPE];
+	//teleporter pos
+	std::vector<Vector3> teleporterActPos;
 	SPRITE_RENDERMODE mode;
 };
 
