@@ -594,8 +594,7 @@ void Player::setDodge(bool _dodge)
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-
-	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view); //position of player, dir to shoot from
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view.Normalize()); //position of player, dir to shoot from
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
