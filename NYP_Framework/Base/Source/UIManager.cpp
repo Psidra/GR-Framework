@@ -78,9 +78,12 @@ void UIManager::Update()
 		{
 			if ((*it)->type == UIElement::ELEMENT_TYPE::CURSOR) // (*it) is always cursor
 				continue;
-
+			if ((*it)->elestate != ALL && this->state != (*it)->elestate)
+				continue;
+			
 			if (CollisionManager::GetInstance()->UI_CheckAABBCollision(Vector3(posX, posY, 0), (*it)))
 			{
+
 				switch ((*it)->type) {
 				case UIElement::ELEMENT_TYPE::RESUME:
 					this->Playing();

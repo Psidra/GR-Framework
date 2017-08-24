@@ -45,7 +45,7 @@ bool CollisionManager::CheckSphereCollision(EntityBase * ThisEntity, EntityBase 
 bool CollisionManager::CheckAABBCollision(EntityBase * ThisEntity, EntityBase * ThatEntity)
 {
 	if (!ThatEntity->HasCollider() || !ThisEntity->HasCollider()) {
-		std::cout << "1 or more Entities does not have Collider" << std::endl;
+		//std::cout << "1 or more Entities does not have Collider" << std::endl;
 		return false;
 	}
 
@@ -53,7 +53,7 @@ bool CollisionManager::CheckAABBCollision(EntityBase * ThisEntity, EntityBase * 
 	GenericEntity* thatHitbox = dynamic_cast<GenericEntity*>(ThatEntity);
 
 	if (!thisHitbox->HasAABB() || !thatHitbox->HasAABB()){
-		std::cout << "1 or more Entities does not have AABB" << std::endl;
+		//std::cout << "1 or more Entities does not have AABB" << std::endl;
 		return false;
 	}
 
