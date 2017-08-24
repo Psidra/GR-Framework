@@ -50,6 +50,10 @@ void Shotgun::Init(void)
 	m_fSpeed = 10.f;
 	// is active
 	m_bActive = false;
+	// rotate angle
+	m_fRotateAngle = 10;
+	// num of bullet
+	m_iNumBullet = 5;
 }
 
 void Shotgun::Render()
@@ -87,7 +91,7 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 		{
 			//GenerateBullet takes in player/enemy pos, dir player/enemy facing, no. of bullets, angle of bullet being shoot out
 			//E.g. 5 bullets each rotation by 10 degree to create a pattern
-			generateBullet(position, target, 5, 10);
+			generateBullet(position, target, m_iNumBullet, m_fRotateAngle);
 
 			bFire = false;
 			if(bulletType == GenericEntity::PLAYER_BULLET)

@@ -321,11 +321,11 @@ void SceneText::Init()
 	//	}
 	//}
 	
-	level = Level::GetInstance();
+	/*level = Level::GetInstance();
 	level->init(25.f, 25.f, 5.f, 5.f, 20);
 	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	/*quadTree = new QuadTree(0, level->getMapWidth(), 0, level->getMapHeight(), 3);
+	quadTree = new QuadTree(0, level->getMapWidth(), 0, level->getMapHeight(), 3);
 
 	for (size_t i = 0; i < level->getMapWidth(); ++i)
 	{

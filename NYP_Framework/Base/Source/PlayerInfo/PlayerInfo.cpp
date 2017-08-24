@@ -496,7 +496,7 @@ void Player::Update(double dt)
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
-			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.4) * (temp.x * 0.4))
+			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
 			{
 				//std::cout << "in range\n";
 				switch (dynamic_cast<GenericEntity*>((*it))->type)

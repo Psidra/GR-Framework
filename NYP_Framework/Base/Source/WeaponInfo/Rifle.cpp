@@ -50,6 +50,10 @@ void Rifle::Init(void)
 	m_fSpeed = 15.f;
 	// is active
 	m_bActive = false;
+	// rotate angle
+	m_fRotateAngle = 0;
+	// num of bullet
+	m_iNumBullet = 1;
 }
 
 void Rifle::Render()
@@ -87,7 +91,7 @@ void Rifle::Discharge(Vector3 position, Vector3 target)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target, 1);
+			generateBullet(position, target, m_iNumBullet);
 
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
