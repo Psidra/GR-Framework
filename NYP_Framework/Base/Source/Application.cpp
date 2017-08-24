@@ -329,6 +329,12 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 
 
+
+
+		//--------TileSet
+		MeshBuilder::GetInstance()->GenerateQuad("tile_floor", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("tile_floor")->textureID[0] = LoadTGA("Image/TileSet/tile_floor.tga");
+
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);

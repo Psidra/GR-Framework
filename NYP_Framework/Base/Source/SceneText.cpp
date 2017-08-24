@@ -312,38 +312,37 @@ void SceneText::Init()
 	//}
 	
 	level = Level::GetInstance();
-	level->init(25.f, 25.f, 5.f, 5.f, 20);
+	level->init(25.f, 25.f, 10.f, 10.f, 20);
 	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	/*quadTree = new QuadTree(0, level->getMapWidth(), 0, level->getMapHeight(), 3);
+	//quadTree = new QuadTree(0, level->getMapWidth(), level->getMapHeight(), 0);
 
-	for (size_t i = 0; i < level->getMapWidth(); ++i)
-	{
-		for (size_t j = 0; j < level->getMapHeight(); ++j)
-		{
-			TileEntity* temp = NULL;
+	//for (size_t i = 0; i < level->getMapWidth(); ++i)
+	//{q
+	//	for (size_t j = 0; j < level->getMapHeight(); ++j)
+	//	{
+	//		TileEntity* temp = NULL;
 
-			if (level->getTile(i, j).type == Tile::EMPTY)
-				temp = Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::ROOM)
-				temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::CORRIDOR)
-				temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::WALL)
-			{
-				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-				temp->type = GenericEntity::OBJECT_TYPE::WALL;
-			}
+	//		if (level->getTile(i, j).type == Tile::EMPTY);
+	//		//temp = Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::ROOM);
+	//		//temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::CORRIDOR);
+	//		//temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::WALL)
+	//		{
+	//			temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
+	//		}
 
-			if (!temp)
-				continue;
+	//		if (!temp)
+	//			continue;
 
-			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-			quadTree->addObject(temp);
-			
-		}
-	}*/
+	//		temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+	//		quadTree->addObject(temp);
 
+	//	}
+	//}
 }
 
 void SceneText::Update(double dt)
@@ -355,13 +354,15 @@ void SceneText::Update(double dt)
 	float posX = (static_cast<float>(x) - halfWindowWidth) + Player::GetInstance()->GetPos().x;
 	float posY = (halfWindowHeight - static_cast<float>(y)) + Player::GetInstance()->GetPos().y;
 
-	/*vector<EntityBase*> getNew = quadTree->getObjectsAt(posX, posY);
-	list<EntityBase*> temp;
-	std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
-	printf("Objects at %lf %lf: %u\n", posX, posY, temp.size());
-	EntityManager::GetInstance()->setEntityList(temp);
-	EntityManager::GetInstance()->setCollisionList(temp);*/
-	//quadTree->getObjectsAt(playerInfo->GetMinAABB().x, playerInfo->GetMinAABB().y);
+	//float fps = (float)(1.f / dt);
+	//std::cout << "fps:" << fps << "          ";
+	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+	//list<EntityBase*> temp;
+	//std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
+	//printf("Objects at %lf %lf: %u\n", posX, posY, temp.size());
+	//EntityManager::GetInstance()->setCollisionList(temp);
+	//EntityManager::GetInstance()->setEntityList(temp);
+
 
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);
@@ -455,7 +456,7 @@ void SceneText::Update(double dt)
 
 		//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
 
-		GraphicsManager::GetInstance()->UpdateLights(dt);
+	//	GraphicsManager::GetInstance()->UpdateLights(dt);
 
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
@@ -510,7 +511,7 @@ void SceneText::Render()
 	//EntityManager::GetInstance()->RenderUI();
 
 	//******************************* PRE RENDER PASS *************************************
-	RenderPassGPass();
+	//RenderPassGPass();
 	//******************************* MAIN RENDER PASS ************************************
 	RenderPassMain();
 }
