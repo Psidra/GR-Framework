@@ -541,9 +541,16 @@ void Player::Update(double dt)
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)
 	{
+		double x, y;
+		MouseController::GetInstance()->GetMousePosition(x, y);
+		float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+		float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
+		float posX = (static_cast<float>(x) - halfWindowWidth);
+		float posY = (halfWindowHeight - static_cast<float>(y));
+
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 15));
-		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 0));
+		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(posX * 0.005f, -1.0f, 1.0f), Math::Clamp(posY * 0.005f, -1.0f, 1.0f), 15)); // Vector3(0,0,15)
+		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(posX * 0.005f, -1.0f, 1.0f), Math::Clamp(posY * 0.005f, -1.0f, 1.0f), 0));
 		attachedCamera->Update(dt);
 	}
 
@@ -595,6 +602,18 @@ void Player::setDodge(bool _dodge)
 bool Player::Shoot(const float dt)
 {	
 	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
+	float posX = (static_cast<float>(x) - halfWindowWidth);
+	float posY = (halfWindowHeight - static_cast<float>(y));
+
+	Vector3 changedpos = position;
+	changedpos.x += Math::Clamp(posX * 0.005f, -1.0f, 1.0f);
+	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
+
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view); //position of player, dir to shoot from
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
