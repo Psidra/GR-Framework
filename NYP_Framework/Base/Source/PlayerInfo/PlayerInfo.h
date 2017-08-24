@@ -42,6 +42,8 @@ public:
 	void MoveRight();
 	// Set Movement
 	void SetMovement(bool _movement);
+	// Get Movement
+	bool GetMovement();
 
 	// Update
 	void Update(double dt = 0.0333f);

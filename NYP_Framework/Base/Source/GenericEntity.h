@@ -26,6 +26,7 @@ public:
 		FIRE,
 		SLOW,
 		POISON,
+		TELEPORTER,
 	}type;
 
 	virtual void Update(double _dt);

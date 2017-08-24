@@ -192,6 +192,11 @@ void Player::SetMovement(bool _movement)
 	m_bMoving = _movement;
 }
 
+bool Player::GetMovement()
+{
+	return m_bMoving;
+}
+
 /********************************************************************************
  Hero Update
  ********************************************************************************/
@@ -474,6 +479,40 @@ void Player::Update(double dt)
 
 	CollisionCheck_Movement();
 
+	//update minimap only when player moves
+	//if (m_bMoving)
+	//{
+		for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
+			;it != EntityManager::GetInstance()->getCollisionList().end();++it)
+		{
+			if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
+				&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
+				continue;
+
+
+			Vector3 temp = CMinimap::GetInstance()->GetScale();
+
+			if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
+			{
+				//std::cout << "in range\n";
+				switch (dynamic_cast<GenericEntity*>((*it))->type)
+				{
+				case GenericEntity::WALL:
+					CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
+					CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
+					break;
+				case GenericEntity::TELEPORTER:
+					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
+					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
+					CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	//}
+
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
 		setDodge(false);
@@ -519,24 +558,7 @@ void Player::Update(double dt)
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
-	//update minimap to render rooms here to be changed
-	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
-		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
-	{
-		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
-			continue;
-
-		Vector3 temp = CMinimap::GetInstance()->GetScale();
-
-		if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
-		{
-			//std::cout << "in range\n";
-			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
-			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
-		}
-	}
-
-	//set weapon pos
+	//set weapon pos & dir
 	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }

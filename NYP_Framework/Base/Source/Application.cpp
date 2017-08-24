@@ -223,6 +223,7 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 		MeshList::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+		MeshBuilder::GetInstance()->GenerateCube("greenCube", Color(0.0f, 1.0f, 0.0f), 1.0f);
 
 		// Player sprite
 		MeshBuilder::GetInstance()->GenerateQuad("player", Color(1, 1, 1), 1.f);
