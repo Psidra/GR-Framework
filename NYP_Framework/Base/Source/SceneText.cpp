@@ -183,7 +183,7 @@ void SceneText::Init()
 //	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
-	UIManager::GetInstance()->state = UIManager::GAME_STATE::PLAYING;
+	UIManager::GetInstance()->state = UIManager::GAME_STATE::MAIN_MENU;
 
 	// test walls
 	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 10, 2), true);
@@ -216,17 +216,29 @@ void SceneText::Init()
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
-	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
-	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	resume->type = UIElement::ELEMENT_TYPE::RESUME;
+	UIElement* startMM = Create::UIEntity("start_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
+	startMM->elestate = UIElement::ELEMENT_STATE::MAIN_MENU;
+	startMM->type = UIElement::ELEMENT_TYPE::START;
 
-	UIElement* option = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
-	option->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	option->type = UIElement::ELEMENT_TYPE::OPTION;
+	UIElement* optionMM = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
+	optionMM->elestate = UIElement::ELEMENT_STATE::MAIN_MENU;
+	optionMM->type = UIElement::ELEMENT_TYPE::OPTION;
 
-	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
-	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	exit->type = UIElement::ELEMENT_TYPE::EXIT;
+	UIElement* exitMM = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	exitMM->elestate = UIElement::ELEMENT_STATE::MAIN_MENU;
+	exitMM->type = UIElement::ELEMENT_TYPE::EXIT;
+
+	UIElement* resumePP = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
+	resumePP->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	resumePP->type = UIElement::ELEMENT_TYPE::RESUME;
+
+	UIElement* optionPP = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
+	optionPP->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	optionPP->type = UIElement::ELEMENT_TYPE::OPTION;
+
+	UIElement* exitPP = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	exitPP->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	exitPP->type = UIElement::ELEMENT_TYPE::EXIT;
 
 	//TELEPORTER
 	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
@@ -327,33 +339,39 @@ void SceneText::Init()
 
 	quadTree = new QuadTree(0, level->getMapWidth(), 0, level->getMapHeight(), 3);
 
-	for (size_t i = 0; i < level->getMapWidth(); ++i)
-	{
-		for (size_t j = 0; j < level->getMapHeight(); ++j)
-		{
-			TileEntity* temp = NULL;
+	level = Level::GetInstance();
+	level->init(25.f, 25.f, 10.f, 10.f, 20);
+	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-			if (level->getTile(i, j).type == Tile::EMPTY)
-				temp = Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::ROOM)
-				temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::CORRIDOR)
-				temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-			else if (level->getTile(i, j).type == Tile::WALL)
-			{
-				temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-				temp->type = GenericEntity::OBJECT_TYPE::WALL;
-			}
+	//quadTree = new QuadTree(0, level->getMapWidth(), level->getMapHeight(), 0);
 
-			if (!temp)
-				continue;
+	//for (size_t i = 0; i < level->getMapWidth(); ++i)
+	//{
+	//	for (size_t j = 0; j < level->getMapHeight(); ++j)
+	//	{
+	//		TileEntity* temp = NULL;
 
-			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-			quadTree->addObject(temp);
-			
-		}
-	}*/
+	//		if (level->getTile(i, j).type == Tile::EMPTY);
+	//		//temp = Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::ROOM);
+	//		//temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::CORRIDOR);
+	//		//temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
+	//		else if (level->getTile(i, j).type == Tile::WALL)
+	//		{
+	//			temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
+	//		}
 
+	//		if (!temp)
+	//			continue;
+
+	//		temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+	//		quadTree->addObject(temp);
+
+	//	}
+	//}
+	*/
 }
 
 void SceneText::Update(double dt)
@@ -365,13 +383,15 @@ void SceneText::Update(double dt)
 	float posX = (static_cast<float>(x) - halfWindowWidth);
 	float posY = (halfWindowHeight - static_cast<float>(y));
 
-	/*vector<EntityBase*> getNew = quadTree->getObjectsAt(posX, posY);
-	list<EntityBase*> temp;
-	std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
-	printf("Objects at %lf %lf: %u\n", posX, posY, temp.size());
-	EntityManager::GetInstance()->setEntityList(temp);
-	EntityManager::GetInstance()->setCollisionList(temp);*/
-	//quadTree->getObjectsAt(playerInfo->GetMinAABB().x, playerInfo->GetMinAABB().y);
+	//float fps = (float)(1.f / dt);
+	//std::cout << "fps:" << fps << "          ";
+	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+	//list<EntityBase*> temp;
+	//std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
+	//printf("Objects at %lf %lf: %u\n", posX, posY, temp.size());
+	//EntityManager::GetInstance()->setCollisionList(temp);
+	//EntityManager::GetInstance()->setEntityList(temp);
+
 
 	//double x, y;
 	//MouseController::GetInstance()->GetMousePosition(x, y);
@@ -465,7 +485,7 @@ void SceneText::Update(double dt)
 
 		//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
 
-		GraphicsManager::GetInstance()->UpdateLights(dt);
+	//	GraphicsManager::GetInstance()->UpdateLights(dt);
 
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
@@ -520,7 +540,7 @@ void SceneText::Render()
 	//EntityManager::GetInstance()->RenderUI();
 
 	//******************************* PRE RENDER PASS *************************************
-	RenderPassGPass();
+	//RenderPassGPass();
 	//******************************* MAIN RENDER PASS ************************************
 	RenderPassMain();
 }

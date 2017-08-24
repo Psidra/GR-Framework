@@ -37,8 +37,57 @@ void UIElement::Update()
 		break;
 	}
 
+	/*
+	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
+	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	resume->type = UIElement::ELEMENT_TYPE::RESUME;
+
+	UIElement* option = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
+	option->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	option->type = UIElement::ELEMENT_TYPE::OPTION;
+
+	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
+	exit->type = UIElement::ELEMENT_TYPE::EXIT;
+	*/
+
+	float w = Application::GetInstance().GetWindowWidth();
+	float hhalf = Application::GetInstance().GetWindowHeight() * 0.5f;
+
+	// Main Menu
+
+
+	// Pause
+	if (this->type == START)
+	{
+		this->position.Set(0, hhalf * 0.3f, 9.5f);
+		this->scale.Set(175 * w / 800, 25 * hhalf / 300, 1);
+	}
+
+	if (this->type == RESUME)
+	{
+		this->position.Set(0, hhalf * 0.3f, 9.5f);
+		this->scale.Set(175 * w / 800, 25 * hhalf / 300, 1);
+	}
+
+	if (this->type == OPTION)
+	{
+		this->position.Set(0, hhalf * 0.1f, 9.5f);
+		this->scale.Set(175 * w / 800, 25 * hhalf / 300, 1);
+	}
+
+	if (this->type == EXIT)
+	{
+		this->position.Set(0, hhalf * -0.1f, 9.5f);
+		this->scale.Set(175 * w / 800, 25 * hhalf / 300, 1);
+	}
+
 	if (this->m_bCollider)
-		this->SetAABB(Vector3((this->scale * 0.5f) + this->position), Vector3((this->scale * -0.5f) + this->position));
+	{
+		Vector3 offset = this->position;
+		offset.y += 15.f;
+		this->SetAABB(Vector3((this->scale * 0.5f) + offset), Vector3((this->scale * -0.5f) + offset));
+	}
 
 	if (this->type == CURSOR)
 	{
@@ -60,8 +109,18 @@ void UIElement::Render()
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::MAIN_MENU:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
 
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("main_menu"));
+		modelStack.PopMatrix();
 		break;
+	}
 	case UIManager::GAME_STATE::PLAYING:
 	{
 		Vector3 HUDposition(-halfWindowWidth + 45.f, halfWindowHeight - 45.f, 8.0f);

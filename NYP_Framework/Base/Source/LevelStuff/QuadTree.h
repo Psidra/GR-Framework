@@ -22,33 +22,18 @@ enum Node {
 
 public:
 	QuadTree();
-	QuadTree(float _minX, float _maxX, float _maxY, float _minY, unsigned _maxObjectsToGrow = 4);
-	//QuadTree(float _x, float _y, float _width, float _height, int _level, int _maxLevel);
+	QuadTree(float _left, float _right, float _top, float _down, unsigned _maxObjectsToGrow = 4);
 	~QuadTree();
 
 	void addObject(EntityBase *object);
 	void clear();
 	vector<EntityBase*> getObjectsAt(float _x, float _y);
+	vector<EntityBase*> queryRange(float _left, float _right, float _top, float _down);
 
 private:
-	/*float x;
-	float y;
-	float width;
-	float height;
-	int level;
-	int maxLevel;*/
-
 	vector<EntityBase*> objects;
 
-	/*QuadTree* NW;
-	QuadTree* NE;
-	QuadTree* SW;
-	QuadTree* SE;*/
-
-	//bool contains(QuadTree *child, EntityBase *object);
-
-	//new
-	float minX, maxX, minY, maxY;
+	float left, right, top, down;
 	unsigned maxObjectToGrow;
 	QuadTree* nodes;
 
@@ -56,10 +41,10 @@ private:
 
 	bool contains(EntityBase *object);
 	bool contains(float x, float y);
+	bool contains(float _left, float _right, float _top, float _down);
 
 	void createLeaves();
 	void moveObjectsToLeaves();
-
 };
 
 
