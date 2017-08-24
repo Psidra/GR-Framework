@@ -52,6 +52,10 @@ Player::Player(void)
 Player::~Player(void)
 {
 	m_pTerrain = NULL;
+	for (size_t i = 0;i < playerInventory->getWeaponList().size(); ++i)
+	{
+		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
+	}
 }
 
 // Initialise this class instance
@@ -190,6 +194,11 @@ void Player::MoveRight()
 void Player::SetMovement(bool _movement)
 {
 	m_bMoving = _movement;
+}
+
+bool Player::GetMovement()
+{
+	return m_bMoving;
 }
 
 /********************************************************************************
@@ -474,6 +483,40 @@ void Player::Update(double dt)
 
 	CollisionCheck_Movement();
 
+	//update minimap only when player moves
+	//if (m_bMoving)
+	//{
+		for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
+			;it != EntityManager::GetInstance()->getCollisionList().end();++it)
+		{
+			if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
+				&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
+				continue;
+
+
+			Vector3 temp = CMinimap::GetInstance()->GetScale();
+
+			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
+			{
+				//std::cout << "in range\n";
+				switch (dynamic_cast<GenericEntity*>((*it))->type)
+				{
+				case GenericEntity::WALL:
+					CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
+					CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
+					break;
+				case GenericEntity::TELEPORTER:
+					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
+					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
+					CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	//}
+
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
 		setDodge(false);
@@ -502,9 +545,16 @@ void Player::Update(double dt)
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)
 	{
+		double x, y;
+		MouseController::GetInstance()->GetMousePosition(x, y);
+		float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+		float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
+		float posX = (static_cast<float>(x) - halfWindowWidth);
+		float posY = (halfWindowHeight - static_cast<float>(y));
+
 		Vector3 cameraView = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
-		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 15));
-		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(x * 0.005f, -1.0, 1.0), Math::Clamp((-y + (w * 0.75f)) * 0.005f, -1.0, 1.0), 0));
+		attachedCamera->SetCameraPos(position + Vector3(Math::Clamp(posX * 0.005f, -1.0f, 1.0f), Math::Clamp(posY * 0.005f, -1.0f, 1.0f), 15)); // Vector3(0,0,15)
+		attachedCamera->SetCameraTarget(position + Vector3(Math::Clamp(posX * 0.005f, -1.0f, 1.0f), Math::Clamp(posY * 0.005f, -1.0f, 1.0f), 0));
 		attachedCamera->Update(dt);
 	}
 
@@ -512,24 +562,7 @@ void Player::Update(double dt)
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
-	//update minimap to render rooms here to be changed
-	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
-		;it != EntityManager::GetInstance()->getCollisionList().end();++it)
-	{
-		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL)
-			continue;
-
-		Vector3 temp = CMinimap::GetInstance()->GetScale();
-
-		if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
-		{
-			//std::cout << "in range\n";
-			CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
-			CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
-		}
-	}
-
-	//set weapon pos
+	//set weapon pos & dir
 	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }
@@ -572,7 +605,19 @@ void Player::setDodge(bool _dodge)
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view); //position of player, dir to shoot from
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+	double x, y;
+	MouseController::GetInstance()->GetMousePosition(x, y);
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
+	float posX = (static_cast<float>(x) - halfWindowWidth);
+	float posY = (halfWindowHeight - static_cast<float>(y));
+
+	Vector3 changedpos = position;
+	changedpos.x += Math::Clamp(posX * 0.005f, -1.0f, 1.0f);
+	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
+
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view); //position of player, dir to shoot from
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }

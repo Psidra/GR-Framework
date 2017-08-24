@@ -38,8 +38,6 @@ void Bow::Init(void)
 	m_fWeaponDamage = 40;
 	// boolean flag for dots
 	m_bDots = false;
-	// Player/enemy angle to rotate
-	m_fRotateAngle = 0.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
@@ -50,6 +48,10 @@ void Bow::Init(void)
 	m_fSpeed = 6.0f;
 	// is active
 	m_bActive = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
+	// num of bullet
+	m_iNumBullet = 8;
 }
 
 void Bow::Render()
@@ -89,7 +91,7 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second	
 			target = rotateDirection(target, m_fRotateAngle);
-			generateBullet(position, target, 8, 45);
+			generateBullet(position, target, m_iNumBullet, 45);
 
 			bFire = false;
 			m_fRotateAngle += 10;

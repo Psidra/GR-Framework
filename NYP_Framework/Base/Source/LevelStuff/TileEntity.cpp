@@ -26,16 +26,16 @@ void TileEntity::Update(double _dt)
 
 void TileEntity::Render()
 {
-	if (this->position.x < Player::GetInstance()->GetPos().x + 6 && this->position.y < Player::GetInstance()->GetPos().y + 5 &&
-		this->position.x > Player::GetInstance()->GetPos().x - 6 && this->position.y > Player::GetInstance()->GetPos().y - 5)
-	{
+	/*if (this->position.x < Player::GetInstance()->GetPos().x + 6  && this->position.y < Player::GetInstance()->GetPos().y + 3 &&
+		this->position.x > Player::GetInstance()->GetPos().x - 6 && this->position.y > Player::GetInstance()->GetPos().y - 3)
+	{*/
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y, position.z);
 		modelStack.Scale(scale.x, scale.y, scale.z);
 		RenderHelper::RenderMesh(modelMesh);
 		modelStack.PopMatrix();
-	}
+	/*}*/
 }
 
 void TileEntity::CollisionResponse(TileEntity * ThatEntity)
