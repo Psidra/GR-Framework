@@ -222,9 +222,9 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 
 	if (_isEnlarged)
 	{
-		scale.Set(400, 400, 1);
+		scale.Set(500, 500, 1);
 		position.Set(0, 0, 9.f);
-		m_fRange = scale.x * 0.2;
+		m_fRange = scale.x * 0.001;
 		mapState = ENLARGED;
 	}
 	else
@@ -232,7 +232,7 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 		scale.Set(100, 100, 1);
 		//position.Set(335.f, 235.f, 0.0f);
 		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
-		m_fRange = scale.x * 0.2;
+		m_fRange = scale.x * 0.4;
 		mapState = NORMAL;
 	}
 }
@@ -293,11 +293,11 @@ void CMinimap::Update(double dt)
 			float posY = (h - static_cast<float>(y));
 
 			Vector3 temp(posX, posY, 0);
-			//std::cout << "mousePos: " << temp << "\n";
+			std::cout << "mousePos: " << temp << "\n";
 
 			for (int i = 0; i < m_iNumTele; ++i)
 			{
-				if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() > m_fRange * m_fRange)
+				if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() > m_fRange)
 					continue;
 
 				//std::cout << "mmPos: " << minimapData["telepos"][i] * scale.x << "\n";
@@ -309,6 +309,7 @@ void CMinimap::Update(double dt)
 					EnlargeMap(false);
 					m_bEnlarged = false;
 					break;
+					//std::cout << "index: " << i <<  " <in range to tele> \n\n";
 				}
 			}
 		}
@@ -375,7 +376,7 @@ void CMinimap::RenderUI()
 				for (int i = 0; i < m_iNumWall; ++i)
 				{
 					//if (playerMapPos.LengthSquared() > minimapData["wallpos"][i].LengthSquared())
-					if((minimapData["wallpos"][i] - playerMapPos).LengthSquared() < m_fRange * m_fRange)
+					if((minimapData["wallpos"][i] - playerMapPos).LengthSquared() < m_fRange)
 					{
 						//std::cout << minimapData["wallpos"][i] << " render\n";
 						modelStack.PushMatrix();
@@ -390,7 +391,7 @@ void CMinimap::RenderUI()
 				}
 				for (int i = 0; i < m_iNumTele; ++i)
 				{
-					if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() < m_fRange * m_fRange)
+					if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() < m_fRange)
 					{
 						//std::cout << minimapData["wallpos"][i] << " render\n";
 						modelStack.PushMatrix();

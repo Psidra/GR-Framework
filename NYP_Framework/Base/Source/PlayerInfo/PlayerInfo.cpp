@@ -52,6 +52,10 @@ Player::Player(void)
 Player::~Player(void)
 {
 	m_pTerrain = NULL;
+	for (size_t i = 0;i < playerInventory->getWeaponList().size(); ++i)
+	{
+		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
+	}
 }
 
 // Initialise this class instance
@@ -492,7 +496,7 @@ void Player::Update(double dt)
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
-			if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
+			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.4) * (temp.x * 0.4))
 			{
 				//std::cout << "in range\n";
 				switch (dynamic_cast<GenericEntity*>((*it))->type)
