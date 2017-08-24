@@ -249,6 +249,9 @@ void SceneText::Init()
 	keyboard->Create();
 	//load from file (uses hex)
 	keyboard->Load("Keybind//keyconfig.txt");
+	//keyboard->Load("Keybind//keyconfigtest.txt");
+	//keyboard->Write("Keybind//keyconfigtest.txt");	//WIP- got it to write, but need to take in user input left
+	//keyboard->Load("Keybind//keyconfigtest.txt");
 
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
@@ -485,6 +488,11 @@ void SceneText::Update(double dt)
 
 		WeaponManager::GetInstance()->update(dt);
 		minimap->Update(dt);
+		break;
+	}	
+	case UIManager::GAME_STATE::OPTIONS:
+	{
+
 		break;
 	}
 	}
