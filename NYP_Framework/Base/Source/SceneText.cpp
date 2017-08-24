@@ -354,6 +354,7 @@ void SceneText::Update(double dt)
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
 	float posX = (static_cast<float>(x) - halfWindowWidth);
 	float posY = (halfWindowHeight - static_cast<float>(y));
+
 	/*vector<EntityBase*> getNew = quadTree->getObjectsAt(posX, posY);
 	list<EntityBase*> temp;
 	std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
