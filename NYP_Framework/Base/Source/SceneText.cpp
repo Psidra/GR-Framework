@@ -216,15 +216,15 @@ void SceneText::Init()
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
-	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 150, 9.5f), Vector3(175, 25, 1), true);
+	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
 	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
 	resume->type = UIElement::ELEMENT_TYPE::RESUME;
 
-	UIElement* option = Create::UIEntity("option_button", Vector3(0, 75, 9.5f), Vector3(175, 25, 1), true);
+	UIElement* option = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
 	option->elestate = UIElement::ELEMENT_STATE::PAUSE;
 	option->type = UIElement::ELEMENT_TYPE::OPTION;
 
-	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, 0, 9.5f), Vector3(175, 25, 1), true);
+	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
 	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
 	exit->type = UIElement::ELEMENT_TYPE::EXIT;
 
@@ -350,11 +350,10 @@ void SceneText::Update(double dt)
 {
 	double x, y;
 	MouseController::GetInstance()->GetMousePosition(x, y);
-	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
-	float posX = (static_cast<float>(x) - halfWindowWidth) + Player::GetInstance()->GetPos().x;
-	float posY = (halfWindowHeight - static_cast<float>(y)) + Player::GetInstance()->GetPos().y;
-
+	float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+	float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
+	float posX = (static_cast<float>(x) - halfWindowWidth);
+	float posY = (halfWindowHeight - static_cast<float>(y));
 	/*vector<EntityBase*> getNew = quadTree->getObjectsAt(posX, posY);
 	list<EntityBase*> temp;
 	std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
@@ -373,7 +372,7 @@ void SceneText::Update(double dt)
 	//float posY = ((h - static_cast<float>(y)) / 50.f) + Player::GetInstance()->GetPos().y;
 	
 	try {
-		Player::GetInstance()->SetView((Vector3(posX, posY, 0) - Player::GetInstance()->GetPos()).Normalized());
+		Player::GetInstance()->SetView(Vector3(posX, posY, 0));
 		throw DivideByZero();
 	}
 	catch(DivideByZero) {

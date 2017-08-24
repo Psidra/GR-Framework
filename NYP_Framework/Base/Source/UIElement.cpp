@@ -42,17 +42,10 @@ void UIElement::Update()
 
 	if (this->type == CURSOR)
 	{
-		//double x, y;
-		//MouseController::GetInstance()->GetMousePosition(x, y);
-		//float w = Application::GetInstance().GetWindowWidth();
-		//float h = Application::GetInstance().GetWindowHeight();
-		//float posX = (static_cast<float>(x) - (w * 0.5f)) / w * (12.5f * w/h);
-		//float posY = ((h - static_cast<float>(y)) - (h * 0.5f)) / h * 12.5f;
-
 		double x, y;
 		MouseController::GetInstance()->GetMousePosition(x, y);
-		float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-		float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+		float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
+		float halfWindowHeight = Application::GetInstance().GetWindowHeight() * 0.5f;
 		float posX = (static_cast<float>(x) - halfWindowWidth);
 		float posY = (halfWindowHeight - static_cast<float>(y));
 
@@ -162,6 +155,8 @@ void UIElement::Render()
 	default:
 		break;
 	}
+
+	// TODO: Fix scaling with fullscreen. (windowwidth / 800), (windowheight / 800) <- something about this I think
 
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
