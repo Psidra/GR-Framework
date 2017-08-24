@@ -83,8 +83,11 @@ void UIManager::Update()
 			
 			if (CollisionManager::GetInstance()->UI_CheckAABBCollision(Vector3(posX, posY, 0), (*it)))
 			{
-
 				switch ((*it)->type) {
+				case UIElement::ELEMENT_TYPE::START:
+					this->Playing();
+					break;
+
 				case UIElement::ELEMENT_TYPE::RESUME:
 					this->Playing();
 					break;
