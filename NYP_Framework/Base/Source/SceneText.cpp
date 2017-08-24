@@ -228,6 +228,16 @@ void SceneText::Init()
 	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
 	exit->type = UIElement::ELEMENT_TYPE::EXIT;
 
+	//TELEPORTER
+	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	//teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
+	//teleporter->setNormal(Vector3(1, 0, 0));
+	GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	//teleporter2->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
+	//teleporter->setNormal(Vector3(1, 0, 0));
+
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
