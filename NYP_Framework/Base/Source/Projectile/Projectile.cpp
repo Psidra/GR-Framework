@@ -148,7 +148,7 @@ void CProjectile::Update(double dt)
 		return;
 	}
 
-	// Update Position
+	//=====Testing codes for laser=====
 	//if(!m_bProjectileLaserBeam)
 	//if (m_bProjectileLaserBeam)
 	//{
@@ -163,7 +163,7 @@ void CProjectile::Update(double dt)
 	//		//	(*it)->GetPosition() <= position)
 	//		//	std::cout << "A: " << (*it)->GetPosition() << "\n";
 
-	//		// (A + (0.1 * AB.normalise))
+	//		// (A + (0.1 * AB.normalise)) 
 	//		Vector3 AB = (position - Player::GetInstance()->GetPos()).Normalize();
 	//		Vector3 A = Player::GetInstance()->GetPos();
 	//		while(A <= position)
@@ -181,7 +181,9 @@ void CProjectile::Update(double dt)
 	//	}
 
 	//}
+	//==========================
 
+	// Update Position
 	position += theDirection * (float)(dt * m_fSpeed);
 
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),

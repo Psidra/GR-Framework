@@ -52,6 +52,10 @@ Player::Player(void)
 Player::~Player(void)
 {
 	m_pTerrain = NULL;
+	for (size_t i = 0;i < playerInventory->getWeaponList().size(); ++i)
+	{
+		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
+	}
 }
 
 // Initialise this class instance
@@ -492,7 +496,7 @@ void Player::Update(double dt)
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
-			if (((*it)->GetPosition() - position).LengthSquared() < temp.x)
+			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.4) * (temp.x * 0.4))
 			{
 				//std::cout << "in range\n";
 				switch (dynamic_cast<GenericEntity*>((*it))->type)
@@ -601,6 +605,7 @@ void Player::setDodge(bool _dodge)
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
+	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view.Normalize()); //position of player, dir to shoot from
 	double x, y;
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
