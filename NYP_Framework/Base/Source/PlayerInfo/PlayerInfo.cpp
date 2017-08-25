@@ -68,6 +68,8 @@ Player::~Player(void)
 // Initialise this class instance
 void Player::Init(void)
 {
+	this->SetIsActive(true);
+
 	// Set the default values
 	defaultPosition.Set(0, 0, 0);
 
@@ -301,6 +303,9 @@ void Player::CollisionCheck_Movement()
 
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -327,6 +332,9 @@ void Player::CollisionCheck_Movement()
 
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -353,6 +361,9 @@ void Player::CollisionCheck_Movement()
 
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -384,6 +395,10 @@ void Player::CollisionCheck_Movement()
 		for (it = cpy.begin(); it != end; ++it)*/
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);

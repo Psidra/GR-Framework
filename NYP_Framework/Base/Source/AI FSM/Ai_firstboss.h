@@ -10,7 +10,7 @@ public:
 	~CStrategy_AI_FirstBoss(void);
 
 	void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt);
-	void UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex);
+	void UpdateBoss(Vector3& _destination, Vector3 _enemypos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt);
 
 	void SetDestination(const float x, const float y);
 	int GetDestination_x(void);
@@ -25,7 +25,8 @@ public:
 	enum CURRENT_STATE
 	{
 		IDLE,
-		ATTACK,
+		ATTACK_SET_ONE,
+		ATTACK_SET_TWO,
 		NUM_ENEMY_STATE,
 	}CurrentState;
 
@@ -36,4 +37,6 @@ private:
 	// Enemy AI State
 	int maxDistFromPlayer;
 	double shootElapsedTime, timeBetweenShots;
+
+	int RNG, prevRoll;
 };

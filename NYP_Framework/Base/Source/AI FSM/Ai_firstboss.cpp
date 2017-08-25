@@ -10,7 +10,8 @@ Constructor
 ********************************************************************************/
 CStrategy_AI_FirstBoss::CStrategy_AI_FirstBoss() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(1.0)
 {
-	CurrentState = ATTACK;
+	CurrentState = ATTACK_SET_ONE;
+	prevRoll = -1;
 }
 
 /********************************************************************************
@@ -27,13 +28,24 @@ void CStrategy_AI_FirstBoss::Update(Vector3& theDestination, Vector3 theEnemyPos
 {
 }
 
-void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex)
+void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3 _enemypos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt)
 {
 	shootElapsedTime += dt;
 
+	if (this->CurrentState == ATTACK_SET_ONE && _health < 50)
+		this->SetState(ATTACK_SET_TWO);
+
+	RNG = rand() % 3;
+
+	if (RNG == prevRoll)
+		Math::Wrap(++RNG, 0, 3);
+
+	prevRoll = RNG;
+
 	switch (CurrentState)
 	{
-	case ATTACK:
+	case ATTACK_SET_ONE:
+	{
 		if (shootElapsedTime > timeBetweenShots)
 		{
 			SetIsMoving(false);		//stop animate moving
@@ -43,6 +55,12 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& theDestination, Vector3 theEnem
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
 		break;
+	}
+	case ATTACK_SET_TWO:
+	{
+
+		break;
+	}
 
 	default:
 		// Do nothing if idling

@@ -122,8 +122,16 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 		//getNearestObj = quadTree.getObjectsAt((*it)->GetPosition().x, (*it)->GetPosition().y);
 		//std::copy(getNearestObj.begin(), getNearestObj.end(), std::back_inserter(retunedObj));
 		//for (it2 = std::next(it, 1); it2 != end; ++it2)
+		
+		if (!(*it)->IsActive())
+			continue;
+
 		for (std::vector<EntityBase*>::iterator it2 = getNearestObj.begin(); it2 != getNearestObj.end(); ++it2)
+		//for (it2 = std::next(it, 1); it2 != end; ++it2)
 		{
+			if (!(*it2)->IsActive())
+				continue;
+
 			// do your checks here
 			if (CheckAABBCollision(*it, *it2))
 			{

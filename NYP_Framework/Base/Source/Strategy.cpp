@@ -17,9 +17,8 @@ void CStrategy::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector
 	cout << "void CStrategy::Update()" << endl;
 }
 
-void CStrategy::UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex)
+void CStrategy::UpdateBoss(Vector3& _destination, Vector3 _enemypos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt)
 {
-
 }
 
 void CStrategy::MoveUp(Vector3 & theEnemyDirection)
