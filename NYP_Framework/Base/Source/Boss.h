@@ -26,6 +26,7 @@ public:
 	//void CollisionResponse(GenericEntity* thatEntity);
 
 private:
+	Vector3 shootPos;
 	float maxHealth;
 };
 

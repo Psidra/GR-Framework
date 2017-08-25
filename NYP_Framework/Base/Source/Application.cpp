@@ -65,9 +65,6 @@ Application::~Application()
 
 void Application::Init()
 {
-	// Init random
-	srand(time(NULL));
-
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
 
@@ -128,12 +125,16 @@ void Application::Run()
 {
 	SceneManager::GetInstance()->SetActiveScene("Start");
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
+	static double dt = m_timer.getElapsedTime();
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
 		glfwPollEvents();
 		UpdateInput();
 		
-		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
+		if (dt < 0.016666667)
+			dt = 0.016666667;
+
+		SceneManager::GetInstance()->Update(dt);
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers

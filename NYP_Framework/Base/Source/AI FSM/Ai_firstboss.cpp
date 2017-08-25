@@ -8,10 +8,9 @@ using namespace std;
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CStrategy_AI_FirstBoss::CStrategy_AI_FirstBoss() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(1.0)
+CStrategy_AI_FirstBoss::CStrategy_AI_FirstBoss() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(0.5), RNG(0), prevRoll(-1), m_dElapsedTime(0.0), m_dAttackDuration(0.0)
 {
 	CurrentState = ATTACK_SET_ONE;
-	prevRoll = -1;
 }
 
 /********************************************************************************
@@ -28,24 +27,66 @@ void CStrategy_AI_FirstBoss::Update(Vector3& theDestination, Vector3 theEnemyPos
 {
 }
 
-void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3 _enemypos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt)
+void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt)
 {
+	m_dElapsedTime += dt;
 	shootElapsedTime += dt;
 
-	if (this->CurrentState == ATTACK_SET_ONE && _health < 50)
+	int distancePlayerToEnemy = CalculateDistance(_destination, _shootpos);
+
+	if (distancePlayerToEnemy > 50) // TODO : Not make this hardcoded lmao
+		this->SetState(IDLE);
+	else
+		this->SetState(ATTACK_SET_ONE);
+
+	if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
 		this->SetState(ATTACK_SET_TWO);
 
-	RNG = rand() % 3;
+	if (m_dElapsedTime > m_dAttackDuration)
+	{
+		RNG = Math::RandIntMinMax(0, 2);
 
-	if (RNG == prevRoll)
-		Math::Wrap(++RNG, 0, 3);
+		if (RNG == prevRoll)
+		{
+			++RNG;
+			RNG = Math::Wrap(RNG, 0, 2);
+		}
 
-	prevRoll = RNG;
+		prevRoll = RNG;
+
+		// Time before attack changes
+		switch (RNG) {
+		case 0:
+			m_dAttackDuration = m_dElapsedTime + 2.f;
+			break;
+		case 1:
+			m_dAttackDuration = m_dElapsedTime + 2.f;
+			break;
+		case 2:
+			m_dAttackDuration = m_dElapsedTime + 2.f;
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	switch (CurrentState)
 	{
 	case ATTACK_SET_ONE:
 	{
+		switch (RNG) {
+		case 0:
+			break;
+		case 1:
+			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-4, 4), Math::RandFloatMinMax(-4, 4), 0.f);
+			timeBetweenShots = 0.5f;
+			break;
+		case 2:
+			break;
+
+		}
+
 		if (shootElapsedTime > timeBetweenShots)
 		{
 			SetIsMoving(false);		//stop animate moving
@@ -54,6 +95,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3 _enemypos
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
+
 		break;
 	}
 	case ATTACK_SET_TWO:
@@ -65,6 +107,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3 _enemypos
 	default:
 		// Do nothing if idling
 		SetIsMoving(false);
+		SetIsShooting(false);
 		break;
 	}
 }

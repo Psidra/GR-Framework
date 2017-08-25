@@ -19,7 +19,7 @@ public:
 	virtual void SetTypeOfEnemy(int _enemyType);
 	virtual void Update(double dt = 0.0333f);
 	virtual void Render();
-	virtual void Shoot(double dt);
+	virtual void Shoot(double dt, Vector3 _pos);
 	virtual void Reload(double dt);
 
 	virtual void SetSpeed(double speed);

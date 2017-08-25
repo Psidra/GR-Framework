@@ -119,7 +119,7 @@ void CEnemy::Update(double dt)
 		this->position += this->direction * this->speed * (float)dt;
 		
 		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
-			this->Shoot(dt);
+			this->Shoot(dt, this->position);
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
 			reloadElapsedTime += dt;
@@ -144,11 +144,6 @@ void CEnemy::Update(double dt)
 	//set gun pos to enemy pos
 	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
-}
-
-void CEnemy::Shoot(double dt)
-{
-	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
 }
 
 void CEnemy::CollisionCheck()

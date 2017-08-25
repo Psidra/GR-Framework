@@ -124,16 +124,20 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 void Boss::Update(double dt)
 {
 	this->SetPosition(this->position);
+	this->shootPos = this->position;
 	this->SetAABB((this->scale * 0.5f) + this->position, (this->scale * -0.5f) + this->position);
 
 	if (this->theStrategy != NULL)
 	{
-		this->theStrategy->UpdateBoss(Player::GetInstance()->GetPos(), this->position, this->direction, this->speed, this->weaponIndex, this->health, dt);
+		this->theStrategy->UpdateBoss(Player::GetInstance()->GetPos(), shootPos, this->direction, this->speed, this->weaponIndex, this->health, dt);
 		this->CollisionCheck();
 		this->position += this->direction * this->speed * (float)dt;
 
 		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
-			this->Shoot(dt);
+		{
+			this->Shoot(dt, shootPos);
+			std::cout << "boss shot" << std::endl;
+		}
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
 			reloadElapsedTime += dt;
@@ -142,7 +146,8 @@ void Boss::Update(double dt)
 		{
 			Reload(dt);
 			reloadElapsedTime = 0.0;
-			Math::Wrap(++weaponIndex, 0, 2);
+			//++weaponIndex;
+			//weaponIndex = Math::Wrap(weaponIndex, 0, 2);
 		}
 	}
 	if (health <= 0)

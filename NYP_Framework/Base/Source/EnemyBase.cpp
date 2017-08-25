@@ -31,9 +31,9 @@ void EnemyBase::Render()
 	modelStack.PopMatrix();
 }
 
-void EnemyBase::Shoot(double dt)
+void EnemyBase::Shoot(double dt, Vector3 _pos)
 {
-	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
+	enemyInventory->getWeaponList()[weaponIndex]->Discharge(_pos, Player::GetInstance()->GetPos() - _pos);
 }
 
 void EnemyBase::Reload(double dt)
