@@ -3,6 +3,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include "../Projectile/ProjectileManager.h"
 
 Pistol::Pistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -115,7 +116,18 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 
 	for (int i = 0;i < numBullet;++i)
 	{
-		CProjectile* aProjectile = Create::Projectile("cube",
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile("cube");
+		projectile->SetPosition(position);
+		projectile->SetDirection(target.Normalized());
+		projectile->SetScale(scale);
+		projectile->SetLifetime(2.f);
+		projectile->SetSpeed(m_fSpeed);
+		projectile->type = bulletType;
+		projectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		projectile->setIsDots(m_bDots);
+		projectile->setIsRicochet(m_bRicochet);
+		projectile->setIsLaserbeam(m_bLaserBeam);
+		/*CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			scale,
@@ -125,6 +137,6 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
-		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		aProjectile->setIsLaserbeam(m_bLaserBeam);*/
 	}
 }

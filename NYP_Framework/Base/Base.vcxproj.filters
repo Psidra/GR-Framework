@@ -228,6 +228,9 @@
     <ClCompile Include="Source\EnemyBase.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Projectile\ProjectileManager.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyBase.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile\ProjectileManager.h">
+      <Filter>Weapon\WeaponHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

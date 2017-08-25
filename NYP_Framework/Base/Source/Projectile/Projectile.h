@@ -55,6 +55,10 @@ public:
 	virtual void Render(void);
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
+	//get active
+	bool getActive();
+	//set active
+	void setIsActive(bool _isActive);
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;
@@ -74,6 +78,8 @@ protected:
 	bool m_bProjectileRicochet;
 	// bool flag is laserbeam
 	bool m_bProjectileLaserBeam;
+	//bool is active
+	bool m_bActive;
 };
 
 namespace Create

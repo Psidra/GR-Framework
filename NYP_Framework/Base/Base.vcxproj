@@ -41,6 +41,7 @@
     <ClCompile Include="Source\Particle\ParticleEffect.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
+    <ClCompile Include="Source\Projectile\ProjectileManager.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
     <ClCompile Include="Source\AudioEngine.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Source\Particle\ParticleEffect.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
+    <ClInclude Include="Source\Projectile\ProjectileManager.h" />
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
     <ClInclude Include="Source\AudioEngine.h" />

@@ -8,6 +8,7 @@
 #include "../Enemy.h"
 #include "../CollisionManager.h"
 #include "../Particle/ParticleEffect.h"
+#include "ProjectileManager.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -288,6 +289,19 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 	}
 }
 
+//get active
+bool CProjectile::getActive()
+{
+	return m_bActive;
+}
+
+//set active
+void CProjectile::setIsActive(bool _isActive)
+{
+	m_bActive = _isActive;
+}
+
+
 // Create a projectile and add it into EntityManager
 CProjectile* Create::Projectile(const std::string& _meshName, 
 								const Vector3& _position, 
@@ -306,6 +320,6 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetCollider(true);
 	result->SetScale(_scale);
 	EntityManager::GetInstance()->AddEntity(result);
-
+	ProjectileManager::GetInstance()->AddProjectile(result);
 	return result;
 }

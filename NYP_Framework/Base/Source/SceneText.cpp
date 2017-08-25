@@ -31,6 +31,8 @@
 #include "RenderHelper.h"
 #include "WeaponManager.h"
 #include "Minimap\Minimap.h"
+#include "Projectile\ProjectileManager.h"
+#include "Projectile\Projectile.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -303,6 +305,12 @@ void SceneText::Init()
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
+
+	//create them projectiles
+	for (int i = 0;i < 100; ++i)
+	{
+		ProjectileManager::GetInstance()->AddProjectile(new CProjectile);
+	}
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
