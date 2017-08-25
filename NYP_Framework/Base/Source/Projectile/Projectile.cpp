@@ -314,7 +314,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetScale(_scale);
 	result->SetIsActive(false);
 	//result->setIsActive(false);
-	EntityManager::GetInstance()->AddEntity(result);
+	EntityManager::GetInstance()->AddEntity(result, true);
 	//ProjectileManager::GetInstance()->AddProjectile(result);
 	return result;
 }

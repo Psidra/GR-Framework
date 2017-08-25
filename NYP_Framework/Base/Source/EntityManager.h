@@ -15,7 +15,7 @@ public:
 	void Render();
 	void RenderUI();
 
-	void AddEntity(EntityBase* _newEntity);
+	void AddEntity(EntityBase* _newEntity, bool _inFront = false);
 	bool RemoveEntity(EntityBase* _existingEntity);
 
 	std::list<EntityBase*>& getCollisionList();
@@ -26,6 +26,8 @@ public:
 private:
 	EntityManager();
 	virtual ~EntityManager();
+
+	int totalFrontEntities;
 
 	std::list<EntityBase*> entityList;
 	std::list<EntityBase*> collisionList;

@@ -32,7 +32,7 @@ private:
 
 namespace Create
 {
-	Boss* SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1));
+	Boss* SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1), bool _isActive = true);
 };
 
 #endif // !BOSS_H

@@ -99,9 +99,10 @@ bool CollisionManager::UI_CheckAABBCollision(Vector3 point, UIElement * ThatElem
 		(point.y <= thatHitbox->GetMaxAABB().y && point.y >= thatHitbox->GetMinAABB().y); // Would check Z but 2d game so w/e (removed for all)
 }
 
-void CollisionManager::Update(std::list<EntityBase*> collisionList)
+void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFrontEntities)
 {
 	std::list<EntityBase*>::iterator it, end;
+	int index = 0;
 	end = collisionList.end();
 
 	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
@@ -125,6 +126,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 		
 		if (!(*it)->IsActive())
 			continue;
+		if (index > totalFrontEntities)
+			break;
 
 		for (std::vector<EntityBase*>::iterator it2 = getNearestObj.begin(); it2 != getNearestObj.end(); ++it2)
 		//for (it2 = std::next(it, 1); it2 != end; ++it2)
@@ -155,6 +158,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 
 			}
 		}
+
+		++index;
 	}
 
 	getNearestObj.clear();

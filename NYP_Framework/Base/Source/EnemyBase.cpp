@@ -6,6 +6,7 @@
 #include "Inventory.h"
 #include "WeaponInfo\WeaponInfo.h"
 
+#include "MeshList.h"
 #include "RenderHelper.h"
 #include "GraphicsManager.h"
 #include "EntityBase.h"

@@ -29,8 +29,9 @@ bool Controller::Create(Player* thePlayerInfo)
 	if (_CONTROLLER_DEBUG)
 		cout << "Controller::Create()" << endl;
 	this->thePlayerInfo = thePlayerInfo;
-	this->controllerfunc[CONTROLLER_MOVEUP] = &Controller::MoveUp;
-	this->controllerfunc[CONTROLLER_MOVEDOWN] = &Controller::MoveDown;
+	this->controllerfunc[CONTROLLER_NOTHING] = &Controller::MoveUp;		// NOTE: I MADE THIS BECAUSE I HAD A BUG WITH W NOT WORKING
+	this->controllerfunc[CONTROLLER_MOVEUP] = &Controller::MoveUp;		// BUT EVERYTHING ELSE DID
+	this->controllerfunc[CONTROLLER_MOVEDOWN] = &Controller::MoveDown;	// SOMETHING SOMEHOW THIS ISNT READING THE FIRST FUNC
 	this->controllerfunc[CONTROLLER_MOVELEFT] = &Controller::MoveLeft;
 	this->controllerfunc[CONTROLLER_MOVERIGHT] = &Controller::MoveRight;
 	this->controllerfunc[CONTROLLER_SHOOT] = &Controller::Shoot;

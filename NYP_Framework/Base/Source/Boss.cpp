@@ -186,13 +186,14 @@ void Boss::EditMaxHealth(float _health)
 	this->maxHealth += _health;
 }
 
-Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale)
+Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale, bool _isActive)
 {
 	Boss* result = new Boss(MeshList::GetInstance()->GetMesh(_meshName));
 	result->SetPos(position);
 	result->SetPosition(position);
 	result->SetScale(scale);
 	result->SetCollider(true);
-	EntityManager::GetInstance()->AddEntity(result);
+	result->SetIsActive(_isActive);
+	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

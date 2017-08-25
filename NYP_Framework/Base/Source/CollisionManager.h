@@ -24,7 +24,7 @@ public:
 	bool UI_CheckAABBCollision(Vector3 point, UIElement *ThatElement);
 
 	// Check all objects with collision
-	void Update(std::list<EntityBase*> collisionList);
+	void Update(std::list<EntityBase*> collisionList, int totalFrontEntities);
 
 private:
 	CollisionManager();

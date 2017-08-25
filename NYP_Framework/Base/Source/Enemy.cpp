@@ -93,9 +93,9 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		break;
 	case 2://unused currently 
-		for (size_t i = 0; i < 8; i++)
+		for (size_t i = 0; i < 10; i++)
 		{
-			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
+			enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
 		}
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
 		break;
@@ -356,6 +356,6 @@ CEnemy * Create::Enemy(Vector3 position, const string & _meshName, Vector3 scale
 	result->SetCollider(true);
 	result->SetIsActive(_isActive);
 	result->type = GenericEntity::OBJECT_TYPE::ENEMY;
-	EntityManager::GetInstance()->AddEntity(result);
+	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

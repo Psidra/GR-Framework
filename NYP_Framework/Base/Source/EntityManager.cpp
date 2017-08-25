@@ -20,7 +20,7 @@ void EntityManager::Update(double _dt)
 		(*it)->Update(_dt);
 	}
 
-	CollisionManager::GetInstance()->Update(collisionList);
+	CollisionManager::GetInstance()->Update(collisionList, totalFrontEntities);
 
 	// Erase objects that are done from collisionList
 	it = collisionList.begin();
@@ -34,10 +34,14 @@ void EntityManager::Update(double _dt)
 
 	// Clean up entities that are done
 	it = entityList.begin();
+	int index = 0;
 	while (it != end)
 	{
 		if ((*it)->IsDone())
 		{
+			if (index < totalFrontEntities)
+				--totalFrontEntities;
+
 			// Delete if done
 			delete *it;
 			it = entityList.erase(it);
@@ -46,6 +50,7 @@ void EntityManager::Update(double _dt)
 		{
 			// Move on otherwise
 			++it;
+			++index;
 		}
 	}
 }
@@ -82,12 +87,24 @@ void EntityManager::RenderUI()
 }
 
 // Add an entity to this EntityManager
-void EntityManager::AddEntity(EntityBase* _newEntity)
+void EntityManager::AddEntity(EntityBase* _newEntity, bool _isFront)
 {
-	entityList.push_back(_newEntity);
+	if (!_isFront)
+	{
+		entityList.push_back(_newEntity);
 
-	if (_newEntity->HasCollider())
-		collisionList.push_back(_newEntity);
+		if (_newEntity->HasCollider())
+			collisionList.push_back(_newEntity);
+	}
+	else
+	{
+		++totalFrontEntities;
+
+		entityList.push_front(_newEntity);
+
+		if (_newEntity->HasCollider())
+			collisionList.push_front(_newEntity);
+	}
 }
 
 // Remove an entity from this EntityManager
@@ -135,7 +152,7 @@ std::list<EntityBase*>& EntityManager::getEntityList()
 }
 
 // Constructor
-EntityManager::EntityManager()
+EntityManager::EntityManager() : totalFrontEntities(0)
 {
 }
 

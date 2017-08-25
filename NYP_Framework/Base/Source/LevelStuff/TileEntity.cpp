@@ -73,6 +73,6 @@ TileEntity* Create::TEntity(const std::string& _meshName,
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetCollider(_collision);
-	EntityManager::GetInstance()->AddEntity(result);
+	EntityManager::GetInstance()->AddEntity(result, false);
 	return result;
 }

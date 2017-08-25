@@ -75,6 +75,6 @@ ParticleEffect * Create::Particle(
 	result->SetPhysic(false);
 
 	//Adds it to entityManager
-	EntityManager::GetInstance()->AddEntity(result);
+	EntityManager::GetInstance()->AddEntity(result, false);
 	return result;
 }
