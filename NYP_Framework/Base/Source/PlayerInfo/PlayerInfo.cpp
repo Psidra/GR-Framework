@@ -8,14 +8,18 @@
 #include "../WeaponInfo/Shotgun.h"
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponInfo/Bow.h"
+#include "../WeaponInfo/LaserBeam.h"
 #include "../WeaponManager.h"
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
 #include "MeshList.h"
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
-#include "../WeaponInfo/LaserBeam.h"
 #include "../Particle/ParticleEffect.h"
+#include "../WeaponInfo/CircularWeapon.h"
+
+#include "../LevelStuff/QuadTree.h"
+#include "../LevelStuff/Level.h"
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -40,6 +44,7 @@ Player::Player(void)
 	, m_bFire(false)
 	, m_bSlow(false)
 	, m_bPoison(false)
+	, weaponMesh(NULL)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -47,6 +52,8 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
+	//this weapon for boss and enemies
+	//playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -61,6 +68,8 @@ Player::~Player(void)
 // Initialise this class instance
 void Player::Init(void)
 {
+	this->SetIsActive(true);
+
 	// Set the default values
 	defaultPosition.Set(0, 0, 0);
 
@@ -116,6 +125,7 @@ void Player::Init(void)
 	this->SetIndices_fHurt(8, 8);
 	this->SetIndices_bHurt(9, 9);
 	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
 }
 
 // Set position
@@ -264,6 +274,16 @@ void Player::CollisionCheck_Movement()
 	Vector3 tempMin = this->GetMinAABB();
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
 
+	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	//QuadTree quadTree(0, 800, 600, 0, 3);
+	vector<EntityBase*> getNearestObj;
+
+	quadTree.clear();
+	for (std::list<EntityBase*>::iterator it = cpy.begin(); it != cpy.end(); ++it)
+		quadTree.addObject(*it);
+
+	
+
 	float checkby = 0;
 	
 	if (!isDodging())
@@ -274,12 +294,18 @@ void Player::CollisionCheck_Movement()
 	if (direction.y == 1)
 	{
 		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f), tempMin + Vector3(0.f, checkby, 0.f));
+		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-
-		for (it = cpy.begin(); it != end; ++it)
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -298,11 +324,17 @@ void Player::CollisionCheck_Movement()
 	{
 		this->SetAABB(tempMax - Vector3(0.f, checkby, 0.f), tempMin - Vector3(0.f, checkby, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
-		for (it = cpy.begin(); it != end; ++it)
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
+
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -321,11 +353,17 @@ void Player::CollisionCheck_Movement()
 	{
 		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
 	
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-	
-		for (it = cpy.begin(); it != end; ++it)
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
+
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -344,11 +382,23 @@ void Player::CollisionCheck_Movement()
 	{
 		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
-		for (it = cpy.begin(); it != end; ++it)
+
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
+
+		/*std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();
+		std::cout << "Checking :: " << cpy.size() << std::endl;
+		for (it = cpy.begin(); it != end; ++it)*/
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
+
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
@@ -486,13 +536,12 @@ void Player::Update(double dt)
 	//update minimap only when player moves
 	//if (m_bMoving)
 	//{
-		for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
-			;it != EntityManager::GetInstance()->getCollisionList().end();++it)
+		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
+			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
 		{
-			if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
-				&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
-				continue;
-
+			//if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
+			//	&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
+			//	continue;
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
@@ -638,6 +687,7 @@ bool Player::ChangeWeapon(const float dt)
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
 	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
+	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
 	return false;
 }
 
@@ -736,4 +786,19 @@ void Player::setSlow(bool _slow)
 void Player::setPoison(bool _poison)
 {
 	this->m_bPoison = _poison;
+}
+
+Inventory * Player::getInvetory()
+{
+	return this->playerInventory;
+}
+
+int Player::getWeaponIndex()
+{
+	return weaponIndex;
+}
+
+Mesh * Player::getWeaponMesh()
+{
+	return weaponMesh;
 }

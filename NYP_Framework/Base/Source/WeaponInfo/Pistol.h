@@ -2,6 +2,7 @@
 
 #include "WeaponInfo.h"
 
+class MeshBuilder;
 class Pistol :
 	public CWeaponInfo
 {
@@ -15,6 +16,8 @@ public:
 	void Render();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
+	// Get mesh
+	Mesh* GetMesh();
 
 private:
 	// Number of bullet to create and pattern

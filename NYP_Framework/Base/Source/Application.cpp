@@ -125,12 +125,16 @@ void Application::Run()
 {
 	SceneManager::GetInstance()->SetActiveScene("Start");
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
+	static double dt = m_timer.getElapsedTime();
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
 		glfwPollEvents();
 		UpdateInput();
 		
-		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
+		if (dt < 0.016666667)
+			dt = 0.016666667;
+
+		SceneManager::GetInstance()->Update(dt);
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
@@ -310,6 +314,7 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("option_button")->textureID[0] = LoadTGA("Image/UI/OptionButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("exit_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("exit_button")->textureID[0] = LoadTGA("Image/UI/ExitButton.tga");
+
 		MeshBuilder::GetInstance()->GenerateQuad("option_menu", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("option_menu")->textureID[0] = LoadTGA("Image/UI/OptionMenu.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("confirm_button", Color(1, 1, 1), 1.f);
@@ -325,6 +330,9 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");*/
 
+
+		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/GunDisplayBorder.tga");
 
 		//----------GUN SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);

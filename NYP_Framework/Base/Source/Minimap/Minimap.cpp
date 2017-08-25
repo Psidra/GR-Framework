@@ -64,9 +64,6 @@ bool CMinimap::Init(void)
 	m_fRange = scale.x * 0.1;
 	mapState = NORMAL;
 
-	
-
-
 	//map id
 	mapID[0] = "wallpos";
 	mapID[1] = "wallscale";
@@ -162,6 +159,11 @@ Mesh* CMinimap::GetStencil(void) const
 	return m_cMinimap_Stencil;
 }
 
+void CMinimap::setObjectPos(std::string _type, Vector3 _pos)
+{
+	minimapData[_type].push_back(_pos);
+}
+
 // Set the Enemy mesh to this class
 bool CMinimap::SetObjectMesh(Mesh* _mesh)
 {
@@ -187,11 +189,6 @@ void CMinimap::setObject(Vector3 _pos ,Vector3 _scale)
 std::map<std::string, std::vector<Vector3>> CMinimap::getMinimapData()
 {
 	return minimapData;
-}
-// set minimap map pos
-void CMinimap::setObjectPos(std::string _type, Vector3 _pos)
-{
-	minimapData[_type].push_back(_pos);
 }
 // set minimap map scale
 void CMinimap::setObjectScale(std::string _type, Vector3 _scale)
@@ -228,15 +225,15 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 	{
 		scale.Set(500, 500, 1);
 		position.Set(0, 0, 9.f);
-		m_fRange = scale.x * 0.1; //magic number asdasdasd
+		m_fRange = scale.x * 0.001f;
 		mapState = ENLARGED;
 	}
 	else
 	{
 		scale.Set(100, 100, 1);
 		//position.Set(335.f, 235.f, 0.0f);
-		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
-		m_fRange = scale.x * 0.1f;
+		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, -1000.0f);
+		m_fRange = scale.x * 0.01f;
 		mapState = NORMAL;
 	}
 }
@@ -244,6 +241,16 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 void CMinimap::addTeleporterPos(Vector3 _pos)
 {
 	teleporterActPos.push_back(_pos);
+}
+
+void CMinimap::addToMinimapList(EntityBase * _entity)
+{
+	minimapList.push_back(_entity);
+}
+
+std::list<EntityBase*>& CMinimap::getMinimapList(void)
+{
+	return minimapList;
 }
 
 //update minimap

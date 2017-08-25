@@ -97,6 +97,11 @@ void LaserBeam::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
+Mesh * LaserBeam::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("laser");
+}
+
 void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
@@ -142,6 +147,7 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(false);
+		aProjectile->SetIsActive(true);
 	}
 	m_fIncrement = 0;
 }

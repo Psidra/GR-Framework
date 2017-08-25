@@ -22,7 +22,7 @@ public:
 	void setCollisionList(std::list<EntityBase*>& newList);
 
 	void setEntityList(std::list<EntityBase*>& newList);
-	
+	std::list<EntityBase*>& getEntityList();
 private:
 	EntityManager();
 	virtual ~EntityManager();

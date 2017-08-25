@@ -100,6 +100,11 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
+Mesh * Shotgun::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("shotgun");
+}
+
 void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
@@ -128,5 +133,6 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		aProjectile->SetIsActive(true);
 	}
 }

@@ -1,46 +1,33 @@
 #ifndef BOSS_H
 #define BOSS_H
 
-#include "GenericEntity.h"
-#include "Strategy.h"
-#include "Animation.h"
-#include "MeshBuilder.h"
-#include "EntityManager.h"
+#include "EnemyBase.h"
 
-class Boss : public GenericEntity, public CAnimation
+class Boss : public EnemyBase
 {
 public:
 	Boss();
-	Boss(Vector3 pos);
-	~Boss();
+	Boss(Mesh* _mesh);
+	virtual ~Boss();
+	
+	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1, bool _invul = false);
+	void SetTypeOfEnemy(int _enemyType);
 
-	// Collision Response
-	void CollisionResponse(GenericEntity* thatEntity);
+	void Update(double dt);
 
-	// Set Max HP
-	void setMaxHealth(float _health);
-	// Get Max HP
-	float getMaxHealth();
-	// Edit Max HP
-	void editMaxHealth(float _health);
+	// Set Max Health
+	void SetMaxHealth(float _maxHealth);
+	// Get Max Health
+	float GetMaxHealth();
+	// Edit Max Health
+	void EditMaxHealth(float _value);
 
-	// Set HP
-	void setHealth(float _health);
-	// Get HP
-	float getHealth();
-	// Edit HP
-	void editHealth(float _health);
+	//// Collision Response
+	//void CollisionResponse(GenericEntity* thatEntity);
 
 private:
-	Vector3 position;
-	Vector3 direction;
-
-	double m_dSpeed;
-
-	float m_fHealth;
-	float m_fMaxHealth;
-
-	CStrategy* theStrategy;
+	Vector3 shootPos;
+	float maxHealth;
 };
 
 namespace Create

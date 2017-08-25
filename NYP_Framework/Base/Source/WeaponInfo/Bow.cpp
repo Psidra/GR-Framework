@@ -20,13 +20,13 @@ void Bow::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 50;
+	magRounds = 1;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 50;
+	maxMagRounds = 1;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 100;
+	totalRounds = 20;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 100;
+	maxTotalRounds = 20;
 
 	// The time between shots
 	timeBetweenShots = 0.33333;
@@ -35,7 +35,7 @@ void Bow::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 40;
+	m_fWeaponDamage = 30;
 	// boolean flag for dots
 	m_bDots = false;
 	// projectile scale
@@ -45,13 +45,13 @@ void Bow::Init(void)
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
-	m_fSpeed = 6.0f;
+	m_fSpeed = 15.0f;
 	// is active
 	m_bActive = false;
 	// Player/enemy angle to rotate
 	m_fRotateAngle = 0.f;
 	// num of bullet
-	m_iNumBullet = 8;
+	m_iNumBullet = 1;
 }
 
 void Bow::Render()
@@ -94,14 +94,19 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target, m_iNumBullet, 45);
 
 			bFire = false;
-			m_fRotateAngle += 10;
+			//m_fRotateAngle += 10;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
 		}
 	}
 
-	if (m_fRotateAngle > 360)
-		m_fRotateAngle = 0;
+//	if (m_fRotateAngle > 360)
+	//	m_fRotateAngle = 0;
+}
+
+Mesh * Bow::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("bow");
 }
 
 // Number of bullet to create and pattern
@@ -110,14 +115,14 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 	if (numBullet < 0)
 		return;
 
-	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
-	Vector3 temp = target;
+	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	//Vector3 temp = target;
 
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
-		target = rotateDirection(temp, totalAngle);
-		totalAngle -= angle;
+		//target = rotateDirection(temp, totalAngle);
+		//totalAngle -= angle;
 
 		CProjectile* aProjectile = Create::Projectile("cube",
 			position,
@@ -131,5 +136,6 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		aProjectile->SetIsActive(true);
 	}
 }

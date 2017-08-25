@@ -17,6 +17,10 @@ void CStrategy::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector
 	cout << "void CStrategy::Update()" << endl;
 }
 
+void CStrategy::UpdateBoss(Vector3& _destination, Vector3& _shootpos, Vector3& _enemydir, double _speed, int& _weaponIndex, float _health, double dt)
+{
+}
+
 void CStrategy::MoveUp(Vector3 & theEnemyDirection)
 {
 	if (theEnemyDirection.y != -1)
