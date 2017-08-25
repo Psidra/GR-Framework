@@ -47,6 +47,8 @@ protected:
 	Vector3 gunDir;
 	// bool flag is gun in use
 	bool m_bActive;
+	// int num of bullet
+	int m_iNumBullet;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -120,6 +122,14 @@ public:
 	void setIsActive(bool _isActive);
 	//get gun dir
 	bool getIsActive();
+	//set angle
+	void setAngle(float _angle);
+	//get angle
+	float getAngle();
+	//set number of bullets
+	void setNumBullet(int _numBullet);
+	//get number of bullets
+	int getNumBullet();
 protected:
 	// Number of bullet to create
 	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle) = 0;

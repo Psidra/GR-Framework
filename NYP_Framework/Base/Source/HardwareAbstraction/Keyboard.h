@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Controller.h"
-
+//#include <map>
 #include <fstream>
 
 class Keyboard :
@@ -18,5 +18,7 @@ public:
 	// Read from the controller
     virtual bool Load(std::string _filePath);
 	virtual int Read(const float deltaTime);
+	virtual void Write(std::string _filePath);
+	//virtual void MappingKeys(std::string _filePath);
 };
 

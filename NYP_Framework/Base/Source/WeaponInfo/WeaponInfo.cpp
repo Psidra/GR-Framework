@@ -284,3 +284,27 @@ Vector3 CWeaponInfo::rotateDirection(Vector3 dir, float angle)
 
 	return dir;
 }
+
+//set angle
+void CWeaponInfo::setAngle(float _angle)
+{
+	m_fRotateAngle = _angle;
+}
+
+//get angle
+float CWeaponInfo::getAngle()
+{
+	return m_fRotateAngle;
+}
+
+//set number of bullets
+void CWeaponInfo::setNumBullet(int _numBullet)
+{
+	m_iNumBullet = _numBullet;
+}
+
+//get number of bullets
+int CWeaponInfo::getNumBullet()
+{
+	return m_iNumBullet;
+}

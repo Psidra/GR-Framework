@@ -135,6 +135,8 @@ protected:
 	std::string mapID[NUM_TYPE];
 	//teleporter pos
 	std::vector<Vector3> teleporterActPos;
+	//list for minimap
+	std::list<EntityBase*> minimapList;
 	SPRITE_RENDERMODE mode;
 };
 

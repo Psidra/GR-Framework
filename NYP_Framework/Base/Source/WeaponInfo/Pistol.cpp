@@ -50,6 +50,10 @@ void Pistol::Init(void)
 	m_fSpeed = 10.f;
 	// is active
 	m_bActive = false;
+	// rotate angle
+	m_fRotateAngle = 0;
+	// num of bullet
+	m_iNumBullet = 1;
 }
 
 // render the weapon

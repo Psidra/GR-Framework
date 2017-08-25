@@ -61,8 +61,12 @@ bool CMinimap::Init(void)
 	m_iNumWall = 0;
 	m_iNumTele = 0;
 	m_bEnlarged = false;
-	m_fRange = scale.x * 0.2;
+	m_fRange = scale.x * 0.1;
 	mapState = NORMAL;
+
+	
+
+
 	//map id
 	mapID[0] = "wallpos";
 	mapID[1] = "wallscale";
@@ -224,7 +228,7 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 	{
 		scale.Set(500, 500, 1);
 		position.Set(0, 0, 9.f);
-		m_fRange = scale.x * 0.001;
+		m_fRange = scale.x * 0.1; //magic number asdasdasd
 		mapState = ENLARGED;
 	}
 	else
@@ -232,7 +236,7 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 		scale.Set(100, 100, 1);
 		//position.Set(335.f, 235.f, 0.0f);
 		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
-		m_fRange = scale.x * 0.4;
+		m_fRange = scale.x * 0.1f;
 		mapState = NORMAL;
 	}
 }
@@ -254,7 +258,7 @@ void CMinimap::Update(double dt)
 		for (std::vector<Vector3>::iterator it = minimapData[mapID[i]].begin();
 			it != minimapData[mapID[i]].end();++it)
 		{
-			(*it) = (*it) * (1.0f / (scale.x * 0.2));
+			(*it) = (*it) * (1.0f / (scale.x * 0.1));
 		}
 	}
 
@@ -293,7 +297,7 @@ void CMinimap::Update(double dt)
 			float posY = (h - static_cast<float>(y));
 
 			Vector3 temp(posX, posY, 0);
-			std::cout << "mousePos: " << temp << "\n";
+			//std::cout << "mousePos: " << temp << "\n";
 
 			for (int i = 0; i < m_iNumTele; ++i)
 			{

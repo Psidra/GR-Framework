@@ -56,6 +56,7 @@ int Keyboard::Read(const float deltaTime)
 	Controller::Read(deltaTime);
 	if (_CONTROLLER_KEYBOARD_DEBUG)
 	return 0;
+	map<string, string> lel;
 
 	for (int i = 0;i < NUM_CONRTOLLER;++i)
 	{
@@ -90,3 +91,48 @@ int Keyboard::Read(const float deltaTime)
 		}
 	}
 }
+
+void Keyboard::Write(std::string _filePath)
+{
+	std::vector<std::string> temp = Loader::GetInstance()->GetData();
+	std::vector<std::string> newlist;
+	
+	string storedIndex;
+	string newHex;
+	string storedMethodIndex;
+	
+	//read file
+	for (size_t i = 0; i < Loader::GetInstance()->GetData().size();++i)
+	{
+		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
+		std::stringstream ss;
+
+		if (index != 1)
+			newlist.push_back(temp[i]);
+		else
+		{//converting int to hex
+			ss << std::hex << 90; //<<------------ int to hex//90 is z
+			std::string result(ss.str());
+
+			storedIndex = temp[i].substr(0, temp[i].find('='));
+			newHex = "0x"+ result;			//<<----------successfully change with hex
+			storedMethodIndex = temp[i].substr(temp[i].find(',') + 1, temp[i].size() - 6);
+
+			newlist.push_back(storedIndex + "=" + newHex + "," + storedMethodIndex);
+		}
+		
+	}
+	ofstream myfile(_filePath, ofstream::out);
+	for (int i = 0; i < newlist.size(); ++i)
+	{
+		if (i == newlist.size() - 1)
+			myfile << newlist[i];
+		else
+			myfile << newlist[i] + "\n";
+
+		cout << "this is the new list of keys" << newlist[i] << endl;
+	}
+	myfile.close();
+}
+
+

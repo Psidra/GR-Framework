@@ -65,7 +65,7 @@ void LaserBeam::Render()
 		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(1.5, 1.5, 1.5);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("laser"));
 		modelStack.PopMatrix();
 	}
 	else //left side
@@ -75,7 +75,7 @@ void LaserBeam::Render()
 		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(-1.5, -1.5, -1.5);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifleLeft"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("laserLeft"));
 		modelStack.PopMatrix();
 	}
 }
