@@ -45,6 +45,7 @@ public:
 	Vector3 getNormal();
 	//set normal
 	void setNormal(Vector3 _normal);
+
 private:
 	Mesh* modelMesh;
 	Vector3 normal;

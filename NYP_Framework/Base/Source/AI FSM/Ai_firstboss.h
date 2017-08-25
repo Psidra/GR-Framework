@@ -3,7 +3,7 @@
 #include "..\Strategy.h"
 #include "Vector3.h"
 
-class CStrategy_AI_FirstBoss : public CStrategy
+class CStrategy_AI_FirstBoss : public CStrategy // FINAL BOSS (so much for 'first' boss)
 {
 public:
 	CStrategy_AI_FirstBoss(void);
@@ -25,21 +25,15 @@ public:
 	enum CURRENT_STATE
 	{
 		IDLE,
-		CHASE,
 		ATTACK,
 		NUM_ENEMY_STATE,
-	};
-	enum AI_STATE_RANGE
-	{
-		AI_ATTACK_RANGE = 35,
-		NUM_AI_STATE_RANGE,
-	};
+	}CurrentState;
+
 	CStrategy_AI_FirstBoss::CURRENT_STATE GetState(void);
 	void SetState(CStrategy_AI_FirstBoss::CURRENT_STATE);
 
 private:
 	// Enemy AI State
-	CStrategy_AI_FirstBoss::CURRENT_STATE CurrentState;
 	int maxDistFromPlayer;
 	double shootElapsedTime, timeBetweenShots;
 };
