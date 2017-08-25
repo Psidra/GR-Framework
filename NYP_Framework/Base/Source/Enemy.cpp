@@ -167,6 +167,9 @@ void CEnemy::CollisionCheck()
 		end = cpy.end();
 		for (it = cpy.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				if (this == (*it))
@@ -199,6 +202,9 @@ void CEnemy::CollisionCheck()
 
 		for (it = cpy.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				if (this == (*it))
@@ -230,6 +236,9 @@ void CEnemy::CollisionCheck()
 
 		for (it = cpy.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				if (this == (*it))
@@ -261,6 +270,9 @@ void CEnemy::CollisionCheck()
 
 		for (it = cpy.begin(); it != end; ++it)
 		{
+			if (!(*it)->IsActive())
+				continue;
+
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
 				if (this == (*it))
@@ -312,13 +324,14 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 	}
 }
 
-CEnemy * Create::Enemy(Vector3 position, const string & _meshName, Vector3 scale)
+CEnemy * Create::Enemy(Vector3 position, const string & _meshName, Vector3 scale, bool _isActive)
 {
 	CEnemy* result = new CEnemy(position);
 	result->SetMesh(MeshList::GetInstance()->GetMesh(_meshName));
 	result->SetPos(position);
 	result->SetScale(scale);
 	result->SetCollider(true);
+	result->SetIsActive(_isActive);
 	result->type = GenericEntity::OBJECT_TYPE::ENEMY;
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
