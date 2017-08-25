@@ -129,6 +129,11 @@ void EntityManager::setEntityList(std::list<EntityBase*>& newList)
 	entityList = newList;
 }
 
+std::list<EntityBase*>& EntityManager::getEntityList()
+{
+	return entityList;
+}
+
 // Constructor
 EntityManager::EntityManager()
 {

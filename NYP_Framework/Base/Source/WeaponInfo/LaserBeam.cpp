@@ -147,6 +147,7 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(false);
+		aProjectile->SetIsActive(true);
 	}
 	m_fIncrement = 0;
 }

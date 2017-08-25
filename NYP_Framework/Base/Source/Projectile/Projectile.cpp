@@ -148,6 +148,7 @@ void CProjectile::Update(double dt)
 	{
 		SetStatus(false);
 		SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
+		//SetIsActive(false);
 		return;
 	}
 
@@ -207,8 +208,8 @@ void CProjectile::Render(void)
 	if (m_fLifetime < 0.0f)
 		return;
 
-	if (!isActive)
-		return;
+	//if (!isActive)
+	//	return;
 
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
@@ -311,8 +312,9 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetStatus(true);
 	result->SetCollider(true);
 	result->SetScale(_scale);
+	result->SetIsActive(false);
 	//result->setIsActive(false);
 	EntityManager::GetInstance()->AddEntity(result);
-	ProjectileManager::GetInstance()->AddProjectile(result);
+	//ProjectileManager::GetInstance()->AddProjectile(result);
 	return result;
 }
