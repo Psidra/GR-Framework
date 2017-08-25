@@ -4,6 +4,7 @@
 #include <list>
 #include <iostream>
 #include "SingletonTemplate.h"
+#include "HardwareAbstraction\Keyboard.h"
 
 class UIElement;
 
@@ -21,6 +22,7 @@ public:
 		OPTIONS,
 		ALL,
 	}state;
+	unsigned int cur_state;
 
 	void Pause();
 	void Playing();
@@ -29,9 +31,13 @@ public:
 	void Render();
 
 	void AddEntity(UIElement* result);
+	void SetKeyboard(Keyboard* _keyboard){	this->keyboard = _keyboard; }
 
 private:
 	std::list<UIElement*> UIList;
+	Keyboard* keyboard;
+	bool checkingInput;
+	int temp;
 };
 
 #endif // UIMANAGER_H

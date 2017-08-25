@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "GLFW\glfw3.h"
 
-UIManager::UIManager()
+UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false)
 {
 }
 
@@ -61,6 +61,8 @@ void UIManager::Update()
 		(*it)->Update();
 	}
 
+	
+
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 	{
 		double x, y;
@@ -85,15 +87,51 @@ void UIManager::Update()
 			{
 				switch ((*it)->type) {
 				case UIElement::ELEMENT_TYPE::START:
+					cur_state = UIManager::GAME_STATE::PLAYING; //set cur state to playing
 					this->Playing();
 					break;
 
 				case UIElement::ELEMENT_TYPE::RESUME:
 					this->Playing();
 					break;
+
 				case UIElement::ELEMENT_TYPE::OPTION:
-					std::cout << "Opened options menu! not really. Kind of." << std::endl;
-					// TODO
+					
+					UIManager::state = UIManager::GAME_STATE::OPTIONS;
+					break;
+				case UIElement::ELEMENT_TYPE::CANCEL:
+					//set to not save changed keys
+
+					if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
+						this->state = PAUSE;
+
+					else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
+						UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
+					break;
+
+				case UIElement::ELEMENT_TYPE::CONFIRM:
+					//set to not save changed keys
+
+					
+					keyboard->Load("Keybind//keyconfigtest.txt");
+
+
+
+					if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
+						this->state = PAUSE;
+
+					else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
+						UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
+					break;
+
+
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 1
+					//write into reload //TODO
+					std::cout << "touched the move up" << std::endl;
+
+					checkingInput = true;
+					//int index = 1;//set index value here
+					
 					break;
 				case UIElement::ELEMENT_TYPE::EXIT:
 					exit(0);
@@ -101,6 +139,20 @@ void UIManager::Update()
 				}
 			}
 		}
+	}
+	
+	if (checkingInput)
+	{
+		keyboard->ConvertInt();
+		if (keyboard->GetKey() != 0)
+		{
+			temp = keyboard->GetKey();
+			checkingInput = false;
+		}
+	}
+	if (!checkingInput)
+	{
+		//keyboard->Write("Keybind//keyconfigtest.txt", index, temp);
 	}
 
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))

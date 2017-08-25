@@ -241,7 +241,6 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("Player_bstand1")->textureID[0] = LoadTGA("Image/Player/Player_bstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bstand2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_bstand2")->textureID[0] = LoadTGA("Image/Player/Player_bstand2.tga");
-
 		//walk
 		MeshBuilder::GetInstance()->GenerateQuad("Player_fwalk1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_fwalk1")->textureID[0] = LoadTGA("Image/Player/Player_fwalk1.tga");
@@ -251,7 +250,7 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("Player_bwalk1")->textureID[0] = LoadTGA("Image/Player/Player_bwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bwalk2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_bwalk2")->textureID[0] = LoadTGA("Image/Player/Player_bwalk2.tga");
-
+		//hurt
 		MeshBuilder::GetInstance()->GenerateQuad("Player_fHurt", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_fHurt")->textureID[0] = LoadTGA("Image/Player/Player_fHurt.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bHurt", Color(1, 1, 1), 1.f);
@@ -260,6 +259,7 @@ void Application::InitAllMeshes()
 
 		//-------ENEMY SPRITES
 		//-------enemy1
+		//stand
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_fstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand2", Color(1, 1, 1), 1.f);
@@ -268,7 +268,7 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("enemy1_bstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bstand2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_bstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand2.tga");
-
+		//walk
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk1", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk2", Color(1, 1, 1), 1.f);
@@ -310,6 +310,21 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("option_button")->textureID[0] = LoadTGA("Image/UI/OptionButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("exit_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("exit_button")->textureID[0] = LoadTGA("Image/UI/ExitButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("option_menu", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("option_menu")->textureID[0] = LoadTGA("Image/UI/OptionMenu.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("confirm_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("confirm_button")->textureID[0] = LoadTGA("Image/UI/ConfirmButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("moveup_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("moveup_button")->textureID[0] = LoadTGA("Image/UI/MoveUp_Button.tga");
+		/*MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");*/
+
 
 		//----------GUN SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);

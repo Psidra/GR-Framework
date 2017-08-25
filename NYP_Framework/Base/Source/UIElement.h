@@ -31,6 +31,19 @@ public:
 		EXIT,
 		VOL_UP,
 		VOL_DOWN,
+
+		INPUT_RELOAD,
+		INPUT_MOVE_UP,
+		INPUT_MOVE_DOWN,
+		INPUT_MOVE_LEFT,
+		INPUT_MOVE_RIGHT,
+		INPUT_BLANK,
+		INPUT_MAP,
+		INPUT_NEXT_GUN,
+		INPUT_PAUSE,
+		CANCEL,
+		CONFIRM
+
 	}type;
 
 	//void SetPosition(const Vector3& _value);

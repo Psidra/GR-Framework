@@ -92,7 +92,7 @@ int Keyboard::Read(const float deltaTime)
 	}
 }
 
-void Keyboard::Write(std::string _filePath)
+void Keyboard::Write(std::string _filePath, unsigned int input_index)
 {
 	std::vector<std::string> temp = Loader::GetInstance()->GetData();
 	std::vector<std::string> newlist;
@@ -111,11 +111,11 @@ void Keyboard::Write(std::string _filePath)
 			newlist.push_back(temp[i]);
 		else
 		{//converting int to hex
-			ss << std::hex << 90; //<<------------ int to hex//90 is z
+			ss << std::hex << key; //<<------------ int to hex//83 is S/ 90 is z
 			std::string result(ss.str());
 
 			storedIndex = temp[i].substr(0, temp[i].find('='));
-			newHex = "0x"+ result;			//<<----------successfully change with hex
+			newHex = "0x" + result;			//<<----------successfully change with hex
 			storedMethodIndex = temp[i].substr(temp[i].find(',') + 1, temp[i].size() - 6);
 
 			newlist.push_back(storedIndex + "=" + newHex + "," + storedMethodIndex);
@@ -133,6 +133,40 @@ void Keyboard::Write(std::string _filePath)
 		cout << "this is the new list of keys" << newlist[i] << endl;
 	}
 	myfile.close();
+}
+
+void Keyboard::MapKeys(std::string _filePath)
+{
+	ifstream myfile(_filePath.c_str(), ios::in);
+	if (myfile.is_open())
+	{
+		string line;
+		while (getline(myfile, line))
+		{
+			cout << line << "\n";
+			std::istringstream ss(line);
+			std::string aToken = "";
+			getline(ss, aToken);
+			unsigned char temp = (unsigned char)atoi(aToken.c_str());
+			Keys.push_back(temp);
+		}
+		myfile.close();
+	}
+}
+
+void Keyboard::ConvertInt()
+{
+	for (std::vector<unsigned char>::iterator it = Keys.begin(); it != Keys.end(); ++it)
+	{
+		key = 0;
+		if (KeyboardController::GetInstance()->IsKeyPressed(*it))
+		{
+			key = *it;
+			cout << key << " = " << (char)key << endl;
+			//string temp = (int)key
+			//return *it;
+		}
+	}
 }
 
 

@@ -85,7 +85,7 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		break;
-	case 2:
+	case 2://unused currently 
 		for (size_t i = 0; i < 8; i++)
 		{
 			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));

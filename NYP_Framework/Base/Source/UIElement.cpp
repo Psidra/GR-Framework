@@ -82,11 +82,28 @@ void UIElement::Update()
 		this->scale.Set(175 * w / 800, 25 * hhalf / 300, 1);
 	}
 
+	if (this->type == CANCEL)
+	{
+		this->position.Set(-60 * w / 800, hhalf * -0.65f, 9.5f);
+		this->scale.Set(90 * w / 800, 15 * hhalf / 300, 1);
+	}
+
+	if (this->type == CONFIRM)
+	{
+		this->position.Set(80 * w / 800, hhalf * -0.65f, 9.5f);
+		this->scale.Set(90 * w / 800, 15 * hhalf / 300, 1);
+	}
+
+	if (this->type == INPUT_MOVE_UP)
+	{
+		this->position.Set(-65 * w / 800, hhalf * 0.05f, 9.5f);
+		this->scale.Set(90 * w / 800, 25 * hhalf / 300, 1);
+	}
+
+
 	if (this->m_bCollider)
 	{
-		Vector3 offset = this->position;
-		offset.y += 15.f;
-		this->SetAABB(Vector3((this->scale * 0.5f) + offset), Vector3((this->scale * -0.5f) + offset));
+		this->SetAABB(Vector3((this->scale * 0.5f) + this->position), Vector3((this->scale * -0.5f) + this->position));
 	}
 
 	if (this->type == CURSOR)
@@ -208,10 +225,15 @@ void UIElement::Render()
 		break;
 	}
 	case UIManager::GAME_STATE::OPTIONS:
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
 
-		break;
-
-	default:
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("option_menu"));
+		modelStack.PopMatrix();
 		break;
 	}
 

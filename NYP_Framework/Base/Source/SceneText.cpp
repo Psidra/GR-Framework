@@ -240,6 +240,19 @@ void SceneText::Init()
 	exitPP->elestate = UIElement::ELEMENT_STATE::PAUSE;
 	exitPP->type = UIElement::ELEMENT_TYPE::EXIT;
 
+	UIElement* cancelOp = Create::UIEntity("cancel_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	cancelOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	cancelOp->type = UIElement::ELEMENT_TYPE::CANCEL;
+
+	UIElement* confirmOp = Create::UIEntity("confirm_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	confirmOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	confirmOp->type = UIElement::ELEMENT_TYPE::CONFIRM;
+
+	UIElement* moveupOp = Create::UIEntity("moveup_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	moveupOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	moveupOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_UP;
+
+
 	//TELEPORTER
 	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
 	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
@@ -270,10 +283,13 @@ void SceneText::Init()
 	this->keyboard = new Keyboard();
 	keyboard->Create();
 	//load from file (uses hex)
-	keyboard->Load("Keybind//keyconfig.txt");
-	//keyboard->Load("Keybind//keyconfigtest.txt");
+	//keyboard->Load("Keybind//keyconfig.txt");
+	keyboard->Load("Keybind//keyconfigtest.txt");
 	//keyboard->Write("Keybind//keyconfigtest.txt");	//WIP- got it to write, but need to take in user input left
 	//keyboard->Load("Keybind//keyconfigtest.txt");
+	keyboard->MapKeys("Keybind//keys.txt");
+	
+	UIManager::GetInstance()->SetKeyboard(keyboard);
 
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
@@ -386,6 +402,7 @@ void SceneText::Update(double dt)
 	float posX = (static_cast<float>(x) - halfWindowWidth);
 	float posY = (halfWindowHeight - static_cast<float>(y));
 
+	//keyboard->ConvertInt();
 	//float fps = (float)(1.f / dt);
 	//std::cout << "fps:" << fps << "          ";
 	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
