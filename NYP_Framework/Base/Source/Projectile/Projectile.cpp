@@ -17,6 +17,7 @@ CProjectile::CProjectile(void)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
 {
+	isActive = false;
 }
 
 CProjectile::CProjectile(Mesh* _modelMesh)
@@ -26,6 +27,7 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
 {
+	isActive = false;
 }
 
 CProjectile::~CProjectile(void)
@@ -288,19 +290,6 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		break;
 	}
 }
-
-//get active
-bool CProjectile::getActive()
-{
-	return m_bActive;
-}
-
-//set active
-void CProjectile::setIsActive(bool _isActive)
-{
-	m_bActive = _isActive;
-}
-
 
 // Create a projectile and add it into EntityManager
 CProjectile* Create::Projectile(const std::string& _meshName, 

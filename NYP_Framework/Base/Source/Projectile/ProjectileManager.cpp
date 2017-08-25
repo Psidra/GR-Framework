@@ -19,12 +19,11 @@ CProjectile * ProjectileManager::FetchProjectile(std::string _mesh)
 	for (std::vector<CProjectile*>::iterator it = projectileList.begin();
 		it != projectileList.end(); ++it)
 	{
-		if ((*it)->getActive())
-			continue;
-
-		(*it)->setIsActive(true);
-		
-		return (*it);
+		if (!(*it)->IsActive())
+		{
+			(*it)->SetIsActive(true);
+			return (*it);
+		}
 	}
 
 	for (int i = 0;i < 10;++i)

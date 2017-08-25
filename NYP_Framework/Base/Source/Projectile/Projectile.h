@@ -78,8 +78,6 @@ protected:
 	bool m_bProjectileRicochet;
 	// bool flag is laserbeam
 	bool m_bProjectileLaserBeam;
-	//bool is active
-	bool m_bActive;
 };
 
 namespace Create
