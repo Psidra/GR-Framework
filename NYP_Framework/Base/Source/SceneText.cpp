@@ -357,16 +357,10 @@ void SceneText::Init()
 	//		}
 	//	}
 	//}
-	
-	/*level = Level::GetInstance();
-	level->init(25.f, 25.f, 5.f, 5.f, 20);
-	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	quadTree = new QuadTree(0, level->getMapWidth(), 0, level->getMapHeight(), 3);
-
-	level = Level::GetInstance();
-	level->init(25.f, 25.f, 10.f, 10.f, 20);
-	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
+	//level = Level::GetInstance();
+	//level->init(25.f, 25.f, 10.f, 10.f, 20);
+	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
 	//quadTree = new QuadTree(0, level->getMapWidth(), level->getMapHeight(), 0);
 
@@ -396,7 +390,17 @@ void SceneText::Init()
 
 	//	}
 	//}
-	*/
+	
+
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
+		it != EntityManager::GetInstance()->getCollisionList().end();++it)
+	{
+		if (dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::WALL
+			&& dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::TELEPORTER)
+			continue;
+
+		minimap->addToMinimapList(*it);
+	}
 }
 
 void SceneText::Update(double dt)
@@ -514,8 +518,14 @@ void SceneText::Update(double dt)
 
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-
 		std::ostringstream ss;
+	/*	ss << Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetMagRound() << "/" 
+			<< Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetTotalRound();
+		textObj[0]->SetText(ss.str());
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
+		textObj[0]->SetScale(Vector3(25, 25, 25));*/
+
+		ss.str("");
 		ss.precision(5);
 		float fps = (float)(1.f / dt);
 		ss << "FPS: " << fps;
@@ -533,7 +543,7 @@ void SceneText::Update(double dt)
 		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 0.0f));
 
 		// Update textpos for fullscreening
-		for (int i = 0; i < 3; ++i)
+		for (int i = 1; i < 3; ++i)
 		{
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 		}

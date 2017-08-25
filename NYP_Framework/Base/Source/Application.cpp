@@ -310,6 +310,8 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("option_button")->textureID[0] = LoadTGA("Image/UI/OptionButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("exit_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("exit_button")->textureID[0] = LoadTGA("Image/UI/ExitButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/GunDisplayBorder.tga");
 
 		//----------GUN SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);

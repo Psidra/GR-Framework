@@ -1,21 +1,21 @@
-#ifndef _BOW_H
-#define _BOW_H
+#ifndef _CIRCULAR_WEAPON_H
+#define _CIRCULAR_WEAPON_H
 
 #include "WeaponInfo.h"
 
-class Bow : public CWeaponInfo
+class CircularWeapon : public CWeaponInfo
 {
 public:
-	Bow(GenericEntity::OBJECT_TYPE _bulletType);
-	virtual ~Bow();
+	CircularWeapon(GenericEntity::OBJECT_TYPE _bulletType);
+	virtual ~CircularWeapon();
 
 	// Initialise this instance to default values
 	void Init(void);
-	//render weapon
+	// render weapon
 	void Render();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
-	// Get mesh
+	//getmesh
 	Mesh* GetMesh();
 private:
 	// Number of bullet to create and pattern
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif
+#endif // !CIRCULAR_WEAPON_H

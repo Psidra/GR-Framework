@@ -130,6 +130,8 @@ public:
 	void setNumBullet(int _numBullet);
 	//get number of bullets
 	int getNumBullet();
+	// Get mesh
+	virtual Mesh* GetMesh();
 protected:
 	// Number of bullet to create
 	virtual void generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle) = 0;
