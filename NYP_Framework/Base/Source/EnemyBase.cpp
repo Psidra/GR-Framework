@@ -1,9 +1,17 @@
 #include "EnemyBase.h"
-#include "GraphicsManager.h"
-#include "RenderHelper.h"
+
+#include "PlayerInfo\PlayerInfo.h"
+#include "Enemy.h"
+
 #include "Inventory.h"
 #include "WeaponInfo\WeaponInfo.h"
-#include "PlayerInfo\PlayerInfo.h"
+
+#include "RenderHelper.h"
+#include "GraphicsManager.h"
+#include "EntityBase.h"
+#include "EntityManager.h"
+
+#include <list>
 
 void EnemyBase::SetTypeOfEnemy(int _enemyType)
 {
@@ -93,4 +101,32 @@ void EnemyBase::ChangeStrategy(CStrategy * theNewStrategy, bool bDelete)
 	}
 
 	theStrategy = theNewStrategy;
+}
+
+GenericEntity * EnemyBase::FetchEnemy()
+{
+	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
+	std::list<EntityBase*>::iterator it;
+
+	for (it = cpy.begin(); it != cpy.end(); ++it)
+	{
+		if ((*it)->IsActive())
+			continue;
+
+		GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+
+		if (thatEntity->type == GenericEntity::ENEMY)
+			return thatEntity;
+	}
+
+	CEnemy* AnEnemy;
+
+	for (size_t i = 0; i < 10; ++i)
+	{
+		AnEnemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
+	}
+
+	AnEnemy->SetIsActive(true);
+
+	return AnEnemy;
 }

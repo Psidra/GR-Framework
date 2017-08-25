@@ -25,8 +25,6 @@ public:
 	//// Collision Response
 	//void CollisionResponse(GenericEntity* thatEntity);
 
-
-
 private:
 	float maxHealth;
 };

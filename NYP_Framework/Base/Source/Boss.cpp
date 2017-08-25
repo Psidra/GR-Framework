@@ -1,4 +1,5 @@
 #include "Boss.h"
+#include "Enemy.h"
 
 #include "WeaponManager.h"
 
@@ -72,6 +73,11 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	enemyInventory->addWeaponToInventory(new Bow(GenericEntity::ENEMY_BULLET));
 
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+
+	for (size_t i = 0; i < 10; ++i)
+	{
+		Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
+	}
 }
 
 void Boss::SetTypeOfEnemy(int _enemyType)
@@ -122,7 +128,7 @@ void Boss::Update(double dt)
 
 	if (this->theStrategy != NULL)
 	{
-		this->theStrategy->UpdateBoss(Player::GetInstance()->GetPos(), this->position, this->direction, this->speed, dt, weaponIndex);
+		this->theStrategy->UpdateBoss(Player::GetInstance()->GetPos(), this->position, this->direction, this->speed, this->weaponIndex, this->health, dt);
 		this->CollisionCheck();
 		this->position += this->direction * this->speed * (float)dt;
 
@@ -131,6 +137,7 @@ void Boss::Update(double dt)
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
 			reloadElapsedTime += dt;
+
 		if (reloadElapsedTime > reloadDuration)
 		{
 			Reload(dt);

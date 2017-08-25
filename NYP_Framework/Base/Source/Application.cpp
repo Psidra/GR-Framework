@@ -65,6 +65,9 @@ Application::~Application()
 
 void Application::Init()
 {
+	// Init random
+	srand(time(NULL));
+
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
 

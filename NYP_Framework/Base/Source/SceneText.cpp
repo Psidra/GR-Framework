@@ -200,7 +200,7 @@ void SceneText::Init()
 
 	// :b:roke
 
-	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 5.0f, 0.0f), Vector3(30, 1, 1), true);
+	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
 	BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
 	BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
 	BwallC->setNormal(Vector3(1, 0, 0));
@@ -298,19 +298,16 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	for (int i = 0; i < 1; ++i)
-	{
-		CEnemy* NewEnemy =  Create::Enemy(Vector3(i+5, 5, 0), "player");
-		NewEnemy->Init(50.0f, 1.5, 1);
-		NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
-	}
+	CEnemy* NewEnemy =  Create::Enemy(Vector3(5, 5, 0), "player");
+	NewEnemy->Init(50.0f, 1.5, 1);
+	NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 
 	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
 	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
-	Boss* FirstBoss = Create::SpawnBoss(Vector3(20, 20, 0), "player", Vector3(2, 2, 2));
-	FirstBoss->Init(500.f, 1, 2, false);
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(3, 3, 3));
+	FirstBoss->Init(500.f, 0, 2, false);
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap

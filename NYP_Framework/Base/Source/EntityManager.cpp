@@ -13,6 +13,9 @@ void EntityManager::Update(double _dt)
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if (!(*it)->IsActive())
+			continue;
+
 		(*it)->Update(_dt);
 	}
 
@@ -54,6 +57,9 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if (!(*it)->IsActive())
+			continue;
+
 		(*it)->Render();
 	}
 }

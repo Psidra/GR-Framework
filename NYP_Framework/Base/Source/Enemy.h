@@ -25,7 +25,7 @@ private:
 
 namespace Create
 {
-	CEnemy* Enemy(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1));
+	CEnemy* Enemy(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1), bool _isActive = true);
 };
 
 #endif // !Enemy

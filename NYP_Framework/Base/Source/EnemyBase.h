@@ -41,6 +41,8 @@ public:
 	// Strategy
 	virtual void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
 
+	virtual GenericEntity* FetchEnemy();
+
 protected:
 	Mesh* modelMesh;
 	Vector3 position, direction, target;
