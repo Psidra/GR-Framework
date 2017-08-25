@@ -325,9 +325,11 @@ void SceneText::Init()
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
 	//create them projectiles
-	for (int i = 0;i < 100; ++i)
+	for (int i = 0;i < 10; ++i)
 	{
-		ProjectileManager::GetInstance()->AddProjectile(new CProjectile);
+		CProjectile* temp = new CProjectile;
+		ProjectileManager::GetInstance()->AddProjectile(temp);
+		EntityManager::GetInstance()->AddEntity(temp);
 	}
 
 	//light testing

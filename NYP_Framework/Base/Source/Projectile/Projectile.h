@@ -55,10 +55,6 @@ public:
 	virtual void Render(void);
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
-	//get active
-	bool getActive();
-	//set active
-	void setIsActive(bool _isActive);
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;

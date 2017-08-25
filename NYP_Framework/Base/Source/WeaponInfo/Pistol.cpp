@@ -117,6 +117,8 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 	for (int i = 0;i < numBullet;++i)
 	{
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile("cube");
+
+		projectile->SetIsActive(true);
 		projectile->SetPosition(position);
 		projectile->SetDirection(target.Normalized());
 		projectile->SetScale(scale);
