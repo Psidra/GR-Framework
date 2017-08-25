@@ -1,6 +1,7 @@
 #include "EntityManager.h"
 #include "EntityBase.h"
 #include "CollisionManager.h"
+#include "PlayerInfo\PlayerInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -54,7 +55,11 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
-		(*it)->Render();
+		if ((*it)->GetPosition().x < Player::GetInstance()->GetPos().x + 10.5f && (*it)->GetPosition().y < Player::GetInstance()->GetPos().y + 7.5f &&
+			(*it)->GetPosition().x > Player::GetInstance()->GetPos().x - 10.5f && (*it)->GetPosition().y > Player::GetInstance()->GetPos().y - 7.5f)
+		{
+			(*it)->Render();
+		}
 	}
 }
 

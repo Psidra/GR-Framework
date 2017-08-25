@@ -4,6 +4,9 @@
 #include "WeaponInfo\Shotgun.h"
 #include "WeaponManager.h"
 
+#include "LevelStuff/QuadTree.h"
+#include "LevelStuff/Level.h"
+
 /********************************************************************************
 Constructor
 ********************************************************************************/
@@ -198,15 +201,27 @@ void CEnemy::CollisionCheck()
 	Vector3 tempMin = this->GetMinAABB();
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
 
+	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	//QuadTree quadTree(0, 800, 600, 0, 3);
+	vector<EntityBase*> getNearestObj;
+
+	quadTree.clear();
+	for (std::list<EntityBase*>::iterator it = cpy.begin(); it != cpy.end(); ++it)
+		quadTree.addObject(*it);
+
 	float checkoffset = 0.5f;
 
 	if (direction.y == 1) //up
 	{
 		this->SetAABB(tempMax + Vector3(0.f, checkoffset, 0.f), tempMin + Vector3(0.f, checkoffset, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-		for (it = cpy.begin(); it != end; ++it)
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+
+		/*std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();*/
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
@@ -235,10 +250,15 @@ void CEnemy::CollisionCheck()
 	{
 		this->SetAABB(tempMax - Vector3(0.f, checkoffset, 0.f), tempMin - Vector3(0.f, checkoffset, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
-		for (it = cpy.begin(); it != end; ++it)
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+
+		/*std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();*/
+
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
@@ -266,10 +286,14 @@ void CEnemy::CollisionCheck()
 	{
 		this->SetAABB(tempMax + Vector3(checkoffset, 0.f, 0.f), tempMin + Vector3(checkoffset, 0.f, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
-		for (it = cpy.begin(); it != end; ++it)
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+
+		/*std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();*/
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
@@ -297,10 +321,14 @@ void CEnemy::CollisionCheck()
 	{
 		this->SetAABB(tempMax - Vector3(checkoffset, 0.f, 0.f), tempMin - Vector3(checkoffset, 0.f, 0.f));
 
-		std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
+		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
-		for (it = cpy.begin(); it != end; ++it)
+		std::vector<EntityBase*>::iterator it, end;
+		end = getNearestObj.end();
+
+		/*std::list<EntityBase*>::iterator it, end;
+		end = cpy.end();*/
+		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
 			{
