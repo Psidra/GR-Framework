@@ -190,6 +190,24 @@ void SceneText::Init()
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
 	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
 	wall->setNormal(Vector3(1, 0, 0));
+
+	GenericEntity* BwallA = Create::Entity("cube", Vector3(50.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	BwallA->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallA->SetAABB(BwallA->GetScale() * 0.5f + BwallA->GetPosition(), BwallA->GetScale() * -0.5f + BwallA->GetPosition());
+	BwallA->setNormal(Vector3(1, 0, 0));
+
+	// :b:roke
+
+	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 5.0f, 0.0f), Vector3(30, 1, 1), true);
+	BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
+	BwallC->setNormal(Vector3(1, 0, 0));
+
+	GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
+	BwallD->setNormal(Vector3(1, 0, 0));
+
 	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
@@ -669,7 +687,7 @@ void SceneText::RenderWorld()
 
 	ms.PushMatrix();
 	ms.Translate(0, 0, -5);
-	ms.Scale(70, 50, 1);
+	ms.Scale(100, 100, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
 	ms.PopMatrix();
 

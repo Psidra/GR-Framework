@@ -19,6 +19,9 @@ public:
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
 
+	bool IsActive();
+	void SetIsActive(const bool _value);
+
 	bool IsDone();
 	void SetIsDone(const bool _value);
 
@@ -36,6 +39,7 @@ protected:
 	Vector3 position;
 	Vector3 scale;
 
+	bool isActive;
 	bool isDone;
 	bool m_bCollider;
 	bool m_bPhysic;

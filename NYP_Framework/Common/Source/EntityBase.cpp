@@ -24,6 +24,16 @@ void EntityBase::RenderUI()
 {
 }
 
+bool EntityBase::IsActive()
+{
+	return isActive;
+}
+
+void EntityBase::SetIsActive(const bool _value)
+{
+	isActive = _value;
+}
+
 bool EntityBase::IsDone()
 {
 	return isDone;

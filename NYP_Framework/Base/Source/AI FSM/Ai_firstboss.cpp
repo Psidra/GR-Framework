@@ -29,38 +29,10 @@ void CStrategy_AI_FirstBoss::Update(Vector3& theDestination, Vector3 theEnemyPos
 
 void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex)
 {
-	// Decide which state to change to
-	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
 	shootElapsedTime += dt;
 
-	if (distancePlayerToEnemy > AI_ATTACK_RANGE)
-	{
-		SetIsMoving(true);
-		CurrentState = CHASE;
-	}
-	else if (distancePlayerToEnemy <= AI_ATTACK_RANGE)
-	{
-		theEnemyDirection = 0;
-		CurrentState = ATTACK;
-	}
-
-
-
-	// Based on the current state, move the enemy
 	switch (CurrentState)
 	{
-	case CHASE:
-		SetIsShooting(false);
-
-		if (theDestination.x - maxDistFromPlayer > theEnemyPosition.x)
-			MoveRight(theEnemyDirection);
-		else if (theDestination.x + maxDistFromPlayer < theEnemyPosition.x)
-			MoveLeft(theEnemyDirection);
-		if (theDestination.y - maxDistFromPlayer > theEnemyPosition.y)
-			MoveUp(theEnemyDirection);
-		else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
-			MoveDown(theEnemyDirection);
-		break;
 	case ATTACK:
 		if (shootElapsedTime > timeBetweenShots)
 		{
@@ -71,6 +43,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& theDestination, Vector3 theEnem
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
 		break;
+
 	default:
 		// Do nothing if idling
 		SetIsMoving(false);
