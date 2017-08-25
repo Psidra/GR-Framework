@@ -1,6 +1,7 @@
 #include "EntityManager.h"
 #include "EntityBase.h"
 #include "CollisionManager.h"
+#include "PlayerInfo\PlayerInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -60,7 +61,11 @@ void EntityManager::Render()
 		if (!(*it)->IsActive())
 			continue;
 
-		(*it)->Render();
+		if ((*it)->GetPosition().x < Player::GetInstance()->GetPos().x + 10.5f && (*it)->GetPosition().y < Player::GetInstance()->GetPos().y + 7.5f &&
+			(*it)->GetPosition().x > Player::GetInstance()->GetPos().x - 10.5f && (*it)->GetPosition().y > Player::GetInstance()->GetPos().y - 7.5f)
+		{
+			(*it)->Render();
+		}
 	}
 }
 
@@ -122,6 +127,11 @@ void EntityManager::setCollisionList(std::list<EntityBase*>& newList)
 void EntityManager::setEntityList(std::list<EntityBase*>& newList)
 {
 	entityList = newList;
+}
+
+std::list<EntityBase*>& EntityManager::getEntityList()
+{
+	return entityList;
 }
 
 // Constructor

@@ -133,6 +133,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		aProjectile->SetIsActive(true);
 	}
 
 	m_fSpeed = 15.f;

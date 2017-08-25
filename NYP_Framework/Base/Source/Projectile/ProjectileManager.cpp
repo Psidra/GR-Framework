@@ -1,5 +1,7 @@
 #include "ProjectileManager.h"
 #include "Projectile.h"
+#include "../EntityManager.h"
+#include "../GenericEntity.h"
 
 ProjectileManager::ProjectileManager()
 {
@@ -15,14 +17,14 @@ void ProjectileManager::AddProjectile(CProjectile * projectile)
 }
 
 CProjectile * ProjectileManager::FetchProjectile(std::string _mesh)
-{
-	for (std::vector<CProjectile*>::iterator it = projectileList.begin();
-		it != projectileList.end(); ++it)
+{	
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getEntityList().begin();
+		it != EntityManager::GetInstance()->getEntityList().end(); ++it)
 	{
 		if (!(*it)->IsActive())
 		{
 			(*it)->SetIsActive(true);
-			return (*it);
+			return dynamic_cast<CProjectile*>((*it));
 		}
 	}
 

@@ -389,7 +389,7 @@ void CMinimap::RenderUI()
 					//if (playerMapPos.LengthSquared() > minimapData["wallpos"][i].LengthSquared())
 					if((minimapData["wallpos"][i] - playerMapPos).LengthSquared() < m_fRange)
 					{
-						std::cout << minimapData["wallpos"][i] << " render\n";
+						//std::cout << minimapData["wallpos"][i] << " render\n";
 						modelStack.PushMatrix();
 						modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
 						// Rotate the current transformation

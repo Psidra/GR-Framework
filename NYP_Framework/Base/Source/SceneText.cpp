@@ -322,54 +322,28 @@ void SceneText::Init()
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
 	//create them projectiles
-	for (int i = 0;i < 10; ++i)
-	{
-		CProjectile* temp = new CProjectile;
-		ProjectileManager::GetInstance()->AddProjectile(temp);
-		EntityManager::GetInstance()->AddEntity(temp);
-	}
+	//for (int i = 0;i < 10; ++i)
+	//{
+	//	CProjectile* projectile = Create::Projectile("cube",
+	//		Vector3(0, 0, 0),
+	//		Vector3(0, 0, 0),
+	//		Vector3(1, 1, 1),
+	//		10.f,
+	//		10.f);
+	//	//CProjectile* temp = new CProjectile;
+	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
+	//	//EntityManager::GetInstance()->AddEntity(temp);
+	//}
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
-	//light_depth_mesh->textureID[0] = LoadTGA("Image//calibri.tga");s
+	//light_depth_mesh->textureID[0] = LoadTGA("Image//calibri.tga");
 
-	//DEBUGGING: Level Cout
-	//Math::InitRNG();
-	//Level l;
-	//l.setMapHeight(25);
-	//l.setMapWidth(25);
-	//l.setMaxRoomHeight(5);
-	//l.setMaxRoomWidth(5);
-	//l.generate();
-	//l.createMap(20);
-	//l.testCout();
-
-	//for (size_t i = 0; i < l.getMapWidth(); ++i)
-	//{
-	//	for (size_t j = 0; j < l.getMapHeight(); ++j)
-	//	{
-	//		TileEntity* temp;
-	//		if (l.getTile(i, j).type == Tile::EMPTY)
-	//			Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-	//		else if (l.getTile(i, j).type == Tile::ROOM)
-	//			Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-	//		else if (l.getTile(i, j).type == Tile::CORRIDOR)
-	//			Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-	//		else if (l.getTile(i, j).type == Tile::WALL)
-	//		{
-	//			temp = Create::TEntity("Wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
-	//			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-	//		}
-	//	}
-	//}
-
-	//level = Level::GetInstance();
-	//level->init(25.f, 25.f, 10.f, 10.f, 20);
-	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
-
-	//quadTree = new QuadTree(0, level->getMapWidth(), level->getMapHeight(), 0);
+	Math::InitRNG();
+	level = Level::GetInstance();
+	level->init(32.f, 32.f, 16.f, 16.f, 20);
+	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
 	//for (size_t i = 0; i < level->getMapWidth(); ++i)
 	//{
@@ -377,13 +351,7 @@ void SceneText::Init()
 	//	{
 	//		TileEntity* temp = NULL;
 
-	//		if (level->getTile(i, j).type == Tile::EMPTY);
-	//		//temp = Create::TEntity("test", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-	//		else if (level->getTile(i, j).type == Tile::ROOM);
-	//		//temp = Create::TEntity("Floor", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-	//		else if (level->getTile(i, j).type == Tile::CORRIDOR);
-	//		//temp = Create::TEntity("Coord", Vector3(i, j, 0), Vector3(1, 1, 1), false);
-	//		else if (level->getTile(i, j).type == Tile::WALL)
+	//		if (level->getTile(i, j).type == Tile::WALL)
 	//		{
 	//			temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
@@ -393,12 +361,9 @@ void SceneText::Init()
 	//			continue;
 
 	//		temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-	//		quadTree->addObject(temp);
-
 	//	}
 	//}
 	
-
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
 		it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -419,9 +384,8 @@ void SceneText::Update(double dt)
 	float posX = (static_cast<float>(x) - halfWindowWidth);
 	float posY = (halfWindowHeight - static_cast<float>(y));
 
-	//float fps = (float)(1.f / dt);
-	//std::cout << "fps:" << fps << "          ";
-	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+	////vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+	//vector<EntityBase*> getNew = quadTree->getObjectsAt(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y);
 	//list<EntityBase*> temp;
 	//std::copy(getNew.begin(), getNew.end(), std::back_inserter(temp));
 	//printf("Objects at %lf %lf: %u\n", posX, posY, temp.size());

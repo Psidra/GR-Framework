@@ -22,7 +22,7 @@ void Level::init(float mapHeight, float mapWidth, float maxRoomHeight, float max
 	this->maxRoomWidth = maxRoomWidth;
 	generate();
 	createMap(maxAttempts);
-	testCout();
+	//testCout();
 
 	//Level* level = Level::GetInstance();
 }
@@ -79,10 +79,10 @@ float Level::getMaxRoomWidth()
 
 void Level::generateRooms()
 {
-	int rw = Math::RandIntMinMax(maxRoomWidth - 3, maxRoomWidth);
-	int rh = Math::RandIntMinMax(maxRoomHeight - 3, maxRoomHeight);
-	int rx = Math::RandIntMinMax(1, mapWidth - rw - 1);
-	int ry = Math::RandIntMinMax(1, mapHeight - rh - 1);
+	float rw = Math::RandFloatMinMax(maxRoomWidth - 3, maxRoomWidth);
+	float rh = Math::RandFloatMinMax(maxRoomHeight - 3, maxRoomHeight);
+	float rx = Math::RandFloatMinMax(1, mapWidth - rw - 1);
+	float ry = Math::RandFloatMinMax(1, mapHeight - rh - 1);
 
 	if (!isRoomOverlap(rx, ry, rw, rh))
 		addRoom(rx, ry, rw, rh);

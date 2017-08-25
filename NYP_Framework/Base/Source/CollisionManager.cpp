@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 #include "PlayerInfo\PlayerInfo.h"
+#include "LevelStuff\QuadTree.h"
+#include "LevelStuff\Level.h"
 
 bool CollisionManager::CheckPointToSphereCollision(Vector3 point, EntityBase * ThatEntity)
 {
@@ -99,15 +101,33 @@ bool CollisionManager::UI_CheckAABBCollision(Vector3 point, UIElement * ThatElem
 
 void CollisionManager::Update(std::list<EntityBase*> collisionList)
 {
-	std::list<EntityBase*>::iterator it, it2, end;
+	std::list<EntityBase*>::iterator it, end;
 	end = collisionList.end();
+
+	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	//QuadTree quadTree(0, 800, 600, 0, 3);
+	vector<EntityBase*> getNearestObj;
+	
+	quadTree.clear();
+	for (it = collisionList.begin(); it != end; ++it)
+		quadTree.addObject(*it);
 	
 	for (it = collisionList.begin(); it != end; ++it) 
 	{
+		//list<EntityBase*> retunedObj;
+		getNearestObj = quadTree.queryRange(dynamic_cast<GenericEntity*>(*it)->GetMinAABB().x,
+			dynamic_cast<GenericEntity*>(*it)->GetMaxAABB().x, 
+			dynamic_cast<GenericEntity*>(*it)->GetMaxAABB().y, 
+			dynamic_cast<GenericEntity*>(*it)->GetMinAABB().y);
+		//getNearestObj = quadTree.getObjectsAt((*it)->GetPosition().x, (*it)->GetPosition().y);
+		//std::copy(getNearestObj.begin(), getNearestObj.end(), std::back_inserter(retunedObj));
+		//for (it2 = std::next(it, 1); it2 != end; ++it2)
+		
 		if (!(*it)->IsActive())
 			continue;
 
-		for (it2 = std::next(it, 1); it2 != end; ++it2)
+		for (std::vector<EntityBase*>::iterator it2 = getNearestObj.begin(); it2 != getNearestObj.end(); ++it2)
+		//for (it2 = std::next(it, 1); it2 != end; ++it2)
 		{
 
 			if (!(*it2)->IsActive())
@@ -135,10 +155,16 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList)
 
 			}
 		}
+	}
 
-		if (CheckAABBCollision(Player::GetInstance(), *it))
+	getNearestObj.clear();
+	getNearestObj = quadTree.queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+
+	for (std::vector<EntityBase*>::iterator it3 = getNearestObj.begin(); it3 != getNearestObj.end(); ++it3)
+	{
+		if (CheckAABBCollision(Player::GetInstance(), *it3))
 		{
-			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
+			GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it3);
 			Player::GetInstance()->CollisionResponse(thatEntity);
 		}
 	}
