@@ -308,3 +308,8 @@ int CWeaponInfo::getNumBullet()
 {
 	return m_iNumBullet;
 }
+
+Mesh * CWeaponInfo::GetMesh()
+{
+	return NULL;
+}

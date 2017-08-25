@@ -8,14 +8,15 @@
 #include "../WeaponInfo/Shotgun.h"
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponInfo/Bow.h"
+#include "../WeaponInfo/LaserBeam.h"
 #include "../WeaponManager.h"
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
 #include "MeshList.h"
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
-#include "../WeaponInfo/LaserBeam.h"
 #include "../Particle/ParticleEffect.h"
+#include "../WeaponInfo/CircularWeapon.h"
 
 #include "../LevelStuff/QuadTree.h"
 #include "../LevelStuff/Level.h"
@@ -43,6 +44,7 @@ Player::Player(void)
 	, m_bFire(false)
 	, m_bSlow(false)
 	, m_bPoison(false)
+	, weaponMesh(NULL)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -50,6 +52,8 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
+	//this weapon for boss and enemies
+	//playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -119,6 +123,7 @@ void Player::Init(void)
 	this->SetIndices_fHurt(8, 8);
 	this->SetIndices_bHurt(9, 9);
 	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
 }
 
 // Set position
@@ -516,13 +521,12 @@ void Player::Update(double dt)
 	//update minimap only when player moves
 	//if (m_bMoving)
 	//{
-		for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin()
-			;it != EntityManager::GetInstance()->getCollisionList().end();++it)
+		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
+			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
 		{
-			if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
-				&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
-				continue;
-
+			//if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
+			//	&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
+			//	continue;
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
@@ -668,6 +672,7 @@ bool Player::ChangeWeapon(const float dt)
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
 	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
+	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
 	return false;
 }
 
@@ -766,4 +771,19 @@ void Player::setSlow(bool _slow)
 void Player::setPoison(bool _poison)
 {
 	this->m_bPoison = _poison;
+}
+
+Inventory * Player::getInvetory()
+{
+	return this->playerInventory;
+}
+
+int Player::getWeaponIndex()
+{
+	return weaponIndex;
+}
+
+Mesh * Player::getWeaponMesh()
+{
+	return weaponMesh;
 }

@@ -16,7 +16,8 @@ public:
 	void Render();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
-
+	// Get mesh
+	Mesh* GetMesh();
 private:
 	//increment pos spawning of projectile
 	float m_fIncrement;

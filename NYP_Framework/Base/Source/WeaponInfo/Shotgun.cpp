@@ -100,6 +100,11 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
+Mesh * Shotgun::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("shotgun");
+}
+
 void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)

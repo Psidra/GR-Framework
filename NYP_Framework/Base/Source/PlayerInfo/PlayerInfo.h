@@ -117,7 +117,12 @@ public:
 	void setSlow(bool _slow);
 	// Set Poison
 	void setPoison(bool _poison);
-
+	//Get player inventory
+	Inventory* getInvetory();
+	//get weapon index
+	int getWeaponIndex();
+	//get weaponMesh
+	Mesh* getWeaponMesh();
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)
@@ -162,4 +167,5 @@ private:
 	int w, h;				//screen width & height	
 	bool m_bLookingUp;		//checks if player is looking up or down
 	bool isHurt;
+	Mesh* weaponMesh;
 };

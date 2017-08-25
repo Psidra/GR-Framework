@@ -31,6 +31,8 @@
 #include "RenderHelper.h"
 #include "WeaponManager.h"
 #include "Minimap\Minimap.h"
+#include "Projectile\ProjectileManager.h"
+#include "Projectile\Projectile.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -190,6 +192,24 @@ void SceneText::Init()
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
 	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
 	wall->setNormal(Vector3(1, 0, 0));
+
+	GenericEntity* BwallA = Create::Entity("cube", Vector3(50.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	BwallA->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallA->SetAABB(BwallA->GetScale() * 0.5f + BwallA->GetPosition(), BwallA->GetScale() * -0.5f + BwallA->GetPosition());
+	BwallA->setNormal(Vector3(1, 0, 0));
+
+	// :b:roke
+
+	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 5.0f, 0.0f), Vector3(30, 1, 1), true);
+	BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
+	BwallC->setNormal(Vector3(1, 0, 0));
+
+	GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
+	BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
+	BwallD->setNormal(Vector3(1, 0, 0));
+
 	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
@@ -286,8 +306,12 @@ void SceneText::Init()
 	}
 
 	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
-	NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(20, 20, 0), "player", Vector3(2, 2, 2));
+	FirstBoss->Init(500.f, 1, 2, false);
+	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
@@ -300,6 +324,14 @@ void SceneText::Init()
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
+	//create them projectiles
+	for (int i = 0;i < 10; ++i)
+	{
+		CProjectile* temp = new CProjectile;
+		ProjectileManager::GetInstance()->AddProjectile(temp);
+		EntityManager::GetInstance()->AddEntity(temp);
+	}
+
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
@@ -310,25 +342,34 @@ void SceneText::Init()
 	level->init(32.f, 32.f, 16.f, 16.f, 20);
 	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	/*for (size_t i = 0; i < level->getMapWidth(); ++i)
-	{
-		for (size_t j = 0; j < level->getMapHeight(); ++j)
-		{
-			TileEntity* temp = NULL;
+	//for (size_t i = 0; i < level->getMapWidth(); ++i)
+	//{
+	//	for (size_t j = 0; j < level->getMapHeight(); ++j)
+	//	{
+	//		TileEntity* temp = NULL;
 
-			if (level->getTile(i, j).type == Tile::WALL)
-			{
-				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-				temp->type = GenericEntity::OBJECT_TYPE::WALL;
-			}
+	//		if (level->getTile(i, j).type == Tile::WALL)
+	//		{
+	//			temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
+	//		}
 
-			if (!temp)
-				continue;
+	//		if (!temp)
+	//			continue;
 
-			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-		}
-	}*/
+	//		temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+	//	}
+	//}
 	
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
+		it != EntityManager::GetInstance()->getCollisionList().end();++it)
+	{
+		if (dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::WALL
+			&& dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::TELEPORTER)
+			continue;
+
+		minimap->addToMinimapList(*it);
+	}
 }
 
 void SceneText::Update(double dt)
@@ -445,8 +486,14 @@ void SceneText::Update(double dt)
 
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-
 		std::ostringstream ss;
+	/*	ss << Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetMagRound() << "/" 
+			<< Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetTotalRound();
+		textObj[0]->SetText(ss.str());
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
+		textObj[0]->SetScale(Vector3(25, 25, 25));*/
+
+		ss.str("");
 		ss.precision(5);
 		float fps = (float)(1.f / dt);
 		ss << "FPS: " << fps;
@@ -464,7 +511,7 @@ void SceneText::Update(double dt)
 		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 0.0f));
 
 		// Update textpos for fullscreening
-		for (int i = 0; i < 3; ++i)
+		for (int i = 1; i < 3; ++i)
 		{
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 		}
@@ -618,7 +665,7 @@ void SceneText::RenderWorld()
 
 	ms.PushMatrix();
 	ms.Translate(0, 0, -5);
-	ms.Scale(70, 50, 1);
+	ms.Scale(100, 100, 1);
 	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("quad"));
 	ms.PopMatrix();
 

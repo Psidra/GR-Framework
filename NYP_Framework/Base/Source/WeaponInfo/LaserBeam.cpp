@@ -97,6 +97,11 @@ void LaserBeam::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
+Mesh * LaserBeam::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("laser");
+}
+
 void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)

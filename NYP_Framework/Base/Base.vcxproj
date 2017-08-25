@@ -12,12 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI FSM\Ai_1.cpp" />
+    <ClCompile Include="Source\AI FSM\Ai_firstboss.cpp" />
     <ClCompile Include="Source\AI FSM\Ai_obstacle.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Boss.cpp" />
     <ClCompile Include="Source\CollisionManager.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\EnemyBase.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FPSCamera.cpp" />
     <ClCompile Include="Source\GenericEntity.cpp" />
@@ -39,6 +41,7 @@
     <ClCompile Include="Source\Particle\ParticleEffect.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
+    <ClCompile Include="Source\Projectile\ProjectileManager.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
     <ClCompile Include="Source\AudioEngine.cpp" />
@@ -48,6 +51,7 @@
     <ClCompile Include="Source\UIElement.cpp" />
     <ClCompile Include="Source\UIManager.cpp" />
     <ClCompile Include="Source\WeaponInfo\Bow.cpp" />
+    <ClCompile Include="Source\WeaponInfo\CircularWeapon.cpp" />
     <ClCompile Include="Source\WeaponInfo\LaserBeam.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
@@ -57,9 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI FSM\Ai_1.h" />
+    <ClInclude Include="Source\AI FSM\Ai_firstboss.h" />
     <ClInclude Include="Source\AI FSM\Ai_obstacle.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\EnemyBase.h" />
     <ClInclude Include="Source\Boss.h" />
     <ClInclude Include="Source\CollisionManager.h" />
     <ClInclude Include="Source\Enemy.h" />
@@ -83,6 +89,7 @@
     <ClInclude Include="Source\Particle\ParticleEffect.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
+    <ClInclude Include="Source\Projectile\ProjectileManager.h" />
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
     <ClInclude Include="Source\AudioEngine.h" />
@@ -92,6 +99,7 @@
     <ClInclude Include="Source\UIElement.h" />
     <ClInclude Include="Source\UIManager.h" />
     <ClInclude Include="Source\WeaponInfo\Bow.h" />
+    <ClInclude Include="Source\WeaponInfo\CircularWeapon.h" />
     <ClInclude Include="Source\WeaponInfo\LaserBeam.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />

@@ -84,9 +84,7 @@ void UIElement::Update()
 
 	if (this->m_bCollider)
 	{
-		Vector3 offset = this->position;
-		offset.y += 15.f;
-		this->SetAABB(Vector3((this->scale * 0.5f) + offset), Vector3((this->scale * -0.5f) + offset));
+		this->SetAABB(Vector3((this->scale * 0.5f) + this->position), Vector3((this->scale * -0.5f) + this->position));
 	}
 
 	if (this->type == CURSOR)
@@ -186,6 +184,13 @@ void UIElement::Render()
 		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 		modelStack.Scale(HUDscale.x * 0.6f, HUDscale.y * 0.6f, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("currency"));
+		modelStack.PopMatrix();
+
+		//render weapon in use
+		modelStack.PushMatrix();
+		modelStack.Translate(halfWindowWidth - 70.f, -halfWindowHeight + 60.f, 1.f);
+		modelStack.Scale(100, 100, 100);
+		RenderHelper::RenderMesh(Player::GetInstance()->getWeaponMesh());
 		modelStack.PopMatrix();
 
 		break;

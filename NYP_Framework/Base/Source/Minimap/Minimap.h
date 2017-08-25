@@ -70,7 +70,8 @@ public:
 	bool SetStencil(Mesh* aStencil);
 	// Get the Stencil mesh to this class
 	Mesh* GetStencil(void) const;
-
+	//set objpos
+	void setObjectPos(std::string _type, Vector3 _scale);
 	// Set the Enemy mesh to this class
 	bool SetObjectMesh(Mesh* _mesh);
 	// Get the Enemy mesh to this class
@@ -79,8 +80,6 @@ public:
 	void setObject(Vector3 _pos, Vector3 _scale);
 	// Get minimap map
 	std::map <std::string, std::vector<Vector3>> getMinimapData();
-	// set minimap map pos
-	void setObjectPos(std::string _type, Vector3 _pos);
 	// set minimap map scale
 	void setObjectScale(std::string _type, Vector3 _scale);
 	// get player map scale
@@ -95,6 +94,10 @@ public:
 	void EnlargeMap(bool _isEnlarged);
 	//Add all telepos to list
 	void addTeleporterPos(Vector3 _pos);
+	//Add to minimapList
+	void addToMinimapList(EntityBase* _entity);
+	//get minimap list
+	std::list<EntityBase*>& getMinimapList(void);
 	//// Set position of avatar in minimap
 	//bool SetPosition(const int x, const int y);
 	//// Get position x of avatar in minimap

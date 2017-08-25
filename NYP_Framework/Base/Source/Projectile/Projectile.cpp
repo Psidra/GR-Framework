@@ -8,6 +8,7 @@
 #include "../Enemy.h"
 #include "../CollisionManager.h"
 #include "../Particle/ParticleEffect.h"
+#include "ProjectileManager.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -16,6 +17,7 @@ CProjectile::CProjectile(void)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
 {
+	isActive = false;
 }
 
 CProjectile::CProjectile(Mesh* _modelMesh)
@@ -25,6 +27,7 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
 {
+	isActive = false;
 }
 
 CProjectile::~CProjectile(void)
@@ -204,6 +207,9 @@ void CProjectile::Render(void)
 	if (m_fLifetime < 0.0f)
 		return;
 
+	if (!isActive)
+		return;
+
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
@@ -267,13 +273,13 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			break;
 
 		this->SetIsDone(true);
-		CEnemy* HitEnemy = dynamic_cast<CEnemy*>(ThatEntity);
+		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
 
-		if (HitEnemy->enemy_type != CEnemy::ENEMY_TYPE::OBSTACLE_INVUL)
+		if (!HitEnemy->getInvuln())
 		{
 			Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, HitEnemy);
-			HitEnemy->editHP(-Proj->getProjectileDamage());
+			HitEnemy->editHealth(-Proj->getProjectileDamage());
 		}
 		else
 		{
@@ -305,7 +311,8 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetStatus(true);
 	result->SetCollider(true);
 	result->SetScale(_scale);
+	//result->setIsActive(false);
 	EntityManager::GetInstance()->AddEntity(result);
-
+	ProjectileManager::GetInstance()->AddProjectile(result);
 	return result;
 }
