@@ -15,7 +15,8 @@ public:
 	void Render();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
-
+	// Get mesh
+	Mesh* GetMesh();
 private:
 	// generate bullet(num of bullet,dir)
 	void generateBullet(Vector3 position, Vector3 target, const int numBullet = 1, const float angle = 10.f);

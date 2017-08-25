@@ -48,6 +48,7 @@
     <ClCompile Include="Source\UIElement.cpp" />
     <ClCompile Include="Source\UIManager.cpp" />
     <ClCompile Include="Source\WeaponInfo\Bow.cpp" />
+    <ClCompile Include="Source\WeaponInfo\CircularWeapon.cpp" />
     <ClCompile Include="Source\WeaponInfo\LaserBeam.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="Source\UIElement.h" />
     <ClInclude Include="Source\UIManager.h" />
     <ClInclude Include="Source\WeaponInfo\Bow.h" />
+    <ClInclude Include="Source\WeaponInfo\CircularWeapon.h" />
     <ClInclude Include="Source\WeaponInfo\LaserBeam.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />

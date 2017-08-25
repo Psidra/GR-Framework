@@ -188,6 +188,13 @@ void UIElement::Render()
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("currency"));
 		modelStack.PopMatrix();
 
+		//render weapon in use
+		modelStack.PushMatrix();
+		modelStack.Translate(halfWindowWidth - 70.f, -halfWindowHeight + 60.f, 1.f);
+		modelStack.Scale(100, 100, 100);
+		RenderHelper::RenderMesh(Player::GetInstance()->getWeaponMesh());
+		modelStack.PopMatrix();
+
 		break;
 	}
 	case UIManager::GAME_STATE::PAUSE:

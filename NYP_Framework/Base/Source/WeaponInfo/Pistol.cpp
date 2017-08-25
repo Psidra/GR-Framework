@@ -102,6 +102,11 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 	}
 }
 
+Mesh* Pistol::GetMesh()
+{
+	return MeshList::GetInstance()->GetMesh("pistolLeft");
+}
+
 // Number of bullet to create and pattern
 void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
