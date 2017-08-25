@@ -325,12 +325,18 @@ void SceneText::Init()
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
 	//create them projectiles
-	for (int i = 0;i < 10; ++i)
-	{
-		CProjectile* temp = new CProjectile;
-		ProjectileManager::GetInstance()->AddProjectile(temp);
-		EntityManager::GetInstance()->AddEntity(temp);
-	}
+	//for (int i = 0;i < 10; ++i)
+	//{
+	//	CProjectile* projectile = Create::Projectile("cube",
+	//		Vector3(0, 0, 0),
+	//		Vector3(0, 0, 0),
+	//		Vector3(1, 1, 1),
+	//		10.f,
+	//		10.f);
+	//	//CProjectile* temp = new CProjectile;
+	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
+	//	//EntityManager::GetInstance()->AddEntity(temp);
+	//}
 
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
