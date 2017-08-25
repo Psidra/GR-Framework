@@ -88,8 +88,8 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
 		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
 		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
-		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
-		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fhurt"));
+		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bhurt"));
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		break;
 	case 2://unused currently 
@@ -119,9 +119,10 @@ void CEnemy::Update(double dt)
 	{
 		this->theStrategy->Update(Player::GetInstance()->GetPos(), this->position, this->direction, this->speed, dt);
 		this->CollisionCheck();
+		if (!isHurt)
 		this->position += this->direction * this->speed * (float)dt;
 		
-		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
+		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0 && !isHurt)
 			this->Shoot(dt, this->position);
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)

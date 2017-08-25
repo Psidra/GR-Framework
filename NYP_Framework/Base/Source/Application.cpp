@@ -279,7 +279,11 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("enemy1_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bwalk2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk2.tga");
-
+		//hurt
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_fhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fhurt.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy1_bhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bhurt.tga");
 
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
