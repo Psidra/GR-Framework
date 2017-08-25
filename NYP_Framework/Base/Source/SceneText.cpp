@@ -283,8 +283,12 @@ void SceneText::Init()
 	}
 
 	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
-	NewObstacle->Init(100.f, 0, 2, CEnemy::ENEMY_TYPE::OBSTACLE_INVUL);
+	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(20, 20, 0), "player", Vector3(2, 2, 2));
+	FirstBoss->Init(500.f, 1, 2, false);
+	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);

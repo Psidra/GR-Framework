@@ -3,25 +3,29 @@
 #include "WeaponInfo\Pistol.h"
 #include "WeaponInfo\Shotgun.h"
 #include "WeaponManager.h"
+#include "Collider\Collider.h"
+
+#include "Strategy.h"
+
+#include "MeshBuilder.h"
+#include "EntityManager.h"
+#include "GraphicsManager.h"
+#include "RenderHelper.h"
+#include "PlayerInfo\PlayerInfo.h"
+#include "Inventory.h"
+#include "WeaponInfo\WeaponInfo.h"
+
+#include "GenericEntity.h"
+#include "Animation.h"
 
 /********************************************************************************
 Constructor
 ********************************************************************************/
 CEnemy::CEnemy() 
-	:speed(1.0), 
-	position(0,5,0), 
-	health(50.f),
-	weaponIndex(0),
-	isShooting(false),
-	m_bLookingUp(false),
-	reloadElapsedTime(0.0),
-	reloadDuration(3.0),
-	hurtElapsedTime(0.0),
-	isHurt(false)
 {
 }
 
-CEnemy::CEnemy(Vector3 pos) : position(pos)
+CEnemy::CEnemy(Vector3 pos)
 {
 }
 
@@ -43,7 +47,7 @@ CEnemy::~CEnemy(void)
 	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 }
 
-void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _enemy_type)
+void CEnemy::Init(float _hp, double _speed, int _enemyType, bool _invul)
 {
 	direction.SetZero();
 	this->SetCollider(true);
@@ -54,10 +58,10 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType, CEnemy::ENEMY_TYPE _
 	reloadDuration = 3.0;
 	hurtElapsedTime = 0.0;
 	isHurt = false;
+	invulnerable = _invul;
 
 	SetTypeOfEnemy(_enemyType);
 
-	this->enemy_type = _enemy_type;
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 }
 
@@ -106,7 +110,7 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 void CEnemy::Update(double dt)
 {
 	this->SetPosition(this->position);
-	this->SetAABB(this->GetScale() * 0.5f + this->GetPos(), this->GetScale() * -0.5f + this->GetPos());
+	this->SetAABB(this->scale * 0.5f + this->position, this->scale * -0.5f + this->position);
 	
 	if (this->theStrategy != NULL)
 	{
@@ -142,54 +146,9 @@ void CEnemy::Update(double dt)
 	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
 }
 
-void CEnemy::Render()
-{
-	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	RenderHelper::RenderMesh(enemyAnimated[GetAnimationIndex()]->GetMesh());
-	modelStack.PopMatrix();
-}
-
 void CEnemy::Shoot(double dt)
 {
-	switch (this->enemy_type) {
-	case NORMAL:
-		
-		break;
-	case OBSTACLE_INVUL:
-		//enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, direction);
-		break;
-	}
 	enemyInventory->getWeaponList()[weaponIndex]->Discharge(position, Player::GetInstance()->GetPos() - position);
-	//std::cout << enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() << "/" << enemyInventory->getWeaponList()[weaponIndex]->GetMaxMagRound() << std::endl;
-}
-
-void CEnemy::Reload(double dt)
-{
-	enemyInventory->getWeaponList()[weaponIndex]->Reload();
-}
-
-
-void CEnemy::SetSpeed(double speed)
-{
-	this->speed = speed;
-}
-
-float CEnemy::GetHP()
-{
-	return health;
-}
-
-Vector3 CEnemy::GetPos()
-{
-	return position;
-}
-
-void CEnemy::editHP(float _health)
-{
-	this->health += _health;
 }
 
 void CEnemy::CollisionCheck()
@@ -353,29 +312,11 @@ void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 	}
 }
 
-
-/********************************************************************************
-Strategy
-********************************************************************************/
-void CEnemy::ChangeStrategy(CStrategy* theNewStrategy, bool bDelete)
-{
-	if (bDelete == true)
-	{
-		if (theStrategy != NULL)
-		{
-			delete theStrategy;
-			theStrategy = NULL;
-		}
-	}
-
-	theStrategy = theNewStrategy;
-}
-
 CEnemy * Create::Enemy(Vector3 position, const string & _meshName, Vector3 scale)
 {
 	CEnemy* result = new CEnemy(position);
 	result->SetMesh(MeshList::GetInstance()->GetMesh(_meshName));
-	result->SetPosition(position);
+	result->SetPos(position);
 	result->SetScale(scale);
 	result->SetCollider(true);
 	result->type = GenericEntity::OBJECT_TYPE::ENEMY;

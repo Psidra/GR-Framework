@@ -10,6 +10,7 @@ public:
 	~CStrategy(void);
 
 	virtual void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection,double speed, double dt) = 0;
+	virtual void UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex);
 
 	virtual void SetDestination(const float x, const float y) = 0;
 	virtual int GetDestination_x(void) = 0;

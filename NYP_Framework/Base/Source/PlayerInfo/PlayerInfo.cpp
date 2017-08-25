@@ -8,13 +8,13 @@
 #include "../WeaponInfo/Shotgun.h"
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponInfo/Bow.h"
+#include "../WeaponInfo/LaserBeam.h"
 #include "../WeaponManager.h"
 #include "../CollisionManager.h"
 #include "../EntityManager.h"
 #include "MeshList.h"
 #include "../Application.h"
 #include "../Minimap/Minimap.h"
-#include "../WeaponInfo/LaserBeam.h"
 #include "../Particle/ParticleEffect.h"
 
 // Allocating and initializing Player's static data member.  

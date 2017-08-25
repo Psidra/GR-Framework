@@ -267,13 +267,13 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			break;
 
 		this->SetIsDone(true);
-		CEnemy* HitEnemy = dynamic_cast<CEnemy*>(ThatEntity);
+		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
 
-		if (HitEnemy->enemy_type != CEnemy::ENEMY_TYPE::OBSTACLE_INVUL)
+		if (!HitEnemy->getInvuln())
 		{
 			Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, HitEnemy);
-			HitEnemy->editHP(-Proj->getProjectileDamage());
+			HitEnemy->editHealth(-Proj->getProjectileDamage());
 		}
 		else
 		{

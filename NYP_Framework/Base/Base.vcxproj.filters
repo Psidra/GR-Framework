@@ -213,6 +213,12 @@
     <ClCompile Include="Source\Particle\ParticleEffect.cpp">
       <Filter>Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI FSM\Ai_firstboss.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyBase.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -340,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="Source\Particle\ParticleEffect.h">
       <Filter>Particle\Particle Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI FSM\Ai_firstboss.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyBase.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

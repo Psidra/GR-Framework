@@ -1,78 +1,31 @@
 #ifndef Enemies
 #define Enemies
 
-#include "GenericEntity.h"
-#include "Collider\Collider.h"
+#include "EnemyBase.h"
 
-#include "Strategy.h"
-#include "Animation.h"
-
-#include "MeshBuilder.h"
-#include "EntityManager.h"
-#include "GraphicsManager.h"
-#include "RenderHelper.h"
-#include "PlayerInfo\PlayerInfo.h"
-#include "Inventory.h"
-#include "WeaponInfo\WeaponInfo.h"
-class Mesh;
-
-class CEnemy : public GenericEntity, public CAnimation
-{
-private:
-	Mesh* modelMesh;
-	Vector3 position, direction;
-	Vector3 maxBoundary, minBoundary;
-	Vector3 target;
-	double speed;
-	float health;
-	
-	CStrategy* theStrategy;
-	GenericEntity** enemyAnimated;
-	Inventory* enemyInventory;
-	CWeaponInfo* primaryWeapon;
-	int weaponIndex;
-	bool isShooting;
-	bool m_bLookingUp;
-	double reloadElapsedTime;
-	double hurtElapsedTime;
-	double reloadDuration;
-	bool isHurt;
-
-	
+class CEnemy : public EnemyBase
+{	
 public:
 	CEnemy();
 	CEnemy(Vector3 pos);
 	virtual ~CEnemy();
 
-	enum ENEMY_TYPE {
-		NORMAL = 0,
-		OBSTACLE_INVUL,
-		BOSS,
-	}enemy_type;
-
-	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1, ENEMY_TYPE _enemy_type = NORMAL);
+	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1, bool _invul = false);
 	void SetTypeOfEnemy(int _enemyType);
 	void Update(double dt = 0.0333f);
-	void Render();
 	void Shoot(double dt);
-	void Reload(double dt);
-
-	void SetSpeed(double speed);
-	float GetHP();
-	Vector3 GetPos();
-	void editHP(float _health);
 
 	void CollisionCheck();
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
 
-	// Strategy
-	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete = true);
+private:
+
 };
 
 namespace Create
 {
-	CEnemy* Enemy(Vector3 position, const string& _meshName, Vector3 scale = Vector3(1, 1, 1));
+	CEnemy* Enemy(Vector3 position, const std::string& _meshName, Vector3 scale = Vector3(1, 1, 1));
 };
 
 #endif // !Enemy

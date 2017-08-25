@@ -1,0 +1,149 @@
+#include "Ai_firstboss.h"
+#include <iostream>
+#include "../EntityManager.h"
+#include "../CollisionManager.h"
+
+using namespace std;
+
+/********************************************************************************
+Constructor
+********************************************************************************/
+CStrategy_AI_FirstBoss::CStrategy_AI_FirstBoss() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(1.0)
+{
+	CurrentState = ATTACK;
+}
+
+/********************************************************************************
+Destructor
+********************************************************************************/
+CStrategy_AI_FirstBoss::~CStrategy_AI_FirstBoss()
+{
+}
+
+/********************************************************************************
+Update method
+********************************************************************************/
+void CStrategy_AI_FirstBoss::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
+{
+}
+
+void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt, int& weaponIndex)
+{
+	// Decide which state to change to
+	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
+	shootElapsedTime += dt;
+
+	if (distancePlayerToEnemy > AI_ATTACK_RANGE)
+	{
+		SetIsMoving(true);
+		CurrentState = CHASE;
+	}
+	else if (distancePlayerToEnemy <= AI_ATTACK_RANGE)
+	{
+		theEnemyDirection = 0;
+		CurrentState = ATTACK;
+	}
+
+
+
+	// Based on the current state, move the enemy
+	switch (CurrentState)
+	{
+	case CHASE:
+		SetIsShooting(false);
+
+		if (theDestination.x - maxDistFromPlayer > theEnemyPosition.x)
+			MoveRight(theEnemyDirection);
+		else if (theDestination.x + maxDistFromPlayer < theEnemyPosition.x)
+			MoveLeft(theEnemyDirection);
+		if (theDestination.y - maxDistFromPlayer > theEnemyPosition.y)
+			MoveUp(theEnemyDirection);
+		else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
+			MoveDown(theEnemyDirection);
+		break;
+	case ATTACK:
+		if (shootElapsedTime > timeBetweenShots)
+		{
+			SetIsMoving(false);		//stop animate moving
+			SetIsShooting(true);	//set animate shoot & enable shoot
+			shootElapsedTime = 0.0;
+		}
+		else
+			SetIsShooting(false);	//stop animate shoot & disable shoot
+		break;
+	default:
+		// Do nothing if idling
+		SetIsMoving(false);
+		break;
+	}
+}
+/********************************************************************************
+Set the destination for this strategy
+********************************************************************************/
+void CStrategy_AI_FirstBoss::SetDestination(const float x, const float y)
+{
+	theDestination.x = x;
+	theDestination.y = y;
+}
+
+/********************************************************************************
+Get the destination for this strategy
+********************************************************************************/
+int CStrategy_AI_FirstBoss::GetDestination_x(void)
+{
+	return theDestination.x;
+}
+
+/********************************************************************************
+Get the destination for this strategy
+********************************************************************************/
+int CStrategy_AI_FirstBoss::GetDestination_y(void)
+{
+	return theDestination.y;
+}
+
+/********************************************************************************
+Get the destination for this strategy
+********************************************************************************/
+Vector3 CStrategy_AI_FirstBoss::GetDestination(void)
+{
+	return theDestination;
+}
+
+bool CStrategy_AI_FirstBoss::GetIsMoving(void)
+{
+	return m_bIsMoving;
+}
+
+bool CStrategy_AI_FirstBoss::SetIsMoving(bool _isMoving)
+{
+	m_bIsMoving = _isMoving;
+	return _isMoving;
+}
+
+bool CStrategy_AI_FirstBoss::GetIsShooting(void)
+{
+	return m_bIsShooting;
+}
+
+bool CStrategy_AI_FirstBoss::SetIsShooting(bool _isShooting)
+{
+	m_bIsShooting = _isShooting;
+	return _isShooting;
+}
+
+/********************************************************************************
+Get the FSM state for this strategy
+********************************************************************************/
+CStrategy_AI_FirstBoss::CURRENT_STATE CStrategy_AI_FirstBoss::GetState(void)
+{
+	return CurrentState;
+}
+
+/********************************************************************************
+Set the FSM state for this strategy
+********************************************************************************/
+void CStrategy_AI_FirstBoss::SetState(CStrategy_AI_FirstBoss::CURRENT_STATE theEnemyState)
+{
+	CurrentState = theEnemyState;
+}
