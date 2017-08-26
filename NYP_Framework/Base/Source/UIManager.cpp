@@ -126,17 +126,17 @@ void UIManager::Update()
 					break;
 
 
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 1  <-----index need to change according to controller::index
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 0 
 					std::cout << "pressed move up" << std::endl;
 
 					checkingInput = true;
-					index = 1;	//key index for moveup
+					index = 0;	//key index for moveup
 					break;
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 2 <-----index need to change according to controller::index
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 1
 					std::cout << "pressed move down" << std::endl;
 
-					//checkingInput = true;
-					//index = 2;	//key index for moveup
+					checkingInput = true;
+					index = 1;	//key index for moveup
 					break;
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT://index 3 <-----index need to change according to controller::index
 					std::cout << "pressed move down" << std::endl;
@@ -156,10 +156,11 @@ void UIManager::Update()
 	{
 		keyboard->ConvertInt();
 		inputKey = keyboard->GetKey();
-		std::cout << keyboard->GetKey() << std::endl;
+		
 		if (inputKey != 0)
 		{
-			std::cout << "SAVED" << std::endl;
+			std::cout << keyboard->GetKey() << std::endl;
+			std::cout << "KEY SET" << std::endl;
 			checkingInput = false;
 		}
 	}
