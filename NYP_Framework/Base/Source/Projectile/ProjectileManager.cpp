@@ -35,7 +35,7 @@ CProjectile * ProjectileManager::FetchProjectile()
 
 	for (int i = 0; i < 10; ++i)
 	{
-		EntityManager::GetInstance()->AddEntity(new CProjectile),true;
+		EntityManager::GetInstance()->AddEntity(new CProjectile, true);
 		//CProjectile* projectile = Create::Projectile("cube",
 		//	Vector3(0, 0, 0),
 		//	Vector3(0, 0, 0),
