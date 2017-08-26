@@ -34,6 +34,7 @@ public:
 
     std::vector<std::string> GetData();
     void SetData(std::vector<std::string> _data);
+	void CleanData();
 };
 
 #endif

@@ -116,3 +116,7 @@ void Loader::SetData(std::vector<std::string> _data)
 {
     this->m_file_data = _data;
 }
+void Loader::CleanData()
+{
+	this->m_file_data.clear();
+}
