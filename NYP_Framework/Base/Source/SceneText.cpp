@@ -361,24 +361,24 @@ void SceneText::Init()
 	level->init(32.f, 32.f, 16.f, 16.f, 20);
 	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	//for (size_t i = 0; i < level->getMapWidth(); ++i)
-	//{
-	//	for (size_t j = 0; j < level->getMapHeight(); ++j)
-	//	{
-	//		TileEntity* temp = NULL;
+	for (size_t i = 0; i < level->getMapWidth(); ++i)
+	{
+		for (size_t j = 0; j < level->getMapHeight(); ++j)
+		{
+			TileEntity* temp = NULL;
 
-	//		if (level->getTile(i, j).type == Tile::WALL)
-	//		{
-	//			temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-	//			temp->type = GenericEntity::OBJECT_TYPE::WALL;
-	//		}
+			if (level->getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+			}
 
-	//		if (!temp)
-	//			continue;
+			if (!temp)
+				continue;
 
-	//		temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-	//	}
-	//}
+			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+		}
+	}
 	
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
 		it != EntityManager::GetInstance()->getCollisionList().end();++it)

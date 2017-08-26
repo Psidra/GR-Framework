@@ -115,6 +115,11 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 	
 	for (it = collisionList.begin(); it != end; ++it) 
 	{
+		if (!(*it)->IsActive())
+			continue;
+		if (index > totalFrontEntities)
+			break;
+
 		//list<EntityBase*> retunedObj;
 		getNearestObj = quadTree.queryRange(dynamic_cast<GenericEntity*>(*it)->GetMinAABB().x,
 			dynamic_cast<GenericEntity*>(*it)->GetMaxAABB().x, 
@@ -124,11 +129,6 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 		//std::copy(getNearestObj.begin(), getNearestObj.end(), std::back_inserter(retunedObj));
 		//for (it2 = std::next(it, 1); it2 != end; ++it2)
 		
-		if (!(*it)->IsActive())
-			continue;
-		if (index > totalFrontEntities)
-			break;
-
 		for (std::vector<EntityBase*>::iterator it2 = getNearestObj.begin(); it2 != getNearestObj.end(); ++it2)
 		//for (it2 = std::next(it, 1); it2 != end; ++it2)
 		{
