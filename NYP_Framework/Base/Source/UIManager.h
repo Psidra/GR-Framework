@@ -37,7 +37,8 @@ private:
 	std::list<UIElement*> UIList;
 	Keyboard* keyboard;
 	bool checkingInput;
-	int temp;
+	int inputKey;
+	int index;
 };
 
 #endif // UIMANAGER_H

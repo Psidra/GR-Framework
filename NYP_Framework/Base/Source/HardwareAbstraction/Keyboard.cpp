@@ -35,6 +35,7 @@ bool Keyboard::Create(Player* thePlayerInfo)
 
 bool Keyboard::Load(std::string _filePath)
 {	//using hexadecimal
+	Loader::GetInstance()->CleanData();
 	Loader::GetInstance()->LoadData(_filePath);
 	std::vector<std::string> temp = Loader::GetInstance()->GetData();
 
@@ -92,11 +93,11 @@ int Keyboard::Read(const float deltaTime)
 	}
 }
 
-void Keyboard::Write(std::string _filePath, unsigned int input_index)
+void Keyboard::Write(std::string _filePath, unsigned int input_index, int input_key)
 {
 	std::vector<std::string> temp = Loader::GetInstance()->GetData();
 	std::vector<std::string> newlist;
-	
+
 	string storedIndex;
 	string newHex;
 	string storedMethodIndex;
@@ -107,21 +108,23 @@ void Keyboard::Write(std::string _filePath, unsigned int input_index)
 		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
 		std::stringstream ss;
 
-		if (index != 1)
+		//push back the unedited value
+		if (index != input_index)
 			newlist.push_back(temp[i]);
 		else
 		{//converting int to hex
-			ss << std::hex << key; //<<------------ int to hex//83 is S/ 90 is z
+			ss << std::hex << input_key; //get input_key int
 			std::string result(ss.str());
 
-			storedIndex = temp[i].substr(0, temp[i].find('='));
-			newHex = "0x" + result;			//<<----------successfully change with hex
-			storedMethodIndex = temp[i].substr(temp[i].find(',') + 1, temp[i].size() - 6);
+			storedIndex = temp[i].substr(0, temp[i].find('='));								//get button index
+			newHex = "0x" + result;															//get input key's hex
+			storedMethodIndex = temp[i].substr(temp[i].find(',') + 1, temp[i].size() - 6);	//get method index 
 
-			newlist.push_back(storedIndex + "=" + newHex + "," + storedMethodIndex);
+			newlist.push_back(storedIndex + "=" + newHex + "," + storedMethodIndex);		//merge & pushback string of edited values into new list
 		}
 		
 	}
+	//write newlist to file
 	ofstream myfile(_filePath, ofstream::out);
 	for (int i = 0; i < newlist.size(); ++i)
 	{
@@ -158,13 +161,13 @@ void Keyboard::ConvertInt()
 {
 	for (std::vector<unsigned char>::iterator it = Keys.begin(); it != Keys.end(); ++it)
 	{
-		key = 0;
+		this->key = 0;
 		if (KeyboardController::GetInstance()->IsKeyPressed(*it))
 		{
-			key = *it;
+			this->key = *it;
 			cout << key << " = " << (char)key << endl;
 			//string temp = (int)key
-			//return *it;
+			return;
 		}
 	}
 }
