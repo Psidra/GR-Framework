@@ -303,8 +303,8 @@ void SceneText::Init()
 	this->keyboard = new Keyboard();
 	keyboard->Create();
 	//load from file (uses hex)
-	keyboard->Load("Keybind//keyconfig.txt");
-	//keyboard->Load("Keybind//keyconfigtest.txt");
+	//keyboard->Load("Keybind//keyconfig.txt");
+	keyboard->Load("Keybind//keyconfigtest.txt");
 	//keyboard->Write("Keybind//keyconfigtest.txt");	//WIP- got it to write, but need to take in user input left
 	//keyboard->Load("Keybind//keyconfigtest.txt");
 	keyboard->MapKeys("Keybind//keys.txt");
@@ -433,8 +433,8 @@ void SceneText::Update(double dt)
 		posY = 1;
 	}
 
-	UIManager::GetInstance()->Update();
 	keyboard->Read(dt);
+	UIManager::GetInstance()->Update();
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:

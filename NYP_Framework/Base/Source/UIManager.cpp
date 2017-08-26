@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "GLFW\glfw3.h"
 
-UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false)
+UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false), inputKey(0), index(0)
 {
 }
 
@@ -110,11 +110,12 @@ void UIManager::Update()
 					break;
 
 				case UIElement::ELEMENT_TYPE::CONFIRM:
-					//set to not save changed keys
-
-					
-					keyboard->Load("Keybind//keyconfigtest.txt");
-
+					//set to save changed keys
+					if (!checkingInput)
+					{
+						keyboard->Write("Keybind//keyconfigtest.txt", index, inputKey);
+						keyboard->Load("Keybind//keyconfigtest.txt");
+					}
 
 
 					if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
@@ -126,11 +127,10 @@ void UIManager::Update()
 
 
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 1
-					//write into reload //TODO
-					std::cout << "touched the move up" << std::endl;
+					std::cout << "pressed move up" << std::endl;
 
 					checkingInput = true;
-					//int index = 1;//set index value here
+					index = 1;	//key index for moveup
 					
 					break;
 				case UIElement::ELEMENT_TYPE::EXIT:
@@ -144,16 +144,15 @@ void UIManager::Update()
 	if (checkingInput)
 	{
 		keyboard->ConvertInt();
-		if (keyboard->GetKey() != 0)
+		inputKey = keyboard->GetKey();
+		std::cout << keyboard->GetKey() << std::endl;
+		if (inputKey != 0)
 		{
-			temp = keyboard->GetKey();
+			std::cout << "SAVED" << std::endl;
 			checkingInput = false;
 		}
 	}
-	if (!checkingInput)
-	{
-		//keyboard->Write("Keybind//keyconfigtest.txt", index, temp);
-	}
+	
 
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
 	{
