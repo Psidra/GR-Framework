@@ -372,6 +372,7 @@ void SceneText::Init()
 			{
 				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->setNormal(Vector3(1, 0, 0));
 			}
 
 			if (!temp)
