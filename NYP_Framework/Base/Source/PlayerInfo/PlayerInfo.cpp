@@ -541,9 +541,6 @@ void Player::Update(double dt)
 		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
 			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
 		{
-			//if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
-			//	&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
-			//	continue;
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
@@ -552,10 +549,6 @@ void Player::Update(double dt)
 				//std::cout << "in range\n";
 				switch (dynamic_cast<GenericEntity*>((*it))->type)
 				{
-				case GenericEntity::WALL:
-					CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
-					CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
-					break;
 				case GenericEntity::TELEPORTER:
 					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
 					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
@@ -567,6 +560,14 @@ void Player::Update(double dt)
 			}
 		}
 	//}
+
+	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	{
+		Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
+		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+		CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
+		CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
+	}
 
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{

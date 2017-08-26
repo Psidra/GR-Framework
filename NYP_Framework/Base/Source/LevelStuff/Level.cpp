@@ -311,4 +311,9 @@ Tile Level::getTile(int x, int y)
 	return levelMap[{x, y}];
 }
 
+vector<Level::Rectangle> Level::getRooms(void)
+{
+	return rooms;
+}
+
 
