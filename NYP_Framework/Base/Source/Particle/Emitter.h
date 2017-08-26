@@ -31,7 +31,7 @@ enum EFFECT_TYPE
 
 class Emitter
 {
-	const int MAX_PARTICLE = 5;
+	const int MAX_PARTICLE = 2;
 public:
 	Emitter() : 
 		m_particle_mesh(nullptr),

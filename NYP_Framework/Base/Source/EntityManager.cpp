@@ -11,13 +11,18 @@ void EntityManager::Update(double _dt)
 {
 	// Update all entities
 	std::list<EntityBase*>::iterator it, end;
+	int index = 0;
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
 		if (!(*it)->IsActive())
 			continue;
+		if (index > totalFrontEntities)
+			break;
 
 		(*it)->Update(_dt);
+
+		++index;
 	}
 
 	CollisionManager::GetInstance()->Update(collisionList, totalFrontEntities);
@@ -34,7 +39,7 @@ void EntityManager::Update(double _dt)
 
 	// Clean up entities that are done
 	it = entityList.begin();
-	int index = 0;
+	index = 0;
 	while (it != end)
 	{
 		if ((*it)->IsDone())
