@@ -33,6 +33,7 @@
 #include "Minimap\Minimap.h"
 #include "Projectile\ProjectileManager.h"
 #include "Projectile\Projectile.h"
+#include "WeaponInfo\WeaponInfo.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -188,7 +189,7 @@ void SceneText::Init()
 	UIManager::GetInstance()->state = UIManager::GAME_STATE::MAIN_MENU;
 
 	// test walls
-	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 10, 2), true);
+	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
 	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
 	wall->setNormal(Vector3(1, 0, 0));
@@ -338,17 +339,17 @@ void SceneText::Init()
 	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
 
 	//create them projectiles
-	//for (int i = 0;i < 10; ++i)
+	//for (int i = 0; i < 100; ++i)
 	//{
-	//	CProjectile* projectile = Create::Projectile("cube",
-	//		Vector3(0, 0, 0),
-	//		Vector3(0, 0, 0),
-	//		Vector3(1, 1, 1),
-	//		10.f,
-	//		10.f);
+	//	//CProjectile* projectile = Create::Projectile("cube",
+	//	//	Vector3(0, 0, 0),
+	//	//	Vector3(0, 0, 0),
+	//	//	Vector3(1, 1, 1),
+	//	//	10.f,
+	//	//	10.f);
 	//	//CProjectile* temp = new CProjectile;
 	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
-	//	//EntityManager::GetInstance()->AddEntity(temp);
+	//	EntityManager::GetInstance()->AddEntity(new CProjectile,true);
 	//}
 
 	//light testing
@@ -512,11 +513,13 @@ void SceneText::Update(double dt)
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
 		std::ostringstream ss;
-	/*	ss << Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetMagRound() << "/" 
-			<< Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetTotalRound();
+		/*ss << Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetMagRound() << "/" 
+			<< Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetTotalRound();*/
+		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
+		ss << weapon->GetMagRound() << "/" << weapon->GetTotalRound();
 		textObj[0]->SetText(ss.str());
 		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
-		textObj[0]->SetScale(Vector3(25, 25, 25));*/
+		textObj[0]->SetScale(Vector3(25, 25, 25));
 
 		ss.str("");
 		ss.precision(5);

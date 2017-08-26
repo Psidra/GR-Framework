@@ -4,6 +4,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include "../Projectile/ProjectileManager.h"
 
 LaserBeam::LaserBeam(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -116,18 +117,36 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		//negative angle counter clockwise positive angle clockwise
 		//target = rotateDirection(temp, totalAngle);
 		//totalAngle -= angle;
-		CProjectile* aProjectile = Create::Projectile("cube",
-			position + target * 3.5,
-			target.Normalized(),
-			scale,
-			0.05f,
-			0.f);
-		
-		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
-		aProjectile->setIsDots(m_bDots);
-		aProjectile->setIsRicochet(m_bRicochet);
-		aProjectile->setIsLaserbeam(m_bLaserBeam);
+
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
+
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		projectile->SetProjectileMesh(mesh);
+		projectile->SetIsActive(true);
+		projectile->SetPosition(position + target * 3.5);
+		projectile->SetDirection(target.Normalized());
+		projectile->SetScale(scale);
+		projectile->SetLifetime(0.05f);
+		projectile->SetSpeed(0.0f);
+		projectile->type = bulletType;
+		projectile->setIsDots(m_bDots);
+		projectile->setIsRicochet(m_bRicochet);
+		projectile->setIsLaserbeam(m_bLaserBeam);
+		projectile->type = bulletType;
+
+		//CProjectile* aProjectile = Create::Projectile("cube",
+		//	position + target * 3.5,
+		//	target.Normalized(),
+		//	scale,
+		//	0.05f,
+		//	0.f);
+		//
+		//aProjectile->type = bulletType;
+		//aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		//aProjectile->setIsDots(m_bDots);
+		//aProjectile->setIsRicochet(m_bRicochet);
+		//aProjectile->setIsLaserbeam(m_bLaserBeam);
+		//aProjectile->SetIsActive(true);
 	}
 
 	//magic number (base of scale)
@@ -135,19 +154,38 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 	{
 
 		m_fIncrement += 1;
-		CProjectile* aProjectile = Create::Projectile("cube",
-			position + target * m_fIncrement,
-			target.Normalized(),
-			Vector3(0.3,0.3,0.3),
-			0.05f,
-			0.f);
 
-		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
-		aProjectile->setIsDots(m_bDots);
-		aProjectile->setIsRicochet(m_bRicochet);
-		aProjectile->setIsLaserbeam(false);
-		aProjectile->SetIsActive(true);
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
+
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		projectile->SetProjectileMesh(mesh);
+		projectile->SetIsActive(true);
+		projectile->SetPosition(position + target * m_fIncrement);
+		projectile->SetDirection(target.Normalized());
+		projectile->SetScale(Vector3(0.3, 0.3, 0.3));
+		projectile->SetLifetime(0.05f);
+		projectile->SetSpeed(0.0f);
+		projectile->type = bulletType;
+		projectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		projectile->setIsDots(m_bDots);
+		projectile->setIsRicochet(m_bRicochet);
+		projectile->setIsLaserbeam(false);
+		projectile->type = bulletType;
+
+
+		//CProjectile* aProjectile = Create::Projectile("cube",
+		//	position + target * m_fIncrement,
+		//	target.Normalized(),
+		//	Vector3(0.3,0.3,0.3),
+		//	0.05f,
+		//	0.f);
+
+		//aProjectile->type = bulletType;
+		//aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		//aProjectile->setIsDots(m_bDots);
+		//aProjectile->setIsRicochet(m_bRicochet);
+		//aProjectile->setIsLaserbeam(false);
+		//aProjectile->SetIsActive(true);
 	}
 	m_fIncrement = 0;
 }

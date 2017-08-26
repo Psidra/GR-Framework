@@ -55,6 +55,8 @@ public:
 	virtual void Render(void);
 	// Collision Response
 	void CollisionResponse(GenericEntity* ThatEntity);
+	//set projectile's mesh
+	void SetProjectileMesh(Mesh* _mesh);
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;
