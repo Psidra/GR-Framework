@@ -325,12 +325,12 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("moveup_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("moveup_button")->textureID[0] = LoadTGA("Image/UI/MoveUp_Button.tga");
-		/*MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
-		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");
-		MeshBuilder::GetInstance()->GenerateQuad("cancel_button", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("cancel_button")->textureID[0] = LoadTGA("Image/UI/CancelButton.tga");*/
+		MeshBuilder::GetInstance()->GenerateQuad("movedown_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("movedown_button")->textureID[0] = LoadTGA("Image/UI/MoveDown_Button.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("moveleft_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("moveleft_button")->textureID[0] = LoadTGA("Image/UI/MoveLeft_Button.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("moveright_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("moveright_button")->textureID[0] = LoadTGA("Image/UI/MoveRight_Button.tga");
 
 
 		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);

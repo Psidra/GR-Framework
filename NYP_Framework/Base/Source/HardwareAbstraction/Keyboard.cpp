@@ -105,6 +105,7 @@ void Keyboard::Write(std::string _filePath, unsigned int input_index, int input_
 	//read file
 	for (size_t i = 0; i < Loader::GetInstance()->GetData().size();++i)
 	{
+		//get the key index
 		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
 		std::stringstream ss;
 

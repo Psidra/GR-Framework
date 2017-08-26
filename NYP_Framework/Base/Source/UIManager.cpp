@@ -126,12 +126,23 @@ void UIManager::Update()
 					break;
 
 
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 1
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 1  <-----index need to change according to controller::index
 					std::cout << "pressed move up" << std::endl;
 
 					checkingInput = true;
 					index = 1;	//key index for moveup
-					
+					break;
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 2 <-----index need to change according to controller::index
+					std::cout << "pressed move down" << std::endl;
+
+					//checkingInput = true;
+					//index = 2;	//key index for moveup
+					break;
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT://index 3 <-----index need to change according to controller::index
+					std::cout << "pressed move down" << std::endl;
+
+					//checkingInput = true;
+					//index = 2;	//key index for moveup
 					break;
 				case UIElement::ELEMENT_TYPE::EXIT:
 					exit(0);

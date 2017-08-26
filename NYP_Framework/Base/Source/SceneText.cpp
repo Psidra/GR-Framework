@@ -273,6 +273,18 @@ void SceneText::Init()
 	moveupOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	moveupOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_UP;
 
+	UIElement* movedownOp = Create::UIEntity("movedown_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	movedownOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	movedownOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN;
+	
+	UIElement* moveleftOp = Create::UIEntity("moveleft_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	moveleftOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	moveleftOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT;
+
+	UIElement* moverightOp = Create::UIEntity("moveright_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	moverightOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	moverightOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT;
+
 
 	//TELEPORTER
 	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
