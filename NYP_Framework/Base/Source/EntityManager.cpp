@@ -60,19 +60,25 @@ void EntityManager::Update(double _dt)
 	}
 }
 
-// Render all entities
 void EntityManager::Render()
 {
 	// Render all entities
 	std::list<EntityBase*>::iterator it, end;
 	end = entityList.end();
+
+	float it_posX, it_posY;
+	float player_posX = Player::GetInstance()->GetPos().x;
+	float player_posY = Player::GetInstance()->GetPos().y;
+
 	for (it = entityList.begin(); it != end; ++it)
 	{
 		if (!(*it)->IsActive())
 			continue;
 
-		if ((*it)->GetPosition().x < Player::GetInstance()->GetPos().x + 10.5f && (*it)->GetPosition().y < Player::GetInstance()->GetPos().y + 7.5f &&
-			(*it)->GetPosition().x > Player::GetInstance()->GetPos().x - 10.5f && (*it)->GetPosition().y > Player::GetInstance()->GetPos().y - 7.5f)
+		it_posX = (*it)->GetPosition().x;
+		it_posY = (*it)->GetPosition().y;
+		if (it_posX < player_posX + 10.5f && it_posY < player_posY + 7.5f &&
+			it_posX > player_posX - 10.5f && it_posY > player_posY - 7.5f)
 		{
 			(*it)->Render();
 		}
