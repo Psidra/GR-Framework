@@ -130,12 +130,6 @@ void Player::Init(void)
 	weaponMesh = playerInventory->getPrimaryWeapon()->GetMesh();
 }
 
-// Set position
-void Player::SetPos(const Vector3& pos)
-{
-	position = pos;
-}
-
 // Set the boundary for the player info
 void Player::SetBoundary(Vector3 max, Vector3 min)
 {
@@ -146,12 +140,6 @@ void Player::SetBoundary(Vector3 max, Vector3 min)
 // Set the terrain for the player info
 void Player::SetTerrain(GroundEntity* m_pTerrain)
 {
-
-
-
-
-
-
 }
 
 // Reset this player instance to default
@@ -159,58 +147,6 @@ void Player::Reset(void)
 {
 	// Set the current values to default values
 	position = defaultPosition;
-}
-
-// Get position x of the player
-Vector3 Player::GetPos(void) const
-{
-	return position;
-}
-
-void Player::MoveUp()
-{
-	if (direction.y != -1)
-		direction.y = 1;
-	else
-		direction.y = 0;
-	m_bMoving = true;
-}
-
-void Player::MoveDown()
-{
-	if (direction.y != 1)
-		direction.y = -1;
-	else
-		direction.y = 0;
-	m_bMoving = true;
-}
-
-void Player::MoveLeft()
-{
-	if (direction.x != 1)
-		direction.x = -1;
-	else
-		direction.x = 0;
-	m_bMoving = true;
-}
-
-void Player::MoveRight()
-{
-	if (direction.x != -1)
-		direction.x = 1;
-	else
-		direction.x = 0;
-	m_bMoving = true;
-}
-
-void Player::SetMovement(bool _movement)
-{
-	m_bMoving = _movement;
-}
-
-bool Player::GetMovement()
-{
-	return m_bMoving;
 }
 
 /********************************************************************************
@@ -293,9 +229,9 @@ void Player::CollisionCheck_Movement()
 	else
 		checkby = 0.5f;
 
-	if (direction.y == 1)
+	if (direction.y != 0)
 	{
-		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f), tempMin + Vector3(0.f, checkby, 0.f));
+		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f) * direction.y, tempMin + Vector3(0.f, checkby, 0.f) * direction.y);
 		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
@@ -322,38 +258,9 @@ void Player::CollisionCheck_Movement()
 		
 		this->SetAABB(tempMax, tempMin);
 	}
-	else if (direction.y == -1)
+	if (direction.x != 0)
 	{
-		this->SetAABB(tempMax - Vector3(0.f, checkby, 0.f), tempMin - Vector3(0.f, checkby, 0.f));
-
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
-		std::vector<EntityBase*>::iterator it, end;
-		end = getNearestObj.end();
-		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
-
-		for (it = getNearestObj.begin(); it != end; ++it)
-		{
-			if (!(*it)->IsActive())
-				continue;
-
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-				{
-					//std::cout << "Something is blocking down" << std::endl;
-					direction.y = 0;
-					break;
-				}
-			}
-		}
-
-		this->SetAABB(tempMax, tempMin);
-	}
-	if (direction.x == 1)
-	{
-		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
+		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f) * direction.x, tempMin + Vector3(checkby, 0.f, 0.f) * direction.x);
 	
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
@@ -380,61 +287,8 @@ void Player::CollisionCheck_Movement()
 
 		this->SetAABB(tempMax, tempMin);
 	}
-	else if (direction.x == -1)
-	{
-		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
 
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
-
-		std::vector<EntityBase*>::iterator it, end;
-		end = getNearestObj.end();
-		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
-
-		/*std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();
-		std::cout << "Checking :: " << cpy.size() << std::endl;
-		for (it = cpy.begin(); it != end; ++it)*/
-		for (it = getNearestObj.begin(); it != end; ++it)
-		{
-
-			if (!(*it)->IsActive())
-				continue;
-
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-				{
-					//std::cout << "Something is blocking left" << std::endl;
-					direction.x = 0;
-					break;
-				}
-			}
-		}
-
-		this->SetAABB(tempMax, tempMin);
-	}
-
-	if (direction.x == 0 && direction.y == 0)
-		SetMovement(false);
-	else
-		SetMovement(true);
-}
-
-void Player::SetMaxHealth(float _maxHealth)
-{
-	this->m_fMaxHealth = _maxHealth;
-}
-
-float Player::GetMaxHealth()
-{
-	return this->m_fMaxHealth;
-}
-
-void Player::EditMaxHealth(float _value)
-{
-	this->m_fMaxHealth += _value;
+	SetMovement(!(direction.x == 0 && direction.y == 0));
 }
 
 void Player::Update(double dt)
@@ -491,13 +345,11 @@ void Player::Update(double dt)
 	//(y <= h) //W.I.P - to compare cursor pos.y with mid of screen size
 	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt);
 
-	if (direction.x == 0 && direction.y == 0)
-		SetMovement(false);
-	else
-		SetMovement(true);
+	SetMovement(!(direction.x == 0 && direction.y == 0));
 
-	if (isHurt == true)
+	if (isHurt)
 		hurtElapsedTime += dt;
+
 	if (hurtElapsedTime > 1.5)
 	{
 		hurtElapsedTime = 0.0;
@@ -646,16 +498,6 @@ void Player::DetachCamera()
 	attachedCamera = nullptr;
 }
 
-bool Player::isDodging(void)
-{
-	return m_bDodge;
-}
-
-void Player::setDodge(bool _dodge)
-{
-	this->m_bDodge = _dodge;
-}
-
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
@@ -718,97 +560,4 @@ void Player::UseBlank()
 	}
 
 	--this->m_iBlank;
-}
-
-// Set view direction
-void Player::SetView(Vector3 _view)
-{
-	this->view = _view;
-}
-
-// Get view direction
-Vector3 Player::GetView()
-{
-	return this->view;
-}
-
-void Player::SetHealth(float _health)
-{
-	this->m_fHealth = _health;
-}
-
-float Player::GetHealth()
-{
-	return m_fHealth;
-}
-
-void Player::EditHealth(float _health)
-{
-	if (m_fHealth > 0)
-		this->m_fHealth += _health;
-}
-
-void Player::SetBlanks(int _blanks)
-{
-	this->m_iBlank = _blanks;
-}
-
-int Player::GetBlanks()
-{
-	return this->m_iBlank;
-}
-
-void Player::EditBlanks(int _blanks)
-{
-	this->m_iBlank += _blanks;
-}
-
-void Player::SetMoney(int _money)
-{
-	this->m_iMoney = _money;
-}
-
-int Player::GetMoney()
-{
-	return this->m_iMoney;
-}
-
-void Player::EditMoney(int _money)
-{
-	this->m_iMoney += _money;
-}
-
-GenericEntity ** Player::GetPlayerAnimated()
-{
-	return playerAnimated;
-}
-
-void Player::setFire(bool _lit)
-{
-	this->m_bFire = _lit;
-}
-
-void Player::setSlow(bool _slow)
-{
-	this->m_bSlow = _slow;
-}
-
-void Player::setPoison(bool _poison)
-{
-	this->m_bPoison = _poison;
-}
-
-Inventory * Player::getInvetory()
-{
-	return this->playerInventory;
-}
-
-int Player::getWeaponIndex()
-{
-	return weaponIndex;
-}
-
-Mesh * Player::getWeaponMesh()
-{
-	return weaponMesh;
 }

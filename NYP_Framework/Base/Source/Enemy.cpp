@@ -24,10 +24,6 @@
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CEnemy::CEnemy() 
-{
-}
-
 CEnemy::CEnemy(Vector3 pos)
 {
 }
@@ -164,18 +160,18 @@ void CEnemy::CollisionCheck()
 	for (std::list<EntityBase*>::iterator it = cpy.begin(); it != cpy.end(); ++it)
 		quadTree.addObject(*it);
 
-	float checkoffset = 0.5f;
+	float checkby = 0.5f;
 
-	if (direction.y == 1) //up
+	if (direction.y != 0)
 	{
-		this->SetAABB(tempMax + Vector3(0.f, checkoffset, 0.f), tempMin + Vector3(0.f, checkoffset, 0.f));
+		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f) * direction.y, tempMin + Vector3(0.f, checkby, 0.f) * direction.y);
 
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
 
-		/*std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();*/
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (!(*it)->IsActive())
@@ -187,10 +183,9 @@ void CEnemy::CollisionCheck()
 					continue;
 
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY )
+				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking up" << std::endl;
+					//std::cout << "Something is blocking up" << std::endl;
 					direction.y = 0;
 					break;
 				}
@@ -202,58 +197,19 @@ void CEnemy::CollisionCheck()
 				break;
 			}
 		}
+
 		this->SetAABB(tempMax, tempMin);
 	}
-	else if (direction.y == -1)
+	if (direction.x != 0)
 	{
-		this->SetAABB(tempMax - Vector3(0.f, checkoffset, 0.f), tempMin - Vector3(0.f, checkoffset, 0.f));
+		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f) * direction.x, tempMin + Vector3(checkby, 0.f, 0.f) * direction.x);
 
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
+		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
 
-		/*std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();*/
-
-		for (it = getNearestObj.begin(); it != end; ++it)
-		{
-			if (!(*it)->IsActive())
-				continue;
-
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				if (this == (*it))
-					continue;
-
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY )
-				{
-					std::cout << "Something is blocking down" << std::endl;
-					direction.y = 0;
-					break;
-				}
-			}
-			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
-			{
-				std::cout << "Something is blocking enemy down" << std::endl;
-				direction.y = 0;
-				break;
-			}
-		}
-		this->SetAABB(tempMax, tempMin);
-	}
-	if (direction.x == 1)
-	{
-		this->SetAABB(tempMax + Vector3(checkoffset, 0.f, 0.f), tempMin + Vector3(checkoffset, 0.f, 0.f));
-
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-
-		std::vector<EntityBase*>::iterator it, end;
-		end = getNearestObj.end();
-
-		/*std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();*/
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
 			if (!(*it)->IsActive())
@@ -267,56 +223,19 @@ void CEnemy::CollisionCheck()
 				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
 				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
 				{
-					std::cout << "Something is blocking right" << std::endl;
+					//std::cout << "Something is blocking right" << std::endl;
 					direction.x = 0;
 					break;
 				}
 			}
 			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
 			{
-				std::cout << "Something is blocking enemy right" << std::endl;
+				std::cout << "Something is blocking enemy up" << std::endl;
 				direction.x = 0;
 				break;
 			}
 		}
-		this->SetAABB(tempMax, tempMin);
-	}
-	else if (direction.x == -1)
-	{
-		this->SetAABB(tempMax - Vector3(checkoffset, 0.f, 0.f), tempMin - Vector3(checkoffset, 0.f, 0.f));
 
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-
-		std::vector<EntityBase*>::iterator it, end;
-		end = getNearestObj.end();
-
-		/*std::list<EntityBase*>::iterator it, end;
-		end = cpy.end();*/
-		for (it = getNearestObj.begin(); it != end; ++it)
-		{
-			if (!(*it)->IsActive())
-				continue;
-
-			if (CollisionManager::GetInstance()->CheckAABBCollision(this, *it))
-			{
-				if (this == (*it))
-					continue;
-
-				GenericEntity* thatEntity = dynamic_cast<GenericEntity*>(*it);
-				if (thatEntity->type == WALL || thatEntity->type == ENEMY)
-				{
-					std::cout << "Something is blocking left" << std::endl;
-					direction.x = 0;
-					break;
-				}
-			}
-			else if (CollisionManager::GetInstance()->CheckAABBCollision(this, Player::GetInstance()))
-			{
-				std::cout << "Something is blocking enemy left" << std::endl;
-				direction.x = 0;
-				break;
-			}
-		}
 		this->SetAABB(tempMax, tempMin);
 	}
 }

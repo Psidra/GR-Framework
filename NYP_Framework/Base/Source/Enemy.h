@@ -6,8 +6,7 @@
 class CEnemy : public EnemyBase
 {	
 public:
-	CEnemy();
-	CEnemy(Vector3 pos);
+	CEnemy(Vector3 pos = NULL);
 	virtual ~CEnemy();
 
 	void Init(float _hp = 100.0f, double _speed = 2.0, int _enemyType = 1, bool _invul = false);

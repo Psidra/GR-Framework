@@ -22,28 +22,10 @@ public:
 	// Reset this player instance to default
 	void Reset(void);
 
-	// Set position
-	void SetPos(const Vector3& pos);
 	// Set the boundary for the player info
 	void SetBoundary(Vector3 max, Vector3 min);
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
-
-	// Get position
-	Vector3 GetPos(void) const;
-
-	// Move Up
-	void MoveUp();
-	// Move Down
-	void MoveDown();
-	// Move Left
-	void MoveLeft();
-	// Move Right
-	void MoveRight();
-	// Set Movement
-	void SetMovement(bool _movement);
-	// Get Movement
-	bool GetMovement();
 
 	// Update
 	void Update(double dt = 0.0333f);
@@ -56,11 +38,6 @@ public:
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera();
 
-	// return true if dodge rolling
-	bool isDodging(void);
-	// toggle dodge
-	void setDodge(bool _dodge);
-
 	// Shoot Weapon
 	bool Shoot(const float dt);
 	// Reload Weapon
@@ -70,59 +47,85 @@ public:
 	// Use Blank
 	void UseBlank();
 
-	// Set view direction
-	void SetView(Vector3 _view);
-	// Get view direction
-	Vector3 GetView();
-
 	// Collision Response
 	void CollisionResponse(GenericEntity* thatEntity);
 	// Movement Collision Check
 	void CollisionCheck_Movement();
 
+	// Move Up
+	inline void MoveUp() { direction.y = ((direction.y != -1) ? 1 : 0); m_bMoving = true; };
+	// Move Down
+	inline void MoveDown() { direction.y = ((direction.y != 1) ? -1 : 0); m_bMoving = true; };
+	// Move Left
+	inline void MoveLeft() { direction.x = ((direction.x != 1) ? -1 : 0); m_bMoving = true; };
+	// Move Right
+	inline void MoveRight() { direction.x = ((direction.x != -1) ? 1 : 0); m_bMoving = true; };
+
+	// Set Movement
+	inline void SetMovement(bool _movement) { this->m_bMoving = _movement; };
+	// Get Movement
+	inline bool GetMovement() const { return this->m_bMoving; };
+
+	// Set position
+	inline void SetPos(const Vector3& pos) { this->position = pos; };
+	// Get position
+	inline Vector3 GetPos(void) const { return this->position; };
+
+	// return true if dodge rolling
+	inline bool isDodging(void) const { return this->m_bDodge; };
+	// toggle dodge
+	inline void setDodge(bool _dodge) { this->m_bDodge = _dodge; };
+
+	// Set view direction
+	inline void SetView(Vector3 _view) { this->view = _view; };
+	// Get view direction
+	inline Vector3 GetView() const { return this->view; };
+
 	// Set Max Health
-	void SetMaxHealth(float _maxHealth);
+	inline void SetMaxHealth(float _maxHealth) { this->m_fMaxHealth = _maxHealth; };
 	// Get Max Health
-	float GetMaxHealth();
+	inline float GetMaxHealth() const { return this->m_fMaxHealth; };
 	// Edit Max Health
-	void EditMaxHealth(float _value);
+	inline void EditMaxHealth(float _value) { this->m_fMaxHealth += _value; };
 
 	// Set Health
-	void SetHealth(float _health);
+	inline void SetHealth(float _health) { this->m_fHealth = _health; };
 	// Get Health
-	float GetHealth();
+	inline float GetHealth() const { return this->m_fHealth; };
 	// Edit Health
-	void EditHealth(float _health);
+	inline void EditHealth(float _health) { this->m_fHealth += _health; };
 
 	// Set Blanks
-	void SetBlanks(int _blanks); // blank doesnt even look like a word anymore
-	// Get Blanks				 // thanks semanic satiation
-	int GetBlanks();
+	inline void SetBlanks(int _blanks) { this->m_iBlank = _blanks; };	// blank doesnt even look like a word anymore
+	// Get Blanks														// thanks semanic satiation
+	inline int GetBlanks() const { return this->m_iBlank; };
 	// Edit Blanks
-	void EditBlanks(int _blanks);
+	inline void EditBlanks(int _blanks) { this->m_iBlank += _blanks; };
 
 	// Set Money
-	void SetMoney(int _money);
+	inline void SetMoney(int _money) { this->m_iMoney = _money; };
 	// Get Money
-	int GetMoney();
+	inline int GetMoney() const { return this->m_iMoney; };
 	// Edit Money
-	void EditMoney(int _money);
+	inline void EditMoney(int _money) { this->m_iMoney += _money; };
 
 	//Get player animation
-	GenericEntity** GetPlayerAnimated();
+	inline GenericEntity** GetPlayerAnimated() const { return this->playerAnimated; };
 
 	// Set Fire (to the rain)
-	void setFire(bool _lit); // fam
+	inline void setFire(bool _lit) { this->m_bFire = _lit; }; // fam
 	// Set Slow
-	void setSlow(bool _slow);
+	inline void setSlow(bool _slow) { this->m_bSlow = _slow; };
 	// Set Poison
-	void setPoison(bool _poison);
+	inline void setPoison(bool _poison) { this->m_bPoison = _poison; };
+
 	//Get player inventory
-	Inventory* getInvetory();
+	inline Inventory* getInvetory() const { return this->playerInventory; };
 	//get weapon index
-	int getWeaponIndex();
+	inline int getWeaponIndex() const { return this->weaponIndex; };
 	//get weaponMesh
-	Mesh* getWeaponMesh();
+	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
+
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)
