@@ -3,6 +3,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include "../Projectile/ProjectileManager.h"
 
 Rifle::Rifle(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -121,7 +122,24 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		//target = rotateDirection(temp, totalAngle);
 		//totalAngle -= angle;
 
-		CProjectile* aProjectile = Create::Projectile("cube",
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
+
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		projectile->SetProjectileMesh(mesh);
+		projectile->SetIsActive(true);
+		projectile->SetPosition(position);
+		projectile->SetDirection(target.Normalized());
+		projectile->SetScale(scale);
+		projectile->SetLifetime(2.f);
+		projectile->SetSpeed(m_fSpeed);
+		projectile->type = bulletType;
+		projectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		projectile->setIsDots(m_bDots);
+		projectile->setIsRicochet(m_bRicochet);
+		projectile->setIsLaserbeam(m_bLaserBeam);
+		projectile->type = bulletType;
+
+		/*CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),
 			scale,
@@ -133,7 +151,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		aProjectile->setIsDots(m_bDots);
 		aProjectile->setIsRicochet(m_bRicochet);
 		aProjectile->setIsLaserbeam(m_bLaserBeam);
-		aProjectile->SetIsActive(true);
+		aProjectile->SetIsActive(true);*/
 	}
 
 	m_fSpeed = 15.f;

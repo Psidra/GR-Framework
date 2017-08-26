@@ -18,6 +18,8 @@ CProjectile::CProjectile(void)
 	, m_fSpeed(10.0f)
 {
 	isActive = false;
+	type = GenericEntity::PLAYER_BULLET;
+	m_bCollider = true;
 }
 
 CProjectile::CProjectile(Mesh* _modelMesh)
@@ -28,6 +30,8 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	, m_fSpeed(10.0f)
 {
 	isActive = false;
+	type = GenericEntity::PLAYER_BULLET;
+	m_bCollider = true;
 }
 
 CProjectile::~CProjectile(void)
@@ -139,7 +143,9 @@ void CProjectile::setIsLaserbeam(bool _isLaserBeam)
 // Update the status of this projectile
 void CProjectile::Update(double dt)
 {
-	if (m_bStatus == false)
+	//if (m_bStatus == false)
+	//	return;
+	if (!isActive)
 		return;
 
 	// Update TimeLife of projectile. Set to inactive if too long
@@ -147,8 +153,8 @@ void CProjectile::Update(double dt)
 	if (m_fLifetime < 0.0f)
 	{
 		SetStatus(false);
-		SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
-		//SetIsActive(false);
+		//SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
+		SetIsActive(false);
 		return;
 	}
 
@@ -188,6 +194,7 @@ void CProjectile::Update(double dt)
 	//==========================
 
 	// Update Position
+	if (!m_bProjectileLaserBeam)
 	position += theDirection * (float)(dt * m_fSpeed);
 
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
@@ -202,7 +209,9 @@ void CProjectile::Update(double dt)
 // Render this projectile
 void CProjectile::Render(void)
 {
-	if (m_bStatus == false)
+	//if (m_bStatus == false)
+	//	return;
+	if (!isActive)
 		return;
 
 	if (m_fLifetime < 0.0f)
@@ -264,8 +273,9 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 				theDirection = vel;
 			}
 		}
-		else if(!m_bProjectileRicochet && !m_bProjectileLaserBeam)
-			this->isDone = true;
+		else if (!m_bProjectileRicochet && !m_bProjectileLaserBeam)
+			isActive = false;
+			//this->isDone = true;
 	}
 		break;
 	case GenericEntity::OBJECT_TYPE::ENEMY:
@@ -273,7 +283,8 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		if (this->type != PLAYER_BULLET)
 			break;
 
-		this->SetIsDone(true);
+		//this->SetIsDone(true);
+		isActive = false;
 		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
 
@@ -295,6 +306,12 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 	}
 }
 
+//set projectile's mesh
+void CProjectile::SetProjectileMesh(Mesh* _mesh)
+{
+	modelMesh = _mesh;
+}
+
 // Create a projectile and add it into EntityManager
 CProjectile* Create::Projectile(const std::string& _meshName, 
 								const Vector3& _position, 
@@ -313,7 +330,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetCollider(true);
 	result->SetScale(_scale);
 	result->SetIsActive(false);
-	//result->setIsActive(false);
+	result->type = GenericEntity::PLAYER_BULLET;
 	EntityManager::GetInstance()->AddEntity(result, true);
 	//ProjectileManager::GetInstance()->AddProjectile(result);
 	return result;

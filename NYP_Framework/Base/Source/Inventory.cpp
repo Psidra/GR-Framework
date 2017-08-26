@@ -2,9 +2,8 @@
 #include "WeaponInfo\WeaponInfo.h"
 #include "WeaponManager.h"
 
-Inventory::Inventory()
+Inventory::Inventory() : m_iWeaponIndex(0)
 {
-
 }
 
 Inventory::~Inventory()
@@ -43,4 +42,24 @@ bool Inventory::removeWeaponFromInventory(CWeaponInfo* _existingObject)
 std::vector<CWeaponInfo*> Inventory::getWeaponList()
 {
 	return weaponList;
+}
+
+CWeaponInfo* Inventory::getPrimaryWeapon()
+{
+	if (weaponList.size() <= 0)
+		return NULL;
+
+	return weaponList[m_iWeaponIndex];
+}
+
+//set weaponIndex
+void Inventory::setWeaponIndex(const int _weaponIndex)
+{
+	m_iWeaponIndex = _weaponIndex;
+}
+
+//get weaponIndex
+int Inventory::getWeaponIndex(void)
+{
+	return m_iWeaponIndex;
 }

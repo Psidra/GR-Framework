@@ -19,7 +19,7 @@ public:
 	~ProjectileManager();
 
 	void AddProjectile(CProjectile* projectile);
-	CProjectile* FetchProjectile(std::string _mesh);
+	CProjectile* FetchProjectile();
 
 
 };
