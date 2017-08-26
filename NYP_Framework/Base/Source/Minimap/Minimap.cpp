@@ -9,6 +9,7 @@
 #include "KeyboardController.h"
 #include "MeshList.h"
 
+
 CMinimap::CMinimap(void)
 	: m_cMinimap_Background(NULL)
 	, m_cMinimap_Border(NULL)
@@ -253,6 +254,16 @@ std::list<EntityBase*>& CMinimap::getMinimapList(void)
 	return minimapList;
 }
 
+std::vector<Level::Rectangle> CMinimap::getMiniMapRooomList()
+{
+	return mmRoomList;
+}
+
+void CMinimap::setMiniMapRoomList(std::vector<Level::Rectangle> _mmRoom)
+{
+	mmRoomList = _mmRoom;
+}
+
 //update minimap
 void CMinimap::Update(double dt)
 {	//temp storing method to be changed for storing the individual walls to instead the room only
@@ -265,21 +276,12 @@ void CMinimap::Update(double dt)
 		for (std::vector<Vector3>::iterator it = minimapData[mapID[i]].begin();
 			it != minimapData[mapID[i]].end();++it)
 		{
-			(*it) = (*it) * (1.0f / (scale.x * 0.1));
+			if (mapID[i] == "wallscale")
+				(*it) = (*it) * (1.0f / (scale.x * 0.05));
+			else
+				(*it) = (*it) * (1.0f / (scale.x * 0.1));
 		}
 	}
-
-	//for (std::vector<Vector3>::iterator it = minimapData["wallpos"].begin();
-	//	it != minimapData["wallpos"].end();++it)
-	//{
-	//	(*it) = (*it) * (1.0f / (scale.x * 0.2));
-	//}
-	//for (std::vector<Vector3>::iterator it = minimapData["wallscale"].begin();
-	//	it != minimapData["wallscale"].end();++it)
-	//{
-	//	//(*it) = (*it) * 0.02f;
-	//	(*it) = (*it) * (1.0f / (scale.x * 0.2));
-	//}
 
 	m_iNumWall = minimapData["wallpos"].size();
 	m_iNumTele = minimapData["telepos"].size();

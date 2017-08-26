@@ -124,8 +124,10 @@ void Player::Init(void)
 	this->SetIndices_bWalk(6, 7);
 	this->SetIndices_fHurt(8, 8);
 	this->SetIndices_bHurt(9, 9);
-	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
-	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
+	playerInventory->setWeaponIndex(weaponIndex);
+	playerInventory->getPrimaryWeapon()->setIsActive(true);
+	//playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+	weaponMesh = playerInventory->getPrimaryWeapon()->GetMesh();
 }
 
 // Set position
@@ -296,7 +298,7 @@ void Player::CollisionCheck_Movement()
 		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f), tempMin + Vector3(0.f, checkby, 0.f));
 		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-		
+		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
 		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
@@ -325,7 +327,7 @@ void Player::CollisionCheck_Movement()
 		this->SetAABB(tempMax - Vector3(0.f, checkby, 0.f), tempMin - Vector3(0.f, checkby, 0.f));
 
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-
+		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
 		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
@@ -354,7 +356,7 @@ void Player::CollisionCheck_Movement()
 		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f), tempMin + Vector3(checkby, 0.f, 0.f));
 	
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-
+		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
 		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
@@ -383,7 +385,7 @@ void Player::CollisionCheck_Movement()
 		this->SetAABB(tempMax - Vector3(checkby, 0.f, 0.f), tempMin - Vector3(checkby, 0.f, 0.f));
 
 		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
-
+		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
@@ -539,9 +541,6 @@ void Player::Update(double dt)
 		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
 			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
 		{
-			//if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::WALL
-			//	&& dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::TELEPORTER)
-			//	continue;
 
 			Vector3 temp = CMinimap::GetInstance()->GetScale();
 
@@ -550,10 +549,6 @@ void Player::Update(double dt)
 				//std::cout << "in range\n";
 				switch (dynamic_cast<GenericEntity*>((*it))->type)
 				{
-				case GenericEntity::WALL:
-					CMinimap::GetInstance()->setObjectPos("wallpos", (*it)->GetPosition() - position);
-					CMinimap::GetInstance()->setObjectScale("wallscale", (*it)->GetScale());
-					break;
 				case GenericEntity::TELEPORTER:
 					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
 					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
@@ -565,6 +560,14 @@ void Player::Update(double dt)
 			}
 		}
 	//}
+
+	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	{
+		Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
+		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+		CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
+		CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
+	}
 
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
@@ -612,8 +615,10 @@ void Player::Update(double dt)
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
 
 	//set weapon pos & dir
-	playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
-	playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
+	playerInventory->getPrimaryWeapon()->setGunPos(position);
+	playerInventory->getPrimaryWeapon()->setGunDir(view);
+	//playerInventory->getWeaponList()[weaponIndex]->setGunPos(position);
+	//playerInventory->getWeaponList()[weaponIndex]->setGunDir(view);
 }
 
 // Constrain the position within the borders
@@ -654,7 +659,6 @@ void Player::setDodge(bool _dodge)
 // Shoot Weapon
 bool Player::Shoot(const float dt)
 {	
-	playerInventory->getWeaponList()[weaponIndex]->Discharge(position, view.Normalize()); //position of player, dir to shoot from
 	double x, y;
 	MouseController::GetInstance()->GetMousePosition(x, y);
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() * 0.5f;
@@ -666,7 +670,8 @@ bool Player::Shoot(const float dt)
 	changedpos.x += Math::Clamp(posX * 0.005f, -1.0f, 1.0f);
 	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
 
-	playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view); //position of player, dir to shoot from
+	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
+	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
@@ -674,20 +679,25 @@ bool Player::Shoot(const float dt)
 // Reload Weapon
 bool Player::Reload(const float dt)
 {
-	playerInventory->getWeaponList()[weaponIndex]->Reload(); //reload gun
-	std::cout << "TotalAmmo: " << playerInventory->getWeaponList()[weaponIndex]->GetTotalRound() << std::endl;
+	//playerInventory->getWeaponList()[weaponIndex]->Reload(); //reload gun
+	playerInventory->getPrimaryWeapon()->Reload(); //position of player, dir to shoot from
+	std::cout << "TotalAmmo: " << playerInventory->getPrimaryWeapon()->GetTotalRound() << std::endl;
 	return false;
 }
 
 // Change Weapon
 bool Player::ChangeWeapon(const float dt)
 {	
-	playerInventory->getWeaponList()[weaponIndex]->setIsActive(false);
+	playerInventory->getPrimaryWeapon()->setIsActive(false);
 	++weaponIndex;
 	weaponIndex = Math::Wrap(weaponIndex, 0, (int)playerInventory->getWeaponList().size() - 1);
-	playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+	playerInventory->setWeaponIndex(weaponIndex);
+	playerInventory->getPrimaryWeapon()->setIsActive(true);
 	std::cout << "weaponIndex: " << weaponIndex << std::endl;
-	weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
+	weaponMesh = playerInventory->getPrimaryWeapon()->GetMesh();
+
+	//playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
+	//weaponMesh = playerInventory->getWeaponList()[weaponIndex]->GetMesh();
 	return false;
 }
 

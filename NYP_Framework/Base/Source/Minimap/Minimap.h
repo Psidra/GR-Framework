@@ -8,6 +8,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include "../LevelStuff/Level.h"
 
 class CMinimap : public GenericEntity, public Singleton<CMinimap>
 {
@@ -98,6 +99,10 @@ public:
 	void addToMinimapList(EntityBase* _entity);
 	//get minimap list
 	std::list<EntityBase*>& getMinimapList(void);
+	//get mmRoom
+	std::vector<Level::Rectangle>getMiniMapRooomList();
+	//add rooms to mmRoom
+	void setMiniMapRoomList(std::vector<Level::Rectangle> _mmRoom);
 	//// Set position of avatar in minimap
 	//bool SetPosition(const int x, const int y);
 	//// Get position x of avatar in minimap
@@ -140,6 +145,8 @@ protected:
 	std::vector<Vector3> teleporterActPos;
 	//list for minimap
 	std::list<EntityBase*> minimapList;
+	//RoomList for mm
+	std::vector<Level::Rectangle> mmRoomList;
 	SPRITE_RENDERMODE mode;
 };
 
