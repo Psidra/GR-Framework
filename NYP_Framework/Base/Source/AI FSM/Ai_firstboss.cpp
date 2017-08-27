@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../EntityManager.h"
 #include "../CollisionManager.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 using namespace std;
 
@@ -42,7 +43,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
 		this->SetState(ATTACK_SET_TWO);
 
-	if (m_dElapsedTime > m_dAttackDuration)
+	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
 		RNG = Math::RandIntMinMax(0, 2);
 
@@ -54,10 +55,14 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 		prevRoll = RNG;
 
+		Player::GetInstance()->m_bProjectileCircle = false;
+
 		// Time before attack changes
 		switch (RNG) {
 		case 0:
-			m_dAttackDuration = m_dElapsedTime + 2.f;
+			_weaponIndex = 0;
+			m_dAttackDuration = m_dElapsedTime + 3.f;
+			Player::GetInstance()->m_bProjectileCircle = true;
 			break;
 		case 1:
 			m_dAttackDuration = m_dElapsedTime + 2.f;
@@ -77,17 +82,17 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	{
 		switch (RNG) {
 		case 0:
-			break;
-		case 1:
 			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-4, 4), Math::RandFloatMinMax(-4, 4), 0.f);
 			timeBetweenShots = 0.5f;
+			break;
+		case 1:
 			break;
 		case 2:
 			break;
 
 		}
 
-		if (shootElapsedTime > timeBetweenShots)
+		if (shootElapsedTime > timeBetweenShots && m_dAttackDuration > m_dElapsedTime)
 		{
 			SetIsMoving(false);		//stop animate moving
 			SetIsShooting(true);	//set animate shoot & enable shoot

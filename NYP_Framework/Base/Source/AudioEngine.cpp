@@ -121,6 +121,17 @@ void AudioEngine::PlayASound(const std::string& _soundIndex, bool _loop)
 	}
 }
 
+void AudioEngine::StopAllSounds()
+{
+	iAudioEngine->stopAllSounds();
+}
+
+bool AudioEngine::CheckSoundOn(const std::string & _soundIndex)
+{
+	std::string aSound = GetSound(_soundIndex);
+	return iAudioEngine->isCurrentlyPlaying(aSound.c_str());
+}
+
 int AudioEngine::getVolume()
 {
 	return (iAudioEngine->getSoundVolume() * 100);

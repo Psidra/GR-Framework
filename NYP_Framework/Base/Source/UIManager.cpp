@@ -6,9 +6,17 @@
 #include "PlayerInfo\PlayerInfo.h"
 #include "Application.h"
 #include "GLFW\glfw3.h"
+#include "AudioEngine.h"
 
 UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false), inputKey(0), index(0)
 {
+	AudioEngine::GetInstance()->Init();
+	AudioEngine::GetInstance()->AddSound("mainmenu", "Audio/MainMenu.mp3");
+	AudioEngine::GetInstance()->AddSound("gameBGM1", "Audio/GameBGM1.mp3");
+	AudioEngine::GetInstance()->AddSound("gameBGM2", "Audio/GameBGM2.mp3");
+	AudioEngine::GetInstance()->setVolume(50);
+
+	playingSound = false;
 }
 
 UIManager::~UIManager()
@@ -54,14 +62,43 @@ void UIManager::Playing()
 
 void UIManager::Update()
 {
+	if (this->state == MAIN_MENU)
+	{
+		if (!AudioEngine::GetInstance()->CheckSoundOn("mainmenu"))
+			AudioEngine::GetInstance()->StopAllSounds();
+
+		AudioEngine::GetInstance()->PlayASound("mainmenu", true);
+	}
+	else if (this->state == PLAYING || this->state == PAUSE)
+	{
+		if (!AudioEngine::GetInstance()->CheckSoundOn("lastbattle"))
+		{
+			if (AudioEngine::GetInstance()->CheckSoundOn("mainmenu"))
+				AudioEngine::GetInstance()->StopAllSounds();
+
+			std::string currentSong, firstSong, secondSong;
+			firstSong = "gameBGM1";
+			secondSong = "gameBGM2";
+
+			if (AudioEngine::GetInstance()->CheckSoundOn(firstSong))
+				currentSong = firstSong;
+			else if (AudioEngine::GetInstance()->CheckSoundOn(secondSong))
+				currentSong = secondSong;
+
+			if (!AudioEngine::GetInstance()->CheckSoundOn(currentSong))
+			{
+				playingSound = !playingSound;
+				AudioEngine::GetInstance()->PlayASound((playingSound ? firstSong : secondSong));
+			}
+		}
+	}
+
 	std::list<UIElement*>::iterator it, end;
 	end = UIList.end();
 	for (it = UIList.begin(); it != end; ++it)
 	{
 		(*it)->Update();
 	}
-
-	
 
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 	{
