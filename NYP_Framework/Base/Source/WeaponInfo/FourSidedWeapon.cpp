@@ -1,31 +1,31 @@
-#include "CircularWeapon.h"
+#include "FourSidedWeapon.h"
 #include "../Projectile/Projectile.h"
 #include "../WeaponManager.h"
 #include "MeshList.h"
 #include "../Projectile/ProjectileManager.h"
 
-CircularWeapon::CircularWeapon(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+FourSidedWeapon::FourSidedWeapon(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-CircularWeapon::~CircularWeapon()
+FourSidedWeapon::~FourSidedWeapon()
 {
 }
 
-void CircularWeapon::Init(void)
+void FourSidedWeapon::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 50;
+	magRounds = 20;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 50;
+	maxMagRounds = 20;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 100;
+	totalRounds = 200;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 100;
+	maxTotalRounds = 200;
 
 	// The time between shots
 	timeBetweenShots = 0.33333;
@@ -47,18 +47,18 @@ void CircularWeapon::Init(void)
 	m_fSpeed = 6.5f;
 	// is active
 	m_bActive = false;
-	// Player/enemy angle to rotate
+	// Player/enemy target to rotate by
 	m_fRotateAngle = 0.f;
 	// num of bullet
-	m_iNumBullet = 8;
+	m_iNumBullet = 4;
 }
 
-void CircularWeapon::Render()
+void FourSidedWeapon::Render()
 {
 	return;
 }
 
-void CircularWeapon::Discharge(Vector3 position, Vector3 target)
+void FourSidedWeapon::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -68,7 +68,7 @@ void CircularWeapon::Discharge(Vector3 position, Vector3 target)
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
 			// It will last for 3.0 seconds and travel at 500 units per second	
 			target = rotateDirection(target, m_fRotateAngle);
-			generateBullet(position, target, m_iNumBullet, 45);
+			generateBullet(position, target, m_iNumBullet, 90);
 
 			bFire = false;
 			m_fRotateAngle += 10;
@@ -81,12 +81,12 @@ void CircularWeapon::Discharge(Vector3 position, Vector3 target)
 		m_fRotateAngle = 0;
 }
 
-Mesh* CircularWeapon::GetMesh()
+Mesh* FourSidedWeapon::GetMesh()
 {	//	placeholder
 	return MeshList::GetInstance()->GetMesh("pistol");
 }
 
-void CircularWeapon::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void FourSidedWeapon::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
@@ -94,7 +94,7 @@ void CircularWeapon::generateBullet(Vector3 position, Vector3 target, const int 
 	float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	Vector3 temp = target;
 
-	for (int i = 0;i < numBullet;++i)
+	for (int i = 0; i < numBullet; ++i)
 	{
 		//rotate vector
 		target = rotateDirection(temp, totalAngle);
