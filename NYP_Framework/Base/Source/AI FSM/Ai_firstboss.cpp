@@ -88,7 +88,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	{
 		switch (RNG) {
 		case 0:
-			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-4, 4), Math::RandFloatMinMax(-4, 4), 0.f);
+			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-7, 7), Math::RandFloatMinMax(-7, 7), 0.f);
 			timeBetweenShots = 0.5f;
 			break;
 		case 1:

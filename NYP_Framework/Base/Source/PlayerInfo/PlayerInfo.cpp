@@ -175,9 +175,15 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		EditHealth(-0.5f);
 
 		if (m_bPullEffect)
+		{
 			m_dPullEndKB = m_dElapsedTime + 0.2f;
+			m_bMoving = true;
+		}
 		else if (!m_bPullEffect && m_dPullEndKB > m_dElapsedTime)
+		{
 			position += Vector3(-1, -1, 0) * (float)m_dSpeed * 0.016666667f;
+			m_bMoving = true;
+		}
 		break;
 	case ENEMY_BULLET:
 	{
@@ -529,7 +535,7 @@ bool Player::Shoot(const float dt)
 	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
 
 	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
-	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+	playerInventory->getPrimaryWeapon()->Discharge(changedpos, view.Normalize()); //position of player, dir to shoot from
 
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;

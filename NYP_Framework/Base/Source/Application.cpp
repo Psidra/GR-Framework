@@ -307,6 +307,9 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("ccore_succ2")->textureID[0] = LoadTGA("Image/Enemies/Boss/succ_n2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("ccore_succ3", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("ccore_succ3")->textureID[0] = LoadTGA("Image/Enemies/Boss/succ_n3.tga");
+		//projcircle
+		MeshBuilder::GetInstance()->GenerateQuad("projcircle", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("projcircle")->textureID[0] = LoadTGA("Image/Enemies/Boss/projcircle.tga");
 
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);

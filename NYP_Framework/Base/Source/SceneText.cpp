@@ -721,6 +721,15 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
+
+	if (Player::GetInstance()->m_bProjectileCircle)
+	{
+		ms.PushMatrix();
+		ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
+		ms.Scale(11, 11, 1);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("projcircle"));
+		ms.PopMatrix();
+	}
 }
 
 void SceneText::Exit()
