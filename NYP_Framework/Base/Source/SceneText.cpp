@@ -350,7 +350,7 @@ void SceneText::Init()
 	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
-	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(3, 3, 3), true);
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), true);
 	FirstBoss->Init(1500.f, 0, 1, false);
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
