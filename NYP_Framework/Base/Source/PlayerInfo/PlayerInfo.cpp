@@ -17,6 +17,8 @@
 #include "../Minimap/Minimap.h"
 #include "../Particle/ParticleEffect.h"
 #include "../WeaponInfo/CircularWeapon.h"
+#include "../AudioEngine.h"
+#include "../UIManager.h"
 
 #include "../LevelStuff/QuadTree.h"
 #include "../LevelStuff/Level.h"
@@ -102,6 +104,8 @@ void Player::Init(void)
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
+	AudioEngine::GetInstance()->AddSound("lastbattle", "Audio/LastBattle.mp3");
+	AudioEngine::GetInstance()->setVolume(50);
 
 	playerAnimated = new GenericEntity*[10];
 	for (size_t i = 0; i < 10; i++)
@@ -219,8 +223,6 @@ void Player::CollisionCheck_Movement()
 	quadTree.clear();
 	for (std::list<EntityBase*>::iterator it = cpy.begin(); it != cpy.end(); ++it)
 		quadTree.addObject(*it);
-
-	
 
 	float checkby = 0;
 	
@@ -385,7 +387,8 @@ void Player::Update(double dt)
 		}
 	}
 
-	CollisionCheck_Movement();
+	if (this->m_bMoving)
+		CollisionCheck_Movement();
 
 	//update minimap only when player moves
 	//if (m_bMoving)
@@ -514,6 +517,7 @@ bool Player::Shoot(const float dt)
 
 	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
 	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
@@ -558,6 +562,9 @@ void Player::UseBlank()
 			thatEntity->SetIsDone(true);
 		}
 	}
+
+	AudioEngine::GetInstance()->StopAllSounds();
+	AudioEngine::GetInstance()->PlayASound("lastbattle", true);
 
 	--this->m_iBlank;
 }

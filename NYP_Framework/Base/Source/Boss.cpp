@@ -194,6 +194,7 @@ Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3
 	result->SetScale(scale);
 	result->SetCollider(true);
 	result->SetIsActive(_isActive);
+	result->type = GenericEntity::OBJECT_TYPE::BOSS;
 	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

@@ -23,11 +23,12 @@ public:
 
 	void setEntityList(std::list<EntityBase*>& newList);
 	std::list<EntityBase*>& getEntityList();
+
+	int totalFrontEntities;
+
 private:
 	EntityManager();
 	virtual ~EntityManager();
-
-	int totalFrontEntities;
 
 	std::list<EntityBase*> entityList;
 	std::list<EntityBase*> collisionList;

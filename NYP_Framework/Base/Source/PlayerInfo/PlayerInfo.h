@@ -6,7 +6,6 @@
 #include "../GenericEntity.h"
 #include "../Animation.h"
 #include "../Inventory.h"
-#include "../AudioEngine.h"
 
 class CWeaponInfo;
 
@@ -125,6 +124,8 @@ public:
 	inline int getWeaponIndex() const { return this->weaponIndex; };
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
+
+	bool m_bProjectileCircle;
 
 private:
 	Vector3 defaultPosition;
