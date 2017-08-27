@@ -27,10 +27,10 @@ void Emitter::update(double dt)
 	this->m_position.y -= 0.2f;
 
 	if (this->m_age > this->m_emitterLifeSpan)
-		this->m_isActive = false;
+		this->m_isDone = true;
 
 	/*Spawn particles*/
-	if (m_liveParticleCount < MAX_PARTICLE && this->m_isActive)
+	if (m_liveParticleCount < MAX_PARTICLE)
 	{
 		Particle* particle = fetchParticle();
 		particle->m_age = 0;

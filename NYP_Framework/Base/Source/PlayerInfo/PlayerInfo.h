@@ -6,7 +6,6 @@
 #include "../GenericEntity.h"
 #include "../Animation.h"
 #include "../Inventory.h"
-#include "../AudioEngine.h"
 
 class CWeaponInfo;
 
@@ -93,7 +92,7 @@ public:
 	// Get Health
 	inline float GetHealth() const { return this->m_fHealth; };
 	// Edit Health
-	inline void EditHealth(float _health) { this->m_fHealth += _health; };
+	inline void EditHealth(float _health) { if (this->m_fHealth > 0) this->m_fHealth += _health; };
 
 	// Set Blanks
 	inline void SetBlanks(int _blanks) { this->m_iBlank = _blanks; };	// blank doesnt even look like a word anymore
@@ -126,6 +125,9 @@ public:
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
 
+	bool m_bProjectileCircle;
+	bool m_bPullEffect;
+
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)
@@ -150,6 +152,7 @@ private:
 	double m_dFireTickUp;
 	double m_dDmgOverTimeTick;
 	double m_dPoisonDuration;
+	double m_dPullEndKB;
 
 	float m_fHealth;
 	float m_fMaxHealth;

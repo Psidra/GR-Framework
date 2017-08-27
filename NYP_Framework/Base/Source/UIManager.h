@@ -39,6 +39,8 @@ private:
 	bool checkingInput;
 	int inputKey;
 	int index;
+
+	bool playingSound;
 };
 
 #endif // UIMANAGER_H

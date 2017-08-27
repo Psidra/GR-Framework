@@ -18,6 +18,17 @@ void ProjectileManager::AddProjectile(CProjectile * projectile)
 
 CProjectile * ProjectileManager::FetchProjectile()
 {	
+	//for (std::vector<CProjectile*>::iterator it = projectileList.begin();
+	//	it != projectileList.end(); ++it)
+	//{
+	//	if ((*it)->IsActive())
+	//		continue;
+
+	//	(*it)->SetIsActive(true);
+	//	EntityManager::GetInstance()->AddEntity(*it, true);
+	//	return (*it);
+	//}
+
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
 		it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
 	{
@@ -35,6 +46,7 @@ CProjectile * ProjectileManager::FetchProjectile()
 
 	for (int i = 0; i < 10; ++i)
 	{
+		//projectileList.push_back(new CProjectile);
 		EntityManager::GetInstance()->AddEntity(new CProjectile, true);
 		//CProjectile* projectile = Create::Projectile("cube",
 		//	Vector3(0, 0, 0),

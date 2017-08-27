@@ -2,6 +2,7 @@
 #include "../Projectile/Projectile.h"
 #include "../WeaponManager.h"
 #include "MeshList.h"
+#include "../Projectile/ProjectileManager.h"
 
 CircularWeapon::CircularWeapon(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
@@ -43,7 +44,7 @@ void CircularWeapon::Init(void)
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
-	m_fSpeed = 6.0f;
+	m_fSpeed = 6.5f;
 	// is active
 	m_bActive = false;
 	// Player/enemy angle to rotate
@@ -99,17 +100,33 @@ void CircularWeapon::generateBullet(Vector3 position, Vector3 target, const int 
 		target = rotateDirection(temp, totalAngle);
 		totalAngle -= angle;
 
-		CProjectile* aProjectile = Create::Projectile("cube",
-			position,
-			target.Normalized(),
-			scale,
-			2.0f,
-			m_fSpeed);
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		aProjectile->type = bulletType;
-		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
-		aProjectile->setIsDots(m_bDots);
-		aProjectile->setIsRicochet(m_bRicochet);
-		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		projectile->SetProjectileMesh(mesh);
+		projectile->SetIsActive(true);
+		projectile->SetPosition(position);
+		projectile->SetDirection(target.Normalized());
+		projectile->SetScale(scale);
+		projectile->SetLifetime(6.f);
+		projectile->SetSpeed(m_fSpeed);
+		projectile->type = bulletType;
+		projectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		projectile->setIsDots(m_bDots);
+		projectile->setIsRicochet(m_bRicochet);
+		projectile->setIsLaserbeam(m_bLaserBeam);
+		projectile->type = bulletType;
+		//CProjectile* aProjectile = Create::Projectile("cube",
+		//	position,
+		//	target.Normalized(),
+		//	scale,
+		//	2.0f,
+		//	m_fSpeed);
+
+		//aProjectile->type = bulletType;
+		//aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		//aProjectile->setIsDots(m_bDots);
+		//aProjectile->setIsRicochet(m_bRicochet);
+		//aProjectile->setIsLaserbeam(m_bLaserBeam);
 	}
 }

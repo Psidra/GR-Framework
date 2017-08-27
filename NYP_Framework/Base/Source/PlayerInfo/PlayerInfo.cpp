@@ -17,6 +17,11 @@
 #include "../Minimap/Minimap.h"
 #include "../Particle/ParticleEffect.h"
 #include "../WeaponInfo/CircularWeapon.h"
+#include "../WeaponInfo/FourSidedWeapon.h"
+#include "../WeaponInfo/Minigun.h"
+
+#include "../AudioEngine.h"
+#include "../UIManager.h"
 
 #include "../LevelStuff/QuadTree.h"
 #include "../LevelStuff/Level.h"
@@ -45,6 +50,9 @@ Player::Player(void)
 	, m_bSlow(false)
 	, m_bPoison(false)
 	, weaponMesh(NULL)
+	, m_bProjectileCircle(false)
+	, m_bPullEffect(false)
+	, m_dPullEndKB(0.0)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -52,8 +60,10 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new Minigun(GenericEntity::PLAYER_BULLET));
 	//this weapon for boss and enemies
-	//playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new FourSidedWeapon(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)
@@ -102,6 +112,8 @@ void Player::Init(void)
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
+	AudioEngine::GetInstance()->AddSound("lastbattle", "Audio/LastBattle.mp3");
+	AudioEngine::GetInstance()->setVolume(50);
 
 	playerAnimated = new GenericEntity*[10];
 	for (size_t i = 0; i < 10; i++)
@@ -160,7 +172,18 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		std::cout << "collide" << std::endl;
 		break;
 	case ENEMY:
-		//std::cout << "enemy collide" << std::endl;
+		EditHealth(-0.5f);
+
+		if (m_bPullEffect)
+		{
+			m_dPullEndKB = m_dElapsedTime + 0.2f;
+			m_bMoving = true;
+		}
+		else if (!m_bPullEffect && m_dPullEndKB > m_dElapsedTime)
+		{
+			position += Vector3(-1, -1, 0) * (float)m_dSpeed * 0.016666667f;
+			m_bMoving = true;
+		}
 		break;
 	case ENEMY_BULLET:
 	{
@@ -173,8 +196,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		thatEntity->SetIsDone(true);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
 
-		if (this->m_fHealth > 0)
-			EditHealth(-Proj->getProjectileDamage());
+		EditHealth(-Proj->getProjectileDamage());
 		isHurt = true;
 		break;
 	}
@@ -206,6 +228,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		break;
 	}
 }
+
 void Player::CollisionCheck_Movement()
 {
 	Vector3 tempMax = this->GetMaxAABB();
@@ -219,8 +242,6 @@ void Player::CollisionCheck_Movement()
 	quadTree.clear();
 	for (std::list<EntityBase*>::iterator it = cpy.begin(); it != cpy.end(); ++it)
 		quadTree.addObject(*it);
-
-	
 
 	float checkby = 0;
 	
@@ -385,41 +406,42 @@ void Player::Update(double dt)
 		}
 	}
 
-	CollisionCheck_Movement();
+	if (this->m_bMoving)
+		CollisionCheck_Movement();
 
 	//update minimap only when player moves
 	//if (m_bMoving)
 	//{
-		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
-			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
-		{
+		//for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
+		//	;it != CMinimap::GetInstance()->getMinimapList().end();++it)
+		//{
 
-			Vector3 temp = CMinimap::GetInstance()->GetScale();
+		//	Vector3 temp = CMinimap::GetInstance()->GetScale();
 
-			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
-			{
-				//std::cout << "in range\n";
-				switch (dynamic_cast<GenericEntity*>((*it))->type)
-				{
-				case GenericEntity::TELEPORTER:
-					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
-					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
-					CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
-					break;
-				default:
-					break;
-				}
-			}
-		}
+		//	if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
+		//	{
+		//		//std::cout << "in range\n";
+		//		switch (dynamic_cast<GenericEntity*>((*it))->type)
+		//		{
+		//		case GenericEntity::TELEPORTER:
+		//			CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
+		//			CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
+		//			CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
+		//			break;
+		//		default:
+		//			break;
+		//		}
+		//	}
+		//}
 	//}
 
-	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
-	{
-		Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
-		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-		CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
-		CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
-	}
+	//for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	//{
+	//	Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
+	//	Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+	//	CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
+	//	CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
+	//}
 
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{
@@ -513,7 +535,8 @@ bool Player::Shoot(const float dt)
 	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
 
 	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
-	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+	playerInventory->getPrimaryWeapon()->Discharge(changedpos, view.Normalize()); //position of player, dir to shoot from
+
 	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
@@ -558,6 +581,9 @@ void Player::UseBlank()
 			thatEntity->SetIsDone(true);
 		}
 	}
+
+	AudioEngine::GetInstance()->StopAllSounds();
+	AudioEngine::GetInstance()->PlayASound("lastbattle", true);
 
 	--this->m_iBlank;
 }

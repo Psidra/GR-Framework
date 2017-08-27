@@ -350,13 +350,12 @@ void SceneText::Init()
 	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
-	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(3, 3, 3));
-	FirstBoss->Init(500.f, 0, 2, false);
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(3, 3, 3), true);
+	FirstBoss->Init(1500.f, 0, 1, false);
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
-	minimap->Init();
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
 	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
@@ -410,6 +409,7 @@ void SceneText::Init()
 	}
 	
 	//minimap->setMiniMapRoomList(level->getRooms());
+
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
 		it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -418,6 +418,9 @@ void SceneText::Init()
 
 		minimap->addToMinimapList(*it);
 	}
+
+	//this should be the last to be called
+	minimap->Init();
 }
 
 void SceneText::Update(double dt)
@@ -733,6 +736,15 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
+
+	if (Player::GetInstance()->m_bProjectileCircle)
+	{
+		ms.PushMatrix();
+		ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
+		ms.Scale(11, 11, 1);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("projcircle"));
+		ms.PopMatrix();
+	}
 }
 
 void SceneText::Exit()
