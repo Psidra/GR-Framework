@@ -8,7 +8,7 @@ public:
 	virtual ~CAnimation();
 
 	// Set Animation status; leftright or updown
-	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIs_Shooting, double dt);
+	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt);
 	// Update the Animation Index
 	void UpdateAnimationIndex(double dt);
 
@@ -19,9 +19,9 @@ public:
 	void SetIndices_bStand(const int m_ibStand_Start, const int m_ibStand_End);
 	void SetIndices_fWalk(const int m_ifWalk_Start, const int m_ifWalk_End);
 	void SetIndices_bWalk(const int m_ibWalk_Start, const int m_ibWalk_End);
-
 	void SetIndices_fHurt(const int m_ifHurt_Start, const int m_ifHurt_End);
 	void SetIndices_bHurt(const int m_ibHurt_Start, const int m_ibHurt_End);
+	void SetIndices_Succ(const int m_iSucc_Start, const int m_iSucc_End);
 
 private:
 	int m_iAnimation_Index;
@@ -41,6 +41,9 @@ private:
 
 	//HURT
 	int m_ifHurt_Start, m_ifHurt_End, m_ibHurt_Start, m_ibHurt_End;
+
+	//SUCC
+	int m_iSucc_Start, m_iSucc_End;
 
 };
 

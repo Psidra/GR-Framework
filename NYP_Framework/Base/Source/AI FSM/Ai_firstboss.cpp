@@ -35,27 +35,31 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	int distancePlayerToEnemy = CalculateDistance(_destination, _shootpos);
 
-	if (distancePlayerToEnemy > 50) // TODO : Not make this hardcoded lmao
+	if (distancePlayerToEnemy > 60) // TODO : Not make this hardcoded lmao
 		this->SetState(IDLE);
 	else
 		this->SetState(ATTACK_SET_ONE);
 
-	if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
-		this->SetState(ATTACK_SET_TWO);
+	//if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
+	//	this->SetState(ATTACK_SET_TWO);
+
+	if (this->CurrentState == IDLE)
+		return;
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		RNG = Math::RandIntMinMax(0, 2);
+		RNG = Math::RandIntMinMax(0, 1);
 
 		if (RNG == prevRoll)
 		{
 			++RNG;
-			RNG = Math::Wrap(RNG, 0, 2);
+			RNG = Math::Wrap(RNG, 0, 1);
 		}
 
 		prevRoll = RNG;
 
 		Player::GetInstance()->m_bProjectileCircle = false;
+		Player::GetInstance()->m_bPullEffect = false;
 
 		// Time before attack changes
 		switch (RNG) {
@@ -65,11 +69,13 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			Player::GetInstance()->m_bProjectileCircle = true;
 			break;
 		case 1:
-			m_dAttackDuration = m_dElapsedTime + 2.f;
+			m_dAttackDuration = m_dElapsedTime + 3.f;
+			Player::GetInstance()->m_bPullEffect = true;
 			break;
-		case 2:
-			m_dAttackDuration = m_dElapsedTime + 2.f;
-			break;
+		//case 2:
+		//	_weaponIndex = 0;
+		//	m_dAttackDuration = m_dElapsedTime + 3.f;
+		//	break;
 
 		default:
 			break;
@@ -86,9 +92,10 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			timeBetweenShots = 0.5f;
 			break;
 		case 1:
+			timeBetweenShots = 3.f;
 			break;
-		case 2:
-			break;
+		//case 2:
+		//	break;
 
 		}
 

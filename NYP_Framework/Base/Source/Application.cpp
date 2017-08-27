@@ -262,7 +262,7 @@ void Application::InitAllMeshes()
 		//-------ENEMY SPRITES
 		//-------enemy1
 		//stand
-		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand1", Color(1, 1, 1), 1.f);
+		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand1", Color(1, 1, 1), 1.f); // THIS MUST BE THE WORK OF AN ENEMY [STAND]!!!
 		MeshList::GetInstance()->GetMesh("enemy1_fstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand2", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_fstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand2.tga");
@@ -284,6 +284,29 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("enemy1_fhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fhurt.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bhurt", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy1_bhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bhurt.tga");
+
+		//-------FINAL BOSS
+		//normal
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_normal1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_normal1")->textureID[0] = LoadTGA("Image/Enemies/Boss/orig_n1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_normal2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_normal2")->textureID[0] = LoadTGA("Image/Enemies/Boss/orig_n2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_normal3", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_normal3")->textureID[0] = LoadTGA("Image/Enemies/Boss/orig_n3.tga");
+		//hurt
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_hurt1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_hurt1")->textureID[0] = LoadTGA("Image/Enemies/Boss/hurt_n1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_hurt2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_hurt2")->textureID[0] = LoadTGA("Image/Enemies/Boss/hurt_n2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_hurt3", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_hurt3")->textureID[0] = LoadTGA("Image/Enemies/Boss/hurt_n3.tga");
+		//succ
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_succ1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_succ1")->textureID[0] = LoadTGA("Image/Enemies/Boss/succ_n1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_succ2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_succ2")->textureID[0] = LoadTGA("Image/Enemies/Boss/succ_n2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("ccore_succ3", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ccore_succ3")->textureID[0] = LoadTGA("Image/Enemies/Boss/succ_n3.tga");
 
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
@@ -361,9 +384,6 @@ void Application::InitAllMeshes()
 
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
-
-
-
 
 		//--------TileSet
 		MeshBuilder::GetInstance()->GenerateQuad("tile_floor", Color(1, 1, 1), 1.f);

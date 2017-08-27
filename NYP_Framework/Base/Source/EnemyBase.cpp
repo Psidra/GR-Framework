@@ -80,6 +80,7 @@ float EnemyBase::getHealth()
 void EnemyBase::editHealth(float _health)
 {
 	this->health += _health;
+	this->isHurt = true;
 }
 
 void EnemyBase::CollisionCheck()
