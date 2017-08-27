@@ -17,6 +17,8 @@
 #include "../Minimap/Minimap.h"
 #include "../Particle/ParticleEffect.h"
 #include "../WeaponInfo/CircularWeapon.h"
+#include "../WeaponInfo/FourSidedWeapon.h"
+#include "../WeaponInfo/Minigun.h"
 
 #include "../LevelStuff/QuadTree.h"
 #include "../LevelStuff/Level.h"
@@ -52,8 +54,10 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Bow(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new Minigun(GenericEntity::PLAYER_BULLET));
 	//this weapon for boss and enemies
-	//playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new FourSidedWeapon(GenericEntity::PLAYER_BULLET));
 }
 
 Player::~Player(void)

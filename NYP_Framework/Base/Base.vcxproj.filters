@@ -82,11 +82,11 @@
     <Filter Include="Particle\Particle Header">
       <UniqueIdentifier>{7da91861-2b31-4a86-a324-421e34475dc7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Weapon\Guns\BossWeaponHeader">
-      <UniqueIdentifier>{08bafef6-283b-4b32-bf14-945685f5fc8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Weapon\Guns\BossWeapon">
+    <Filter Include="Weapon\BossWeapon">
       <UniqueIdentifier>{87b4bbce-cd27-45b3-ae1d-68eaf5d4ef2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\BossWeapon\BossWeaponHeader">
+      <UniqueIdentifier>{08bafef6-283b-4b32-bf14-945685f5fc8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +220,7 @@
       <Filter>Particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\WeaponInfo\CircularWeapon.cpp">
-      <Filter>Weapon\Guns\BossWeapon</Filter>
+      <Filter>Weapon\BossWeapon</Filter>
     </ClCompile>
     <ClCompile Include="Source\AI FSM\Ai_firstboss.cpp">
       <Filter>Enemy Related</Filter>
@@ -230,6 +230,12 @@
     </ClCompile>
     <ClCompile Include="Source\Projectile\ProjectileManager.cpp">
       <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\FourSidedWeapon.cpp">
+      <Filter>Weapon\BossWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\Minigun.cpp">
+      <Filter>Weapon\Guns</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +366,7 @@
       <Filter>Particle\Particle Header</Filter>
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\CircularWeapon.h">
-      <Filter>Weapon\Guns\BossWeaponHeader</Filter>
+      <Filter>Weapon\BossWeapon\BossWeaponHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_firstboss.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
@@ -370,6 +376,12 @@
     </ClInclude>
     <ClInclude Include="Source\Projectile\ProjectileManager.h">
       <Filter>Weapon\WeaponHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\FourSidedWeapon.h">
+      <Filter>Weapon\BossWeapon\BossWeaponHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\Minigun.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

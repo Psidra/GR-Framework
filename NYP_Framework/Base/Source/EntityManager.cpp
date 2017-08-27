@@ -30,7 +30,7 @@ void EntityManager::Update(double _dt)
 	// Erase objects that are done from collisionList
 	it = collisionList.begin();
 	while (it != collisionList.end()) {
-		if ((*it)->IsDone()) {
+		if ((*it)->IsDone()) { //test
 			it = collisionList.erase(it);
 		}
 		else
