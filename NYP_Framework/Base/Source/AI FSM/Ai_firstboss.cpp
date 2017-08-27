@@ -48,12 +48,12 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		RNG = Math::RandIntMinMax(0, 1);
+		RNG = Math::RandIntMinMax(0, 3);
 
 		if (RNG == prevRoll)
 		{
 			++RNG;
-			RNG = Math::Wrap(RNG, 0, 1);
+			RNG = Math::Wrap(RNG, 0, 3);
 		}
 
 		prevRoll = RNG;
@@ -65,17 +65,21 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 		switch (RNG) {
 		case 0:
 			_weaponIndex = 0;
-			m_dAttackDuration = m_dElapsedTime + 3.f;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
 			Player::GetInstance()->m_bProjectileCircle = true;
 			break;
 		case 1:
-			m_dAttackDuration = m_dElapsedTime + 3.f;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
 			Player::GetInstance()->m_bPullEffect = true;
 			break;
-		//case 2:
-		//	_weaponIndex = 0;
-		//	m_dAttackDuration = m_dElapsedTime + 3.f;
-		//	break;
+		case 2:
+			_weaponIndex = 1;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
+			break;
+		case 3:
+			_weaponIndex = 2;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
+			break;
 
 		default:
 			break;
@@ -92,11 +96,17 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			timeBetweenShots = 0.5f;
 			break;
 		case 1:
-			timeBetweenShots = 3.f;
+			timeBetweenShots = m_dAttackDuration;
 			break;
-		//case 2:
-		//	break;
+		case 2:
+			timeBetweenShots = 0.f;
+			break;
+		case 3:
+			timeBetweenShots = 0.f;
+			break;
 
+		default:
+			break;
 		}
 
 		if (shootElapsedTime > timeBetweenShots && m_dAttackDuration > m_dElapsedTime)

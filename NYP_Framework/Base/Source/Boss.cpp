@@ -4,11 +4,10 @@
 #include "WeaponManager.h"
 
 #include "WeaponInfo\WeaponInfo.h"
+#include "WeaponInfo\CircularWeapon.h"
+#include "WeaponInfo\FourSidedWeapon.h"
+#include "WeaponInfo\Minigun.h"
 #include "WeaponInfo\Pistol.h"
-#include "WeaponInfo/Rifle.h"
-#include "WeaponInfo\Shotgun.h"
-#include "WeaponInfo/Bow.h"
-#include "WeaponInfo/LaserBeam.h"
 
 #include "Inventory.h"
 
@@ -69,8 +68,8 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	SetTypeOfEnemy(_enemyType);
 
 	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
-	enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
-	enemyInventory->addWeaponToInventory(new Bow(GenericEntity::ENEMY_BULLET));
+	enemyInventory->addWeaponToInventory(new Minigun(GenericEntity::ENEMY_BULLET));
+	enemyInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::ENEMY_BULLET));
 
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 
