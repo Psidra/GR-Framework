@@ -21,13 +21,13 @@ void Minigun::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 30;
+	magRounds = 100;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 30;
+	maxMagRounds = 100;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 150;
+	totalRounds = 500;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 150;
+	maxTotalRounds = 500;
 
 	// The time between shots
 	timeBetweenShots = 0.05;

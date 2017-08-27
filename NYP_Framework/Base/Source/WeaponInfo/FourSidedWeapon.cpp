@@ -19,13 +19,13 @@ void FourSidedWeapon::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 50;
+	magRounds = 20;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 50;
+	maxMagRounds = 20;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 100;
+	totalRounds = 200;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 100;
+	maxTotalRounds = 200;
 
 	// The time between shots
 	timeBetweenShots = 0.33333;
