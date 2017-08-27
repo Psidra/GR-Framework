@@ -5,6 +5,7 @@
 #include <iostream>
 #include "SingletonTemplate.h"
 #include "HardwareAbstraction\Keyboard.h"
+#include "TextEntity.h"
 
 class UIElement;
 
@@ -39,7 +40,7 @@ private:
 	bool checkingInput;
 	int inputKey;
 	int index;
-
+	
 	bool playingSound;
 };
 

@@ -25,4 +25,5 @@ public:
 	virtual void MapKeys(std::string _filePath);
 	virtual void ConvertInt();
 	virtual unsigned int GetKey() { return this->key; }
+	virtual void Reset(std::string cur_file, std::string original_file);
 };

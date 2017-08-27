@@ -579,10 +579,14 @@ void SceneText::Update(double dt)
 		minimap->Update(dt);
 		break;
 	}	
-	case UIManager::GAME_STATE::OPTIONS:
+	case UIManager::GAME_STATE::OPTIONS://doesnt work either
 	{
-
-		break;
+		/*std::ostringstream ss1;
+		ss1.precision(4);
+		ss1 << "Player:" << Player::GetInstance()->GetHealth();
+		textObj[2]->SetText(ss1.str());
+		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize + halfFontSize, 0.0f));
+		break;*/
 	}
 	}
 }

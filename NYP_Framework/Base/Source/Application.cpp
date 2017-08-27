@@ -220,6 +220,9 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 		MeshList::GetInstance()->GetMesh("text")->textureID[0] = LoadTGA("Image//calibri.tga");
 		MeshList::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
+		MeshBuilder::GetInstance()->GenerateText("text2", 16, 16);
+		MeshList::GetInstance()->GetMesh("text2")->textureID[0] = LoadTGA("Image//calibri.tga");
+		MeshList::GetInstance()->GetMesh("text2")->material.kAmbient.Set(1, 0, 0);
 		MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 		MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 		MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.f);

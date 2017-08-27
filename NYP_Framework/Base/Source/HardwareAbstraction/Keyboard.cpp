@@ -173,4 +173,17 @@ void Keyboard::ConvertInt()
 	}
 }
 
+void Keyboard::Reset(std::string cur_file, std::string original_file)
+{
+	/*for (size_t i = 0; i < Loader::GetInstance()->GetData().size(); ++i)
+	{
+		int index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
+		std::stringstream ss;
+		ss << std::hex << temp[i].substr(temp[i].find('=') + 1, temp[i].find(','));
+		ss >> KeyList[index];
+		int methodIndex = atoi(temp[i].substr(temp[i].find(',') + 1, std::string::npos).c_str());
+		pressMethod[index] = methodIndex;
+	}*/
+}
+
 

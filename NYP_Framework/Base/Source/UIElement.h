@@ -3,6 +3,7 @@
 
 #include "Collider\Collider.h"
 #include "EntityBase.h"
+#include "TextEntity.h"
 
 class Mesh;
 
@@ -61,7 +62,7 @@ public:
 
 private:
 	Mesh* mesh;
-
+	//TextEntity* textObj;
 	//Vector3 position;
 	//Vector3 scale;
 

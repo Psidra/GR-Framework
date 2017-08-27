@@ -10,6 +10,7 @@
 
 UIElement::UIElement()
 {
+	//textObj = Create::Text2DObject("text", Vector3(1.0f, 1.0f, 0.0f), "", Vector3(25.f, 25.f, 25.f), Color(0.0f, 1.0f, 0.0f));
 }
 
 UIElement::UIElement(Mesh* _mesh) : mesh(_mesh)
@@ -55,7 +56,12 @@ void UIElement::Update()
 	float hhalf = Application::GetInstance().GetWindowHeight() * 0.5f;
 
 	// Main Menu
-
+	/*if (UIManager::GetInstance()->state == UIManager::GAME_STATE::OPTIONS) //doesnt seem to work
+	{
+		
+		textObj->SetText("AAAAAAAAAAAAA");
+		textObj->SetPosition(Vector3(w / 800, hhalf, 9.5f));
+	}*/
 
 	// Pause
 	if (this->type == START)
