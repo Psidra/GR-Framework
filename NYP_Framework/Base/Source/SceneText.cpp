@@ -269,6 +269,10 @@ void SceneText::Init()
 	confirmOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	confirmOp->type = UIElement::ELEMENT_TYPE::CONFIRM;
 
+	UIElement* reloadOp = Create::UIEntity("reload_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	reloadOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	reloadOp->type = UIElement::ELEMENT_TYPE::INPUT_RELOAD;
+
 	UIElement* moveupOp = Create::UIEntity("moveup_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
 	moveupOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	moveupOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_UP;
@@ -285,7 +289,18 @@ void SceneText::Init()
 	moverightOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	moverightOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT;
 
-
+	UIElement* nextgunOp = Create::UIEntity("nextwep_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	nextgunOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	nextgunOp->type = UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN;
+	
+	UIElement* blankOp = Create::UIEntity("blank_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	blankOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	blankOp->type = UIElement::ELEMENT_TYPE::INPUT_BLANK;
+	
+	UIElement* pauseOp = Create::UIEntity("pause_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	pauseOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	pauseOp->type = UIElement::ELEMENT_TYPE::INPUT_PAUSE;
+	
 	//TELEPORTER
 	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
 	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
