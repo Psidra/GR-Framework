@@ -94,28 +94,52 @@ void UIElement::Update()
 		this->scale.Set(90 * w / 800, 15 * hhalf / 300, 1);
 	}
 
+	if (this->type == INPUT_RELOAD)
+	{
+		this->position.Set(-70 * w / 800, hhalf * 0.05f, 9.5f);
+		this->scale.Set(60 * w / 800, 17 * hhalf / 300, 1);
+	}
+
 	if (this->type == INPUT_MOVE_UP)
 	{
-		this->position.Set(-65 * w / 800, hhalf * 0.05f, 9.5f);
+		this->position.Set(-65 * w / 800, hhalf * -0.05f, 9.5f);//
 		this->scale.Set(73 * w / 800, 20 * hhalf / 300, 1);
 	}
 
 	if (this->type == INPUT_MOVE_DOWN)
 	{
-		this->position.Set(-61 * w / 800, hhalf * -0.04f, 9.5f);
+		this->position.Set(-61 * w / 800, hhalf * -0.14f, 9.5f);//
 		this->scale.Set(80 * w / 800, 18 * hhalf / 300, 1);
 	}
 	
 	if (this->type == INPUT_MOVE_LEFT)
 	{
-		this->position.Set(-61 * w / 800, hhalf * -0.14f, 9.5f);
+		this->position.Set(-61 * w / 800, hhalf *  -0.24f, 9.5f);//
 		this->scale.Set(80 * w / 800, 18 * hhalf / 300, 1);
 	}
 	
 	if (this->type == INPUT_MOVE_RIGHT)
 	{
-		this->position.Set(-61 * w / 800, hhalf * -0.24f, 9.5f);
-		this->scale.Set(80 * w / 800, 25 * hhalf / 300, 1);
+		this->position.Set(-59 * w / 800, hhalf * -0.34f, 9.5f);
+		this->scale.Set(83 * w / 800, 19.5 * hhalf / 300, 1);
+	}
+
+	if (this->type == INPUT_NEXT_GUN)
+	{
+		this->position.Set(-59 * w / 800, hhalf * -0.44f, 9.5f);
+		this->scale.Set(83 * w / 800, 19.5 * hhalf / 300, 1);
+	}
+
+	if (this->type == INPUT_BLANK)
+	{
+		this->position.Set(-59 * w / 800, hhalf * -0.54f, 9.5f);
+		this->scale.Set(83 * w / 800, 19.5 * hhalf / 300, 1);
+	}
+
+	if (this->type == INPUT_PAUSE)
+	{
+		this->position.Set(-70 * w / 800, hhalf * -0.64f, 9.5f);
+		this->scale.Set(53 * w / 800, 19.5 * hhalf / 300, 1);
 	}
 
 	if (this->m_bCollider)

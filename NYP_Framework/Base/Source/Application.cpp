@@ -331,8 +331,16 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("moveleft_button")->textureID[0] = LoadTGA("Image/UI/MoveLeft_Button.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("moveright_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("moveright_button")->textureID[0] = LoadTGA("Image/UI/MoveRight_Button.tga");
-
-
+		
+		MeshBuilder::GetInstance()->GenerateQuad("reload_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("reload_button")->textureID[0] = LoadTGA("Image/UI/ReloadButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("nextwep_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("nextwep_button")->textureID[0] = LoadTGA("Image/UI/NextWepButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("blank_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("blank_button")->textureID[0] = LoadTGA("Image/UI/BlankButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("pause_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("pause_button")->textureID[0] = LoadTGA("Image/UI/PauseButton.tga");
+		
 		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/GunDisplayBorder.tga");
 

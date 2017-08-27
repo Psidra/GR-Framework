@@ -127,23 +127,57 @@ void UIManager::Update()
 
 
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 0 
-					std::cout << "pressed move up" << std::endl;
+					std::cout << "pressed move up, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 0;	//key index for moveup
 					break;
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 1
-					std::cout << "pressed move down" << std::endl;
+					std::cout << "pressed move down, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 1;	//key index for moveup
+					index = 1;	//key index for movedown
 					break;
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT://index 3 <-----index need to change according to controller::index
-					std::cout << "pressed move down" << std::endl;
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT:
+					std::cout << "pressed move left, please input a key" << std::endl;
 
-					//checkingInput = true;
-					//index = 2;	//key index for moveup
+					checkingInput = true;
+					index = 2;	//key index for moveleft
 					break;
+				case UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT:
+					std::cout << "pressed move right, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 3;	//key index for moveright
+					break;
+				case UIElement::ELEMENT_TYPE::INPUT_RELOAD:
+					std::cout << "pressed reload, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 5;	//key index for reload
+					break;
+
+				case UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN:
+					std::cout << "pressed next gun, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 6;	//key index for next gun
+					break;
+
+				case UIElement::ELEMENT_TYPE::INPUT_BLANK:
+					std::cout << "pressed blank, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 10;	//key index for next gun
+					break;
+
+				case UIElement::ELEMENT_TYPE::INPUT_PAUSE:
+					std::cout << "pressed pause, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 9;	//key index for pause
+					break;
+
 				case UIElement::ELEMENT_TYPE::EXIT:
 					exit(0);
 					break;
