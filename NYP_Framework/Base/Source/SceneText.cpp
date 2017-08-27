@@ -269,6 +269,10 @@ void SceneText::Init()
 	confirmOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	confirmOp->type = UIElement::ELEMENT_TYPE::CONFIRM;
 
+	UIElement* reloadOp = Create::UIEntity("reload_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	reloadOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	reloadOp->type = UIElement::ELEMENT_TYPE::INPUT_RELOAD;
+
 	UIElement* moveupOp = Create::UIEntity("moveup_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
 	moveupOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	moveupOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_UP;
@@ -285,7 +289,18 @@ void SceneText::Init()
 	moverightOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	moverightOp->type = UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT;
 
-
+	UIElement* nextgunOp = Create::UIEntity("nextwep_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	nextgunOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	nextgunOp->type = UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN;
+	
+	UIElement* blankOp = Create::UIEntity("blank_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	blankOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	blankOp->type = UIElement::ELEMENT_TYPE::INPUT_BLANK;
+	
+	UIElement* pauseOp = Create::UIEntity("pause_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	pauseOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
+	pauseOp->type = UIElement::ELEMENT_TYPE::INPUT_PAUSE;
+	
 	//TELEPORTER
 	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
 	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
@@ -335,8 +350,8 @@ void SceneText::Init()
 	NewObstacle->Init(100.f, 0, 2, true);
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
-	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(3, 3, 3));
-	FirstBoss->Init(500.f, 0, 2, false);
+	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), true);
+	FirstBoss->Init(1500.f, 0, 1, false);
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
@@ -547,10 +562,14 @@ void SceneText::Update(double dt)
 		minimap->Update(dt);
 		break;
 	}	
-	case UIManager::GAME_STATE::OPTIONS:
+	case UIManager::GAME_STATE::OPTIONS://doesnt work either
 	{
-
-		break;
+		/*std::ostringstream ss1;
+		ss1.precision(4);
+		ss1 << "Player:" << Player::GetInstance()->GetHealth();
+		textObj[2]->SetText(ss1.str());
+		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize + halfFontSize, 0.0f));
+		break;*/
 	}
 	}
 }
@@ -704,6 +723,15 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
+
+	if (Player::GetInstance()->m_bProjectileCircle)
+	{
+		ms.PushMatrix();
+		ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
+		ms.Scale(11, 11, 1);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("projcircle"));
+		ms.PopMatrix();
+	}
 }
 
 void SceneText::Exit()

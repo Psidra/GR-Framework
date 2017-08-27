@@ -35,40 +35,50 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	int distancePlayerToEnemy = CalculateDistance(_destination, _shootpos);
 
-	if (distancePlayerToEnemy > 50) // TODO : Not make this hardcoded lmao
+	if (distancePlayerToEnemy > 60) // TODO : Not make this hardcoded lmao
 		this->SetState(IDLE);
 	else
 		this->SetState(ATTACK_SET_ONE);
 
-	if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
-		this->SetState(ATTACK_SET_TWO);
+	//if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
+	//	this->SetState(ATTACK_SET_TWO);
+
+	if (this->CurrentState == IDLE)
+		return;
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		RNG = Math::RandIntMinMax(0, 2);
+		RNG = Math::RandIntMinMax(0, 3);
 
 		if (RNG == prevRoll)
 		{
 			++RNG;
-			RNG = Math::Wrap(RNG, 0, 2);
+			RNG = Math::Wrap(RNG, 0, 3);
 		}
 
 		prevRoll = RNG;
 
 		Player::GetInstance()->m_bProjectileCircle = false;
+		Player::GetInstance()->m_bPullEffect = false;
 
 		// Time before attack changes
 		switch (RNG) {
 		case 0:
 			_weaponIndex = 0;
-			m_dAttackDuration = m_dElapsedTime + 3.f;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
 			Player::GetInstance()->m_bProjectileCircle = true;
 			break;
 		case 1:
-			m_dAttackDuration = m_dElapsedTime + 2.f;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
+			Player::GetInstance()->m_bPullEffect = true;
 			break;
 		case 2:
-			m_dAttackDuration = m_dElapsedTime + 2.f;
+			_weaponIndex = 1;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
+			break;
+		case 3:
+			_weaponIndex = 2;
+			m_dAttackDuration = m_dElapsedTime + 5.f;
 			break;
 
 		default:
@@ -82,14 +92,21 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	{
 		switch (RNG) {
 		case 0:
-			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-4, 4), Math::RandFloatMinMax(-4, 4), 0.f);
+			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-7, 7), Math::RandFloatMinMax(-7, 7), 0.f);
 			timeBetweenShots = 0.5f;
 			break;
 		case 1:
+			timeBetweenShots = m_dAttackDuration;
 			break;
 		case 2:
+			timeBetweenShots = 0.f;
+			break;
+		case 3:
+			timeBetweenShots = 0.f;
 			break;
 
+		default:
+			break;
 		}
 
 		if (shootElapsedTime > timeBetweenShots && m_dAttackDuration > m_dElapsedTime)

@@ -22,8 +22,8 @@ public:
 	// Edit Max Health
 	void EditMaxHealth(float _value);
 
-	//// Collision Response
-	//void CollisionResponse(GenericEntity* thatEntity);
+	// Collision Response
+	void CollisionResponse(GenericEntity* thatEntity);
 
 private:
 	Vector3 shootPos;

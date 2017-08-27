@@ -50,6 +50,9 @@ Player::Player(void)
 	, m_bSlow(false)
 	, m_bPoison(false)
 	, weaponMesh(NULL)
+	, m_bProjectileCircle(false)
+	, m_bPullEffect(false)
+	, m_dPullEndKB(0.0)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -175,7 +178,18 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		std::cout << "collide" << std::endl;
 		break;
 	case ENEMY:
-		//std::cout << "enemy collide" << std::endl;
+		EditHealth(-0.5f);
+
+		if (m_bPullEffect)
+		{
+			m_dPullEndKB = m_dElapsedTime + 0.2f;
+			m_bMoving = true;
+		}
+		else if (!m_bPullEffect && m_dPullEndKB > m_dElapsedTime)
+		{
+			position += Vector3(-1, -1, 0) * (float)m_dSpeed * 0.016666667f;
+			m_bMoving = true;
+		}
 		break;
 	case ENEMY_BULLET:
 	{
@@ -188,8 +202,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		thatEntity->SetIsDone(true);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(thatEntity);
 
-		if (this->m_fHealth > 0)
-			EditHealth(-Proj->getProjectileDamage());
+		EditHealth(-Proj->getProjectileDamage());
 		isHurt = true;
 		break;
 	}
@@ -224,6 +237,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		break;
 	}
 }
+
 void Player::CollisionCheck_Movement()
 {
 	Vector3 tempMax = this->GetMaxAABB();
@@ -531,7 +545,7 @@ bool Player::Shoot(const float dt)
 	changedpos.y += Math::Clamp(posY * 0.005f, -1.0f, 1.0f);
 
 	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
-	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
+	playerInventory->getPrimaryWeapon()->Discharge(changedpos, view.Normalize()); //position of player, dir to shoot from
 
 	return false;
 }

@@ -4,11 +4,10 @@
 #include "WeaponManager.h"
 
 #include "WeaponInfo\WeaponInfo.h"
+#include "WeaponInfo\CircularWeapon.h"
+#include "WeaponInfo\FourSidedWeapon.h"
+#include "WeaponInfo\Minigun.h"
 #include "WeaponInfo\Pistol.h"
-#include "WeaponInfo/Rifle.h"
-#include "WeaponInfo\Shotgun.h"
-#include "WeaponInfo/Bow.h"
-#include "WeaponInfo/LaserBeam.h"
 
 #include "Inventory.h"
 
@@ -45,7 +44,7 @@ Boss::~Boss()
 		delete theStrategy;
 		theStrategy = NULL;
 	}
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		delete enemyAnimated[i];
 		enemyAnimated[i] = NULL;
@@ -69,8 +68,8 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	SetTypeOfEnemy(_enemyType);
 
 	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
-	enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
-	enemyInventory->addWeaponToInventory(new Bow(GenericEntity::ENEMY_BULLET));
+	enemyInventory->addWeaponToInventory(new Minigun(GenericEntity::ENEMY_BULLET));
+	enemyInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::ENEMY_BULLET));
 
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 
@@ -82,8 +81,8 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 
 void Boss::SetTypeOfEnemy(int _enemyType)
 {
-	enemyAnimated = new GenericEntity*[10];
-	for (size_t i = 0; i < 10; i++)
+	enemyAnimated = new GenericEntity*[9];
+	for (size_t i = 0; i < 9; i++)
 	{
 		this->enemyAnimated[i] = new GenericEntity();
 	}
@@ -92,33 +91,25 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 	switch (_enemyType) //WIP - set choice of units to spawn
 	{
 	case 1: //red minion
-		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
-		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
-		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
-		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand2"));
-		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk1"));
-		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
-		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
-		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
-		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
-		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
-		
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal1"));
+		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal2"));
+		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal3"));
+		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_hurt1"));
+		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_hurt2"));
+		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_hurt3"));
+		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ1"));
+		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ2"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ3"));
 		break;
-	case 2:
-		for (size_t i = 0; i < 8; i++)
-		{
-			this->enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
-		}
-		break;
+
 	default:
 		break;
 	}
-	this->SetIndices_fStand(0, 1);
-	this->SetIndices_bStand(2, 3);
-	this->SetIndices_fWalk(4, 5);
-	this->SetIndices_bWalk(6, 7);
-	this->SetIndices_fHurt(8, 8);
-	this->SetIndices_bHurt(9, 9);
+	this->SetIndices_fStand(0, 2);
+	this->SetIndices_bStand(0, 2);
+	this->SetIndices_fHurt(3, 5);
+	this->SetIndices_bHurt(3, 5);
+	this->SetIndices_Succ(6, 8);
 }
 
 void Boss::Update(double dt)
@@ -149,12 +140,22 @@ void Boss::Update(double dt)
 			//++weaponIndex;
 			//weaponIndex = Math::Wrap(weaponIndex, 0, 2);
 		}
+
+		if (Player::GetInstance()->m_bPullEffect)
+		{
+			Vector3 playerpos = Player::GetInstance()->GetPos();
+			Vector3 bosspullpos = this->GetPos();
+			Vector3 diff = playerpos - bosspullpos;
+
+			playerpos += (bosspullpos - playerpos).Normalized() * 5.f * (float)dt;
+			Player::GetInstance()->SetPos(playerpos);
+		}
 	}
 	if (health <= 0)
 		this->SetIsDone(true);
-	if (isHurt == true)
+	if (isHurt)
 		hurtElapsedTime += dt;
-	if (hurtElapsedTime > 1.5)
+	if (hurtElapsedTime > 1.5f)
 	{
 		hurtElapsedTime = 0.0;
 		isHurt = false;
@@ -166,10 +167,6 @@ void Boss::Update(double dt)
 	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
 }
-
-//void Boss::CollisionResponse(GenericEntity * thatEntity)
-//{
-//}
 
 void Boss::SetMaxHealth(float _health)
 {
@@ -186,6 +183,19 @@ void Boss::EditMaxHealth(float _health)
 	this->maxHealth += _health;
 }
 
+void Boss::CollisionResponse(GenericEntity * thatEntity)
+{
+	switch (thatEntity->type) {
+	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+		isHurt = true;
+		std::cout << "boss collide with player bullet" << std::endl;
+		break;
+
+	default:
+		break;
+	}
+}
+
 Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3 scale, bool _isActive)
 {
 	Boss* result = new Boss(MeshList::GetInstance()->GetMesh(_meshName));
@@ -194,7 +204,7 @@ Boss * Create::SpawnBoss(Vector3 position, const std::string& _meshName, Vector3
 	result->SetScale(scale);
 	result->SetCollider(true);
 	result->SetIsActive(_isActive);
-	result->type = GenericEntity::OBJECT_TYPE::BOSS;
+	result->type = GenericEntity::OBJECT_TYPE::ENEMY;
 	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

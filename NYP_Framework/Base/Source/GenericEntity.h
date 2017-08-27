@@ -19,7 +19,6 @@ public:
 		PLAYER,
 		WALL,
 		ENEMY,
-		BOSS,
 		ENEMY_BULLET,
 		PLAYER_BULLET,
 		PIT, // aren't pits like the opposite of entities, being devoid? :thinking:

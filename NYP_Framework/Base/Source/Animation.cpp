@@ -1,5 +1,6 @@
 #include "Animation.h"
 #include <iostream>
+#include "PlayerInfo\PlayerInfo.h"
 CAnimation::CAnimation()
 	: m_bFacingUp(false)
 	, m_bIsMoving(false)
@@ -12,6 +13,8 @@ CAnimation::CAnimation()
 	, m_ifWalk_End(0)
 	, m_ibWalk_Start(0)
 	, m_ibWalk_End(0)
+	, m_iSucc_Start(0)
+	, m_iSucc_End(0)
 	, m_dElapsedAnimTime(0.0)
 	, m_dTimeBetweenEachFrame(1.0)
 {
@@ -62,7 +65,14 @@ void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 
 	if (m_dElapsedAnimTime > m_dTimeBetweenEachFrame)
 	{
-		if (m_bIsHurt)	//character hurt
+		if (Player::GetInstance()->m_bPullEffect)
+		{
+			m_iAnimation_Index += 1;
+			if (m_iAnimation_Index > m_iSucc_End)
+				m_iAnimation_Index = m_iSucc_Start;
+			m_dElapsedAnimTime = 0.0;
+		}
+		else if (m_bIsHurt)	//character hurt
 		{
 			if (m_bFacingUp)
 			{
@@ -152,4 +162,10 @@ void CAnimation::SetIndices_bHurt(const int m_ibHurt_Start, const int m_ibHurt_E
 {
 	this->m_ibHurt_Start = m_ibHurt_Start;
 	this->m_ibHurt_End = m_ibHurt_End;
+}
+
+void CAnimation::SetIndices_Succ(const int m_iSucc_Start, const int m_iSucc_End)
+{
+	this->m_iSucc_Start = m_iSucc_Start;
+	this->m_iSucc_End = m_iSucc_End;
 }
