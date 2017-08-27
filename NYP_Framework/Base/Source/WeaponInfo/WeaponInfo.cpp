@@ -170,6 +170,8 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target)
 // Reload this weapon
 void CWeaponInfo::Reload(void)
 {
+	AudioEngine::GetInstance()->PlayASound("rifleReload", false);
+
 	if (magRounds < maxMagRounds)
 	{
 		if (maxMagRounds - magRounds <= totalRounds)

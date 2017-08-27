@@ -94,6 +94,8 @@ void LaserBeam::Discharge(Vector3 position, Vector3 target)
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 				--magRounds;
+
+			//AudioEngine::GetInstance()->PlayASound("laser", false);
 		}
 	}
 }

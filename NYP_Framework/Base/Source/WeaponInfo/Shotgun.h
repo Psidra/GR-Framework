@@ -16,6 +16,8 @@ public:
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
 	// Get mesh
+	void Reload();
+
 	Mesh* GetMesh();
 private:
 	// generate bullet(num of bullet,dir)

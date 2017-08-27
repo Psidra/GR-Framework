@@ -28,6 +28,7 @@ public:
 		SLOW,
 		POISON,
 		TELEPORTER,
+		EXIT,
 	}type;
 
 	virtual void Update(double _dt);

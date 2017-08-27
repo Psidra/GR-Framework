@@ -15,6 +15,7 @@ public:
 		WALL,
 		ROOM,
 		CORRIDOR,
+		EXIT,
 		COUNT,
 	};
 

@@ -370,28 +370,11 @@ void SceneText::Init()
 
 	Math::InitRNG();
 	level = Level::GetInstance();
-	level->init(32.f, 32.f, 16.f, 16.f, 20);
-	Player::GetInstance()->SetPos(Vector3(15, 15, 1));
+	level->init(32.f, 32.f, 12.f, 12.f, 30);
+	level->setUp();
+	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	for (size_t i = 0; i < level->getMapWidth(); ++i)
-	{
-		for (size_t j = 0; j < level->getMapHeight(); ++j)
-		{
-			TileEntity* temp = NULL;
-
-			if (level->getTile(i, j).type == Tile::WALL)
-			{
-				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
-				temp->type = GenericEntity::OBJECT_TYPE::WALL;
-				temp->setNormal(Vector3(1, 0, 0));
-			}
-
-			if (!temp)
-				continue;
-
-			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
-		}
-	}
+	
 	
 	//minimap->setMiniMapRoomList(level->getRooms());
 
@@ -418,8 +401,8 @@ void SceneText::Update(double dt)
 	float posY = (halfWindowHeight - static_cast<float>(y));
 
 	//keyboard->ConvertInt();
-	//float fps = (float)(1.f / dt);
-	//std::cout << "fps:" << fps << "          ";
+	float fps = (float)(1.f / dt);
+	std::cout << "fps:" << fps << "          ";
 	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
 
 	////vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);

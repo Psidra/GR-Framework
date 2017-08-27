@@ -97,6 +97,7 @@ void Rifle::Discharge(Vector3 position, Vector3 target)
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
+			AudioEngine::GetInstance()->PlayASound("rifle", false);
 		}
 	}
 }
@@ -156,3 +157,5 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 
 	m_fSpeed = 15.f;
 }
+
+

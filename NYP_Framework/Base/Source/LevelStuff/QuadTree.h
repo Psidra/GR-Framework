@@ -4,47 +4,39 @@
 
 #include "../GenericEntity.h"
 
-#include <list>;
 #include <vector>;
 
-using std::list;
 using std::vector;
+
 
 class QuadTree {
 
-enum Node {
-		NW = 0,
-		NE,
-		SW,
-		SE,
-		NodeCount
-};
-
 public:
 	QuadTree();
-	QuadTree(float _left, float _right, float _top, float _down, unsigned _maxObjectsToGrow = 4);
+	QuadTree(float _x, float _y, float _width, float _height, int _level, int _maxLevel);
 	~QuadTree();
 
 	void addObject(EntityBase *object);
 	void clear();
 	vector<EntityBase*> getObjectsAt(float _x, float _y);
-	vector<EntityBase*> queryRange(float _left, float _right, float _top, float _down);
 
 private:
+	float x;
+	float y;
+	float width;
+	float height;
+	int level;
+	int maxLevel;
+	int maxObjects;
+
 	vector<EntityBase*> objects;
 
-	float left, right, top, down;
-	unsigned maxObjectToGrow;
-	QuadTree* nodes;
+	QuadTree* NW;
+	QuadTree* NE;
+	QuadTree* SW;
+	QuadTree* SE;
 
-	bool isLeaf;
-
-	bool contains(EntityBase *object);
-	bool contains(float x, float y);
-	bool contains(float _left, float _right, float _top, float _down);
-
-	void createLeaves();
-	void moveObjectsToLeaves();
+	bool contains(QuadTree *child, EntityBase *object);
 };
 
 

@@ -97,6 +97,26 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 			bFire = false;
 			if(bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
+			AudioEngine::GetInstance()->PlayASound("shotgun", false);
+		}
+	}
+}
+
+void Shotgun::Reload()
+{
+	AudioEngine::GetInstance()->PlayASound("shotgunReload", false);
+
+	if (magRounds < maxMagRounds)
+	{
+		if (maxMagRounds - magRounds <= totalRounds)
+		{
+			totalRounds -= maxMagRounds - magRounds;
+			magRounds = maxMagRounds;
+		}
+		else
+		{
+			magRounds += totalRounds;
+			totalRounds = 0;
 		}
 	}
 }

@@ -152,7 +152,7 @@ void CEnemy::CollisionCheck()
 	Vector3 tempMin = this->GetMinAABB();
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
 
-	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 3);
 	//QuadTree quadTree(0, 800, 600, 0, 3);
 	vector<EntityBase*> getNearestObj;
 
@@ -166,11 +166,12 @@ void CEnemy::CollisionCheck()
 	{
 		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f) * direction.y, tempMin + Vector3(0.f, checkby, 0.f) * direction.y);
 
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
-		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
+		//std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
 
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{
@@ -204,11 +205,12 @@ void CEnemy::CollisionCheck()
 	{
 		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f) * direction.x, tempMin + Vector3(checkby, 0.f, 0.f) * direction.x);
 
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
-		std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
+		//std::cout << "Intial :: " << cpy.size() << "||" << "Checking :: " << getNearestObj.size() << std::endl;
 
 		for (it = getNearestObj.begin(); it != end; ++it)
 		{

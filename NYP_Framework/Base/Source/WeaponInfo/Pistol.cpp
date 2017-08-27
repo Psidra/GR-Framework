@@ -99,6 +99,7 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 			bFire = false;
 			if (bulletType == GenericEntity::PLAYER_BULLET || bulletType == GenericEntity::ENEMY_BULLET)
 			--magRounds;
+			AudioEngine::GetInstance()->PlayASound("pistol", false);
 		}
 	}
 }

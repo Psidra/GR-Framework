@@ -108,8 +108,14 @@ void Player::Init(void)
 
 	// Audio Related adding sound
 	AudioEngine::GetInstance()->Init();
-	AudioEngine::GetInstance()->AddSound("testjump", "Audio/Mario-jump-sound.mp3");
+	AudioEngine::GetInstance()->AddSound("pistol", "Audio/GunFire.mp3");
+	AudioEngine::GetInstance()->AddSound("shotgun", "Audio/Shotgun.mp3");
+	AudioEngine::GetInstance()->AddSound("shotgunReload", "Audio/ShotgunReload.mp3");
 	AudioEngine::GetInstance()->AddSound("lastbattle", "Audio/LastBattle.mp3");
+	AudioEngine::GetInstance()->AddSound("laser", "Audio/Pewpew.mp3");
+	AudioEngine::GetInstance()->AddSound("bow", "Audio/Bow.mp3");
+	AudioEngine::GetInstance()->AddSound("rifle", "Audio/Rifle.mp3");
+	AudioEngine::GetInstance()->AddSound("rifleReload", "Audio/RifleReload.mp3");
 	AudioEngine::GetInstance()->setVolume(50);
 
 	playerAnimated = new GenericEntity*[10];
@@ -210,6 +216,9 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		this->m_bPoison = true;
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
 		break;
+	case EXIT:
+		//Level::GetInstance()->newLevel();
+		break;
 
 	default:
 		break;
@@ -221,7 +230,7 @@ void Player::CollisionCheck_Movement()
 	Vector3 tempMin = this->GetMinAABB();
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
 
-	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 2);
 	//QuadTree quadTree(0, 800, 600, 0, 3);
 	vector<EntityBase*> getNearestObj;
 
@@ -239,8 +248,8 @@ void Player::CollisionCheck_Movement()
 	if (direction.y != 0)
 	{
 		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f) * direction.y, tempMin + Vector3(0.f, checkby, 0.f) * direction.y);
-		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
@@ -269,7 +278,8 @@ void Player::CollisionCheck_Movement()
 	{
 		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f) * direction.x, tempMin + Vector3(checkby, 0.f, 0.f) * direction.x);
 	
-		getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
@@ -523,7 +533,6 @@ bool Player::Shoot(const float dt)
 	//playerInventory->getWeaponList()[weaponIndex]->Discharge(changedpos, view);
 	playerInventory->getPrimaryWeapon()->Discharge(position, view.Normalize()); //position of player, dir to shoot from
 
-	AudioEngine::GetInstance()->PlayASound("testjump", false);
 	return false;
 }
 

@@ -5,6 +5,8 @@
 #include <algorithm>
 
 #include "TileEntity.h"
+#include "../PlayerInfo/PlayerInfo.h"
+#include "../EntityManager.h"
 
 Level::Level() : roomCount(0)
 {
@@ -20,11 +22,11 @@ void Level::init(float mapHeight, float mapWidth, float maxRoomHeight, float max
 	this->mapWidth = mapWidth;
 	this->maxRoomHeight = maxRoomHeight;
 	this->maxRoomWidth = maxRoomWidth;
+	roomCount = 0;
+	corrCount = 0;
 	generate();
 	createMap(maxAttempts);
 	//testCout();
-
-	//Level* level = Level::GetInstance();
 }
 
 void Level::setMaxRooms(int num)
@@ -220,7 +222,7 @@ void Level::generateWalls()
 		}
 	}
 
-	// Add Walls in 4 coners
+	//Add Walls in 4 coners
 	for (int x = 0; x < mapWidth; ++x) {
 		for (int y = 0; y < mapHeight; ++y) {
 
@@ -242,6 +244,83 @@ void Level::generateWalls()
 			}
 		}
 	}
+}
+
+void Level::setUp()
+{
+	spawnExit();
+	loadEntitys();
+
+
+	//Locate a suitable location to spawn the player.
+	bool spawnable = false;
+	while (!spawnable)
+	{
+		int rndX = Math::RandIntMinMax(0, mapWidth);
+		int rndY = Math::RandIntMinMax(0, mapHeight);
+
+		if (getTile(rndX, rndY).type == Tile::ROOM)
+		{
+			spawnable = true;
+			Player::GetInstance()->SetPos(Vector3(rndX, rndY, 1));
+			break;
+		}
+	}
+}
+
+void Level::spawnExit()
+{
+	int roomSelected = Math::RandIntMinMax(0, rooms.size() - 1);
+	int randX = Math::RandIntMinMax(rooms[roomSelected].x, rooms[roomSelected].x2);
+	int randY = Math::RandIntMinMax(rooms[roomSelected].y, rooms[roomSelected].y2);
+	
+	setTile(randX, randY, Tile::EXIT);
+	
+}
+
+void Level::clearEntitys()
+{
+	levelMap.clear();
+	rooms.clear();
+	EntityManager::GetInstance()->getEntityList().clear();
+	EntityManager::GetInstance()->getCollisionList().clear();
+}
+
+void Level::loadEntitys()
+{
+	for (size_t i = 0; i < mapWidth; ++i)
+	{
+		for (size_t j = 0; j < mapHeight; ++j)
+		{
+			TileEntity* temp = NULL;
+
+			if (getTile(i, j).type == Tile::WALL)
+			{
+				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::WALL;
+				temp->setNormal(Vector3(1, 0, 0));
+			}
+
+			else  if (getTile(i, j).type == Tile::EXIT)
+			{
+				temp = Create::TEntity("player", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::EXIT;
+				temp->setNormal(Vector3(1, 0, 0));
+			}
+
+			if (!temp)
+				continue;
+
+			temp->SetAABB(temp->GetScale() * 0.5f + temp->GetPosition(), temp->GetScale() * -0.5f + temp->GetPosition());
+		}
+	}
+}
+
+void Level::newLevel()
+{
+	clearEntitys();
+	GetInstance()->init(32.f, 32.f, 12.f, 12.f, 30);
+	setUp();
 }
 
 void Level::testCout()

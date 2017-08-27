@@ -98,6 +98,8 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			//m_fRotateAngle += 10;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
 			--magRounds;
+
+			AudioEngine::GetInstance()->PlayASound("bow", false);
 		}
 	}
 

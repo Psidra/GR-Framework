@@ -111,6 +111,12 @@ public:
 	bool isRoomOverlap(float roomPosX, float roomPosY, float roomWidth, float roomHeight);
 	void generateWalls();
 
+	void setUp();
+	void spawnExit();
+	void clearEntitys();
+	void loadEntitys();
+	void newLevel();
+
 	bool isTileWall(Tile t);
 	bool setTile(int x, int y, Tile::TILE_TYPE);
 	Tile getTile(int x, int y);

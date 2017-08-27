@@ -4,6 +4,8 @@
 #include "../GenericEntity.h"
 #include "../Projectile/Projectile.h"
 
+#include "../AudioEngine.h"
+
 class CWeaponInfo
 {
 public:
@@ -91,7 +93,7 @@ public:
 	// Discharge this weapon
 	virtual void Discharge(Vector3 position, Vector3 target) = 0;
 	// Reload this weapon
-	void Reload(void);
+	virtual void Reload(void);
 	// Add rounds
 	void AddRounds(const int newRounds);
 

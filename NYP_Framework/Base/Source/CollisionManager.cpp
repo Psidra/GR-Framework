@@ -105,7 +105,7 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 	int index = 0;
 	end = collisionList.end();
 
-	QuadTree quadTree(0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0);
+	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 2);
 	//QuadTree quadTree(0, 800, 600, 0, 3);
 	vector<EntityBase*> getNearestObj;
 	
@@ -121,10 +121,11 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 			break;
 
 		//list<EntityBase*> retunedObj;
-		getNearestObj = quadTree.queryRange(dynamic_cast<GenericEntity*>(*it)->GetMinAABB().x,
+		getNearestObj = quadTree.getObjectsAt((*it)->GetPosition().x, (*it)->GetPosition().y);
+		/*getNearestObj = quadTree.queryRange(dynamic_cast<GenericEntity*>(*it)->GetMinAABB().x,
 			dynamic_cast<GenericEntity*>(*it)->GetMaxAABB().x, 
 			dynamic_cast<GenericEntity*>(*it)->GetMaxAABB().y, 
-			dynamic_cast<GenericEntity*>(*it)->GetMinAABB().y);
+			dynamic_cast<GenericEntity*>(*it)->GetMinAABB().y);*/
 		//getNearestObj = quadTree.getObjectsAt((*it)->GetPosition().x, (*it)->GetPosition().y);
 		//std::copy(getNearestObj.begin(), getNearestObj.end(), std::back_inserter(retunedObj));
 		//for (it2 = std::next(it, 1); it2 != end; ++it2)
@@ -152,8 +153,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 	}
 
 	getNearestObj.clear();
-	getNearestObj = quadTree.queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
-
+	//getNearestObj = quadTree.queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
+	getNearestObj = quadTree.getObjectsAt(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y);
 	for (std::vector<EntityBase*>::iterator it3 = getNearestObj.begin(); it3 != getNearestObj.end(); ++it3)
 	{
 		if (CheckAABBCollision(Player::GetInstance(), *it3))
