@@ -31,6 +31,7 @@ public:
 		float height = 0;
 		float x2 = 0;
 		float y2 = 0;
+		bool m_bInRange = false;
 
 		Rectangle(float _x, float _y, float _width, float _height)
 		{ 

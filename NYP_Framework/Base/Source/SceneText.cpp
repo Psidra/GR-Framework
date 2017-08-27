@@ -341,7 +341,6 @@ void SceneText::Init()
 
 	// Minimap
 	minimap = Create::Minimap(false);
-	minimap->Init();
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
 	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
@@ -395,6 +394,7 @@ void SceneText::Init()
 	}
 	
 	//minimap->setMiniMapRoomList(level->getRooms());
+
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
 		it != EntityManager::GetInstance()->getCollisionList().end();++it)
 	{
@@ -403,6 +403,9 @@ void SceneText::Init()
 
 		minimap->addToMinimapList(*it);
 	}
+
+	//this should be the last to be called
+	minimap->Init();
 }
 
 void SceneText::Update(double dt)
