@@ -19,7 +19,7 @@ CMinimap::CMinimap(void)
 	, m_iAngle(-90)
 	, mode(MODE_2D)
 {
-	Init();
+	//Init();
 }
 CMinimap::~CMinimap(void)
 {
@@ -66,11 +66,70 @@ bool CMinimap::Init(void)
 	mapState = NORMAL;
 
 	//map id
-	mapID[0] = "wallpos";
-	mapID[1] = "wallscale";
-	mapID[2] = "telepos";
-	mapID[3] = "telescale";
+	//mapID[0] = "wallpos";
+	//mapID[1] = "wallscale";
+	//mapID[2] = "telepos";
+	//mapID[3] = "telescale";
+
+	mmRoomList = Level::GetInstance()->getRooms();
+	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	{
+		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+		tScale = tScale * (1.0f / (scale.x * 0.05));
+		roomScaleMapList.push_back(tScale);
+		roomPosMapList.push_back(tScale); //temp pushback
+	}
+
+	for (std::list<EntityBase*>::iterator it = minimapList.begin(); it != minimapList.end(); ++it)
+	{
+		switch (dynamic_cast<GenericEntity*>((*it))->type)
+		{
+			case GenericEntity::TELEPORTER:
+				teleporterMapPos.push_back((*it)->GetPosition());
+				teleporterActPos.push_back((*it)->GetPosition());
+				teleporterMapScale.push_back((*it)->GetScale() * (1.0f / (scale.x * 0.1)));
+				break;
+			default:
+				break;
+		}
+	}
+
+
+	playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
+
 	return true;
+	//if (m_bMoving)
+	//{
+	//for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
+	//	;it != CMinimap::GetInstance()->getMinimapList().end();++it)
+	//{
+
+	//	Vector3 temp = CMinimap::GetInstance()->GetScale();
+
+	//	if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
+	//	{
+	//		//std::cout << "in range\n";
+	//		switch (dynamic_cast<GenericEntity*>((*it))->type)
+	//		{
+	//		case GenericEntity::TELEPORTER:
+	//			CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
+	//			CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
+	//			CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
+	//			break;
+	//		default:
+	//			break;
+	//		}
+	//	}
+	//}
+	//}
+
+	//for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	//{
+	//	Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
+	//	Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+	//	CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
+	//	CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
+	//}
 }
 
 bool CMinimap::SetTarget(Mesh* aTarget)
@@ -160,10 +219,10 @@ Mesh* CMinimap::GetStencil(void) const
 	return m_cMinimap_Stencil;
 }
 
-void CMinimap::setObjectPos(std::string _type, Vector3 _pos)
-{
-	minimapData[_type].push_back(_pos);
-}
+//void CMinimap::setObjectPos(std::string _type, Vector3 _pos)
+//{
+//	minimapData[_type].push_back(_pos);
+//}
 
 // Set the Enemy mesh to this class
 bool CMinimap::SetObjectMesh(Mesh* _mesh)
@@ -187,15 +246,15 @@ void CMinimap::setObject(Vector3 _pos ,Vector3 _scale)
 	objScale = _scale;
 }
 
-std::map<std::string, std::vector<Vector3>> CMinimap::getMinimapData()
-{
-	return minimapData;
-}
-// set minimap map scale
-void CMinimap::setObjectScale(std::string _type, Vector3 _scale)
-{
-	minimapData[_type].push_back(_scale);
-}
+//std::map<std::string, std::vector<Vector3>> CMinimap::getMinimapData()
+//{
+//	return minimapData;
+//}
+//// set minimap map scale
+//void CMinimap::setObjectScale(std::string _type, Vector3 _scale)
+//{
+//	minimapData[_type].push_back(_scale);
+//}
 // get player map scale
 Vector3 CMinimap::getPlayerMapScale()
 {
@@ -226,7 +285,19 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 	{
 		scale.Set(500, 500, 1);
 		position.Set(0, 0, 9.f);
-		m_fRange = scale.x * 0.001f;
+
+		//rescale
+		roomScaleMapList.clear();
+		for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+		{
+			Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+			tScale *= 1.0f / (scale.x * 0.05);
+			roomScaleMapList.push_back(tScale);
+		}
+
+		playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
+
+		m_fRange = scale.x * 0.1f;
 		mapState = ENLARGED;
 	}
 	else
@@ -234,7 +305,18 @@ void CMinimap::EnlargeMap(bool _isEnlarged)
 		scale.Set(100, 100, 1);
 		//position.Set(335.f, 235.f, 0.0f);
 		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, -1000.0f);
-		m_fRange = scale.x * 0.01f;
+
+		//rescale
+		roomScaleMapList.clear();
+		for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+		{
+			Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+			tScale *= 1.0f / (scale.x * 0.05);
+			roomScaleMapList.push_back(tScale);
+		}
+		playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
+
+		m_fRange = scale.x * 0.1f;
 		mapState = NORMAL;
 	}
 }
@@ -271,21 +353,34 @@ void CMinimap::Update(double dt)
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f; //400
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f; //300
 
-	for (int i = 0; i < NUM_TYPE; ++i)
+	//for the rooms
+	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
 	{
-		for (std::vector<Vector3>::iterator it = minimapData[mapID[i]].begin();
-			it != minimapData[mapID[i]].end();++it)
+		Vector3 roomPos(Level::GetInstance()->getRooms()[i].getMidPoint().x, Level::GetInstance()->getRooms()[i].getMidPoint().y, 0);
+		mmRoomList[i].m_bInRange = false;
+		if ((roomPos - Player::GetInstance()->GetPos()).LengthSquared() < m_fRange * m_fRange)
 		{
-			if (mapID[i] == "wallscale")
-				(*it) = (*it) * (1.0f / (scale.x * 0.05));
-			else
-				(*it) = (*it) * (1.0f / (scale.x * 0.1));
+			Vector3 tPos = roomPos - Player::GetInstance()->GetPos();
+			tPos = tPos *  (1.0f / (scale.x * 0.1));
+			roomPosMapList[i] = tPos;
+			mmRoomList[i].m_bInRange = true;
+			//CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
 		}
 	}
 
-	m_iNumWall = minimapData["wallpos"].size();
-	m_iNumTele = minimapData["telepos"].size();
-
+	int counter = 0;
+	//other entity e.g teleporter and stuff if we adding
+	for (std::list<EntityBase*>::iterator it = minimapList.begin(); it != minimapList.end(); ++it)
+	{
+		(*it)->SetInRange(false);
+		if (((*it)->GetPosition() - Player::GetInstance()->GetPos()).LengthSquared() < m_fRange * m_fRange)
+		{
+			teleporterMapScale[counter] = ((*it)->GetScale() * (1.0f / (scale.x * 0.1)));
+			teleporterMapPos[counter] = ((*it)->GetPosition() - Player::GetInstance()->GetPos()) *  (1.0f / (scale.x * 0.1));
+			(*it)->SetInRange(true);
+		}
+		++counter;
+	}
 
 	switch (mapState)
 	{
@@ -308,16 +403,17 @@ void CMinimap::Update(double dt)
 			Vector3 temp(posX, posY, 0);
 			//std::cout << "mousePos: " << temp << "\n";
 
-			for (int i = 0; i < m_iNumTele; ++i)
+			for (int i = 0; i < teleporterMapPos.size(); ++i)
 			{
-				if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() > m_fRange)
+				if ((teleporterMapPos[i] - playerMapPos).LengthSquared() > m_fRange * m_fRange)
 					continue;
 
-				//std::cout << "mmPos: " << minimapData["telepos"][i] * scale.x << "\n";
+				//std::cout << "mmPos: " << teleporterMapPos[i] << "\n";
 
-				if (temp < minimapData["telepos"][i] * scale.x + minimapData["telescale"][i] * scale.x  &&
-					temp > minimapData["telepos"][i] * scale.x - minimapData["telescale"][i] * scale.x)
+				if (temp < teleporterMapPos[i] * scale.x + teleporterMapScale[i] * scale.x  &&
+					temp > teleporterMapPos[i] * scale.x - teleporterMapScale[i] * scale.x)
 				{
+					//std::cout << "can teleport\n";
 					Player::GetInstance()->SetPos(teleporterActPos[i]);
 					EnlargeMap(false);
 					m_bEnlarged = false;
@@ -332,8 +428,7 @@ void CMinimap::Update(double dt)
 		break;
 	}
 
-	playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
-	playerMapPos = Player::GetInstance()->GetPos() * (1.0f / (scale.x * 0.2));
+	playerMapPos = Player::GetInstance()->GetPos() * (1.0f / (scale.x * 0.1));
 }
 
 void CMinimap::RenderUI()
@@ -386,37 +481,53 @@ void CMinimap::RenderUI()
 			
 				// Render walls
 				glDisable(GL_DEPTH_TEST);
-				for (int i = 0; i < m_iNumWall; ++i)
+				for (size_t i = 0; i < roomPosMapList.size(); ++i)
 				{
 					//if (playerMapPos.LengthSquared() > minimapData["wallpos"][i].LengthSquared())
-					if((minimapData["wallpos"][i] - playerMapPos).LengthSquared() < m_fRange)
+					//if ((roomPosMapList[i] - playerMapPos).LengthSquared() < m_fRange)
+					if(mmRoomList[i].m_bInRange)
 					{
 						//std::cout << minimapData["wallpos"][i] << " render\n";
 						modelStack.PushMatrix();
-						modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
-						// Rotate the current transformation
-						modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
-						modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
+						modelStack.Translate(roomPosMapList[i].x, roomPosMapList[i].y, 0);
+						modelStack.Scale(roomScaleMapList[i].x, roomScaleMapList[i].y, roomScaleMapList[i].z);
 						// Render an object
 						RenderHelper::RenderMesh(m_cMinimap_Object);
 						modelStack.PopMatrix();
 					}
 				}
-				for (int i = 0; i < m_iNumTele; ++i)
+				int counter = 0;
+				for (std::list<EntityBase*>::iterator it = minimapList.begin(); 
+					it != minimapList.end(); ++it)
 				{
-					if ((minimapData["telepos"][i] - playerMapPos).LengthSquared() < m_fRange)
+					if ((*it)->IsInRange())
 					{
 						//std::cout << minimapData["wallpos"][i] << " render\n";
 						modelStack.PushMatrix();
-						modelStack.Translate(minimapData["telepos"][i].x, minimapData["telepos"][i].y, 0);
-						// Rotate the current transformation
-						modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
-						modelStack.Scale(minimapData["telescale"][i].x, minimapData["telescale"][i].y, minimapData["telescale"][i].z);
+						modelStack.Translate(teleporterMapPos[counter].x, teleporterMapPos[counter].y, 0);
+						modelStack.Scale(teleporterMapScale[counter].x, teleporterMapScale[counter].y, 1);
 						// Render an object
 						RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("greenCube"));
 						modelStack.PopMatrix();
 					}
+					++counter;
 				}
+				//for (int i = 0; i < m_iNumWall; ++i)
+				//{
+				//	//if (playerMapPos.LengthSquared() > minimapData["wallpos"][i].LengthSquared())
+				//	if((minimapData["wallpos"][i] - playerMapPos).LengthSquared() < m_fRange)
+				//	{
+				//		//std::cout << minimapData["wallpos"][i] << " render\n";
+				//		modelStack.PushMatrix();
+				//		modelStack.Translate(minimapData["wallpos"][i].x, minimapData["wallpos"][i].y, 0);
+				//		// Rotate the current transformation
+				//		modelStack.Rotate(m_iAngle, 0.0f, 0.0f, -1.0f);
+				//		modelStack.Scale(minimapData["wallscale"][i].x, minimapData["wallscale"][i].y, minimapData["wallscale"][i].z);
+				//		// Render an object
+				//		RenderHelper::RenderMesh(m_cMinimap_Object);
+				//		modelStack.PopMatrix();
+				//	}
+				//}
 				glEnable(GL_DEPTH_TEST);
 
 			modelStack.PopMatrix();
@@ -448,11 +559,11 @@ void CMinimap::RenderUI()
 	modelStack.PopMatrix();
 
 	//clear all pos
-	minimapData["wallpos"].clear();
-	minimapData["wallscale"].clear();
-	minimapData["telepos"].clear();
-	minimapData["telescale"].clear();
-	teleporterActPos.clear();
+	//minimapData["wallpos"].clear();
+	//minimapData["wallscale"].clear();
+	//minimapData["telepos"].clear();
+	//minimapData["telescale"].clear();
+	//teleporterActPos.clear();
 }
 
 CMinimap* Create::Minimap(const bool m_bAddToLibrary)

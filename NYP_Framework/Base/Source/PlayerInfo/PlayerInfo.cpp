@@ -390,36 +390,36 @@ void Player::Update(double dt)
 	//update minimap only when player moves
 	//if (m_bMoving)
 	//{
-		for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
-			;it != CMinimap::GetInstance()->getMinimapList().end();++it)
-		{
+		//for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
+		//	;it != CMinimap::GetInstance()->getMinimapList().end();++it)
+		//{
 
-			Vector3 temp = CMinimap::GetInstance()->GetScale();
+		//	Vector3 temp = CMinimap::GetInstance()->GetScale();
 
-			if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
-			{
-				//std::cout << "in range\n";
-				switch (dynamic_cast<GenericEntity*>((*it))->type)
-				{
-				case GenericEntity::TELEPORTER:
-					CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
-					CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
-					CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
-					break;
-				default:
-					break;
-				}
-			}
-		}
+		//	if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
+		//	{
+		//		//std::cout << "in range\n";
+		//		switch (dynamic_cast<GenericEntity*>((*it))->type)
+		//		{
+		//		case GenericEntity::TELEPORTER:
+		//			CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
+		//			CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
+		//			CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
+		//			break;
+		//		default:
+		//			break;
+		//		}
+		//	}
+		//}
 	//}
 
-	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
-	{
-		Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
-		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-		CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
-		CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
-	}
+	//for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
+	//{
+	//	Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
+	//	Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
+	//	CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
+	//	CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
+	//}
 
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{

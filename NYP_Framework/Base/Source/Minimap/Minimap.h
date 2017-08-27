@@ -137,16 +137,29 @@ protected:
 	Vector3 playerMapPos;
 	//range of minimap
 	float m_fRange;
-	//temporary storage method for render of map (will be changed maybe)
-	std::map <std::string, std::vector<Vector3>> minimapData;
-	//storing string id of map
-	std::string mapID[NUM_TYPE];
-	//teleporter pos
+
+
+	////temporary storage method for render of map (will be changed maybe)
+	//std::map <std::string, std::vector<Vector3>> minimapData;
+	////storing string id of map
+	//std::string mapID[NUM_TYPE];
+
+	//teleport minimap pos
+	std::vector<Vector3> teleporterMapPos;
+	//teleporter minimap scale
+	std::vector<Vector3> teleporterMapScale;
+	//teleporter actual pos
 	std::vector<Vector3> teleporterActPos;
 	//list for minimap
 	std::list<EntityBase*> minimapList;
 	//RoomList for mm
 	std::vector<Level::Rectangle> mmRoomList;
+	
+	//minimap room pos
+	std::vector<Vector3> roomPosMapList;
+	//minimap room scale
+	std::vector<Vector3> roomScaleMapList;
+
 	SPRITE_RENDERMODE mode;
 };
 

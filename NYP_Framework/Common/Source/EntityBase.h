@@ -35,6 +35,11 @@ public:
 	// Set the flag to indicate if this entity has a physic class parent
 	virtual void SetPhysic(const bool _value);
 
+	// Check if this entity is in range of player for minimap
+	bool IsInRange(void) const;
+	// Set the flag to indicate if this entity is in range 
+	void SetInRange(const bool _value);
+
 protected:
 	Vector3 position;
 	Vector3 scale;
@@ -43,6 +48,7 @@ protected:
 	bool isDone;
 	bool m_bCollider;
 	bool m_bPhysic;
+	bool m_bInRange;
 };
 
 #endif // ENTITY_BASE_H

@@ -65,3 +65,14 @@ void EntityBase::SetPhysic(const bool _value)
 {
 	m_bPhysic = _value;
 }
+
+// Check if this entity is in range of player for minimap
+bool EntityBase::IsInRange(void) const
+{
+	return m_bInRange;
+}
+// Set the flag to indicate if this entity is in range 
+void EntityBase::SetInRange(const bool _value)
+{
+	m_bInRange = _value;
+}
