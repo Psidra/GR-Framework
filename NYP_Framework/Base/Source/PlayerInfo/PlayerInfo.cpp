@@ -20,6 +20,7 @@
 #include "../WeaponInfo/FourSidedWeapon.h"
 #include "../WeaponInfo/Minigun.h"
 #include "../WeaponInfo/SMG.h"
+#include "../WeaponInfo/RocketLauncher.h"
 
 #include "../AudioEngine.h"
 #include "../UIManager.h"
@@ -64,6 +65,7 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Minigun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new SMG(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new RocketLauncher(GenericEntity::PLAYER_BULLET));
 	//this weapon for boss and enemies
 	playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new FourSidedWeapon(GenericEntity::PLAYER_BULLET));

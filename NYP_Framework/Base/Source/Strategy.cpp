@@ -9,7 +9,6 @@ CStrategy::CStrategy()
 
 CStrategy::~CStrategy()
 {
-
 }
 
 void CStrategy::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)

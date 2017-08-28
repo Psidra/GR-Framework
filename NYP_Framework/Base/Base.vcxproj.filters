@@ -243,6 +243,9 @@
     <ClCompile Include="Source\WeaponInfo\SMG.cpp">
       <Filter>Weapon\Guns</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\RocketLauncher.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -393,6 +396,9 @@
       <Filter>Entity\EntityHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\SMG.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\RocketLauncher.h">
       <Filter>Weapon\Guns\GunsHeader</Filter>
     </ClInclude>
   </ItemGroup>

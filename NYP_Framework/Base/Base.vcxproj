@@ -58,6 +58,7 @@
     <ClCompile Include="Source\WeaponInfo\Minigun.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
+    <ClCompile Include="Source\WeaponInfo\RocketLauncher.cpp" />
     <ClCompile Include="Source\WeaponInfo\Shotgun.cpp" />
     <ClCompile Include="Source\WeaponInfo\SMG.cpp" />
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Source\WeaponInfo\Minigun.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />
+    <ClInclude Include="Source\WeaponInfo\RocketLauncher.h" />
     <ClInclude Include="Source\WeaponInfo\Shotgun.h" />
     <ClInclude Include="Source\WeaponInfo\SMG.h" />
     <ClInclude Include="Source\WeaponInfo\WeaponInfo.h" />

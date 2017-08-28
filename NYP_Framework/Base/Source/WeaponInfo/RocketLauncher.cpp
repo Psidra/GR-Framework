@@ -1,46 +1,44 @@
-#include "Pistol.h"
+#include "RocketLauncher.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 #include "../Projectile/ProjectileManager.h"
 
-Pistol::Pistol(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+RocketLauncher::RocketLauncher(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-Pistol::~Pistol()
+RocketLauncher::~RocketLauncher()
 {
 }
 
 // Initialise this instance to default values
-void Pistol::Init(void)
+void RocketLauncher::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 12;
+	magRounds = 4;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 12;
+	maxMagRounds = 4;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 40;
+	totalRounds = 20;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 40;
+	maxTotalRounds = 20;
 
 	// The time between shots
-	timeBetweenShots = 0.3333;
+	timeBetweenShots = 1.5;
 	// The elapsed time (between shots)
-	elapsedTime = 0.3333;
+	elapsedTime = 1.5;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 10;
+	m_fWeaponDamage = 30;
 	// boolean flag for dots
 	m_bDots = false;
-	// Player/enemy angle to rotate
-	m_fRotateAngle = 0.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
@@ -48,17 +46,16 @@ void Pistol::Init(void)
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
-	m_fSpeed = 10.f;
+	m_fSpeed = 15.0f;
 	// is active
 	m_bActive = false;
-	// rotate angle
-	m_fRotateAngle = 0;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
 	// num of bullet
 	m_iNumBullet = 1;
 }
 
-// render the weapon
-void Pistol::Render()
+void RocketLauncher::Render()
 {
 	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
 	//std::cout << rotate << std::endl;
@@ -69,7 +66,7 @@ void Pistol::Render()
 		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(1, 1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistol"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rocketlauncher"));
 		modelStack.PopMatrix();
 	}
 	else//left side
@@ -79,13 +76,13 @@ void Pistol::Render()
 		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(-1, -1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistolLeft"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rocketlauncherLeft"));
 		modelStack.PopMatrix();
 	}
 }
 
 // Discharge this weapon
-void Pistol::Discharge(Vector3 position, Vector3 target)
+void RocketLauncher::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -93,30 +90,43 @@ void Pistol::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second
-			generateBullet(position, target);
+			// It will last for 3.0 seconds and travel at 500 units per second	
+			target = rotateDirection(target, m_fRotateAngle);
+			generateBullet(position, target, m_iNumBullet, 45);
 
 			bFire = false;
-			if (bulletType == GenericEntity::PLAYER_BULLET || bulletType == GenericEntity::ENEMY_BULLET)
-			--magRounds;
-			AudioEngine::GetInstance()->PlayASound("pistol", false);
+			//m_fRotateAngle += 10;
+			if (bulletType == GenericEntity::PLAYER_BULLET)
+				--magRounds;
+
+			AudioEngine::GetInstance()->PlayASound("rifle", false);
 		}
 	}
+
+	//	if (m_fRotateAngle > 360)
+	//	m_fRotateAngle = 0;
 }
 
-Mesh* Pistol::GetMesh()
+Mesh * RocketLauncher::GetMesh()
 {
-	return MeshList::GetInstance()->GetMesh("pistolLeft");
+	return MeshList::GetInstance()->GetMesh("rocketlauncher");
 }
 
 // Number of bullet to create and pattern
-void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void RocketLauncher::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
 
+	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
+	//Vector3 temp = target;
+
 	for (int i = 0;i < numBullet;++i)
 	{
+		//rotate vector
+		//target = rotateDirection(temp, totalAngle);
+		//totalAngle -= angle;
+
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
 		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
@@ -133,13 +143,14 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-		projectile->projectileType = CProjectile::BULLET;
+		projectile->projectileType = CProjectile::ROCKET;
 		//CProjectile* aProjectile = Create::Projectile("cube",
 		//	position,
 		//	target.Normalized(),
 		//	scale,
 		//	2.0f,
 		//	m_fSpeed);
+
 		//aProjectile->type = bulletType;
 		//aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
 		//aProjectile->setIsDots(m_bDots);

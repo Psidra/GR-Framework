@@ -416,6 +416,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("smg")->textureID[0] = LoadTGA("Image/Weapon/smg.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("smgLeft", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("smgLeft")->textureID[0] = LoadTGA("Image/Weapon/smgLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncher", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncher")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncher.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncherLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncherLeft")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncherLeft.tga");
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 

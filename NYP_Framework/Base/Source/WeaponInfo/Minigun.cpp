@@ -138,7 +138,7 @@ void Minigun::generateBullet(Vector3 position, Vector3 target, const int numBull
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-
+		projectile->projectileType = CProjectile::BULLET;
 		/*CProjectile* aProjectile = Create::Projectile("cube",
 		position,
 		target.Normalized(),

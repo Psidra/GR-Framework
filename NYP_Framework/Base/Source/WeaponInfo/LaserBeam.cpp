@@ -21,13 +21,13 @@ void LaserBeam::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 500;
+	magRounds = 200;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 500;
+	maxMagRounds = 200;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 2000;
+	totalRounds = 1000;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 2000;
+	maxTotalRounds = 000;
 
 	// The time between shots
 	timeBetweenShots = 0.01;
@@ -36,7 +36,7 @@ void LaserBeam::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 60;
+	m_fWeaponDamage = 10;
 	// boolean flag for dots
 	m_bDots = false;
 	// Player/enemy angle to rotate
@@ -50,7 +50,7 @@ void LaserBeam::Init(void)
 	//increment pos spawning of projectile
 	m_fIncrement = 0;
 	// projectile speed
-	m_fSpeed = 10.f;
+	m_fSpeed = 0.f;
 	// is active
 	m_bActive = false;
 }
@@ -135,7 +135,7 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-
+		projectile->projectileType = CProjectile::LASER;
 		//CProjectile* aProjectile = Create::Projectile("cube",
 		//	position + target * 3.5,
 		//	target.Normalized(),
