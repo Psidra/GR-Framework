@@ -3,6 +3,7 @@
 #include "../EntityManager.h"
 #include "../CollisionManager.h"
 #include "../PlayerInfo/PlayerInfo.h"
+#include "../AudioEngine.h"
 
 using namespace std;
 
@@ -11,7 +12,8 @@ Constructor
 ********************************************************************************/
 CStrategy_AI_FirstBoss::CStrategy_AI_FirstBoss() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(0.5), RNG(0), prevRoll(-1), m_dElapsedTime(0.0), m_dAttackDuration(0.0)
 {
-	CurrentState = ATTACK_SET_ONE;
+	CurrentState = IDLE;
+	this->m_bIsShooting = false;
 }
 
 /********************************************************************************
@@ -35,10 +37,12 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	int distancePlayerToEnemy = CalculateDistance(_destination, _shootpos);
 
-	if (distancePlayerToEnemy > 60) // TODO : Not make this hardcoded lmao
-		this->SetState(IDLE);
-	else
+	if (distancePlayerToEnemy < 40 && this->CurrentState == IDLE)
+	{
 		this->SetState(ATTACK_SET_ONE);
+		AudioEngine::GetInstance()->StopAllSounds();
+		AudioEngine::GetInstance()->PlayASound("lastbattle", true);
+	}
 
 	//if (this->CurrentState == ATTACK_SET_ONE && _health < 100)
 	//	this->SetState(ATTACK_SET_TWO);
@@ -65,7 +69,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 		switch (RNG) {
 		case 0:
 			_weaponIndex = 0;
-			m_dAttackDuration = m_dElapsedTime + 5.f;
+			m_dAttackDuration = m_dElapsedTime + 3.f;
 			Player::GetInstance()->m_bProjectileCircle = true;
 			break;
 		case 1:
@@ -74,11 +78,11 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			break;
 		case 2:
 			_weaponIndex = 1;
-			m_dAttackDuration = m_dElapsedTime + 5.f;
+			m_dAttackDuration = m_dElapsedTime + 3.f;
 			break;
 		case 3:
 			_weaponIndex = 2;
-			m_dAttackDuration = m_dElapsedTime + 5.f;
+			m_dAttackDuration = m_dElapsedTime + 4.f;
 			break;
 
 		default:
@@ -92,9 +96,19 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	{
 		switch (RNG) {
 		case 0:
-			_shootpos = _destination + Vector3(Math::RandFloatMinMax(-7, 7), Math::RandFloatMinMax(-7, 7), 0.f);
+		{
+			float y_rand, x_diff;
+			y_rand = Math::RandFloatMinMax(-3, 3);
+			int neg_x = Math::RandIntMinMax(0, 1);
+			if (neg_x == 0)
+				x_diff = (3 - y_rand);
+			else
+				x_diff = -(3 - y_rand);
+
+			_shootpos = _destination + Vector3(x_diff, y_rand, 0.f);
 			timeBetweenShots = 0.5f;
 			break;
+		}
 		case 1:
 			timeBetweenShots = m_dAttackDuration;
 			break;

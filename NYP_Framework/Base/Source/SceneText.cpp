@@ -417,7 +417,7 @@ void SceneText::Update(double dt)
 
 	//keyboard->ConvertInt();
 	float fps = (float)(1.f / dt);
-	std::cout << "fps:" << fps << "          ";
+	//std::cout << "fps:" << fps << "          ";
 	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
 
 	////vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
@@ -532,7 +532,7 @@ void SceneText::Update(double dt)
 		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
 		ss << weapon->GetMagRound() << "/" << weapon->GetTotalRound();
 		textObj[0]->SetText(ss.str());
-		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 0.0f));
 		textObj[0]->SetScale(Vector3(25, 25, 25));
 
 		ss.str("");
@@ -564,12 +564,12 @@ void SceneText::Update(double dt)
 	}	
 	case UIManager::GAME_STATE::OPTIONS://doesnt work either
 	{
-		/*std::ostringstream ss1;
+		std::ostringstream ss1;
 		ss1.precision(4);
 		ss1 << "Player:" << Player::GetInstance()->GetHealth();
 		textObj[2]->SetText(ss1.str());
-		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize + halfFontSize, 0.0f));
-		break;*/
+		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize * 2 + halfFontSize, 10.0f));
+		break;
 	}
 	}
 }
@@ -678,12 +678,12 @@ void SceneText::RenderPassMain()
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
+	EntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
-		EntityManager::GetInstance()->RenderUI();
 		minimap->RenderUI();
 		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 		break;
