@@ -592,7 +592,7 @@ void SceneText::Update(double dt)
 		std::ostringstream curr;
 		curr << Player::GetInstance()->GetMoney();
 		textObj[3]->SetText(curr.str());
-		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 0.0f));
+		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 10.0f));
 
 		// Update textpos for fullscreening
 		for (int i = 1; i < 3; ++i)
@@ -849,8 +849,12 @@ void SceneText::Exit()
 	GraphicsManager::GetInstance()->DetachCamera();
 	//delete entitymanager
 	EntityManager::GetInstance()->Destroy();
+
+
+
 	//delete tetxentiymanager
 	TextEntityManager::GetInstance()->Destroy();
+
 	//delete weaponManager
 	WeaponManager::GetInstance()->Destroy();
 

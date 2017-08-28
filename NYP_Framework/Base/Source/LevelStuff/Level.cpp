@@ -332,7 +332,6 @@ void Level::clearEntitys()
 {
 	levelMap.clear();
 	rooms.clear();
-	EntityManager::GetInstance()->getEntityList().clear();
 
 	std::list<EntityBase*>::iterator it, end;
 	it = EntityManager::GetInstance()->getCollisionList().begin();
@@ -340,6 +339,36 @@ void Level::clearEntitys()
 		(*it)->SetIsDone(true);
 		++it;
 	}
+
+	//delete
+	it = EntityManager::GetInstance()->getCollisionList().begin();
+	while (it != EntityManager::GetInstance()->getCollisionList().end()) {
+		if ((*it)->IsDone()) {
+			it = EntityManager::GetInstance()->getCollisionList().erase(it);
+		}
+		else
+			++it;
+	}
+
+	// Clean up entities that are done
+	it = EntityManager::GetInstance()->getEntityList().begin();
+	end = EntityManager::GetInstance()->getEntityList().end();
+	while (it != end)
+	{
+		if ((*it)->IsDone())
+		{
+			// Delete if done
+			delete *it;
+			it = EntityManager::GetInstance()->getEntityList().erase(it);
+		}
+		else
+		{
+			// Move on otherwise
+			++it;
+		}
+	}
+
+	EntityManager::GetInstance()->getEntityList().clear();
 	EntityManager::GetInstance()->getCollisionList().clear();
 }
 

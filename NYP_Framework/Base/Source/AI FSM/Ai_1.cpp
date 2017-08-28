@@ -39,8 +39,6 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 		theEnemyDirection = 0;
 		CurrentState = ATTACK;
 	}
-	
-	
 
 	// Based on the current state, move the enemy
 	switch (CurrentState)
