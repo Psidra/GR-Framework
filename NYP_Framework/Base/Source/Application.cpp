@@ -264,7 +264,15 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("Player_fHurt")->textureID[0] = LoadTGA("Image/Player/Player_fHurt.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("Player_bHurt", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("Player_bHurt")->textureID[0] = LoadTGA("Image/Player/Player_bHurt.tga");
-
+		//dodge
+		MeshBuilder::GetInstance()->GenerateQuad("Player_fdodge1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_fdodge1")->textureID[0] = LoadTGA("Image/Player/Player_fdodge1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("Player_fdodge2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_fdodge2")->textureID[0] = LoadTGA("Image/Player/Player_fdodge2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("Player_bdodge1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_bdodge1")->textureID[0] = LoadTGA("Image/Player/Player_bdodge1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("Player_bdodge2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("Player_bdodge2")->textureID[0] = LoadTGA("Image/Player/Player_bdodge2.tga");
 
 		//-------ENEMY SPRITES
 		//-------enemy1
@@ -461,13 +469,33 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("bowBullet", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("bowBullet")->textureID[0] = LoadTGA("Image/Weapon/Bullets/bullet_bow.tga");
 
+		//--------Ammo
+		MeshBuilder::GetInstance()->GenerateQuad("ammo_pistol", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ammo_pistol")->textureID[0] = LoadTGA("Image/Weapon/Ammo/ammo_pistol.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("ammo_rifle", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ammo_rifle")->textureID[0] = LoadTGA("Image/Weapon/Ammo/ammo_rifle.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("ammo_rocket", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ammo_rocket")->textureID[0] = LoadTGA("Image/Weapon/Ammo/ammo_rocket.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("ammo_shotgun", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("ammo_shotgun")->textureID[0] = LoadTGA("Image/Weapon/Ammo/ammo_shotgun.tga");
+
+
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 
 		//--------TileSet
 		MeshBuilder::GetInstance()->GenerateQuad("tile_floor", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("tile_floor")->textureID[0] = LoadTGA("Image/TileSet/tile_floor.tga");
-
+		MeshBuilder::GetInstance()->GenerateQuad("tile_floor2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("tile_floor2")->textureID[0] = LoadTGA("Image/TileSet/tile_floor2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("tile_stairs", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("tile_stairs")->textureID[0] = LoadTGA("Image/TileSet/tile_stairs.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("tile_wall", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("tile_wall")->textureID[0] = LoadTGA("Image/TileSet/tile_wall.tga");
+		
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);

@@ -5,6 +5,7 @@
 CAnimation::CAnimation()
 	: m_bFacingUp(false)
 	, m_bIsMoving(false)
+	, dodging(false)
 	, m_iAnimation_Index(0)
 	, m_ifStand_Start(0)
 	, m_ifStand_End(0)
@@ -18,6 +19,10 @@ CAnimation::CAnimation()
 	, m_iSucc_End(0)
 	, m_dElapsedAnimTime(0.0)
 	, m_dTimeBetweenEachFrame(1.0)
+	, m_ifDodge_Start(0)
+	, m_ifDodge_End(0)
+	, m_ibDodge_Start(0)
+	, m_ibDodge_End(0)
 {
 }
 
@@ -27,22 +32,31 @@ CAnimation::~CAnimation()
 }
 
 // Set Animation status
-void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt)
+void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt, bool _dodging)
 {
-	if (this->m_bFacingUp != m_bFacingUp || this->m_bIsMoving != m_bIsMoving || this->m_bIsHurt != m_bIsHurt)
+	if (this->m_bFacingUp != m_bFacingUp || this->m_bIsMoving != m_bIsMoving || this->m_bIsHurt != m_bIsHurt || this->dodging != _dodging)
 	{
 		this->m_bFacingUp = m_bFacingUp;
 		this->m_bIsMoving = m_bIsMoving;
 		this->m_bIsHurt = m_bIsHurt;
+		this->dodging = _dodging;
 
-		if (m_bIsHurt)
+
+		if (Player::GetInstance()->getDodge())
+		{
+			if (m_bFacingUp)
+				m_iAnimation_Index = m_ibDodge_Start;
+			else
+				m_iAnimation_Index = m_ifDodge_Start;
+		}
+		else if (m_bIsHurt)
 		{
 			if (m_bFacingUp)
 				m_iAnimation_Index = m_ibHurt_Start;
 			else
 				m_iAnimation_Index = m_ifHurt_Start;
 		}
-		else
+		else if(!m_bIsHurt)
 		{
 			if (m_bIsMoving && !m_bFacingUp)
 				m_iAnimation_Index = m_ifWalk_Start;
@@ -73,6 +87,24 @@ void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 				m_iAnimation_Index = m_iSucc_Start;
 			m_dElapsedAnimTime = 0.0;
 		}
+		else if (Player::GetInstance()->getDodge())
+		{
+			if (!m_bFacingUp)
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ifDodge_End)
+					m_iAnimation_Index = m_ifDodge_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+			else
+			{
+				m_iAnimation_Index += 1;
+				if (m_iAnimation_Index > m_ibDodge_End)
+					m_iAnimation_Index = m_ibDodge_Start;
+				m_dElapsedAnimTime = 0.0;
+			}
+
+		}
 		else if (m_bIsHurt)	//character hurt
 		{
 			if (m_bFacingUp)
@@ -90,7 +122,7 @@ void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 				m_dElapsedAnimTime = 0.0;
 			}
 		}
-		else
+		else if (!m_bIsHurt)
 		{
 			if (m_bIsMoving && m_bFacingUp)		//moving while looking up
 			{
@@ -169,4 +201,16 @@ void CAnimation::SetIndices_Succ(const int m_iSucc_Start, const int m_iSucc_End)
 {
 	this->m_iSucc_Start = m_iSucc_Start;
 	this->m_iSucc_End = m_iSucc_End;
+}
+
+void CAnimation::SetIndices_fDodge(const int m_ifDodge_Start, const int m_ifDodge_End)
+{
+	this->m_ifDodge_Start = m_ifDodge_Start;
+	this->m_ifDodge_End = m_ifDodge_End;
+}
+
+void CAnimation::SetIndices_bDodge(const int m_ibDodge_Start, const int m_ibDodge_End)
+{
+	this->m_ibDodge_Start = m_ibDodge_Start;
+	this->m_ibDodge_End = m_ibDodge_End;
 }

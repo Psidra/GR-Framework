@@ -124,7 +124,7 @@ public:
 	inline int getWeaponIndex() const { return this->weaponIndex; };
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
-	
+
 	// Boss fight effects on player
 	bool m_bProjectileCircle;
 	bool m_bPullEffect;

@@ -108,7 +108,6 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fhurt"));
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bhurt"));
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
-		//this->ChangeStrategy(new CStrategy_AI_1(), false);
 		this->ChangeStrategy(new CStrategy_AI_2(), false);
 		break;
 	}

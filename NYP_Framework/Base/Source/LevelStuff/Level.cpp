@@ -399,7 +399,6 @@ void Level::loadEntitys()
 				NewEnemy = Create::Enemy(Vector3(i, j, 0), "player");
 				NewEnemy->type = GenericEntity::OBJECT_TYPE::ENEMY;
 				NewEnemy->Init(50.0f, 1.5, enemyType);
-				//NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false); <--- not needed since init already sets strategy
 				NewEnemy->SetIsActive(false);
 				break;
 			default:

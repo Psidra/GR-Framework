@@ -135,10 +135,10 @@ void Player::Init(void)
 	AudioEngine::GetInstance()->AddSound("rifleReload", "Audio/RifleReload.mp3");
 	AudioEngine::GetInstance()->setVolume(50);
 
-	playerAnimated = new GenericEntity*[10];
-	for (size_t i = 0; i < 10; i++)
+	playerAnimated = new GenericEntity*[14];
+	for (size_t i = 0; i < 14; i++)
 	{
-	playerAnimated[i] = new GenericEntity();
+		playerAnimated[i] = new GenericEntity();
 	}
 	playerAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand1"));
 	playerAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fstand2"));
@@ -150,12 +150,18 @@ void Player::Init(void)
 	playerAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bwalk2"));
 	playerAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fHurt"));
 	playerAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bHurt"));
+	playerAnimated[10]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fdodge1"));
+	playerAnimated[11]->SetMesh(MeshList::GetInstance()->GetMesh("Player_fdodge2"));
+	playerAnimated[12]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bdodge1"));
+	playerAnimated[13]->SetMesh(MeshList::GetInstance()->GetMesh("Player_bdodge2"));
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
 	this->SetIndices_bWalk(6, 7);
 	this->SetIndices_fHurt(8, 8);
 	this->SetIndices_bHurt(9, 9);
+	this->SetIndices_fDodge(10, 11);
+	this->SetIndices_bDodge(12, 13);
 	playerInventory->setWeaponIndex(weaponIndex);
 	playerInventory->getPrimaryWeapon()->setIsActive(true);
 	//playerInventory->getWeaponList()[weaponIndex]->setIsActive(true);
@@ -389,7 +395,7 @@ void Player::Update(double dt)
 	y = y + (h * 0.5f);
 
 	//(y <= h) //W.I.P - to compare cursor pos.y with mid of screen size
-	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt);
+	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt, m_bDodge);
 
 	SetMovement(!(direction.x == 0 && direction.y == 0));
 

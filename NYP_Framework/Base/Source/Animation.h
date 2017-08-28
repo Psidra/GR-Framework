@@ -8,7 +8,7 @@ public:
 	virtual ~CAnimation();
 
 	// Set Animation status; leftright or updown
-	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt);
+	void SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_bIsHurt, double dt, bool _dodging = false);
 	// Update the Animation Index
 	void UpdateAnimationIndex(double dt);
 
@@ -22,6 +22,8 @@ public:
 	void SetIndices_fHurt(const int m_ifHurt_Start, const int m_ifHurt_End);
 	void SetIndices_bHurt(const int m_ibHurt_Start, const int m_ibHurt_End);
 	void SetIndices_Succ(const int m_iSucc_Start, const int m_iSucc_End);
+	void SetIndices_fDodge(const int m_ifDodge_Start, const int m_ifDodge_End);
+	void SetIndices_bDodge(const int m_ibDodge_Start, const int m_ibDodge_End);
 
 private:
 	int m_iAnimation_Index;
@@ -31,6 +33,7 @@ private:
 	bool m_bFacingUp;		//check if facing up
 	bool m_bIsMoving;		//check if character moving
 	bool m_bIsHurt;			//check if character is hurt
+	bool dodging;
 	bool m_bIsDead;
 
 	//STAMDING
@@ -45,6 +48,8 @@ private:
 	//SUCC
 	int m_iSucc_Start, m_iSucc_End;
 
+	//DODGE
+	int m_ifDodge_Start, m_ifDodge_End, m_ibDodge_Start, m_ibDodge_End;
 };
 
 #endif // !Animation
