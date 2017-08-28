@@ -233,7 +233,7 @@ void SceneText::Init()
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
-	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(50, 50, 1), false);
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(40, 40, 1), false);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
@@ -337,6 +337,7 @@ void SceneText::Init()
 	//keyboard->Load("Keybind//keyconfigtest.txt");
 	keyboard->MapKeys("Keybind//keys.txt");
 
+	RealLoopTime = 0.0;
 	elapsedTime = 0.0;
 	huntTime = 0.0;
 	
@@ -454,12 +455,15 @@ void SceneText::Update(double dt)
 		posY = 1;
 	}
 
+
+
 	keyboard->Read(dt);
 	UIManager::GetInstance()->Update();
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
+		RealLoopTime += dt;
 		elapsedTime += dt;
 		// Update the player position and other details based on keyboard and mouse inputs
 		Player::GetInstance()->Update(dt);
