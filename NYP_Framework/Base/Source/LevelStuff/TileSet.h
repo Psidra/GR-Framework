@@ -18,6 +18,7 @@ public:
 		TELEPORTER,
 		ENEMY,
 		EXIT,
+		BOSS,
 		COUNT,
 	};
 

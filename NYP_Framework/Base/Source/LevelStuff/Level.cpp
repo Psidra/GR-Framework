@@ -10,7 +10,9 @@
 #include "../EntityManager.h"
 #include "../Minimap/Minimap.h"
 #include "../Enemy.h"
+#include "../Boss.h"
 #include "../AI FSM/Ai_1.h"
+#include "../AI FSM/Ai_firstboss.h"
 
 Level::Level() : roomCount(0)
 {
@@ -28,9 +30,23 @@ void Level::init(float mapHeight, float mapWidth, float maxRoomHeight, float max
 	this->maxRoomWidth = maxRoomWidth;
 	roomCount = 0;
 	corrCount = 0;
+	level = 1;
+	spawnBoss = false;
 	generate();
 	createMap(maxAttempts);
 	//testCout();
+}
+
+void Level::newMap(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts)
+{
+	this->mapHeight = mapHeight;
+	this->mapWidth = mapWidth;
+	this->maxRoomHeight = maxRoomHeight;
+	this->maxRoomWidth = maxRoomWidth;
+	roomCount = 0;
+	corrCount = 0;
+	generate();
+	createMap(maxAttempts);
 }
 
 void Level::setMaxRooms(int num)
@@ -252,8 +268,12 @@ void Level::generateWalls()
 
 void Level::setUp()
 {
-	spawnExit();
-	spawnTeleporter();
+	if (!spawnBoss)
+	{
+		spawnExit();
+		spawnTeleporter();
+	}
+
 	spawnEnemies();
 	loadEntitys();
 	CMinimap::GetInstance()->Init();
@@ -299,8 +319,14 @@ void Level::spawnEnemies()
 	while (tempRooms.size() != 0)
 	{
 		int roomSelected = Math::RandIntMinMax(0, tempRooms.size() - 1);
-		int maxNumEnemyInRoom = Math::RandIntMinMax(0, 3);
+		int maxNumEnemyInRoom = Math::RandIntMinMax(1, 3);
 		std::cout << "maxNumEnemyInRoom" << maxNumEnemyInRoom << std::endl;
+
+		if (spawnBoss)
+		{
+			setTile(tempRooms[roomSelected].getMidPoint().x, tempRooms[roomSelected].getMidPoint().y, Tile::BOSS);
+			break;
+		}
 
 		while (maxNumEnemyInRoom)
 		{
@@ -377,8 +403,11 @@ void Level::loadEntitys()
 		for (size_t j = 0; j < mapHeight; ++j)
 		{
 			int enemyType = rand() % 2 + 1;//rand num for enemy type
+			
 			TileEntity* temp = NULL;
 			CEnemy* NewEnemy = NULL;
+			Boss* FirstBoss = NULL;
+
 			switch (getTile(i, j).type)
 			{
 			case Tile::WALL:
@@ -401,6 +430,11 @@ void Level::loadEntitys()
 				NewEnemy->Init(50.0f, 1.5, enemyType);
 				NewEnemy->SetIsActive(false);
 				break;
+			case Tile::BOSS:
+				FirstBoss = Create::SpawnBoss(Vector3(i, j, 0), "player", Vector3(1.5f, 3, 3), true);
+				FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
+				FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
+				break;
 			default:
 				break;
 			}
@@ -416,7 +450,16 @@ void Level::loadEntitys()
 void Level::newLevel()
 {
 	clearEntitys();
-	GetInstance()->init(32.f, 32.f, 12.f, 12.f, 30);
+	level++;
+	if (level % 3 == 0)
+	{
+		GetInstance()->newMap(32.f, 32.f, 24.f, 24.f, 15);
+		spawnBoss = true;
+	}
+	else
+	{
+		GetInstance()->newMap(32.f, 32.f, 12.f, 12.f, 30);
+	}
 	setUp();
 }
 
@@ -434,6 +477,24 @@ void Level::updateEnemy()
 			
 			for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin(); it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
 			{
+				if (spawnBoss)
+				{
+					if (dynamic_cast<CEnemy*>(*it)->type == GenericEntity::OBJECT_TYPE::BOSS)
+					{
+						if ((*it)->IsDone())
+						{
+							spawnBoss = false;
+							spawnExit();
+							break;
+						}
+					}
+					else
+					{
+						continue;
+					}
+				}
+				
+
 				if (dynamic_cast<GenericEntity*>(*it)->type == GenericEntity::OBJECT_TYPE::ENEMY)
 				{
 					int x = dynamic_cast<CEnemy*>(*it)->GetPos().x;
@@ -448,7 +509,6 @@ void Level::updateEnemy()
 						//dynamic_cast<CEnemy*>(*it)->ChangeStrategy(new CStrategy_AI_1(), false);
 						(*it)->SetIsActive(true);
 						//dynamic_cast<CEnemy*>(*it)->Init(50.0f, 1.5, 1);
-
 					}
 				}
 			}
