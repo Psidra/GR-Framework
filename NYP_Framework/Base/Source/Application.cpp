@@ -134,7 +134,7 @@ void Application::Run()
 		if (dt < 0.016666667)
 			dt = 0.016666667;
 
-		SceneManager::GetInstance()->Update(dt);
+		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
@@ -313,6 +313,9 @@ void Application::InitAllMeshes()
 		//projcircle
 		MeshBuilder::GetInstance()->GenerateQuad("projcircle", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("projcircle")->textureID[0] = LoadTGA("Image/Enemies/Boss/projcircle.tga");
+		//target
+		MeshBuilder::GetInstance()->GenerateQuad("target", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("target")->textureID[0] = LoadTGA("Image/Enemies/Boss/target.tga");
 
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);

@@ -127,7 +127,6 @@ void Boss::Update(double dt)
 		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
 		{
 			this->Shoot(dt, shootPos);
-			std::cout << "boss shot" << std::endl;
 		}
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)

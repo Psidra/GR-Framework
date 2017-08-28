@@ -591,8 +591,5 @@ void Player::UseBlank()
 		}
 	}
 
-	AudioEngine::GetInstance()->StopAllSounds();
-	AudioEngine::GetInstance()->PlayASound("lastbattle", true);
-
 	--this->m_iBlank;
 }
