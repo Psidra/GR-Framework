@@ -376,6 +376,7 @@ void Level::loadEntitys()
 	{
 		for (size_t j = 0; j < mapHeight; ++j)
 		{
+			int enemyType = rand() % 2 + 1;//rand num for enemy type
 			TileEntity* temp = NULL;
 			CEnemy* NewEnemy = NULL;
 			switch (getTile(i, j).type)
@@ -397,8 +398,8 @@ void Level::loadEntitys()
 			case Tile::ENEMY:
 				NewEnemy = Create::Enemy(Vector3(i, j, 0), "player");
 				NewEnemy->type = GenericEntity::OBJECT_TYPE::ENEMY;
-				NewEnemy->Init(50.0f, 1.5, 1);
-				NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+				NewEnemy->Init(50.0f, 1.5, enemyType);
+				//NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false); <--- not needed since init already sets strategy
 				NewEnemy->SetIsActive(false);
 				break;
 			default:

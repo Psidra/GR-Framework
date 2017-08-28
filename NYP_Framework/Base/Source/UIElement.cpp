@@ -57,13 +57,6 @@ void UIElement::Update()
 	float hhalf = Application::GetInstance().GetWindowHeight() * 0.5f;
 
 	// Main Menu
-	/*if (UIManager::GetInstance()->state == UIManager::GAME_STATE::OPTIONS) //doesnt seem to work
-	{
-		
-		textObj->SetText("AAAAAAAAAAAAA");
-		textObj->SetPosition(Vector3(w / 800, hhalf, 9.5f));
-	}*/
-
 	// Pause
 	if (this->type == START)
 	{

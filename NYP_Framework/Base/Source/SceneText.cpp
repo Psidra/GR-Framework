@@ -612,12 +612,12 @@ void SceneText::Update(double dt)
 	case UIManager::GAME_STATE::OPTIONS:
 	{
 		std::vector<std::string> temp = Loader::GetInstance()->GetData();
-		fontSize = 20;
-		halfFontSize = fontSize / 2;
+		fontSize = ((halfWindowWidth * 2) / 800) * 20;
+		halfFontSize = (fontSize / 2);
 		int inputKey = 0;
 		int hextoint;
 		int index;
-		
+
 		buttonInt.clear();
 		for (size_t i = 0; i < temp.size();++i) //read file
 		{
@@ -633,12 +633,10 @@ void SceneText::Update(double dt)
 			std::ostringstream ss1;
 			ss1 << (char)buttonInt[i];
 			optionTextObj[i]->SetText(ss1.str());
-			optionTextObj[i]->SetPosition(Vector3((halfWindowWidth / 800) + 50, (halfWindowHeight / 300) - (fontSize + 8) * i + halfFontSize, 10.0f));
+			optionTextObj[i]->SetPosition(Vector3((halfWindowWidth / 800) + 50, (halfWindowHeight / 300) - (fontSize + 2) * i + halfFontSize, 10.0f));
 			optionTextObj[i]->SetIsActive(true);
 		}
 		
-		
-		fontSize = 15;
 		std::ostringstream ss2;
 		ss2 << UIManager::GetInstance()->GetIndex();
 		optionTextObj[8]->SetText(ss2.str());

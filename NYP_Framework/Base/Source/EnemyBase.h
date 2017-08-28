@@ -5,6 +5,7 @@
 #include "Vector3.h"
 #include <string>
 #include "AI FSM\Ai_1.h"
+#include "AI FSM\Ai_2.h"
 
 class Mesh;
 class CStrategy;

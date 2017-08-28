@@ -270,27 +270,53 @@ void Application::InitAllMeshes()
 		//-------enemy1
 		//stand
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand1", Color(1, 1, 1), 1.f); // THIS MUST BE THE WORK OF AN ENEMY [STAND]!!!
-		MeshList::GetInstance()->GetMesh("enemy1_fstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand1.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_fstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_fstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fstand2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_fstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fstand2.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_fstand2")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_fstand2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bstand1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_bstand1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand1.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_bstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_bstand1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bstand2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_bstand2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bstand2.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_bstand2")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_bstand2.tga");
 		//walk
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fwalk1.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_fwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fwalk2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_fwalk2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fwalk2.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_fwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_fwalk2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bwalk1", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk1.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_bwalk1.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bwalk2", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bwalk2.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_bwalk2.tga");
 		//hurt
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_fhurt", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_fhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_fhurt.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_fhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_fhurt.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("enemy1_bhurt", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("enemy1_bhurt")->textureID[0] = LoadTGA("Image/Enemies/enemy1_bhurt.tga");
+		MeshList::GetInstance()->GetMesh("enemy1_bhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy1/enemy1_bhurt.tga");
+
+		//-------enemy2
+		//stand
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_fstand1", Color(1, 1, 1), 1.f); // THIS MUST BE THE WORK OF AN ENEMY [STAND]!!!
+		MeshList::GetInstance()->GetMesh("enemy2_fstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_fstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_fstand2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_fstand2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_fstand2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bstand1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_bstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bstand2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_bstand2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bstand2.tga");
+		//walk
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_fwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_fwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_fwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_fwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_fwalk2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bwalk2.tga");
+		//hurt
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_fhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_fhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_fhurt.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy2_bhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bhurt.tga");
+
 
 		//-------FINAL BOSS
 		//normal

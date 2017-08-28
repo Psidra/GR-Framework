@@ -1,5 +1,5 @@
 #include "../DetectMemoryLeak.h"
-#include "Ai_1.h"
+#include "Ai_2.h"
 #include <iostream>
 #include "../EntityManager.h"
 #include "../CollisionManager.h"
@@ -9,21 +9,21 @@ using namespace std;
 /********************************************************************************
 Constructor
 ********************************************************************************/
-CStrategy_AI_1::CStrategy_AI_1():maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(2.0)
+CStrategy_AI_2::CStrategy_AI_2() :maxDistFromPlayer(3), shootElapsedTime(0.0), timeBetweenShots(4.0)
 {
 }
 
 /********************************************************************************
 Destructor
 ********************************************************************************/
-CStrategy_AI_1::~CStrategy_AI_1()
+CStrategy_AI_2::~CStrategy_AI_2()
 {
 }
 
 /********************************************************************************
 Update method
 ********************************************************************************/
-void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
+void CStrategy_AI_2::Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt)
 {
 	// Decide which state to change to
 	int distancePlayerToEnemy = CalculateDistance(theDestination, theEnemyPosition);
@@ -37,9 +37,9 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 	else if (distancePlayerToEnemy <= AI_ATTACK_RANGE)
 	{
 		theEnemyDirection = 0;	//enemy stops
-		CurrentState = ATTACK;	
+		CurrentState = ATTACK;
 	}
-	
+
 
 	// Based on the current state, move the enemy
 	switch (CurrentState)
@@ -76,7 +76,7 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 /********************************************************************************
 Set the destination for this strategy
 ********************************************************************************/
-void CStrategy_AI_1::SetDestination(const float x, const float y)
+void CStrategy_AI_2::SetDestination(const float x, const float y)
 {
 	theDestination.x = x;
 	theDestination.y = y;
@@ -85,7 +85,7 @@ void CStrategy_AI_1::SetDestination(const float x, const float y)
 /********************************************************************************
 Get the destination for this strategy
 ********************************************************************************/
-int CStrategy_AI_1::GetDestination_x(void)
+int CStrategy_AI_2::GetDestination_x(void)
 {
 	return theDestination.x;
 }
@@ -93,7 +93,7 @@ int CStrategy_AI_1::GetDestination_x(void)
 /********************************************************************************
 Get the destination for this strategy
 ********************************************************************************/
-int CStrategy_AI_1::GetDestination_y(void)
+int CStrategy_AI_2::GetDestination_y(void)
 {
 	return theDestination.y;
 }
@@ -101,28 +101,28 @@ int CStrategy_AI_1::GetDestination_y(void)
 /********************************************************************************
 Get the destination for this strategy
 ********************************************************************************/
-Vector3 CStrategy_AI_1::GetDestination(void)
+Vector3 CStrategy_AI_2::GetDestination(void)
 {
 	return theDestination;
 }
 
-bool CStrategy_AI_1::GetIsMoving(void)
+bool CStrategy_AI_2::GetIsMoving(void)
 {
 	return m_bIsMoving;
 }
 
-bool CStrategy_AI_1::SetIsMoving(bool _isMoving)
+bool CStrategy_AI_2::SetIsMoving(bool _isMoving)
 {
 	m_bIsMoving = _isMoving;
 	return _isMoving;
 }
 
-bool CStrategy_AI_1::GetIsShooting(void)
+bool CStrategy_AI_2::GetIsShooting(void)
 {
 	return m_bIsShooting;
 }
 
-bool CStrategy_AI_1::SetIsShooting(bool _isShooting)
+bool CStrategy_AI_2::SetIsShooting(bool _isShooting)
 {
 	m_bIsShooting = _isShooting;
 	return _isShooting;
@@ -131,7 +131,7 @@ bool CStrategy_AI_1::SetIsShooting(bool _isShooting)
 /********************************************************************************
 Get the FSM state for this strategy
 ********************************************************************************/
-CStrategy_AI_1::CURRENT_STATE CStrategy_AI_1::GetState(void)
+CStrategy_AI_2::CURRENT_STATE CStrategy_AI_2::GetState(void)
 {
 	return CurrentState;
 }
@@ -139,7 +139,7 @@ CStrategy_AI_1::CURRENT_STATE CStrategy_AI_1::GetState(void)
 /********************************************************************************
 Set the FSM state for this strategy
 ********************************************************************************/
-void CStrategy_AI_1::SetState(CStrategy_AI_1::CURRENT_STATE theEnemyState)
+void CStrategy_AI_2::SetState(CStrategy_AI_2::CURRENT_STATE theEnemyState)
 {
 	CurrentState = theEnemyState;
 }

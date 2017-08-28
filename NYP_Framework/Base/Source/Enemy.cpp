@@ -97,18 +97,18 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		this->ChangeStrategy(new CStrategy_AI_1(), false);
 		break;
 	case 2://unused currently 
-		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
-		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
-		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
-		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand2"));
-		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk1"));
-		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
-		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
-		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
-		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fhurt"));
-		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bhurt"));
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand1"));
+		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand2"));
+		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bstand1"));
+		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bstand2"));
+		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fwalk1"));
+		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fwalk2"));
+		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bwalk1"));
+		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bwalk2"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fhurt"));
+		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bhurt"));
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
-		
+		this->ChangeStrategy(new CStrategy_AI_2(), false);
 		break;
 	default:
 		break;
@@ -133,7 +133,7 @@ void CEnemy::Update(double dt)
 		if (!isHurt)
 		this->position += this->direction * this->speed * (float)dt;
 		
-		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0 && !isHurt)
+		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
 			this->Shoot(dt, this->position);
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
