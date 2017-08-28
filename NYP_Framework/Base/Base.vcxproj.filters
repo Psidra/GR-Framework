@@ -240,6 +240,9 @@
     <ClCompile Include="Source\TextEntityManager.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WeaponInfo\SMG.cpp">
+      <Filter>Weapon\Guns</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="Source\TextEntityManager.h">
       <Filter>Entity\EntityHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponInfo\SMG.h">
+      <Filter>Weapon\Guns\GunsHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
