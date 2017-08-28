@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Level.h"
 #include "MyMath.h"
 #include <iostream>
@@ -7,6 +8,9 @@
 #include "TileEntity.h"
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../EntityManager.h"
+#include "../Minimap/Minimap.h"
+#include "../Enemy.h"
+#include "../AI FSM/Ai_1.h"
 
 Level::Level() : roomCount(0)
 {
@@ -147,7 +151,7 @@ void Level::generateCorridors()
 			y = rec2.getMidPoint().y;
 		}
 
-		addCorridor(start, y, 2, (end - start) - 1);
+		addCorridor(start, y, 2, (end - start));
 
 		p1 = rec1.getMidPoint().y;
 		p2 = rec2.getMidPoint().y;
@@ -166,7 +170,7 @@ void Level::generateCorridors()
 			end = p1;
 		}
 
-		addCorridor(x, start, 3, (end - start) - 1);
+		addCorridor(x, start, 3, (end - start));
 	}
 }
 
@@ -223,7 +227,7 @@ void Level::generateWalls()
 	}
 
 	//Add Walls in 4 coners
-	for (int x = 0; x < mapWidth; ++x) {
+	/*for (int x = 0; x < mapWidth; ++x) {
 		for (int y = 0; y < mapHeight; ++y) {
 
 			currentTile = &levelMap[{x, y}];
@@ -243,13 +247,16 @@ void Level::generateWalls()
 					currentTile->type = Tile::WALL;
 			}
 		}
-	}
+	}*/
 }
 
 void Level::setUp()
 {
 	spawnExit();
+	spawnTeleporter();
+	spawnEnemies();
 	loadEntitys();
+	CMinimap::GetInstance()->Init();
 
 
 	//Locate a suitable location to spawn the player.
@@ -270,11 +277,54 @@ void Level::setUp()
 
 void Level::spawnExit()
 {
-	int roomSelected = Math::RandIntMinMax(0, rooms.size() - 1);
+	int roomSelected = Math::RandIntMinMax(0, roomCount - 1);
 	int randX = Math::RandIntMinMax(rooms[roomSelected].x, rooms[roomSelected].x2);
 	int randY = Math::RandIntMinMax(rooms[roomSelected].y, rooms[roomSelected].y2);
 	
 	setTile(randX, randY, Tile::EXIT);
+	//setTile(rooms[roomSelected].getMidPoint().x, rooms[roomSelected].getMidPoint().y, Tile::TELEPORTER);
+}
+
+void Level::spawnTeleporter()
+{
+	int roomSelected = Math::RandIntMinMax(0, roomCount - 1);
+
+	setTile(rooms[roomSelected].getMidPoint().x, rooms[roomSelected].getMidPoint().y, Tile::TELEPORTER);
+}
+
+void Level::spawnEnemies()
+{
+	vector<Rectangle> tempRooms = getRooms();
+
+	while (tempRooms.size() != 0)
+	{
+		int roomSelected = Math::RandIntMinMax(0, tempRooms.size() - 1);
+		int maxNumEnemyInRoom = Math::RandIntMinMax(0, 3);
+
+		while (maxNumEnemyInRoom)
+		{
+			int randX = Math::RandIntMinMax(tempRooms[roomSelected].x, tempRooms[roomSelected].x2);
+			int randY = Math::RandIntMinMax(tempRooms[roomSelected].y, tempRooms[roomSelected].y2);
+
+			std::cout << "maxNumEnemyInRoom" << maxNumEnemyInRoom << std::endl;
+			if (getTile(randX, randY).type == Tile::TELEPORTER ||
+				getTile(randX, randY).type == Tile::ENEMY ||
+				getTile(randX, randY).type == Tile::EXIT ||
+				getTile(randX, randY).type == Tile::WALL ||
+				Player::GetInstance()->GetPos().x == randX ||
+				Player::GetInstance()->GetPos().y == randY)
+			{
+				continue;
+			}
+
+			setTile(randX, randY, Tile::ENEMY);
+
+			--maxNumEnemyInRoom;
+		}
+
+		tempRooms[roomSelected] = tempRooms[tempRooms.size() - 1];
+		tempRooms.pop_back();
+	}
 	
 }
 
@@ -283,6 +333,13 @@ void Level::clearEntitys()
 	levelMap.clear();
 	rooms.clear();
 	EntityManager::GetInstance()->getEntityList().clear();
+
+	std::list<EntityBase*>::iterator it, end;
+	it = EntityManager::GetInstance()->getCollisionList().begin();
+	while (it != EntityManager::GetInstance()->getCollisionList().end()) {
+		(*it)->SetIsDone(true);
+		++it;
+	}
 	EntityManager::GetInstance()->getCollisionList().clear();
 }
 
@@ -293,19 +350,32 @@ void Level::loadEntitys()
 		for (size_t j = 0; j < mapHeight; ++j)
 		{
 			TileEntity* temp = NULL;
-
-			if (getTile(i, j).type == Tile::WALL)
+			CEnemy* NewEnemy = NULL;
+			switch (getTile(i, j).type)
 			{
+			case Tile::WALL:
 				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::WALL;
 				temp->setNormal(Vector3(1, 0, 0));
-			}
-
-			else  if (getTile(i, j).type == Tile::EXIT)
-			{
+				break;
+			case Tile::EXIT:
 				temp = Create::TEntity("player", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::EXIT;
 				temp->setNormal(Vector3(1, 0, 0));
+				break;
+			case Tile::TELEPORTER:
+				temp = Create::TEntity("greenCube", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+				break;
+			case Tile::ENEMY:
+				NewEnemy = Create::Enemy(Vector3(i, j, 0), "player");
+				NewEnemy->type = GenericEntity::OBJECT_TYPE::ENEMY;
+				NewEnemy->Init(50.0f, 1.5, 1);
+				NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+				NewEnemy->SetIsActive(false);
+				break;
+			default:
+				break;
 			}
 
 			if (!temp)
@@ -321,6 +391,46 @@ void Level::newLevel()
 	clearEntitys();
 	GetInstance()->init(32.f, 32.f, 12.f, 12.f, 30);
 	setUp();
+}
+
+void Level::updateEnemy()
+{
+	unsigned playerCurrentRoom = NULL;
+	for (size_t i = 0; i < rooms.size() - 1; ++i)
+	{
+		if (Player::GetInstance()->GetPos().x > rooms[i].x ||
+			Player::GetInstance()->GetPos().x < rooms[i].x2 ||
+			Player::GetInstance()->GetPos().y > rooms[i].y ||
+			Player::GetInstance()->GetPos().y < rooms[i].y2)
+		{
+			playerCurrentRoom = i;
+			break;
+		}
+	}
+
+	if (playerCurrentRoom = NULL)
+		return;
+
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin(); it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
+	{
+		if ((*it) == nullptr)
+			continue;
+
+		if (dynamic_cast<GenericEntity*>(*it)->type == GenericEntity::OBJECT_TYPE::ENEMY)
+		{
+			if ((*it)->GetPosition().x > rooms[playerCurrentRoom].x ||
+				(*it)->GetPosition().x < rooms[playerCurrentRoom].x2 ||
+				(*it)->GetPosition().y > rooms[playerCurrentRoom].y ||
+				(*it)->GetPosition().y < rooms[playerCurrentRoom].y2 && 
+				!dynamic_cast<GenericEntity*>(*it)->IsActive())
+			{
+				//dynamic_cast<CEnemy*>(*it)->ChangeStrategy(new CStrategy_AI_1(), false);
+				(*it)->SetIsActive(true);
+				//dynamic_cast<CEnemy*>(*it)->Init(50.0f, 1.5, 1);
+				
+			}
+		}
+	}
 }
 
 void Level::testCout()

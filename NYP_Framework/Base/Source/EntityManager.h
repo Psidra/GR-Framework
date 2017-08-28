@@ -16,7 +16,7 @@ public:
 	void RenderUI();
 
 	void AddEntity(EntityBase* _newEntity, bool _inFront = false);
-	bool RemoveEntity(EntityBase* _existingEntity);
+	bool RemoveEntity(EntityBase* _existingEntity, bool isDelete = true);
 
 	std::list<EntityBase*>& getCollisionList();
 	void setCollisionList(std::list<EntityBase*>& newList);

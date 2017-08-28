@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "PlayerInfo.h"
 #include <iostream>
 
@@ -19,6 +20,8 @@
 #include "../WeaponInfo/CircularWeapon.h"
 #include "../WeaponInfo/FourSidedWeapon.h"
 #include "../WeaponInfo/Minigun.h"
+#include "../WeaponInfo/SMG.h"
+#include "../WeaponInfo/RocketLauncher.h"
 
 #include "../AudioEngine.h"
 #include "../UIManager.h"
@@ -53,6 +56,7 @@ Player::Player(void)
 	, m_bProjectileCircle(false)
 	, m_bPullEffect(false)
 	, m_dPullEndKB(0.0)
+	, m_bHunted(false)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -61,6 +65,8 @@ Player::Player(void)
 	playerInventory->addWeaponToInventory(new Shotgun(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new LaserBeam(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new Minigun(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new SMG(GenericEntity::PLAYER_BULLET));
+	playerInventory->addWeaponToInventory(new RocketLauncher(GenericEntity::PLAYER_BULLET));
 	//this weapon for boss and enemies
 	playerInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::PLAYER_BULLET));
 	playerInventory->addWeaponToInventory(new FourSidedWeapon(GenericEntity::PLAYER_BULLET));
@@ -73,6 +79,13 @@ Player::~Player(void)
 	{
 		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
 	}
+	for (int i = 0; i < 10; i++)
+	{
+		delete playerAnimated[i];
+		playerAnimated[i] = NULL;
+	}
+	delete[] playerAnimated;
+	delete playerInventory;
 }
 
 // Initialise this class instance
@@ -230,7 +243,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
 		break;
 	case EXIT:
-		//Level::GetInstance()->newLevel();
+		Level::GetInstance()->newLevel();
 		break;
 
 	default:
@@ -255,9 +268,9 @@ void Player::CollisionCheck_Movement()
 	float checkby = 0;
 	
 	if (!isDodging())
-		checkby = 0.2f;
+		checkby = 0.3f;
 	else
-		checkby = 0.5f;
+		checkby = 0.7f;
 
 	if (direction.y != 0)
 	{
@@ -497,6 +510,7 @@ void Player::Update(double dt)
 	this->SetPosition(position);
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
+	//this->SetAABB(this->GetScale() * 0.5f + this->position, this->GetScale() * -0.5f + this->position);
 
 	//set weapon pos & dir
 	playerInventory->getPrimaryWeapon()->setGunPos(position);

@@ -48,9 +48,11 @@ private:
 	std::vector<unsigned int> buttonInt;
 	Light* lights[2];
 
-	GenericEntity* theCube;
+	GenericEntity* HuntTarget;
 	Keyboard* keyboard;
 	static SceneText* sInstance; // The pointer to the object that gets registered
+
+	double elapsedTime, RealLoopTime, huntTime;
 
 	float fontSize, halfFontSize;
 

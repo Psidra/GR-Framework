@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "../WeaponInfo/Minigun.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
@@ -65,20 +66,20 @@ void Minigun::Render()
 	{
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
-		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y - 0.2, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
-		modelStack.Scale(1.5, 1.5, 1.5);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		modelStack.Scale(2.f, 2.f, 2.f);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("minigun"));
 		modelStack.PopMatrix();
 	}
 	else//left side
 	{
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
-		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y - 0.2, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
-		modelStack.Scale(-1.5, -1.5, 1.5);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifleLeft"));
+		modelStack.Scale(-2.f, -2.f, 2.f);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("minigunLeft"));
 		modelStack.PopMatrix();
 	}
 }
@@ -103,7 +104,7 @@ void Minigun::Discharge(Vector3 position, Vector3 target)
 
 Mesh * Minigun::GetMesh()
 {
-	return MeshList::GetInstance()->GetMesh("rifle");
+	return MeshList::GetInstance()->GetMesh("minigun");
 }
 
 void Minigun::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
@@ -138,7 +139,7 @@ void Minigun::generateBullet(Vector3 position, Vector3 target, const int numBull
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-
+		projectile->projectileType = CProjectile::BULLET;
 		/*CProjectile* aProjectile = Create::Projectile("cube",
 		position,
 		target.Normalized(),

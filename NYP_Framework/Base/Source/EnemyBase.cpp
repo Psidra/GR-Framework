@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "EnemyBase.h"
 
 #include "PlayerInfo\PlayerInfo.h"

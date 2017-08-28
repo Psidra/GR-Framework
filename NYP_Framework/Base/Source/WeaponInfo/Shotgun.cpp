@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "../WeaponInfo/Shotgun.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
@@ -95,8 +96,8 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target, m_iNumBullet, m_fRotateAngle);
 
 			bFire = false;
-			if(bulletType == GenericEntity::PLAYER_BULLET)
-			--magRounds;
+			if (bulletType == GenericEntity::PLAYER_BULLET)
+				--magRounds;
 			AudioEngine::GetInstance()->PlayASound("shotgun", false);
 		}
 	}
@@ -157,7 +158,7 @@ void Shotgun::generateBullet(Vector3 position, Vector3 target, const int numBull
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-
+		projectile->projectileType = CProjectile::BULLET;
 
 		/*CProjectile* aProjectile = Create::Projectile("cube",
 			position,

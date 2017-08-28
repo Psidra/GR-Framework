@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Boss.h"
 #include "Enemy.h"
 
@@ -24,7 +25,7 @@
 #include "Strategy.h"
 
 #include "PlayerInfo\PlayerInfo.h"
-
+#include"AI FSM\Ai_1.h"
 // no idea how many guns boss will have so w/e have 'em all
 
 Boss::Boss()
@@ -49,7 +50,14 @@ Boss::~Boss()
 		delete enemyAnimated[i];
 		enemyAnimated[i] = NULL;
 	}
-	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
+	delete[] enemyAnimated;
+	//WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
+	
+	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
+	{
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	}
+	delete enemyInventory;
 }
 
 void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
@@ -75,7 +83,9 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 
 	for (size_t i = 0; i < 10; ++i)
 	{
-		Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
+		CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
+		enemy->Init();
+		enemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 }
 

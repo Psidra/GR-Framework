@@ -13,6 +13,15 @@ public:
 	CProjectile(Mesh* _modelMesh);
 	~CProjectile(void);
 public:
+	enum PROJECTILE_TYPE
+	{
+		NONE,
+		BULLET,
+		LASER,
+		ROCKET,
+	} projectileType;
+
+
 	// Activate the projectile. true == active, false == inactive
 	void SetStatus(const bool m_bStatus);
 	// get status of the projectile. true == active, false == inactive

@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "CollisionManager.h"
 #include "PlayerInfo\PlayerInfo.h"
 #include "LevelStuff\QuadTree.h"
@@ -108,8 +109,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 2);
 	//QuadTree quadTree(0, 800, 600, 0, 3);
 	vector<EntityBase*> getNearestObj;
-	
 	quadTree.clear();
+
 	for (it = collisionList.begin(); it != end; ++it)
 		quadTree.addObject(*it);
 	

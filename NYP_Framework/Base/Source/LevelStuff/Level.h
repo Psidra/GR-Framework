@@ -32,6 +32,7 @@ public:
 		float x2 = 0;
 		float y2 = 0;
 		bool m_bInRange = false;
+		unsigned numOfEnemy = 0;
 
 		Rectangle(float _x, float _y, float _width, float _height)
 		{ 
@@ -74,14 +75,6 @@ public:
 	Challenge Room - Requires the player to fulfill the require to get the reward
 	Shrine Room(Safe Zone) - For player to obtain buffs or heals.*/
 
-	enum DIRECTION {
-		NORTH = 0,
-		SOUTH,
-		EAST,
-		WEST
-	};
-	
-
 	Level();
 	~Level();
 
@@ -113,9 +106,12 @@ public:
 
 	void setUp();
 	void spawnExit();
+	void spawnTeleporter();
+	void spawnEnemies();
 	void clearEntitys();
 	void loadEntitys();
 	void newLevel();
+	void updateEnemy();
 
 	bool isTileWall(Tile t);
 	bool setTile(int x, int y, Tile::TILE_TYPE);

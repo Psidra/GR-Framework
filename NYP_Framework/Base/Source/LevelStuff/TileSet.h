@@ -15,6 +15,8 @@ public:
 		WALL,
 		ROOM,
 		CORRIDOR,
+		TELEPORTER,
+		ENEMY,
 		EXIT,
 		COUNT,
 	};

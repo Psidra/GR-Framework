@@ -1,39 +1,38 @@
-#include "../DetectMemoryLeak.h"
-#include "Bow.h"
+#include "RocketLauncher.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 #include "../Projectile/ProjectileManager.h"
 
-Bow::Bow(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+RocketLauncher::RocketLauncher(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-Bow::~Bow()
+RocketLauncher::~RocketLauncher()
 {
 }
 
 // Initialise this instance to default values
-void Bow::Init(void)
+void RocketLauncher::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 1;
+	magRounds = 4;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 1;
+	maxMagRounds = 4;
 	// The current total number of rounds currently carried by this player
 	totalRounds = 20;
 	// The max total number of rounds currently carried by this player
 	maxTotalRounds = 20;
 
 	// The time between shots
-	timeBetweenShots = 0.33333;
+	timeBetweenShots = 1.5;
 	// The elapsed time (between shots)
-	elapsedTime = 0.33333;
+	elapsedTime = 1.5;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
@@ -43,7 +42,7 @@ void Bow::Init(void)
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
-	m_bRicochet = true;
+	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
@@ -56,7 +55,7 @@ void Bow::Init(void)
 	m_iNumBullet = 1;
 }
 
-void Bow::Render()
+void RocketLauncher::Render()
 {
 	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
 	//std::cout << rotate << std::endl;
@@ -67,7 +66,7 @@ void Bow::Render()
 		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(1, 1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("bow"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rocketlauncher"));
 		modelStack.PopMatrix();
 	}
 	else//left side
@@ -77,13 +76,13 @@ void Bow::Render()
 		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
 		modelStack.Scale(-1, -1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("bowLeft"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rocketlauncherLeft"));
 		modelStack.PopMatrix();
 	}
 }
 
 // Discharge this weapon
-void Bow::Discharge(Vector3 position, Vector3 target)
+void RocketLauncher::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -98,23 +97,23 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 			bFire = false;
 			//m_fRotateAngle += 10;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
-			--magRounds;
+				--magRounds;
 
-			AudioEngine::GetInstance()->PlayASound("bow", false);
+			AudioEngine::GetInstance()->PlayASound("rifle", false);
 		}
 	}
 
-//	if (m_fRotateAngle > 360)
+	//	if (m_fRotateAngle > 360)
 	//	m_fRotateAngle = 0;
 }
 
-Mesh * Bow::GetMesh()
+Mesh * RocketLauncher::GetMesh()
 {
-	return MeshList::GetInstance()->GetMesh("bow");
+	return MeshList::GetInstance()->GetMesh("rocketlauncher");
 }
 
 // Number of bullet to create and pattern
-void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void RocketLauncher::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
@@ -144,7 +143,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-		projectile->projectileType = CProjectile::BULLET;
+		projectile->projectileType = CProjectile::ROCKET;
 		//CProjectile* aProjectile = Create::Projectile("cube",
 		//	position,
 		//	target.Normalized(),

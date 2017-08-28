@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Application.h"
 #include "MouseController.h"
 #include "KeyboardController.h"
@@ -5,6 +6,9 @@
 #include "GraphicsManager.h"
 #include "MeshBuilder.h"
 #include "MeshList.h"
+#include "EntityManager.h"
+#include "TextEntityManager.h"
+#include "UIManager.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -317,6 +321,13 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("target", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("target")->textureID[0] = LoadTGA("Image/Enemies/Boss/target.tga");
 
+		//fire
+		MeshBuilder::GetInstance()->GenerateCube("fire", Color(1.0f, 0.7f, 0.0f), 1.0f);
+		//slow
+		MeshBuilder::GetInstance()->GenerateCube("slow", Color(0.2f, 0.2f, 1.0f), 1.0f);
+		//poison
+		MeshBuilder::GetInstance()->GenerateCube("poison", Color(0.2f, 1.0f, 0.2f), 1.0f);
+
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Coord", Color(0, 0, 1), 1.f);
@@ -374,7 +385,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("pause_button")->textureID[0] = LoadTGA("Image/UI/PauseButton.tga");
 		
 		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/GunDisplayBorder.tga");
+		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/mapGroundTexture.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("mapGround", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("mapGround")->textureID[0] = LoadTGA("Image/UI/mapGroundTexture.tga");
+
 
 		//----------GUN SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);
@@ -398,7 +412,18 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("bowLeft")->textureID[0] = LoadTGA("Image/Weapon/bowLeft.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("laserLeft", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("laserLeft")->textureID[0] = LoadTGA("Image/Weapon/laserGunLeft.tga");
-
+		MeshBuilder::GetInstance()->GenerateQuad("minigun", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minigun")->textureID[0] = LoadTGA("Image/Weapon/minigun.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("minigunLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minigunLeft")->textureID[0] = LoadTGA("Image/Weapon/minigunLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("smg", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("smg")->textureID[0] = LoadTGA("Image/Weapon/smg.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("smgLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("smgLeft")->textureID[0] = LoadTGA("Image/Weapon/smgLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncher", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncher")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncher.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncherLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncherLeft")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncherLeft.tga");
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 

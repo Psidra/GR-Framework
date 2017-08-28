@@ -48,6 +48,7 @@
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
+    <ClCompile Include="Source\TextEntityManager.cpp" />
     <ClCompile Include="Source\UIElement.cpp" />
     <ClCompile Include="Source\UIManager.cpp" />
     <ClCompile Include="Source\WeaponInfo\Bow.cpp" />
@@ -57,7 +58,9 @@
     <ClCompile Include="Source\WeaponInfo\Minigun.cpp" />
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
+    <ClCompile Include="Source\WeaponInfo\RocketLauncher.cpp" />
     <ClCompile Include="Source\WeaponInfo\Shotgun.cpp" />
+    <ClCompile Include="Source\WeaponInfo\SMG.cpp" />
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
     <ClCompile Include="Source\WeaponManager.cpp" />
   </ItemGroup>
@@ -98,6 +101,7 @@
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\TextEntity.h" />
+    <ClInclude Include="Source\TextEntityManager.h" />
     <ClInclude Include="Source\UIElement.h" />
     <ClInclude Include="Source\UIManager.h" />
     <ClInclude Include="Source\WeaponInfo\Bow.h" />
@@ -107,7 +111,9 @@
     <ClInclude Include="Source\WeaponInfo\Minigun.h" />
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />
+    <ClInclude Include="Source\WeaponInfo\RocketLauncher.h" />
     <ClInclude Include="Source\WeaponInfo\Shotgun.h" />
+    <ClInclude Include="Source\WeaponInfo\SMG.h" />
     <ClInclude Include="Source\WeaponInfo\WeaponInfo.h" />
     <ClInclude Include="Source\WeaponManager.h" />
   </ItemGroup>

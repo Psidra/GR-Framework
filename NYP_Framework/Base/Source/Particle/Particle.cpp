@@ -11,6 +11,7 @@ cpp file for particle class.
 // Edited by Edward Chen
 // Added: New Particle SFX, Emitter can set to follow based on specific target.
 
+#include "../DetectMemoryLeak.h"
 #include "Particle.h"
 
 Particle::Particle()

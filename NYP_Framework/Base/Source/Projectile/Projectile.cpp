@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Projectile.h"
 
 #include "MeshBuilder.h"
@@ -153,8 +154,8 @@ void CProjectile::Update(double dt)
 	if (m_fLifetime < 0.0f)
 	{
 		SetStatus(false);
-		//SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
 		SetIsActive(false);
+		SetIsDone(true); //delete does projectile that run out of lifetime
 		return;
 	}
 
@@ -194,8 +195,50 @@ void CProjectile::Update(double dt)
 	//==========================
 
 	// Update Position
-	if (!m_bProjectileLaserBeam)
-	position += theDirection * (float)(dt * m_fSpeed);
+	switch (projectileType)
+	{
+	case PROJECTILE_TYPE::BULLET:
+		position += theDirection * (float)(dt * m_fSpeed);
+		break;
+	case PROJECTILE_TYPE::LASER:
+
+		break;
+	case PROJECTILE_TYPE::ROCKET:
+		position += theDirection * (float)(dt * m_fSpeed);
+		if (m_fLifetime < 0.0f)
+		{
+			Vector3 temp = theDirection;
+			for (int i = 0; i < 8; ++i)
+			{
+				CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
+
+				theDirection.x = temp.x * cos(Math::DegreeToRadian(45)) - temp.y * sin(Math::DegreeToRadian(45));
+				theDirection.y = temp.x * sin(Math::DegreeToRadian(45)) + temp.y * cos(Math::DegreeToRadian(45));
+
+				Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+				projectile->SetProjectileMesh(mesh);
+				projectile->SetIsActive(true);
+				projectile->SetPosition(position);
+				projectile->SetDirection(theDirection);
+				projectile->SetScale(scale);
+				projectile->SetLifetime(2.f);
+				projectile->SetSpeed(m_fSpeed);
+				projectile->type = type;
+				projectile->setProjectileDamage(5);
+				projectile->setIsDots(false);
+				projectile->setIsRicochet(false);
+				projectile->setIsLaserbeam(false);
+				projectile->projectileType = CProjectile::BULLET;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+
+	//if (!m_bProjectileLaserBeam)
+	//position += theDirection * (float)(dt * m_fSpeed);
 
 	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
 	//				position.y + (float)(theDirection.y * dt * m_fSpeed),
@@ -275,7 +318,6 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		}
 		else if (!m_bProjectileRicochet && !m_bProjectileLaserBeam)
 			isActive = false;
-			//this->isDone = true;
 	}
 		break;
 	case GenericEntity::OBJECT_TYPE::ENEMY:
