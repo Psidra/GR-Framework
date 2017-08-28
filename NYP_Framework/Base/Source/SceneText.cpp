@@ -511,31 +511,31 @@ void SceneText::Update(double dt)
 		if (KeyboardController::GetInstance()->IsKeyDown('4'))
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		if (KeyboardController::GetInstance()->IsKeyDown('5'))
-		{
-			lights[0]->type = Light::LIGHT_POINT;
-		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('6'))
-		{
-			lights[0]->type = Light::LIGHT_DIRECTIONAL;
-		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('7'))
-		{
-			lights[0]->type = Light::LIGHT_SPOT;
-		}
+		//if (KeyboardController::GetInstance()->IsKeyDown('5'))
+		//{
+		//	lights[0]->type = Light::LIGHT_POINT;
+		//}
+		//else if (KeyboardController::GetInstance()->IsKeyDown('6'))
+		//{
+		//	lights[0]->type = Light::LIGHT_DIRECTIONAL;
+		//}
+		//else if (KeyboardController::GetInstance()->IsKeyDown('7'))
+		//{
+		//	lights[0]->type = Light::LIGHT_SPOT;
+		//}
 
-		if (KeyboardController::GetInstance()->IsKeyDown('I'))
-			lights[0]->position.z -= (float)(10.f * dt);
-		if (KeyboardController::GetInstance()->IsKeyDown('K'))
-			lights[0]->position.z += (float)(10.f * dt);
-		if (KeyboardController::GetInstance()->IsKeyDown('J'))
-			lights[0]->position.x -= (float)(10.f * dt);
-		if (KeyboardController::GetInstance()->IsKeyDown('L'))
-			lights[0]->position.x += (float)(10.f * dt);
-		if (KeyboardController::GetInstance()->IsKeyDown('O'))
-			lights[0]->position.y -= (float)(10.f * dt);
-		if (KeyboardController::GetInstance()->IsKeyDown('P'))
-			lights[0]->position.y += (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('I'))
+		//	lights[0]->position.z -= (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('K'))
+		//	lights[0]->position.z += (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('J'))
+		//	lights[0]->position.x -= (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('L'))
+		//	lights[0]->position.x += (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('O'))
+		//	lights[0]->position.y -= (float)(10.f * dt);
+		//if (KeyboardController::GetInstance()->IsKeyDown('P'))
+		//	lights[0]->position.y += (float)(10.f * dt);
 
 		// if the left mouse button was released
 		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
@@ -574,7 +574,7 @@ void SceneText::Update(double dt)
 		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
 		ss << weapon->GetMagRound() << "/" << weapon->GetTotalRound();
 		textObj[0]->SetText(ss.str());
-		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 0.0f));
 		textObj[0]->SetScale(Vector3(25, 25, 25));
 
 		ss.str("");
@@ -600,7 +600,6 @@ void SceneText::Update(double dt)
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 			textObj[i]->SetIsActive(true);
 		}
-
 		
 		break;
 	}	
@@ -656,6 +655,13 @@ void SceneText::Update(double dt)
 		break;
 	}
 	case UIManager::GAME_STATE::MAIN_MENU:
+	{
+		for (size_t i = 0; i < 10; ++i)
+		{
+			optionTextObj[i]->SetIsActive(false);
+		}
+		break;
+	}
 	case UIManager::GAME_STATE::PAUSE:
 	{
 		for (size_t i = 0; i < 10; ++i)
@@ -772,13 +778,13 @@ void SceneText::RenderPassMain()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
+	TextEntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
 		minimap->RenderUI();
-		TextEntityManager::GetInstance()->RenderUI();
 		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 		break;
 	}
