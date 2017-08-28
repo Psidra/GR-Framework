@@ -24,6 +24,8 @@ void TextEntityManager::RenderUI()
 	{
 		if (*it == NULL)
 			continue;
+		if (!(*it)->IsActive())
+			continue;
 
 		(*it)->RenderUI();
 	}

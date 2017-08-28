@@ -81,12 +81,12 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 
-	//for (size_t i = 0; i < 10; ++i)
-	//{
-	//	CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
-	//	enemy->Init();
-	//	enemy->ChangeStrategy(new CStrategy_AI_1(), false);
-	//}
+	for (size_t i = 0; i < 10; ++i)
+	{
+		CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
+		enemy->Init();
+		enemy->ChangeStrategy(new CStrategy_AI_1(), false);
+	}
 }
 
 void Boss::SetTypeOfEnemy(int _enemyType)
