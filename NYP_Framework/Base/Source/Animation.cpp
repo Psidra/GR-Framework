@@ -42,7 +42,7 @@ void CAnimation::SetAnimationStatus(bool m_bFacingUp, bool m_bIsMoving, bool m_b
 		this->dodging = _dodging;
 
 
-		if (Player::GetInstance()->getDodge())
+		if (_dodging)
 		{
 			if (m_bFacingUp)
 				m_iAnimation_Index = m_ibDodge_Start;
@@ -87,7 +87,7 @@ void CAnimation::UpdateAnimationIndex(double dt)// need dt in param
 				m_iAnimation_Index = m_iSucc_Start;
 			m_dElapsedAnimTime = 0.0;
 		}
-		else if (Player::GetInstance()->getDodge())
+		else if (dodging)
 		{
 			if (!m_bFacingUp)
 			{
