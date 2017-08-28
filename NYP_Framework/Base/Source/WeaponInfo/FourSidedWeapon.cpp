@@ -35,11 +35,11 @@ void FourSidedWeapon::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 40;
+	m_fWeaponDamage = 10;
 	// boolean flag for dots
 	m_bDots = false;
 	// projectile scale
-	scale.Set(0.3, 0.3, 0.3);
+	scale.Set(0.6, 0.6, 0.6);
 	// projectile ricochet
 	m_bRicochet = true;
 	// is laserBeam
@@ -103,7 +103,7 @@ void FourSidedWeapon::generateBullet(Vector3 position, Vector3 target, const int
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);
@@ -117,7 +117,7 @@ void FourSidedWeapon::generateBullet(Vector3 position, Vector3 target, const int
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-		projectile->projectileType = CProjectile::BULLET;
+		projectile->projectileType = CProjectile::ROCKET;
 		//CProjectile* aProjectile = Create::Projectile("cube",
 		//	position,
 		//	target.Normalized(),

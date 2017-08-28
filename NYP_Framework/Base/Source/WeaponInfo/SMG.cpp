@@ -125,7 +125,7 @@ void SMG::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);

@@ -205,31 +205,11 @@ void CProjectile::Update(double dt)
 		break;
 	case PROJECTILE_TYPE::ROCKET:
 		position += theDirection * (float)(dt * m_fSpeed);
-		if (m_fLifetime < 0.0f)
+		if (m_fLifetime <= 1.0f)
 		{
-			Vector3 temp = theDirection;
-			for (int i = 0; i < 8; ++i)
-			{
-				CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
-
-				theDirection.x = temp.x * cos(Math::DegreeToRadian(45)) - temp.y * sin(Math::DegreeToRadian(45));
-				theDirection.y = temp.x * sin(Math::DegreeToRadian(45)) + temp.y * cos(Math::DegreeToRadian(45));
-
-				Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
-				projectile->SetProjectileMesh(mesh);
-				projectile->SetIsActive(true);
-				projectile->SetPosition(position);
-				projectile->SetDirection(theDirection);
-				projectile->SetScale(scale);
-				projectile->SetLifetime(2.f);
-				projectile->SetSpeed(m_fSpeed);
-				projectile->type = type;
-				projectile->setProjectileDamage(5);
-				projectile->setIsDots(false);
-				projectile->setIsRicochet(false);
-				projectile->setIsLaserbeam(false);
-				projectile->projectileType = CProjectile::BULLET;
-			}
+			isActive = false;
+			isDone = true;
+			ProjectileSpilt(9, 45, true);
 		}
 		break;
 	default:
@@ -317,7 +297,13 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			}
 		}
 		else if (!m_bProjectileRicochet && !m_bProjectileLaserBeam)
+		{
 			isActive = false;
+			isDone = true;
+			if (projectileType == ROCKET)
+				ProjectileSpilt(9, 45, true);
+		}
+
 	}
 		break;
 	case GenericEntity::OBJECT_TYPE::ENEMY:
@@ -340,6 +326,9 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			std::cout << "enemy is invulnerable!" << std::endl;
 		}
 
+		if (projectileType == ROCKET)
+			ProjectileSpilt(9, 45, true);
+
 		std::cout << "player bullet collide with enemy" << std::endl;
 		break;
 	}
@@ -352,6 +341,35 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 void CProjectile::SetProjectileMesh(Mesh* _mesh)
 {
 	modelMesh = _mesh;
+}
+
+void CProjectile::ProjectileSpilt(int _numProjectile, float _angle, bool _ricochet)
+{
+	Vector3 temp = theDirection;
+	float totalAngle = _numProjectile * _angle * 0.5; //half the total angle for rotation
+	for (int i = 0; i < _numProjectile; ++i)
+	{
+		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
+
+		theDirection.x = temp.x * cos(Math::DegreeToRadian(totalAngle)) - temp.y * sin(Math::DegreeToRadian(totalAngle));
+		theDirection.y = temp.x * sin(Math::DegreeToRadian(totalAngle)) + temp.y * cos(Math::DegreeToRadian(totalAngle));
+		totalAngle -= _angle;
+
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
+		projectile->SetProjectileMesh(mesh);
+		projectile->SetIsActive(true);
+		projectile->SetPosition(position);
+		projectile->SetDirection(theDirection);
+		projectile->SetScale(Vector3(0.3,0.3,0.3));
+		projectile->SetLifetime(2.f);
+		projectile->SetSpeed(m_fSpeed);
+		projectile->type = type;
+		projectile->setProjectileDamage(5);
+		projectile->setIsDots(false);
+		projectile->setIsRicochet(_ricochet);
+		projectile->setIsLaserbeam(false);
+		projectile->projectileType = CProjectile::BULLET;
+	}
 }
 
 // Create a projectile and add it into EntityManager

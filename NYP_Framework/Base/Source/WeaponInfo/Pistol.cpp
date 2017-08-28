@@ -26,9 +26,9 @@ void Pistol::Init(void)
 	// The maximum number of ammunition for this magazine for this weapon
 	maxMagRounds = 12;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 40;
+	totalRounds = 1000;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 40;
+	maxTotalRounds = 1000;
 
 	// The time between shots
 	timeBetweenShots = 0.3333;
@@ -85,6 +85,14 @@ void Pistol::Render()
 	}
 }
 
+void Pistol::Reload() //psitol have infinite bullets
+{
+	if (magRounds < maxMagRounds)
+	{
+		magRounds = maxMagRounds;
+	}
+}
+
 // Discharge this weapon
 void Pistol::Discharge(Vector3 position, Vector3 target)
 {
@@ -120,7 +128,7 @@ void Pistol::generateBullet(Vector3 position, Vector3 target, const int numBulle
 	{
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);

@@ -14,6 +14,8 @@ public:
 	void Init(void);
 	//render weapon
 	void Render();
+	//Reolad gun
+	void Reload();
 	// Discharge this weapon
 	void Discharge(Vector3 position, Vector3 target);
 	// Get mesh

@@ -36,17 +36,17 @@ void RocketLauncher::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 30;
+	m_fWeaponDamage = 50;
 	// boolean flag for dots
 	m_bDots = false;
 	// projectile scale
-	scale.Set(0.3, 0.3, 0.3);
+	scale.Set(0.6, 0.6, 0.6);
 	// projectile ricochet
 	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
-	m_fSpeed = 15.0f;
+	m_fSpeed = 8.0f;
 	// is active
 	m_bActive = false;
 	// Player/enemy angle to rotate
@@ -129,7 +129,7 @@ void RocketLauncher::generateBullet(Vector3 position, Vector3 target, const int 
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);

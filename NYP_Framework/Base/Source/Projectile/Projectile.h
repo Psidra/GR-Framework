@@ -66,6 +66,8 @@ public:
 	void CollisionResponse(GenericEntity* ThatEntity);
 	//set projectile's mesh
 	void SetProjectileMesh(Mesh* _mesh);
+	//projectile spilt
+	void ProjectileSpilt(int _numProjectile, float _angle, bool _ricochet = true);
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;

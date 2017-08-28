@@ -41,7 +41,7 @@ void Bow::Init(void)
 	// boolean flag for dots
 	m_bDots = false;
 	// projectile scale
-	scale.Set(0.3, 0.3, 0.3);
+	scale.Set(0.6f, 0.6f, 0.6f);
 	// projectile ricochet
 	m_bRicochet = true;
 	// is laserBeam
@@ -130,7 +130,7 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("bowBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);
