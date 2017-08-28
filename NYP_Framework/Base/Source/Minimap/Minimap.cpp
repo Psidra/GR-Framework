@@ -75,7 +75,7 @@ bool CMinimap::Init(void)
 	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
 	{
 		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-		tScale = tScale * (1.0f / (scale.x * 0.05));
+		tScale = tScale * (1.0f / (scale.x * 0.1));
 		roomScaleMapList.push_back(tScale);
 		roomPosMapList.push_back(tScale); //temp pushback
 	}

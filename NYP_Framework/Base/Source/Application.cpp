@@ -134,7 +134,7 @@ void Application::Run()
 		if (dt < 0.016666667)
 			dt = 0.016666667;
 
-		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
+		SceneManager::GetInstance()->Update(dt);
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
@@ -374,7 +374,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("pause_button")->textureID[0] = LoadTGA("Image/UI/PauseButton.tga");
 		
 		MeshBuilder::GetInstance()->GenerateQuad("gun_border", Color(1, 1, 1), 1.f);
-		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/GunDisplayBorder.tga");
+		MeshList::GetInstance()->GetMesh("gun_border")->textureID[0] = LoadTGA("Image/UI/mapGroundTexture.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("mapGround", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("mapGround")->textureID[0] = LoadTGA("Image/UI/mapGroundTexture.tga");
+
 
 		//----------GUN SPRITES
 		MeshBuilder::GetInstance()->GenerateQuad("pistol", Color(1, 1, 1), 1.f);
@@ -398,6 +401,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("bowLeft")->textureID[0] = LoadTGA("Image/Weapon/bowLeft.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("laserLeft", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("laserLeft")->textureID[0] = LoadTGA("Image/Weapon/laserGunLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("minigun", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minigun")->textureID[0] = LoadTGA("Image/Weapon/minigun.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("minigunLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("minigunLeft")->textureID[0] = LoadTGA("Image/Weapon/minigunLeft.tga");
 
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);

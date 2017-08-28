@@ -357,27 +357,13 @@ void SceneText::Init()
 	// Minimap
 	minimap = Create::Minimap(false);
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
-	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
+	minimap->GetBackground()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
 	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
-	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
-
-	//create them projectiles
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	//CProjectile* projectile = Create::Projectile("cube",
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(1, 1, 1),
-	//	//	10.f,
-	//	//	10.f);
-	//	//CProjectile* temp = new CProjectile;
-	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
-	//	EntityManager::GetInstance()->AddEntity(new CProjectile,true);
-	//}
-
+	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 1.0f));
+	//minimap->GetObjectMesh()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
@@ -389,8 +375,6 @@ void SceneText::Init()
 	level->setUp();
 	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	
-	
 	//minimap->setMiniMapRoomList(level->getRooms());
 
 	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
