@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI FSM\Ai_1.cpp" />
+    <ClCompile Include="Source\AI FSM\Ai_2.cpp" />
     <ClCompile Include="Source\AI FSM\Ai_firstboss.cpp" />
     <ClCompile Include="Source\AI FSM\Ai_obstacle.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
@@ -66,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI FSM\Ai_1.h" />
+    <ClInclude Include="Source\AI FSM\Ai_2.h" />
     <ClInclude Include="Source\AI FSM\Ai_firstboss.h" />
     <ClInclude Include="Source\AI FSM\Ai_obstacle.h" />
     <ClInclude Include="Source\Animation.h" />

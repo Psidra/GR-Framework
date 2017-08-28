@@ -97,7 +97,7 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		this->ChangeStrategy(new CStrategy_AI_1(), false);
 		break;
 	case 2:
-		/*enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand1"));
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand1"));
 		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand2"));
 		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bstand1"));
 		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bstand2"));
@@ -108,9 +108,8 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fhurt"));
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bhurt"));
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
-		this->ChangeStrategy(new CStrategy_AI_2(), false);*/
-		break;
-	default:
+		//this->ChangeStrategy(new CStrategy_AI_1(), false);
+		this->ChangeStrategy(new CStrategy_AI_2(), false);
 		break;
 	}
 	this->SetIndices_fStand(0, 1);

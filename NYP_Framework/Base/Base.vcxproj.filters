@@ -246,6 +246,9 @@
     <ClCompile Include="Source\WeaponInfo\RocketLauncher.cpp">
       <Filter>Weapon\Guns</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI FSM\Ai_2.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\RocketLauncher.h">
       <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI FSM\Ai_2.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
