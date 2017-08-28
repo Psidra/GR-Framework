@@ -781,9 +781,18 @@ void SceneText::Exit()
 	// Detach camera from other entities
 	GraphicsManager::GetInstance()->DetachCamera();
 	//delete entitymanager
-	//EntityManager::GetInstance()->Destroy();
+	EntityManager::GetInstance()->Destroy();
 	//delete tetxentiymanager
 	TextEntityManager::GetInstance()->Destroy();
+	//delete weaponManager
+	WeaponManager::GetInstance()->Destroy();
+
+	Player::GetInstance()->Destroy();
+	KeyboardController::GetInstance()->Destroy();
+	UIManager::GetInstance()->Destroy();
+
+	delete keyboard;
+	delete camera;
 	// Delete the lights
 	//delete lights[0];
 	//delete lights[1];

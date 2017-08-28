@@ -79,6 +79,13 @@ Player::~Player(void)
 	{
 		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
 	}
+	for (int i = 0; i < 10; i++)
+	{
+		delete playerAnimated[i];
+		playerAnimated[i] = NULL;
+	}
+	delete[] playerAnimated;
+	delete playerInventory;
 }
 
 // Initialise this class instance

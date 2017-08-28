@@ -44,7 +44,13 @@ CEnemy::~CEnemy(void)
 		delete enemyAnimated[i];
 		enemyAnimated[i] = NULL;
 	}
-	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
+	delete[] enemyAnimated;
+
+	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
+	{
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	}
+	delete enemyInventory;
 }
 
 void CEnemy::Init(float _hp, double _speed, int _enemyType, bool _invul)

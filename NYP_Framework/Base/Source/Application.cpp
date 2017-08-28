@@ -158,12 +158,6 @@ void Application::Exit()
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW
 	glfwTerminate();
-
-	Player::GetInstance()->Destroy();
-	KeyboardController::GetInstance()->Destroy();
-	EntityManager::GetInstance()->Destroy();
-	TextEntityManager::GetInstance()->Destroy();
-	UIManager::GetInstance()->Destroy();
 }
 
 void Application::UpdateInput()

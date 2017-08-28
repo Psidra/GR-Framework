@@ -183,12 +183,12 @@ EntityManager::EntityManager() : totalFrontEntities(0)
 // Destructor
 EntityManager::~EntityManager()
 {
-	//for (std::list<EntityBase*>::iterator it = entityList.begin(); it != entityList.end();++it)
-	//{
-	//	//delete all entity in list
-	//	EntityBase* temp = *it;
-	//	delete temp;
-	//	temp = NULL;
-	//}
+	for (std::list<EntityBase*>::iterator it = entityList.begin(); it != entityList.end();++it)
+	{
+		//delete all entity in list
+		EntityBase* temp = *it;
+		delete temp;
+		temp = NULL;
+	}
 	//entityList.clear();
 }

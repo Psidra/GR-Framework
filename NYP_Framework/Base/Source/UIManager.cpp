@@ -22,6 +22,13 @@ UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInp
 
 UIManager::~UIManager()
 {
+	for (std::list<UIElement*>::iterator it = UIList.begin();
+		it != UIList.end();++it)
+	{
+		UIElement* temp = *it;
+		delete temp;
+		temp = NULL;
+	}
 }
 
 void UIManager::Pause()
