@@ -216,17 +216,17 @@ void SceneText::Init()
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
 	// test fire
-	GenericEntity* fire = Create::Entity("cube", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* fire = Create::Entity("fire", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	fire->type = GenericEntity::OBJECT_TYPE::FIRE;
 	fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
 
 	// test slow
-	GenericEntity* slow = Create::Entity("cube", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* slow = Create::Entity("slow", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	slow->type = GenericEntity::OBJECT_TYPE::SLOW;
 	slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
 
 	// test poison
-	GenericEntity* poison = Create::Entity("cube", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* poison = Create::Entity("poison", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	poison->type = GenericEntity::OBJECT_TYPE::POISON;
 	poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
 
@@ -336,7 +336,13 @@ void SceneText::Init()
 	//keyboard->Write("Keybind//keyconfigtest.txt");	//WIP- got it to write, but need to take in user input left
 	//keyboard->Load("Keybind//keyconfigtest.txt");
 	keyboard->MapKeys("Keybind//keys.txt");
+
+	elapsedTime = 0.0;
+	huntTime = 0.0;
 	
+	HuntTarget = Create::Entity("target", Vector3(0, 0, 0), Vector3(3, 3, 1), false);
+	HuntTarget->SetIsActive(false);
+
 	UIManager::GetInstance()->SetKeyboard(keyboard);
 
 	Controller playerControl;
@@ -351,7 +357,7 @@ void SceneText::Init()
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), true);
-	FirstBoss->Init(1500.f, 0, 1, false);
+	FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
@@ -454,8 +460,51 @@ void SceneText::Update(double dt)
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
+		elapsedTime += dt;
 		// Update the player position and other details based on keyboard and mouse inputs
 		Player::GetInstance()->Update(dt);
+
+		if (Player::GetInstance()->m_bHunted && elapsedTime > huntTime + 1.f)
+		{
+			Player::GetInstance()->m_bHunted = false;
+			HuntTarget->SetIsActive(true);
+			huntTime = elapsedTime + 3.f;
+		}
+
+		if (huntTime > elapsedTime)
+			HuntTarget->SetPosition(Vector3(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z - 1.f));
+			
+
+		if (elapsedTime > huntTime + 0.5f && HuntTarget->IsActive())
+		{
+			HuntTarget->SetIsActive(false);
+
+			int rand_element = Math::RandIntMinMax(0, 2);
+
+			switch (rand_element) {
+			case 0:
+			{
+				GenericEntity* fire = Create::Entity("fire", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				fire->type = GenericEntity::OBJECT_TYPE::FIRE;
+				fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
+				break;
+			}
+			case 1:
+			{
+				GenericEntity* slow = Create::Entity("slow", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				slow->type = GenericEntity::OBJECT_TYPE::SLOW;
+				slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
+				break;
+			}
+			case 2:
+			{
+				GenericEntity* poison = Create::Entity("poison", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				poison->type = GenericEntity::OBJECT_TYPE::POISON;
+				poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
+				break;
+			}
+			}
+		}
 
 		// Update our entities
 		EntityManager::GetInstance()->Update(dt);
@@ -723,6 +772,15 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
+
+	if (huntTime + 0.7f > elapsedTime)
+	{
+		ms.PushMatrix();
+		ms.Translate(HuntTarget->GetPosition().x, HuntTarget->GetPosition().y, HuntTarget->GetPosition().z);
+		ms.Scale(HuntTarget->GetScale().x, HuntTarget->GetScale().y, Player::GetInstance()->GetPos().z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("target"));
+		ms.PopMatrix();
+	}
 
 	if (Player::GetInstance()->m_bProjectileCircle)
 	{

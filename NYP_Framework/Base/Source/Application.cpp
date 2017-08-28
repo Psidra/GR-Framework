@@ -317,6 +317,13 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("target", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("target")->textureID[0] = LoadTGA("Image/Enemies/Boss/target.tga");
 
+		//fire
+		MeshBuilder::GetInstance()->GenerateCube("fire", Color(1.0f, 0.7f, 0.0f), 1.0f);
+		//slow
+		MeshBuilder::GetInstance()->GenerateCube("slow", Color(0.2f, 0.2f, 1.0f), 1.0f);
+		//poison
+		MeshBuilder::GetInstance()->GenerateCube("poison", Color(0.2f, 1.0f, 0.2f), 1.0f);
+
 		MeshBuilder::GetInstance()->GenerateQuad("Wall", Color(0, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Floor", Color(1, 0, 0), 1.f);
 		MeshBuilder::GetInstance()->GenerateQuad("Coord", Color(0, 0, 1), 1.f);
