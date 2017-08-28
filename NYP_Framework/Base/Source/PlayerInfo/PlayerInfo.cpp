@@ -230,7 +230,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
 		break;
 	case EXIT:
-		//Level::GetInstance()->newLevel();
+		Level::GetInstance()->newLevel();
 		break;
 
 	default:
