@@ -35,7 +35,7 @@ void CircularWeapon::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 40;
+	m_fWeaponDamage = 5;
 	// boolean flag for dots
 	m_bDots = false;
 	// projectile scale
@@ -103,7 +103,7 @@ void CircularWeapon::generateBullet(Vector3 position, Vector3 target, const int 
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("pistolBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position);

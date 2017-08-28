@@ -37,7 +37,7 @@ void LaserBeam::Init(void)
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 10;
+	m_fWeaponDamage = 7;
 	// boolean flag for dots
 	m_bDots = false;
 	// Player/enemy angle to rotate
@@ -123,7 +123,7 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("laserBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position + target * 3.5);
@@ -160,7 +160,7 @@ void LaserBeam::generateBullet(Vector3 position, Vector3 target, const int numBu
 
 		CProjectile* projectile = ProjectileManager::GetInstance()->FetchProjectile();
 
-		Mesh* mesh = MeshList::GetInstance()->GetMesh("cube");
+		Mesh* mesh = MeshList::GetInstance()->GetMesh("laserBullet");
 		projectile->SetProjectileMesh(mesh);
 		projectile->SetIsActive(true);
 		projectile->SetPosition(position + target * m_fIncrement);

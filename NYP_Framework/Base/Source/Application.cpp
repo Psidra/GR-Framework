@@ -424,6 +424,17 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("rocketlauncher")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncher.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncherLeft", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("rocketlauncherLeft")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncherLeft.tga");
+
+		//--------Bullets
+		MeshBuilder::GetInstance()->GenerateQuad("pistolBullet", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("pistolBullet")->textureID[0] = LoadTGA("Image/Weapon/Bullets/bullet_pistol.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rifleBullet", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rifleBullet")->textureID[0] = LoadTGA("Image/Weapon/Bullets/bullet_rifle.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("laserBullet", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("laserBullet")->textureID[0] = LoadTGA("Image/Weapon/Bullets/bullet_lazer.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("bowBullet", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("bowBullet")->textureID[0] = LoadTGA("Image/Weapon/Bullets/bullet_bow.tga");
+
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 
