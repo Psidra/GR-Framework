@@ -53,6 +53,7 @@ Player::Player(void)
 	, m_bProjectileCircle(false)
 	, m_bPullEffect(false)
 	, m_dPullEndKB(0.0)
+	, m_bHunted(false)
 {
 	playerInventory = new Inventory;
 	playerInventory->addWeaponToInventory(new Pistol(GenericEntity::PLAYER_BULLET));
@@ -590,9 +591,6 @@ void Player::UseBlank()
 			thatEntity->SetIsDone(true);
 		}
 	}
-
-	AudioEngine::GetInstance()->StopAllSounds();
-	AudioEngine::GetInstance()->PlayASound("lastbattle", true);
 
 	--this->m_iBlank;
 }

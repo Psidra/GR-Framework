@@ -125,8 +125,10 @@ public:
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
 
+	// Boss fight effects on player
 	bool m_bProjectileCircle;
 	bool m_bPullEffect;
+	bool m_bHunted; // Target on player
 
 private:
 	Vector3 defaultPosition;

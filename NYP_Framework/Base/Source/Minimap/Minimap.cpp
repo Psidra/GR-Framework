@@ -92,7 +92,7 @@ bool CMinimap::Init(void)
 	for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
 	{
 		Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-		tScale = tScale * (1.0f / (scale.x * 0.05));
+		tScale = tScale * (1.0f / (scale.x * 0.1));
 		roomScaleMapList.push_back(tScale);
 		roomPosMapList.push_back(tScale); //temp pushback
 	}
@@ -427,8 +427,8 @@ void CMinimap::Update(double dt)
 
 				//std::cout << "mmPos: " << teleporterMapPos[i] << "\n";
 
-				if (temp < teleporterMapPos[i] * scale.x + teleporterMapScale[i] * scale.x  &&
-					temp > teleporterMapPos[i] * scale.x - teleporterMapScale[i] * scale.x)
+				if (temp < teleporterMapPos[i] * scale.x + teleporterMapScale[i] * scale.x * 2  &&
+					temp > teleporterMapPos[i] * scale.x - teleporterMapScale[i] * scale.x * 2)
 				{
 					//std::cout << "can teleport\n";
 					Player::GetInstance()->SetPos(teleporterActPos[i]);

@@ -30,7 +30,7 @@ void EntityManager::Update(double _dt)
 	// Erase objects that are done from collisionList
 	it = collisionList.begin();
 	while (it != collisionList.end()) {
-		if ((*it)->IsDone()) { //test
+		if ((*it)->IsDone()) {
 			it = collisionList.erase(it);
 		}
 		else
@@ -119,7 +119,7 @@ void EntityManager::AddEntity(EntityBase* _newEntity, bool _isFront)
 }
 
 // Remove an entity from this EntityManager
-bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
+bool EntityManager::RemoveEntity(EntityBase* _existingEntity, bool isDelete)
 {
 	// Find the entity's iterator
 	std::list<EntityBase*>::iterator findIter = std::find(entityList.begin(), entityList.end(), _existingEntity);
@@ -132,12 +132,24 @@ bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 	}
 
 	// Delete the entity if found
-	if (findIter != entityList.end())
+	if(isDelete)
 	{
-		delete *findIter;
-		findIter = entityList.erase(findIter);
-		return true;	
+		if (findIter != entityList.end())
+		{
+			delete *findIter;
+			findIter = entityList.erase(findIter);
+			return true;
+		}
 	}
+	else //remove from list
+	{
+		if (findIter != entityList.end())
+		{
+			findIter = entityList.erase(findIter);
+			return true;
+		}
+	}
+
 	// Return false if not found
 	return false;
 }

@@ -34,6 +34,7 @@
 #include "Projectile\ProjectileManager.h"
 #include "Projectile\Projectile.h"
 #include "WeaponInfo\WeaponInfo.h"
+#include "TextEntityManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -216,17 +217,17 @@ void SceneText::Init()
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
 	// test fire
-	GenericEntity* fire = Create::Entity("cube", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* fire = Create::Entity("fire", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	fire->type = GenericEntity::OBJECT_TYPE::FIRE;
 	fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
 
 	// test slow
-	GenericEntity* slow = Create::Entity("cube", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* slow = Create::Entity("slow", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	slow->type = GenericEntity::OBJECT_TYPE::SLOW;
 	slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
 
 	// test poison
-	GenericEntity* poison = Create::Entity("cube", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 2), true);
+	GenericEntity* poison = Create::Entity("poison", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
 	poison->type = GenericEntity::OBJECT_TYPE::POISON;
 	poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
 
@@ -336,7 +337,13 @@ void SceneText::Init()
 	//keyboard->Write("Keybind//keyconfigtest.txt");	//WIP- got it to write, but need to take in user input left
 	//keyboard->Load("Keybind//keyconfigtest.txt");
 	keyboard->MapKeys("Keybind//keys.txt");
+
+	elapsedTime = 0.0;
+	huntTime = 0.0;
 	
+	HuntTarget = Create::Entity("target", Vector3(0, 0, 0), Vector3(3, 3, 1), false);
+	HuntTarget->SetIsActive(false);
+
 	UIManager::GetInstance()->SetKeyboard(keyboard);
 
 	Controller playerControl;
@@ -351,33 +358,19 @@ void SceneText::Init()
 	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
 	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), true);
-	FirstBoss->Init(1500.f, 0, 1, false);
+	FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
 	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
-	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
+	minimap->GetBackground()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
 	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
-	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
-
-	//create them projectiles
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	//CProjectile* projectile = Create::Projectile("cube",
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(1, 1, 1),
-	//	//	10.f,
-	//	//	10.f);
-	//	//CProjectile* temp = new CProjectile;
-	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
-	//	EntityManager::GetInstance()->AddEntity(new CProjectile,true);
-	//}
-
+	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 1.0f));
+	//minimap->GetObjectMesh()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
@@ -389,8 +382,6 @@ void SceneText::Init()
 	level->setUp();
 	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	
-	
 	//minimap->setMiniMapRoomList(level->getRooms());
 
 	//this should be the last to be called
@@ -408,7 +399,7 @@ void SceneText::Update(double dt)
 
 	//keyboard->ConvertInt();
 	float fps = (float)(1.f / dt);
-	std::cout << "fps:" << fps << "          ";
+	//std::cout << "fps:" << fps << "          ";
 	//vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
 
 	////vector<EntityBase*> getNew = quadTree->queryRange(Player::GetInstance()->GetMinAABB().x, Player::GetInstance()->GetMaxAABB().x, Player::GetInstance()->GetMaxAABB().y, Player::GetInstance()->GetMinAABB().y);
@@ -447,8 +438,52 @@ void SceneText::Update(double dt)
 	{
 		WeaponManager::GetInstance()->update(dt);
 		minimap->Update(dt);
+
+		elapsedTime += dt;
 		// Update the player position and other details based on keyboard and mouse inputs
 		Player::GetInstance()->Update(dt);
+
+		if (Player::GetInstance()->m_bHunted && elapsedTime > huntTime + 1.f)
+		{
+			Player::GetInstance()->m_bHunted = false;
+			HuntTarget->SetIsActive(true);
+			huntTime = elapsedTime + 3.f;
+		}
+
+		if (huntTime > elapsedTime)
+			HuntTarget->SetPosition(Vector3(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z - 1.f));
+			
+
+		if (elapsedTime > huntTime + 0.5f && HuntTarget->IsActive())
+		{
+			HuntTarget->SetIsActive(false);
+
+			int rand_element = Math::RandIntMinMax(0, 2);
+
+			switch (rand_element) {
+			case 0:
+			{
+				GenericEntity* fire = Create::Entity("fire", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				fire->type = GenericEntity::OBJECT_TYPE::FIRE;
+				fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
+				break;
+			}
+			case 1:
+			{
+				GenericEntity* slow = Create::Entity("slow", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				slow->type = GenericEntity::OBJECT_TYPE::SLOW;
+				slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
+				break;
+			}
+			case 2:
+			{
+				GenericEntity* poison = Create::Entity("poison", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
+				poison->type = GenericEntity::OBJECT_TYPE::POISON;
+				poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
+				break;
+			}
+			}
+		}
 
 		// Update our entities
 		EntityManager::GetInstance()->Update(dt);
@@ -556,12 +591,12 @@ void SceneText::Update(double dt)
 	}	
 	case UIManager::GAME_STATE::OPTIONS://doesnt work either
 	{
-		/*std::ostringstream ss1;
+		std::ostringstream ss1;
 		ss1.precision(4);
 		ss1 << "Player:" << Player::GetInstance()->GetHealth();
 		textObj[2]->SetText(ss1.str());
-		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize + halfFontSize, 0.0f));
-		break;*/
+		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize * 2 + halfFontSize, 10.0f));
+		break;
 	}
 	}
 }
@@ -670,13 +705,14 @@ void SceneText::RenderPassMain()
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
+	EntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
 
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
-		EntityManager::GetInstance()->RenderUI();
 		minimap->RenderUI();
+		TextEntityManager::GetInstance()->RenderUI();
 		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 		break;
 	}
@@ -715,6 +751,15 @@ void SceneText::RenderWorld()
 	ms.Translate(Player::GetInstance()->GetPos().x, Player::GetInstance()->GetPos().y, Player::GetInstance()->GetPos().z);
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
+
+	if (huntTime + 0.7f > elapsedTime)
+	{
+		ms.PushMatrix();
+		ms.Translate(HuntTarget->GetPosition().x, HuntTarget->GetPosition().y, HuntTarget->GetPosition().z);
+		ms.Scale(HuntTarget->GetScale().x, HuntTarget->GetScale().y, Player::GetInstance()->GetPos().z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("target"));
+		ms.PopMatrix();
+	}
 
 	if (Player::GetInstance()->m_bProjectileCircle)
 	{
