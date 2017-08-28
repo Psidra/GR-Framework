@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "QuadTree.h"
 
 QuadTree::QuadTree()

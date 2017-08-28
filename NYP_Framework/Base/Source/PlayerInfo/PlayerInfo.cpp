@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "PlayerInfo.h"
 #include <iostream>
 
@@ -231,7 +232,7 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
 		break;
 	case EXIT:
-		//Level::GetInstance()->newLevel();
+		Level::GetInstance()->newLevel();
 		break;
 
 	default:
@@ -256,9 +257,9 @@ void Player::CollisionCheck_Movement()
 	float checkby = 0;
 	
 	if (!isDodging())
-		checkby = 0.2f;
+		checkby = 0.3f;
 	else
-		checkby = 0.5f;
+		checkby = 0.7f;
 
 	if (direction.y != 0)
 	{
@@ -498,6 +499,7 @@ void Player::Update(double dt)
 	this->SetPosition(position);
 	this->SetAABB(Vector3(this->GetScale().x * 0.3f, this->GetScale().y * 0.4f, this->GetScale().z * 0.5f) + GetPos(),
 		Vector3(this->GetScale().x * -0.3f, this->GetScale().y * -0.4f, this->GetScale().z * -0.5f) + GetPos());
+	//this->SetAABB(this->GetScale() * 0.5f + this->position, this->GetScale() * -0.5f + this->position);
 
 	//set weapon pos & dir
 	playerInventory->getPrimaryWeapon()->setGunPos(position);

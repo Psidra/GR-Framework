@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "SceneText.h"
 #include "GL\glew.h"
 
@@ -34,6 +35,7 @@
 #include "Projectile\ProjectileManager.h"
 #include "Projectile\Projectile.h"
 #include "WeaponInfo\WeaponInfo.h"
+#include "TextEntityManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -133,30 +135,30 @@ void SceneText::Init()
 	// Tell the graphics manager to use the shader we just loaded
 	GraphicsManager::GetInstance()->SetActiveShader("default");
 
-	lights[0] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
-	lights[0]->type = Light::LIGHT_DIRECTIONAL;
-	lights[0]->position.Set(0, 20, 0);
-	lights[0]->color.Set(1, 1, 1);
-	lights[0]->power = 1;
-	lights[0]->kC = 1.f;
-	lights[0]->kL = 0.01f;
-	lights[0]->kQ = 0.001f;
-	lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
-	lights[0]->cosInner = cos(Math::DegreeToRadian(30));
-	lights[0]->exponent = 3.f;
-	lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
-	lights[0]->name = "lights[0]";
+	//lights[0] = new Light();
+	//GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
+	//lights[0]->type = Light::LIGHT_DIRECTIONAL;
+	//lights[0]->position.Set(0, 20, 0);
+	//lights[0]->color.Set(1, 1, 1);
+	//lights[0]->power = 1;
+	//lights[0]->kC = 1.f;
+	//lights[0]->kL = 0.01f;
+	//lights[0]->kQ = 0.001f;
+	//lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
+	//lights[0]->cosInner = cos(Math::DegreeToRadian(30));
+	//lights[0]->exponent = 3.f;
+	//lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
+	//lights[0]->name = "lights[0]";
 
-	lights[1] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
-	lights[1]->type = Light::LIGHT_DIRECTIONAL;
-	lights[1]->position.Set(1, 1, 0);
-	lights[1]->color.Set(1, 1, 0.5f);
-	lights[1]->power = 0.4f;
-	lights[1]->name = "lights[1]";
+	//lights[1] = new Light();
+	//GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
+	//lights[1]->type = Light::LIGHT_DIRECTIONAL;
+	//lights[1]->position.Set(1, 1, 0);
+	//lights[1]->color.Set(1, 1, 0.5f);
+	//lights[1]->power = 0.4f;
+	//lights[1]->name = "lights[1]";
 
-	currProg->UpdateInt("numLights", 2);
+	//currProg->UpdateInt("numLights", 2);
 	currProg->UpdateInt("textEnabled", 0);
 	
 	// Create the playerinfo instance, which manages all information about the player
@@ -302,12 +304,12 @@ void SceneText::Init()
 	pauseOp->type = UIElement::ELEMENT_TYPE::INPUT_PAUSE;
 	
 	//TELEPORTER
-	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
-	//teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
-	//teleporter->setNormal(Vector3(1, 0, 0));
-	GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	//GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	//teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	////teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
+	////teleporter->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	//teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
 	//teleporter2->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
 	//teleporter->setNormal(Vector3(1, 0, 0));
 
@@ -364,27 +366,13 @@ void SceneText::Init()
 	// Minimap
 	minimap = Create::Minimap(false);
 	minimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP", Color(0, 0, 0), 1.f));
-	//minimap->GetBackground()->textureID = LoadTGA("Image//snow_1.tga");
+	minimap->GetBackground()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	minimap->SetBorder(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPBORDER", Color(1, 1, 1), 1.05f));
 	minimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MINIMAPAVATAR", Color(1, 1, 0), 1.0f));
 	minimap->GetAvatar()->textureID[0] = LoadTGA("Image//UI/Avatar.tga");
 	minimap->SetStencil(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_STENCIL", Color(1, 1, 1), 1.0f));
-	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 0.5f));
-
-	//create them projectiles
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	//CProjectile* projectile = Create::Projectile("cube",
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(0, 0, 0),
-	//	//	Vector3(1, 1, 1),
-	//	//	10.f,
-	//	//	10.f);
-	//	//CProjectile* temp = new CProjectile;
-	//	//ProjectileManager::GetInstance()->AddProjectile(temp);
-	//	EntityManager::GetInstance()->AddEntity(new CProjectile,true);
-	//}
-
+	minimap->SetObjectMesh(MeshBuilder::GetInstance()->GenerateQuad("MINIMAP_OBJECT", Color(1, 0, 0), 1.0f));
+	//minimap->GetObjectMesh()->textureID[0] = LoadTGA("Image//UI/mapGroundTexture.tga");
 	//light testing
 	//light_depth_mesh = MeshBuilder::GetInstance()->GenerateQuad("light_depth_mesh", Color(1, 0, 1), 1);
 	//light_depth_mesh->textureID[0] = GraphicsManager::GetInstance()->m_lightDepthFBO.GetTexture();
@@ -396,18 +384,7 @@ void SceneText::Init()
 	level->setUp();
 	//Player::GetInstance()->SetPos(Vector3(15, 15, 1));
 
-	
-	
 	//minimap->setMiniMapRoomList(level->getRooms());
-
-	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
-		it != EntityManager::GetInstance()->getCollisionList().end();++it)
-	{
-		if (dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::TELEPORTER)
-			continue;
-
-		minimap->addToMinimapList(*it);
-	}
 
 	//this should be the last to be called
 	minimap->Init();
@@ -463,6 +440,9 @@ void SceneText::Update(double dt)
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
+		WeaponManager::GetInstance()->update(dt);
+		minimap->Update(dt);
+
 		RealLoopTime += dt;
 		elapsedTime += dt;
 		// Update the player position and other details based on keyboard and mouse inputs
@@ -585,7 +565,7 @@ void SceneText::Update(double dt)
 		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
 		ss << weapon->GetMagRound() << "/" << weapon->GetTotalRound();
 		textObj[0]->SetText(ss.str());
-		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 0.0f));
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
 		textObj[0]->SetScale(Vector3(25, 25, 25));
 
 		ss.str("");
@@ -611,8 +591,7 @@ void SceneText::Update(double dt)
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 		}
 
-		WeaponManager::GetInstance()->update(dt);
-		minimap->Update(dt);
+		
 		break;
 	}	
 	case UIManager::GAME_STATE::OPTIONS://doesnt work either
@@ -738,6 +717,7 @@ void SceneText::RenderPassMain()
 	case UIManager::GAME_STATE::PLAYING:
 	{
 		minimap->RenderUI();
+		TextEntityManager::GetInstance()->RenderUI();
 		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 		break;
 	}
@@ -801,8 +781,4 @@ void SceneText::Exit()
 	// Detach camera from other entities
 	GraphicsManager::GetInstance()->DetachCamera();
 
-
-	// Delete the lights
-	delete lights[0];
-	delete lights[1];
 }

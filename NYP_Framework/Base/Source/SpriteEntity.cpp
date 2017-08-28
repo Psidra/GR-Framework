@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "SpriteEntity.h"
 #include "MeshBuilder.h"
 #include "EntityManager.h"

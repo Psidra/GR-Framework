@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Boss.h"
 #include "Enemy.h"
 
@@ -49,7 +50,13 @@ Boss::~Boss()
 		delete enemyAnimated[i];
 		enemyAnimated[i] = NULL;
 	}
-	WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
+
+	//WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
+	
+	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
+	{
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	}
 }
 
 void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)

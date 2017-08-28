@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "EntityManager.h"
 #include "EntityBase.h"
 #include "CollisionManager.h"

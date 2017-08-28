@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Animation.h"
 #include <iostream>
 #include "PlayerInfo\PlayerInfo.h"

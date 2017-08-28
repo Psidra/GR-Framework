@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "WeaponManager.h"
 #include "WeaponInfo\WeaponInfo.h"
 

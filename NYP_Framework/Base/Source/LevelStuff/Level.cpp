@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Level.h"
 #include "MyMath.h"
 #include <iostream>
@@ -7,6 +8,7 @@
 #include "TileEntity.h"
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../EntityManager.h"
+#include "../Minimap/Minimap.h"
 
 Level::Level() : roomCount(0)
 {
@@ -147,7 +149,7 @@ void Level::generateCorridors()
 			y = rec2.getMidPoint().y;
 		}
 
-		addCorridor(start, y, 2, (end - start) - 1);
+		addCorridor(start, y, 2, (end - start));
 
 		p1 = rec1.getMidPoint().y;
 		p2 = rec2.getMidPoint().y;
@@ -166,7 +168,7 @@ void Level::generateCorridors()
 			end = p1;
 		}
 
-		addCorridor(x, start, 3, (end - start) - 1);
+		addCorridor(x, start, 3, (end - start));
 	}
 }
 
@@ -223,7 +225,7 @@ void Level::generateWalls()
 	}
 
 	//Add Walls in 4 coners
-	for (int x = 0; x < mapWidth; ++x) {
+	/*for (int x = 0; x < mapWidth; ++x) {
 		for (int y = 0; y < mapHeight; ++y) {
 
 			currentTile = &levelMap[{x, y}];
@@ -243,13 +245,15 @@ void Level::generateWalls()
 					currentTile->type = Tile::WALL;
 			}
 		}
-	}
+	}*/
 }
 
 void Level::setUp()
 {
 	spawnExit();
+	spawnTeleporter();
 	loadEntitys();
+	CMinimap::GetInstance()->Init();
 
 
 	//Locate a suitable location to spawn the player.
@@ -270,12 +274,19 @@ void Level::setUp()
 
 void Level::spawnExit()
 {
-	int roomSelected = Math::RandIntMinMax(0, rooms.size() - 1);
+	int roomSelected = Math::RandIntMinMax(0, roomCount - 1);
 	int randX = Math::RandIntMinMax(rooms[roomSelected].x, rooms[roomSelected].x2);
 	int randY = Math::RandIntMinMax(rooms[roomSelected].y, rooms[roomSelected].y2);
 	
 	setTile(randX, randY, Tile::EXIT);
-	
+	//setTile(rooms[roomSelected].getMidPoint().x, rooms[roomSelected].getMidPoint().y, Tile::TELEPORTER);
+}
+
+void Level::spawnTeleporter()
+{
+	int roomSelected = Math::RandIntMinMax(0, roomCount - 1);
+
+	setTile(rooms[roomSelected].getMidPoint().x, rooms[roomSelected].getMidPoint().y, Tile::TELEPORTER);
 }
 
 void Level::clearEntitys()
@@ -283,6 +294,13 @@ void Level::clearEntitys()
 	levelMap.clear();
 	rooms.clear();
 	EntityManager::GetInstance()->getEntityList().clear();
+
+	std::list<EntityBase*>::iterator it, end;
+	it = EntityManager::GetInstance()->getCollisionList().begin();
+	while (it != EntityManager::GetInstance()->getCollisionList().end()) {
+		(*it)->SetIsDone(true);
+		++it;
+	}
 	EntityManager::GetInstance()->getCollisionList().clear();
 }
 
@@ -294,18 +312,24 @@ void Level::loadEntitys()
 		{
 			TileEntity* temp = NULL;
 
-			if (getTile(i, j).type == Tile::WALL)
+			switch (getTile(i, j).type)
 			{
+			case Tile::WALL:
 				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::WALL;
 				temp->setNormal(Vector3(1, 0, 0));
-			}
-
-			else  if (getTile(i, j).type == Tile::EXIT)
-			{
+				break;
+			case Tile::EXIT:
 				temp = Create::TEntity("player", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::EXIT;
 				temp->setNormal(Vector3(1, 0, 0));
+				break;
+			case Tile::TELEPORTER:
+				temp = Create::TEntity("greenCube", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
+				temp->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+				break;
+			default:
+				break;
 			}
 
 			if (!temp)

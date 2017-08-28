@@ -237,6 +237,9 @@
     <ClCompile Include="Source\WeaponInfo\Minigun.cpp">
       <Filter>Weapon\Guns</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TextEntityManager.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="Source\WeaponInfo\Minigun.h">
       <Filter>Weapon\Guns\GunsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextEntityManager.h">
+      <Filter>Entity\EntityHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

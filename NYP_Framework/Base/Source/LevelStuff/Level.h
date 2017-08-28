@@ -113,6 +113,7 @@ public:
 
 	void setUp();
 	void spawnExit();
+	void spawnTeleporter();
 	void clearEntitys();
 	void loadEntitys();
 	void newLevel();

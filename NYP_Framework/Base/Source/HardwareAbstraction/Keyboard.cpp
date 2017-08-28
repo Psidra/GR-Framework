@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Keyboard.h"
 #include <iostream>
 #include <sstream>
