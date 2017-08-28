@@ -11,6 +11,7 @@ cpp file for ParticleEffect class.
 // Edited by Edward Chen
 // Added: New Particle SFX, Emitter can set to follow based on specific target.
 
+#include "../DetectMemoryLeak.h"
 #include "ParticleEffect.h"
 #include "MeshBuilder.h"
 #include "../EntityManager.h"

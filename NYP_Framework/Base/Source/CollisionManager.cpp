@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "CollisionManager.h"
 #include "PlayerInfo\PlayerInfo.h"
 #include "LevelStuff\QuadTree.h"

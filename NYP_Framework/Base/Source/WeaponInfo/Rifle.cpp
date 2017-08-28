@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "../WeaponInfo/Rifle.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
@@ -139,7 +140,7 @@ void Rifle::generateBullet(Vector3 position, Vector3 target, const int numBullet
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-
+		projectile->projectileType = CProjectile::BULLET;
 		/*CProjectile* aProjectile = Create::Projectile("cube",
 			position,
 			target.Normalized(),

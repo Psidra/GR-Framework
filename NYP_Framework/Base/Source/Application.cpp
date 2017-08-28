@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Application.h"
 #include "MouseController.h"
 #include "KeyboardController.h"
@@ -5,6 +6,9 @@
 #include "GraphicsManager.h"
 #include "MeshBuilder.h"
 #include "MeshList.h"
+#include "EntityManager.h"
+#include "TextEntityManager.h"
+#include "UIManager.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -134,7 +138,7 @@ void Application::Run()
 		if (dt < 0.016666667)
 			dt = 0.016666667;
 
-		SceneManager::GetInstance()->Update(dt);
+		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
@@ -412,7 +416,14 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("minigun")->textureID[0] = LoadTGA("Image/Weapon/minigun.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("minigunLeft", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("minigunLeft")->textureID[0] = LoadTGA("Image/Weapon/minigunLeft.tga");
-
+		MeshBuilder::GetInstance()->GenerateQuad("smg", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("smg")->textureID[0] = LoadTGA("Image/Weapon/smg.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("smgLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("smgLeft")->textureID[0] = LoadTGA("Image/Weapon/smgLeft.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncher", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncher")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncher.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("rocketlauncherLeft", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("rocketlauncherLeft")->textureID[0] = LoadTGA("Image/Weapon/rocketlauncherLeft.tga");
 		//--------Particles
 		MeshBuilder::GetInstance()->GenerateQuad("blood", Color(0.7f, 0, 0), 1.f);
 

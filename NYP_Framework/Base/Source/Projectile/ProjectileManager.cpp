@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "ProjectileManager.h"
 #include "Projectile.h"
 #include "../EntityManager.h"

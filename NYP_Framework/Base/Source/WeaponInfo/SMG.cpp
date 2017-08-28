@@ -1,45 +1,46 @@
-#include "../DetectMemoryLeak.h"
-#include "Bow.h"
+#include "../WeaponInfo/SMG.h"
 #include "../WeaponManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 #include "../Projectile/ProjectileManager.h"
 
-Bow::Bow(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
+SMG::SMG(GenericEntity::OBJECT_TYPE _bulletType) : CWeaponInfo(_bulletType)
 {
 	WeaponManager::GetInstance()->addWeapon(this);
 }
 
-Bow::~Bow()
+SMG::~SMG()
 {
 }
 
 // Initialise this instance to default values
-void Bow::Init(void)
+void SMG::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 1;
+	magRounds = 30;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 1;
+	maxMagRounds = 30;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 20;
+	totalRounds = 150;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 20;
+	maxTotalRounds = 150;
 
 	// The time between shots
-	timeBetweenShots = 0.33333;
+	timeBetweenShots = 0.1;
 	// The elapsed time (between shots)
-	elapsedTime = 0.33333;
+	elapsedTime = 0.1;
 	// Boolean flag to indicate if weapon can fire now
 	bFire = false;
 	// Weapon Damage 
-	m_fWeaponDamage = 30;
+	m_fWeaponDamage = 3;
 	// boolean flag for dots
 	m_bDots = false;
+	// Player/enemy angle to rotate
+	m_fRotateAngle = 0.f;
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
@@ -47,16 +48,16 @@ void Bow::Init(void)
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
-	m_fSpeed = 15.0f;
+	m_fSpeed = 15.f;
 	// is active
 	m_bActive = false;
-	// Player/enemy angle to rotate
-	m_fRotateAngle = 0.f;
+	// rotate angle
+	m_fRotateAngle = 0;
 	// num of bullet
 	m_iNumBullet = 1;
 }
 
-void Bow::Render()
+void SMG::Render()
 {
 	float rotate = Math::RadianToDegree(atan2(gunDir.y, gunDir.x));
 	//std::cout << rotate << std::endl;
@@ -64,26 +65,25 @@ void Bow::Render()
 	{
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
-		modelStack.Translate(gunPos.x + 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Translate(gunPos.x + 0.5, gunPos.y - 0.2, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
-		modelStack.Scale(1, 1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("bow"));
+		modelStack.Scale(1.f, 1.f, 1.f);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("smg"));
 		modelStack.PopMatrix();
 	}
 	else//left side
 	{
 		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 		modelStack.PushMatrix();
-		modelStack.Translate(gunPos.x - 0.5, gunPos.y, gunPos.z - 1);
+		modelStack.Translate(gunPos.x - 0.5, gunPos.y - 0.2, gunPos.z - 1);
 		modelStack.Rotate(rotate, 0, 0, 1);
-		modelStack.Scale(-1, -1, 1);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("bowLeft"));
+		modelStack.Scale(-1.f, -1.f, 1.f);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("smgLeft"));
 		modelStack.PopMatrix();
 	}
 }
 
-// Discharge this weapon
-void Bow::Discharge(Vector3 position, Vector3 target)
+void SMG::Discharge(Vector3 position, Vector3 target)
 {
 	if (bFire)
 	{
@@ -91,30 +91,23 @@ void Bow::Discharge(Vector3 position, Vector3 target)
 		if (magRounds > 0)
 		{
 			// Create a projectile with a cube mesh. Its position and direction is same as the player.
-			// It will last for 3.0 seconds and travel at 500 units per second	
-			target = rotateDirection(target, m_fRotateAngle);
-			generateBullet(position, target, m_iNumBullet, 45);
+			// It will last for 3.0 seconds and travel at 500 units per second
+			generateBullet(position, target, m_iNumBullet);
 
 			bFire = false;
-			//m_fRotateAngle += 10;
 			if (bulletType == GenericEntity::PLAYER_BULLET)
-			--magRounds;
-
-			AudioEngine::GetInstance()->PlayASound("bow", false);
+				--magRounds;
+			AudioEngine::GetInstance()->PlayASound("rifle", false);
 		}
 	}
-
-//	if (m_fRotateAngle > 360)
-	//	m_fRotateAngle = 0;
 }
 
-Mesh * Bow::GetMesh()
+Mesh * SMG::GetMesh()
 {
-	return MeshList::GetInstance()->GetMesh("bow");
+	return MeshList::GetInstance()->GetMesh("smg");
 }
 
-// Number of bullet to create and pattern
-void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
+void SMG::generateBullet(Vector3 position, Vector3 target, const int numBullet, const float angle)
 {
 	if (numBullet < 0)
 		return;
@@ -122,9 +115,11 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 	//float totalAngle = numBullet * angle * 0.5; //half the total angle for rotation
 	//Vector3 temp = target;
 
+	//float tempSpeed = 15.0f;
 	for (int i = 0;i < numBullet;++i)
 	{
 		//rotate vector
+		//negative angle counter clockwise positive angle clockwise
 		//target = rotateDirection(temp, totalAngle);
 		//totalAngle -= angle;
 
@@ -144,19 +139,21 @@ void Bow::generateBullet(Vector3 position, Vector3 target, const int numBullet, 
 		projectile->setIsRicochet(m_bRicochet);
 		projectile->setIsLaserbeam(m_bLaserBeam);
 		projectile->type = bulletType;
-		projectile->projectileType = CProjectile::BULLET;
-		//CProjectile* aProjectile = Create::Projectile("cube",
-		//	position,
-		//	target.Normalized(),
-		//	scale,
-		//	2.0f,
-		//	m_fSpeed);
 
-		//aProjectile->type = bulletType;
-		//aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
-		//aProjectile->setIsDots(m_bDots);
-		//aProjectile->setIsRicochet(m_bRicochet);
-		//aProjectile->setIsLaserbeam(m_bLaserBeam);
-		//aProjectile->SetIsActive(true);
+		/*CProjectile* aProjectile = Create::Projectile("cube",
+		position,
+		target.Normalized(),
+		scale,
+		2.0f,
+		m_fSpeed);
+		m_fSpeed += 3.f;
+		aProjectile->type = bulletType;
+		aProjectile->setProjectileDamage(m_fWeaponDamage / numBullet);
+		aProjectile->setIsDots(m_bDots);
+		aProjectile->setIsRicochet(m_bRicochet);
+		aProjectile->setIsLaserbeam(m_bLaserBeam);
+		aProjectile->SetIsActive(true);*/
 	}
+
+	m_fSpeed = 15.f;
 }
