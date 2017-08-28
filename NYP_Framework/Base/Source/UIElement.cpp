@@ -150,7 +150,10 @@ void UIElement::Update()
 
 	if (this->m_bCollider)
 	{
-		this->SetAABB(Vector3((this->scale * 0.5f) + this->position), Vector3((this->scale * -0.5f) + this->position));
+		Vector3 offset = this->position;
+		offset.y += 15.f;
+
+		this->SetAABB(Vector3((this->scale * 0.5f) + offset), Vector3((this->scale * -0.5f) + offset));
 	}
 
 	if (this->type == CURSOR)
