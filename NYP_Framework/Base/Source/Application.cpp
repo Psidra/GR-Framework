@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Application.h"
 #include "MouseController.h"
 #include "KeyboardController.h"
@@ -5,6 +6,9 @@
 #include "GraphicsManager.h"
 #include "MeshBuilder.h"
 #include "MeshList.h"
+#include "EntityManager.h"
+#include "TextEntityManager.h"
+#include "UIManager.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -134,7 +138,7 @@ void Application::Run()
 		if (dt < 0.016666667)
 			dt = 0.016666667;
 
-		SceneManager::GetInstance()->Update(dt);
+		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
@@ -154,6 +158,12 @@ void Application::Exit()
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW
 	glfwTerminate();
+
+	Player::GetInstance()->Destroy();
+	KeyboardController::GetInstance()->Destroy();
+	EntityManager::GetInstance()->Destroy();
+	TextEntityManager::GetInstance()->Destroy();
+	UIManager::GetInstance()->Destroy();
 }
 
 void Application::UpdateInput()

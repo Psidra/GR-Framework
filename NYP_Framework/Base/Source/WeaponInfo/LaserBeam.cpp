@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "../Projectile/Projectile.h"
 #include "LaserBeam.h"
 #include "../WeaponManager.h"

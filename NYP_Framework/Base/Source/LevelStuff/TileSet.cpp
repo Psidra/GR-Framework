@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "TileSet.h"
 
 Tile::Tile() : type(TILE_TYPE::EMPTY)

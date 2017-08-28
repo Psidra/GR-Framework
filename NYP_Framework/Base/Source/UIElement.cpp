@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "UIElement.h"
 #include "MeshBuilder.h"
 #include "UIManager.h"

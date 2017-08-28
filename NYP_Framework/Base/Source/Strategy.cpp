@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "Strategy.h"
 #include <iostream>
 

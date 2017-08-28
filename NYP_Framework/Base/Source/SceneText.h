@@ -50,7 +50,7 @@ private:
 	Keyboard* keyboard;
 	static SceneText* sInstance; // The pointer to the object that gets registered
 
-	double elapsedTime, huntTime;
+	double elapsedTime, RealLoopTime, huntTime;
 
 	float fontSize, halfFontSize;
 

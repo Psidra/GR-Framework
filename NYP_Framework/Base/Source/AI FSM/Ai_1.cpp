@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Ai_1.h"
 #include <iostream>
 #include "../EntityManager.h"

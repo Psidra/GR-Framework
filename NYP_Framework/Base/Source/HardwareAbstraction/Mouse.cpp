@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Mouse.h"
 #include <iostream>
 using namespace std;

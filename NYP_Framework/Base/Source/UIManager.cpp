@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "UIManager.h"
 #include "UIElement.h"
 #include "MouseController.h"

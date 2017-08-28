@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Projectile.h"
 
 #include "MeshBuilder.h"

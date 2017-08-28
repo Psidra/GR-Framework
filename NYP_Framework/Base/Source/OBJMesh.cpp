@@ -1,4 +1,4 @@
-
+#include "DetectMemoryLeak.h"
 #include "OBJMesh.h"
 #include "GL\glew.h"
 #include "Vertex.h"

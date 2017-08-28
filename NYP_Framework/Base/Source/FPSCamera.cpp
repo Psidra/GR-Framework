@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "FPSCamera.h"
 #include "MouseController.h"
 #include "KeyboardController.h"

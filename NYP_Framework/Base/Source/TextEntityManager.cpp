@@ -1,3 +1,4 @@
+#include "DetectMemoryLeak.h"
 #include "TextEntityManager.h"
 #include "TextEntity.h"
 

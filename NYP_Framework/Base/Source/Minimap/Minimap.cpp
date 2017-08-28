@@ -1,3 +1,4 @@
+#include "../DetectMemoryLeak.h"
 #include "Minimap.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
