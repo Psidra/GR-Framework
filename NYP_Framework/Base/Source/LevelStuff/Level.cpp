@@ -300,19 +300,17 @@ void Level::spawnEnemies()
 	{
 		int roomSelected = Math::RandIntMinMax(0, tempRooms.size() - 1);
 		int maxNumEnemyInRoom = Math::RandIntMinMax(0, 3);
+		std::cout << "maxNumEnemyInRoom" << maxNumEnemyInRoom << std::endl;
 
 		while (maxNumEnemyInRoom)
 		{
 			int randX = Math::RandIntMinMax(tempRooms[roomSelected].x, tempRooms[roomSelected].x2);
 			int randY = Math::RandIntMinMax(tempRooms[roomSelected].y, tempRooms[roomSelected].y2);
 
-			std::cout << "maxNumEnemyInRoom" << maxNumEnemyInRoom << std::endl;
 			if (getTile(randX, randY).type == Tile::TELEPORTER ||
 				getTile(randX, randY).type == Tile::ENEMY ||
 				getTile(randX, randY).type == Tile::EXIT ||
-				getTile(randX, randY).type == Tile::WALL ||
-				Player::GetInstance()->GetPos().x == randX ||
-				Player::GetInstance()->GetPos().y == randY)
+				getTile(randX, randY).type == Tile::WALL)
 			{
 				continue;
 			}
@@ -398,39 +396,40 @@ void Level::updateEnemy()
 	unsigned playerCurrentRoom = NULL;
 	for (size_t i = 0; i < rooms.size() - 1; ++i)
 	{
-		if (Player::GetInstance()->GetPos().x > rooms[i].x ||
-			Player::GetInstance()->GetPos().x < rooms[i].x2 ||
-			Player::GetInstance()->GetPos().y > rooms[i].y ||
-			Player::GetInstance()->GetPos().y < rooms[i].y2)
+		if (Player::GetInstance()->GetPos().x >= rooms[i].x &&
+			Player::GetInstance()->GetPos().x <= rooms[i].x2 &&
+			Player::GetInstance()->GetPos().y >= rooms[i].y &&
+			Player::GetInstance()->GetPos().y <= rooms[i].y2)
 		{
 			playerCurrentRoom = i;
-			break;
-		}
-	}
-
-	if (playerCurrentRoom = NULL)
-		return;
-
-	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin(); it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
-	{
-		if ((*it) == nullptr)
-			continue;
-
-		if (dynamic_cast<GenericEntity*>(*it)->type == GenericEntity::OBJECT_TYPE::ENEMY)
-		{
-			if ((*it)->GetPosition().x > rooms[playerCurrentRoom].x ||
-				(*it)->GetPosition().x < rooms[playerCurrentRoom].x2 ||
-				(*it)->GetPosition().y > rooms[playerCurrentRoom].y ||
-				(*it)->GetPosition().y < rooms[playerCurrentRoom].y2 && 
-				!dynamic_cast<GenericEntity*>(*it)->IsActive())
+			
+			for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin(); it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
 			{
-				//dynamic_cast<CEnemy*>(*it)->ChangeStrategy(new CStrategy_AI_1(), false);
-				(*it)->SetIsActive(true);
-				//dynamic_cast<CEnemy*>(*it)->Init(50.0f, 1.5, 1);
-				
+				if (dynamic_cast<GenericEntity*>(*it)->type == GenericEntity::OBJECT_TYPE::ENEMY)
+				{
+					int x = dynamic_cast<CEnemy*>(*it)->GetPos().x;
+					int y = dynamic_cast<CEnemy*>(*it)->GetPos().y;
+
+					if (x >= rooms[playerCurrentRoom].x &&
+						x <= rooms[playerCurrentRoom].x2 &&
+						y >= rooms[playerCurrentRoom].y &&
+						y <= rooms[playerCurrentRoom].y2)// && 
+														 //!dynamic_cast<GenericEntity*>(*it)->IsActive())
+					{
+						//dynamic_cast<CEnemy*>(*it)->ChangeStrategy(new CStrategy_AI_1(), false);
+						(*it)->SetIsActive(true);
+						//dynamic_cast<CEnemy*>(*it)->Init(50.0f, 1.5, 1);
+
+					}
+				}
 			}
 		}
 	}
+
+	//if (playerCurrentRoom = NULL)
+	//	return;
+
+
 }
 
 void Level::testCout()

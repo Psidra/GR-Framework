@@ -351,17 +351,17 @@ void SceneText::Init()
 	Controller playerControl;
 	playerControl.Create(Player::GetInstance());
 
-	CEnemy* NewEnemy =  Create::Enemy(Vector3(5, 5, 0), "player", false);
-	NewEnemy->Init(50.0f, 1.5, 1);
-	NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+	//CEnemy* NewEnemy =  Create::Enemy(Vector3(5, 5, 0), "player", false);
+	//NewEnemy->Init(50.0f, 1.5, 1);
+	//NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 
-	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player", false);
-	NewObstacle->Init(100.f, 0, 2, true);
-	NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
+	//CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player", false);
+	//NewObstacle->Init(100.f, 0, 2, true);
+	//NewObstacle->ChangeStrategy(new CStrategy_AI_Obstacle(), false);
 
-	Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), false);
-	FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
-	FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
+	//Boss* FirstBoss = Create::SpawnBoss(Vector3(65.f, 5.f, 0), "player", Vector3(1.5f, 3, 3), false);
+	//FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
+	//FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 
 	// Minimap
 	minimap = Create::Minimap(false);
