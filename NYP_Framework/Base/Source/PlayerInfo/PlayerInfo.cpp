@@ -259,7 +259,7 @@ void Player::CollisionCheck_Movement()
 	Vector3 tempMin = this->GetMinAABB();
 	std::list<EntityBase*> cpy = EntityManager::GetInstance()->getCollisionList();
 
-	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 2);
+	QuadTree quadTree(0, 0, Level::GetInstance()->getMapWidth(), Level::GetInstance()->getMapHeight(), 0, 3);
 	//QuadTree quadTree(0, 800, 600, 0, 3);
 	vector<EntityBase*> getNearestObj;
 
@@ -277,8 +277,8 @@ void Player::CollisionCheck_Movement()
 	if (direction.y != 0)
 	{
 		this->SetAABB(tempMax + Vector3(0.f, checkby, 0.f) * direction.y, tempMin + Vector3(0.f, checkby, 0.f) * direction.y);
-		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
-		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		getNearestObj = quadTree.getObjectsAt(this->maxAABB.x, this->maxAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();
@@ -307,8 +307,8 @@ void Player::CollisionCheck_Movement()
 	{
 		this->SetAABB(tempMax + Vector3(checkby, 0.f, 0.f) * direction.x, tempMin + Vector3(checkby, 0.f, 0.f) * direction.x);
 	
-		getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
-		//getNearestObj = quadTree.queryRange(this->minAABB.x, this->maxAABB.x, this->maxAABB.y, this->minAABB.y);
+		//getNearestObj = quadTree.getObjectsAt(this->position.x, this->position.y);
+		getNearestObj = quadTree.getObjectsAt(this->maxAABB.x, this->maxAABB.y);
 		//getNearestObj = quadTree.queryRange(position.x - 5, position.x + 5, position.y + 5, position.x - 5);
 		std::vector<EntityBase*>::iterator it, end;
 		end = getNearestObj.end();

@@ -79,6 +79,7 @@ public:
 	~Level();
 
 	void init(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts);
+	void newMap(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts);
 
 	void setMaxRooms(int num);
 	int getMaxRooms();
@@ -121,6 +122,8 @@ private:
 	int maxRooms;
 	float mapWidth, mapHeight, maxRoomWidth, maxRoomHeight;
 	int roomCount, corrCount;
+	int level;
+	bool spawnBoss;
 	map<pair<int, int>, Tile> levelMap;
 	vector<Rectangle> rooms;
 
