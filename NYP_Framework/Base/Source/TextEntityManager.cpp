@@ -1,6 +1,10 @@
 #include "TextEntityManager.h"
 #include "TextEntity.h"
 
+TextEntityManager::TextEntityManager()
+{
+}
+
 TextEntityManager::~TextEntityManager()
 {
 }

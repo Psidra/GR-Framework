@@ -34,6 +34,7 @@
 #include "Projectile\ProjectileManager.h"
 #include "Projectile\Projectile.h"
 #include "WeaponInfo\WeaponInfo.h"
+#include "TextEntityManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -565,7 +566,7 @@ void SceneText::Update(double dt)
 		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
 		ss << weapon->GetMagRound() << "/" << weapon->GetTotalRound();
 		textObj[0]->SetText(ss.str());
-		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 0.0f));
+		textObj[0]->SetPosition(Vector3(halfWindowWidth - 200.f, -halfWindowHeight + 25, 10.0f));
 		textObj[0]->SetScale(Vector3(25, 25, 25));
 
 		ss.str("");
@@ -718,6 +719,7 @@ void SceneText::RenderPassMain()
 	case UIManager::GAME_STATE::PLAYING:
 	{
 		minimap->RenderUI();
+		TextEntityManager::GetInstance()->RenderUI();
 		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
 		break;
 	}

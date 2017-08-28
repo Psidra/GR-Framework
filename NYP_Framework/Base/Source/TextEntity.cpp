@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "TextEntityManager.h"
 
 TextEntity::TextEntity(Mesh* _modelMesh, const std::string& _text, const Color& _color) :
 modelMesh(_modelMesh),
@@ -59,6 +60,7 @@ TextEntity* Create::Text2DObject(const std::string& _meshName, const Vector3& _p
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetTextRenderMode(TextEntity::MODE_2D);
+	TextEntityManager::GetInstance()->AddTextEntity(result);
 	//EntityManager::GetInstance()->AddEntity(result, false);
 	return result;
 }
@@ -73,6 +75,7 @@ TextEntity* Create::Text3DObject(const std::string& _meshName, const Vector3& _p
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetTextRenderMode(TextEntity::MODE_3D);
+	TextEntityManager::GetInstance()->AddTextEntity(result);
 	//EntityManager::GetInstance()->AddEntity(result, false);
 	return result;
 }
