@@ -153,8 +153,8 @@ void CProjectile::Update(double dt)
 	if (m_fLifetime < 0.0f)
 	{
 		SetStatus(false);
-		//SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
 		SetIsActive(false);
+		SetIsDone(true); //delete does projectile that run out of lifetime
 		return;
 	}
 

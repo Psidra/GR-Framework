@@ -95,8 +95,8 @@ void Shotgun::Discharge(Vector3 position, Vector3 target)
 			generateBullet(position, target, m_iNumBullet, m_fRotateAngle);
 
 			bFire = false;
-			if(bulletType == GenericEntity::PLAYER_BULLET)
-			--magRounds;
+			if (bulletType == GenericEntity::PLAYER_BULLET)
+				--magRounds;
 			AudioEngine::GetInstance()->PlayASound("shotgun", false);
 		}
 	}

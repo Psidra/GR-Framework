@@ -134,7 +134,7 @@ void Application::Run()
 		if (dt < 0.016666667)
 			dt = 0.016666667;
 
-		SceneManager::GetInstance()->Update(dt);
+		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
 		SceneManager::GetInstance()->Render();
 
 		//Swap buffers
