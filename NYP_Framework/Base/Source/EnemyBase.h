@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Vector3.h"
 #include <string>
+#include "AI FSM\Ai_1.h"
 
 class Mesh;
 class CStrategy;
@@ -12,6 +13,16 @@ class CWeaponInfo;
 
 class EnemyBase : public GenericEntity, public CAnimation
 {
+	enum EnemyType
+	{
+		PISTOL = 0,
+		SHOTGUN,
+		RIFLE, 
+		CIRCULAR,
+		NUM_ENEMY
+	};
+	EnemyType enemyNum;
+
 public:
 	EnemyBase() {};
 	virtual ~EnemyBase() {};

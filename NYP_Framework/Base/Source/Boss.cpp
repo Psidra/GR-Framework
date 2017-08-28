@@ -84,7 +84,7 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	for (size_t i = 0; i < 10; ++i)
 	{
 		CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
-		enemy->SetTypeOfEnemy(1);
+		enemy->Init();
 		enemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 }

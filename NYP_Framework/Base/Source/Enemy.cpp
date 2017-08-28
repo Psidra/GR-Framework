@@ -94,13 +94,21 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fhurt"));
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bhurt"));
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
+		this->ChangeStrategy(new CStrategy_AI_1(), false);
 		break;
 	case 2://unused currently 
-		for (size_t i = 0; i < 10; i++)
-		{
-			enemyAnimated[i]->SetMesh(MeshList::GetInstance()->GetMesh("player"));
-		}
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
+		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
+		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
+		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand2"));
+		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk1"));
+		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fwalk2"));
+		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk1"));
+		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bwalk2"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fhurt"));
+		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bhurt"));
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
+		
 		break;
 	default:
 		break;

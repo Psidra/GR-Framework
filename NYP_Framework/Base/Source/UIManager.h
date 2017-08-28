@@ -5,7 +5,6 @@
 #include <iostream>
 #include "SingletonTemplate.h"
 #include "HardwareAbstraction\Keyboard.h"
-#include "TextEntity.h"
 
 class UIElement;
 
@@ -33,6 +32,7 @@ public:
 
 	void AddEntity(UIElement* result);
 	void SetKeyboard(Keyboard* _keyboard){	this->keyboard = _keyboard; }
+	std::string GetIndex();
 
 private:
 	std::list<UIElement*> UIList;
