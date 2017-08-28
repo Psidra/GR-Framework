@@ -59,6 +59,7 @@
     <ClCompile Include="Source\WeaponInfo\Pistol.cpp" />
     <ClCompile Include="Source\WeaponInfo\Rifle.cpp" />
     <ClCompile Include="Source\WeaponInfo\Shotgun.cpp" />
+    <ClCompile Include="Source\WeaponInfo\SMG.cpp" />
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
     <ClCompile Include="Source\WeaponManager.cpp" />
   </ItemGroup>
@@ -110,6 +111,7 @@
     <ClInclude Include="Source\WeaponInfo\Pistol.h" />
     <ClInclude Include="Source\WeaponInfo\Rifle.h" />
     <ClInclude Include="Source\WeaponInfo\Shotgun.h" />
+    <ClInclude Include="Source\WeaponInfo\SMG.h" />
     <ClInclude Include="Source\WeaponInfo\WeaponInfo.h" />
     <ClInclude Include="Source\WeaponManager.h" />
   </ItemGroup>
