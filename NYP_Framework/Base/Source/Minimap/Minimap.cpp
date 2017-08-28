@@ -48,6 +48,23 @@ CMinimap::~CMinimap(void)
 // Initialise this class instance
 bool CMinimap::Init(void)
 {
+	minimapList.clear();
+	mmRoomList.clear();
+	roomPosMapList.clear();
+	roomScaleMapList.clear();
+	teleporterMapPos.clear();
+	teleporterMapScale.clear();
+	teleporterActPos.clear();
+
+	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
+		it != EntityManager::GetInstance()->getCollisionList().end(); ++it)
+	{
+		if (dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::TELEPORTER)
+			continue;
+
+		this->addToMinimapList(*it);
+	}
+
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
@@ -410,8 +427,8 @@ void CMinimap::Update(double dt)
 
 				//std::cout << "mmPos: " << teleporterMapPos[i] << "\n";
 
-				if (temp < teleporterMapPos[i] * scale.x + teleporterMapScale[i] * scale.x  &&
-					temp > teleporterMapPos[i] * scale.x - teleporterMapScale[i] * scale.x)
+				if (temp < teleporterMapPos[i] * scale.x + teleporterMapScale[i] * scale.x * 2  &&
+					temp > teleporterMapPos[i] * scale.x - teleporterMapScale[i] * scale.x * 2)
 				{
 					//std::cout << "can teleport\n";
 					Player::GetInstance()->SetPos(teleporterActPos[i]);

@@ -303,12 +303,12 @@ void SceneText::Init()
 	pauseOp->type = UIElement::ELEMENT_TYPE::INPUT_PAUSE;
 	
 	//TELEPORTER
-	GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
-	//teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
-	//teleporter->setNormal(Vector3(1, 0, 0));
-	GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	//GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	//teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
+	////teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
+	////teleporter->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
+	//teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
 	//teleporter2->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
 	//teleporter->setNormal(Vector3(1, 0, 0));
 
@@ -384,15 +384,6 @@ void SceneText::Init()
 
 	//minimap->setMiniMapRoomList(level->getRooms());
 
-	for (std::list<EntityBase*>::iterator it = EntityManager::GetInstance()->getCollisionList().begin();
-		it != EntityManager::GetInstance()->getCollisionList().end();++it)
-	{
-		if (dynamic_cast<GenericEntity*>(*it)->type != GenericEntity::TELEPORTER)
-			continue;
-
-		minimap->addToMinimapList(*it);
-	}
-
 	//this should be the last to be called
 	minimap->Init();
 }
@@ -445,6 +436,9 @@ void SceneText::Update(double dt)
 	switch (UIManager::GetInstance()->state) {
 	case UIManager::GAME_STATE::PLAYING:
 	{
+		WeaponManager::GetInstance()->update(dt);
+		minimap->Update(dt);
+
 		elapsedTime += dt;
 		// Update the player position and other details based on keyboard and mouse inputs
 		Player::GetInstance()->Update(dt);
@@ -592,8 +586,7 @@ void SceneText::Update(double dt)
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 		}
 
-		WeaponManager::GetInstance()->update(dt);
-		minimap->Update(dt);
+		
 		break;
 	}	
 	case UIManager::GAME_STATE::OPTIONS://doesnt work either
