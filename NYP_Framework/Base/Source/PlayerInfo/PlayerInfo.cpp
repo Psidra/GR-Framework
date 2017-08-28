@@ -31,6 +31,7 @@
 
 // Allocating and initializing Player's static data member.  
 // The pointer is allocated but not the object's constructor.
+bool Player::m_bNewLevel = 0;
 
 Player::Player(void)
 	: m_dSpeed(10.0)
@@ -243,7 +244,8 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
 		break;
 	case EXIT:
-		Level::GetInstance()->newLevel();
+		m_bNewLevel = true;
+		//Level::GetInstance()->newLevel();
 		break;
 
 	default:

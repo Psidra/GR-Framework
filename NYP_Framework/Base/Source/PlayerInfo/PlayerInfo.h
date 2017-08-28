@@ -124,12 +124,14 @@ public:
 	inline int getWeaponIndex() const { return this->weaponIndex; };
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
-
+	
 	// Boss fight effects on player
 	bool m_bProjectileCircle;
 	bool m_bPullEffect;
 	bool m_bHunted; // Target on player
 
+	//bool falg to new level
+	static bool m_bNewLevel;
 private:
 	Vector3 defaultPosition;
 	Vector3 position, direction, view; // direction is walking dir, view is where player aims (cursor)

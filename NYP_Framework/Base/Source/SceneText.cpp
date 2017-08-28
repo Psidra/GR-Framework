@@ -601,7 +601,12 @@ void SceneText::Update(double dt)
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
 			textObj[i]->SetIsActive(true);
 		}
-		
+
+		if (Player::GetInstance()->m_bNewLevel)
+		{
+			Level::GetInstance()->newLevel();
+			Player::GetInstance()->m_bNewLevel = false;
+		}
 		break;
 	}	
 	case UIManager::GAME_STATE::OPTIONS:
