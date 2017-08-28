@@ -34,6 +34,7 @@
 #include "Projectile\ProjectileManager.h"
 #include "Projectile\Projectile.h"
 #include "WeaponInfo\WeaponInfo.h"
+#include "Loader.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -233,7 +234,7 @@ void SceneText::Init()
 	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
-	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(50, 50, 1), false);
+	UIElement* cursor = Create::UIEntity("player_cursor", Vector3(0, 0, 10), Vector3(35, 35, 1), false);
 	cursor->elestate = UIElement::ELEMENT_STATE::ALL;
 	cursor->type = UIElement::ELEMENT_TYPE::CURSOR;
 
@@ -322,6 +323,11 @@ void SceneText::Init()
 	}
 	textObj[0]->SetText("HELLO WORLD");
 
+	for (int i = 0; i < 10; ++i)
+	{
+		optionTextObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	}
+
 	//theEditor = new Editor();
 
 	Player::GetInstance()->Init();
@@ -344,7 +350,7 @@ void SceneText::Init()
 
 	CEnemy* NewEnemy =  Create::Enemy(Vector3(5, 5, 0), "player");
 	NewEnemy->Init(50.0f, 1.5, 1);
-	NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+	//NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 
 	CEnemy* NewObstacle = Create::Enemy(Vector3(-10, 10, 0), "player");
 	NewObstacle->Init(100.f, 0, 2, true);
@@ -527,6 +533,8 @@ void SceneText::Update(double dt)
 		// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 		// Eg. FPSRenderEntity or inside RenderUI for LightEntity
 		std::ostringstream ss;
+		fontSize = 25.0f;
+		halfFontSize = fontSize / 2.0f;
 		/*ss << Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetMagRound() << "/" 
 			<< Player::GetInstance()->getInvetory()->getWeaponList()[Player::GetInstance()->getWeaponIndex()]->GetTotalRound();*/
 		CWeaponInfo* weapon = Player::GetInstance()->getInvetory()->getPrimaryWeapon();
@@ -556,19 +564,71 @@ void SceneText::Update(double dt)
 		for (int i = 1; i < 3; ++i)
 		{
 			textObj[i]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f));
+			textObj[i]->SetIsActive(true);
 		}
 
 		WeaponManager::GetInstance()->update(dt);
 		minimap->Update(dt);
 		break;
 	}	
-	case UIManager::GAME_STATE::OPTIONS://doesnt work either
+	case UIManager::GAME_STATE::OPTIONS:
 	{
-		std::ostringstream ss1;
-		ss1.precision(4);
-		ss1 << "Player:" << Player::GetInstance()->GetHealth();
-		textObj[2]->SetText(ss1.str());
-		textObj[2]->SetPosition(Vector3(-halfWindowWidth, -halfWindowHeight + fontSize * 2 + halfFontSize, 10.0f));
+		std::vector<std::string> temp = Loader::GetInstance()->GetData();
+		fontSize = 20;
+		halfFontSize = fontSize / 2;
+		int inputKey = 0;
+		int hextoint;
+		int index;
+		
+		buttonInt.clear();
+		for (size_t i = 0; i < temp.size();++i) //read file
+		{
+			index = atoi(temp[i].substr(0, temp[i].find('=')).c_str());
+			std::stringstream ss;
+			ss << std::hex << temp[i].substr(temp[i].find('x') + 1, temp[i].find(','));
+			ss >> std::hex >> hextoint;
+			buttonInt.push_back(hextoint);
+		}
+		
+		for (size_t i = 0; i < 9; ++i) //display key 
+		{
+			std::ostringstream ss1;
+			ss1 << (char)buttonInt[i];
+			optionTextObj[i]->SetText(ss1.str());
+			optionTextObj[i]->SetPosition(Vector3((halfWindowWidth / 800) + 50, (halfWindowHeight / 300) - (fontSize + 8) * i + halfFontSize, 10.0f));
+			optionTextObj[i]->SetIsActive(true);
+		}
+		
+		
+		fontSize = 15;
+		std::ostringstream ss2;
+		ss2 << UIManager::GetInstance()->GetIndex();
+		optionTextObj[8]->SetText(ss2.str());
+		optionTextObj[8]->SetPosition(Vector3((halfWindowWidth / 800) - 200, (halfWindowHeight / 300) + 80, 10.0f));
+		optionTextObj[9]->SetIsActive(true);
+
+		keyboard->ConvertInt();
+		inputKey = keyboard->GetKey();
+		if (inputKey != 0)
+		{
+			std::ostringstream ss3;
+			ss3 << "Input:";
+			optionTextObj[8]->SetText(ss3.str());
+			optionTextObj[8]->SetPosition(Vector3((halfWindowWidth / 800) - 100, (halfWindowHeight / 300) + 60, 10.0f));
+
+			ss3 << (char)inputKey;
+			optionTextObj[9]->SetText(ss3.str());
+			optionTextObj[9]->SetPosition(Vector3((halfWindowWidth / 800) - 100 + 10, (halfWindowHeight / 300) + 60, 10.0f));
+		}
+		break;
+	}
+	case UIManager::GAME_STATE::MAIN_MENU:
+	case UIManager::GAME_STATE::PAUSE:
+	{
+		for (size_t i = 0; i < 10; ++i)
+		{
+			optionTextObj[i]->SetIsActive(false);
+		}
 		break;
 	}
 	}

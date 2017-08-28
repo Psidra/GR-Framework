@@ -93,6 +93,9 @@ void EntityManager::RenderUI()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if (!(*it)->IsActive())
+			continue;
+
 		(*it)->RenderUI();
 	}
 }

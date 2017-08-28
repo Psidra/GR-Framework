@@ -8,7 +8,7 @@
 #include "GLFW\glfw3.h"
 #include "AudioEngine.h"
 
-UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false), inputKey(0), index(0)
+UIManager::UIManager(): cur_state(UIManager::GAME_STATE::MAIN_MENU), checkingInput(false), inputKey(0)
 {
 	AudioEngine::GetInstance()->Init();
 	AudioEngine::GetInstance()->AddSound("mainmenu", "Audio/MainMenu.mp3");
@@ -148,6 +148,9 @@ void UIManager::Update()
 
 				case UIElement::ELEMENT_TYPE::CONFIRM:
 					//set to save changed keys
+
+					std::cout << "KEY SET" << std::endl;
+					checkingInput = false;
 					if (!checkingInput)
 					{
 						keyboard->Write("Keybind//keyconfigtest.txt", index, inputKey);
@@ -155,64 +158,64 @@ void UIManager::Update()
 					}
 
 
-					if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
-						this->state = PAUSE;
+					//if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
+					//	this->state = PAUSE;
 
-					else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
-						UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
+					//else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
+					//	UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
 					break;
 
+				case UIElement::ELEMENT_TYPE::INPUT_RELOAD:
+					std::cout << "pressed reload, please input a key" << std::endl;
+
+					checkingInput = true;
+					index = 0;	//key index for reload
+					break;
 
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 0 
 					std::cout << "pressed move up, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 0;	//key index for moveup
+					index = 1;	//key index for moveup
 					break;
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 1
 					std::cout << "pressed move down, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 1;	//key index for movedown
+					index = 2;	//key index for movedown
 					break;
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT:
 					std::cout << "pressed move left, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 2;	//key index for moveleft
+					index = 3;	//key index for moveleft
 					break;
 				case UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT:
 					std::cout << "pressed move right, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 3;	//key index for moveright
-					break;
-				case UIElement::ELEMENT_TYPE::INPUT_RELOAD:
-					std::cout << "pressed reload, please input a key" << std::endl;
-
-					checkingInput = true;
-					index = 5;	//key index for reload
+					index = 4;	//key index for moveright
 					break;
 
 				case UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN:
 					std::cout << "pressed next gun, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 6;	//key index for next gun
+					index = 5;	//key index for next gun
 					break;
 
 				case UIElement::ELEMENT_TYPE::INPUT_BLANK:
 					std::cout << "pressed blank, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 10;	//key index for next gun
+					index = 6;	//key index for next gun
 					break;
 
 				case UIElement::ELEMENT_TYPE::INPUT_PAUSE:
 					std::cout << "pressed pause, please input a key" << std::endl;
 
 					checkingInput = true;
-					index = 9;	//key index for pause
+					index = 7;	//key index for pause
 					break;
 
 				case UIElement::ELEMENT_TYPE::EXIT:
@@ -222,17 +225,14 @@ void UIManager::Update()
 			}
 		}
 	}
-	
 	if (checkingInput)
 	{
 		keyboard->ConvertInt();
-		inputKey = keyboard->GetKey();
 		
-		if (inputKey != 0)
+		if (keyboard->GetKey() != 0)
 		{
+			inputKey = keyboard->GetKey();
 			std::cout << keyboard->GetKey() << std::endl;
-			std::cout << "KEY SET" << std::endl;
-			checkingInput = false;
 		}
 	}
 	
@@ -259,4 +259,40 @@ void UIManager::Render()
 void UIManager::AddEntity(UIElement * result)
 {
 	this->UIList.push_back(result);
+}
+
+std::string UIManager::GetIndex()
+{
+	switch (index) //hardcoded 
+	{
+	case 0:
+		return "Reload Selected";
+		break;
+	case 1:
+		return "Move Up Selected";
+		break;
+	case 2:
+		return "Move Down Selected";
+		break;
+	case 3:
+		return "Move Left Selected";
+		break;
+	case 4:
+		return "Move Right Selected";
+		break;
+	case 5:
+		return "Next Gun Selected";
+		break;
+	case 6:
+		return "Blank Selected";
+		break;
+	case 7:
+		return "Pause Selected";
+		break;
+	default:
+		return "Nothing Selected";
+		break;
+	}
+
+	return "";
 }

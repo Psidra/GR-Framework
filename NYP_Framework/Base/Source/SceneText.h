@@ -43,7 +43,9 @@ private:
 	CEnemy* minion;
 	GroundEntity* groundEntity;
 	FPSCamera *camera;
-	TextEntity* textObj[3];
+	TextEntity* textObj[4];
+	TextEntity* optionTextObj[10];
+	std::vector<unsigned int> buttonInt;
 	Light* lights[2];
 
 	GenericEntity* theCube;
