@@ -259,60 +259,6 @@ void Level::generateWalls()
 		
 	loTile = NULL;
 	delete loTile;
-
-
-	//if (currentTile)
-	//{
-	//	delete currentTile;
-	//	currentTile = NULL;
-	//}
-	//
-	//if (nextTile)
-	//{
-	//	delete nextTile;
-	//	nextTile = NULL;
-	//}
-
-	//if (prevTile)
-	//{
-	//	delete prevTile;
-	//	prevTile = NULL;
-	//}
-
-	//if (upTile)
-	//{
-	//	delete upTile;
-	//	upTile = NULL;
-	//}
-
-	//if (loTile)
-	//{
-	//	delete loTile;
-	//	loTile = NULL;
-	//}
-
-	//Add Walls in 4 coners
-	/*for (int x = 0; x < mapWidth; ++x) {
-		for (int y = 0; y < mapHeight; ++y) {
-
-			currentTile = &levelMap[{x, y}];
-			nextTile = &levelMap[{x + 1, y}];
-			prevTile = &levelMap[{x - 1, y}];
-			upTile = &levelMap[{x, y + 1}];
-			loTile = &levelMap[{x, y - 1}];
-
-			if (currentTile->type == Tile::EMPTY) {
-				if (isTileWall(*nextTile) && isTileWall(*loTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*nextTile) && isTileWall(*upTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*prevTile) && isTileWall(*loTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*prevTile) && isTileWall(*upTile))
-					currentTile->type = Tile::WALL;
-			}
-		}
-	}*/
 }
 
 void Level::setUp()
