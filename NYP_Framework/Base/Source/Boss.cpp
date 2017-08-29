@@ -104,9 +104,8 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 	}
 	enemyInventory = new Inventory;
 
-	switch (_enemyType) //WIP - set choice of units to spawn
+	if (_enemyType == 1)
 	{
-	case 1: //red minion
 		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal1"));
 		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal2"));
 		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal3"));
@@ -116,10 +115,6 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ1"));
 		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ2"));
 		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ3"));
-		break;
-
-	default:
-		break;
 	}
 	this->SetIndices_fStand(0, 2);
 	this->SetIndices_bStand(0, 2);
@@ -232,14 +227,10 @@ void Boss::EditMaxHealth(float _health)
 
 void Boss::CollisionResponse(GenericEntity * thatEntity)
 {
-	switch (thatEntity->type) {
-	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+	if (thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET) 
+	{
 		isHurt = true;
-		std::cout << "boss collide with player bullet" << std::endl;
-		break;
-
-	default:
-		break;
+		std::cout << "boss collide with player bullet" << std::endl; // proj should be calling over this
 	}
 }
 

@@ -259,60 +259,6 @@ void Level::generateWalls()
 		
 	loTile = NULL;
 	delete loTile;
-
-
-	//if (currentTile)
-	//{
-	//	delete currentTile;
-	//	currentTile = NULL;
-	//}
-	//
-	//if (nextTile)
-	//{
-	//	delete nextTile;
-	//	nextTile = NULL;
-	//}
-
-	//if (prevTile)
-	//{
-	//	delete prevTile;
-	//	prevTile = NULL;
-	//}
-
-	//if (upTile)
-	//{
-	//	delete upTile;
-	//	upTile = NULL;
-	//}
-
-	//if (loTile)
-	//{
-	//	delete loTile;
-	//	loTile = NULL;
-	//}
-
-	//Add Walls in 4 coners
-	/*for (int x = 0; x < mapWidth; ++x) {
-		for (int y = 0; y < mapHeight; ++y) {
-
-			currentTile = &levelMap[{x, y}];
-			nextTile = &levelMap[{x + 1, y}];
-			prevTile = &levelMap[{x - 1, y}];
-			upTile = &levelMap[{x, y + 1}];
-			loTile = &levelMap[{x, y - 1}];
-
-			if (currentTile->type == Tile::EMPTY) {
-				if (isTileWall(*nextTile) && isTileWall(*loTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*nextTile) && isTileWall(*upTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*prevTile) && isTileWall(*loTile))
-					currentTile->type = Tile::WALL;
-				else if (isTileWall(*prevTile) && isTileWall(*upTile))
-					currentTile->type = Tile::WALL;
-			}
-		}
-	}*/
 }
 
 void Level::setUp()
@@ -451,41 +397,41 @@ void Level::loadEntitys()
 	{
 		for (size_t j = 0; j < mapHeight; ++j)
 		{
-			int enemyType = rand() % 2 + 1;//rand num for enemy type
+			int enemyType = rand() % 3 + 1;//rand num for enemy type
 			
 			TileEntity* temp = NULL;
 			CEnemy* NewEnemy = NULL;
 			Boss* FirstBoss = NULL;
 
-			switch (getTile(i, j).type)
+			if (getTile(i, j).type == Tile::WALL)
 			{
-			case Tile::WALL:
-				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp = Create::TEntity("tile_wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::WALL;
 				temp->setNormal(Vector3(1, 0, 0));
-				break;
-			case Tile::EXIT:
-				temp = Create::TEntity("player", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+			}
+			else if (getTile(i, j).type == Tile::EXIT)
+			{
+				temp = Create::TEntity("tile_stairs", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::EXIT;
 				temp->setNormal(Vector3(1, 0, 0));
-				break;
-			case Tile::TELEPORTER:
-				temp = Create::TEntity("greenCube", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
+			}
+			else if (getTile(i, j).type == Tile::TELEPORTER)
+			{
+				temp = Create::TEntity("tile_portal", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
-				break;
-			case Tile::ENEMY:
+			}
+			else if (getTile(i, j).type == Tile::ENEMY)
+			{
 				NewEnemy = Create::Enemy(Vector3(i, j, 0), "player");
 				NewEnemy->type = GenericEntity::OBJECT_TYPE::ENEMY;
 				NewEnemy->Init(50.0f, 1.5, enemyType);
 				NewEnemy->SetIsActive(false);
-				break;
-			case Tile::BOSS:
+			}
+			else if (getTile(i, j).type == Tile::BOSS)
+			{
 				FirstBoss = Create::SpawnBoss(Vector3(i, j, 0), "player", Vector3(1.5f, 3, 3), true);
 				FirstBoss->Init(700.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
 				FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
-				break;
-			default:
-				break;
 			}
 
 			if (!temp)

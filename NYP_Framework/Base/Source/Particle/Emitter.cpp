@@ -60,23 +60,15 @@ void Emitter::update(double dt)
 			--m_liveParticleCount;
 		}
 		//Update particles based on type
-		switch (m_effect_type)
-		{
-		case ET_FIRE:
+		if (m_effect_type == ET_FIRE)
 		{
 			p->m_velocity += Vector3(0, -9.8, 0) * dt;
 			p->m_position += p->m_velocity * dt;
-			break;
-		}	
-		case ET_BLEED:
+		}
+		else if (m_effect_type == ET_BLEED)
 		{
 			p->m_velocity += Vector3(0, -9.8f, 0) * dt;
 			p->m_position += p->m_velocity * dt;
-			break;
-		}
-		/*Add more particle types here*/
-		default:
-			break;
 		}
 	}
 

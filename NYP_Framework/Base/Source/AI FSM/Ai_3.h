@@ -1,15 +1,15 @@
-#ifndef AI_2
-#define AI_2
+#ifndef AI_3
+#define AI_3
 
 #include "..\Strategy.h"
 #include "Vector3.h"
 
-class CStrategy_AI_2
+class CStrategy_AI_3
 	: public CStrategy
 {
 public:
-	CStrategy_AI_2(void);
-	~CStrategy_AI_2(void);
+	CStrategy_AI_3(void);
+	~CStrategy_AI_3(void);
 
 
 	void Update(Vector3& theDestination, Vector3 theEnemyPosition, Vector3& theEnemyDirection, double speed, double dt);
@@ -33,17 +33,18 @@ public:
 	};
 	enum AI_STATE_RANGE
 	{
-		AI_ATTACK_RANGE = 25,
-		AI_CHASE_RANGE = 55,
+		AI_ATTACK_RANGE = 15,
+		AI_CHASE_RANGE = 25,
 		NUM_AI_STATE_RANGE,
 	};
-	CStrategy_AI_2::CURRENT_STATE GetState(void);
-	void SetState(CStrategy_AI_2::CURRENT_STATE);
+	CStrategy_AI_3::CURRENT_STATE GetState(void);
+	void SetState(CStrategy_AI_3::CURRENT_STATE);
 
 private:
 	// Enemy AI State
-	CStrategy_AI_2::CURRENT_STATE CurrentState;
+	CStrategy_AI_3::CURRENT_STATE CurrentState;
 	int maxDistFromPlayer;
 	double shootElapsedTime, timeBetweenShots;
+	bool targetFound;
 };
-#endif // !AI_2
+#endif // !AI_3

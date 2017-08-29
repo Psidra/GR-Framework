@@ -55,7 +55,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 	{
 		RNG = Math::RandIntMinMax(0, 3);
 
-		if (RNG == prevRoll)
+		if (RNG == prevRoll || RNG == 4)
 		{
 			++RNG;
 			RNG = Math::Wrap(RNG, 0, 3);
@@ -70,62 +70,58 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 		if (this->CurrentState == ATTACK_SET_ONE)
 		{
-			switch (RNG) {
-			case 0:
+			if (RNG == 0)
+			{
 				_weaponIndex = 0;
 				m_dAttackDuration = m_dElapsedTime + 3.f;
 				Player::GetInstance()->m_bProjectileCircle = true;
-				break;
-			case 1:
+			}
+			else if (RNG == 1)
+			{
 				m_dAttackDuration = m_dElapsedTime + 5.f;
 				Player::GetInstance()->m_bPullEffect = true;
-				break;
-			case 2:
+			}
+			else if (RNG == 2)
+			{
 				_weaponIndex = 1;
 				m_dAttackDuration = m_dElapsedTime + 3.f;
-				break;
-			case 3:
+			}
+			else if (RNG == 3)
+			{
 				_weaponIndex = 2;
 				m_dAttackDuration = m_dElapsedTime + 4.f;
-				break;
-
-			default:
-				break;
 			}
 		}
 		else if (this->CurrentState == ATTACK_SET_TWO)
 		{
-			switch (RNG) {
-			case 0:
+			if (RNG == 0)
+			{
 				_weaponIndex = Math::RandIntMinMax(1, 2);
 				m_dAttackDuration = m_dElapsedTime + 4.f;
 				Player::GetInstance()->m_bPullEffect = true;
-				break;
-			case 1:
+			}
+			else if (RNG == 1)
+			{
 				m_dAttackDuration = m_dElapsedTime + 4.f;
-				break;
-			case 2:
+			}
+			else if (RNG == 2)
+			{
 				_weaponIndex = 0;
 				m_dAttackDuration = m_dElapsedTime + 4.f;
 				Player::GetInstance()->m_bProjectileCircle = true;
 				Player::GetInstance()->m_bHunted = true;
-				break;
-			case 3:
+			}
+			else if (RNG == 3)
+			{
 				_weaponIndex = 3;
 				m_dAttackDuration = m_dElapsedTime + 5.f;
-
-			default:
-				break;
 			}
 		}
 	}
 
-	switch (CurrentState)
+	if (this->CurrentState == ATTACK_SET_ONE)
 	{
-	case ATTACK_SET_ONE:
-	{
-		switch (RNG) {
-		case 0:
+		if (RNG == 0)
 		{
 			float y_rand, x_diff;
 			y_rand = Math::RandFloatMinMax(-5, 5);
@@ -137,20 +133,18 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 			_shootpos = _destination + Vector3(x_diff, y_rand, 0.f);
 			timeBetweenShots = 0.5f;
-			break;
 		}
-		case 1:
+		else if (RNG == 1)
+		{
 			timeBetweenShots = m_dAttackDuration;
-			break;
-		case 2:
+		}
+		else if (RNG == 2)
+		{
 			timeBetweenShots = 0.f;
-			break;
-		case 3:
+		}
+		else if (RNG == 3)
+		{
 			timeBetweenShots = 0.f;
-			break;
-
-		default:
-			break;
 		}
 
 		if (shootElapsedTime > timeBetweenShots && m_dAttackDuration > m_dElapsedTime)
@@ -161,24 +155,23 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
-
-		break;
 	}
-	case ATTACK_SET_TWO:
+	else if (this->CurrentState == ATTACK_SET_TWO)
 	{
-		switch (RNG) {
-		case 0:
+		if (RNG == 0)
+		{
 			timeBetweenShots = 0.f;
-			break;
-		case 1:
+		}
+		else if (RNG == 1)
+		{
 			if (_weaponIndex != 1)
 				_weaponIndex = 1;
 			else
 				_weaponIndex = 2;
 
 			timeBetweenShots = 0.f;
-			break;
-		case 2:
+		}
+		else if (RNG == 2)
 		{
 			float y_rand, x_diff;
 			y_rand = Math::RandFloatMinMax(-5, 5);
@@ -190,14 +183,14 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 			_shootpos = _destination + Vector3(x_diff, y_rand, 0.f);
 			timeBetweenShots = 0.5f;
-			break;
 		}
-		case 3:
+		else if (RNG == 3)
+		{
 			timeBetweenShots = 0.f;
-			break;
-
-		default:
-			break;
+		}
+		else if (RNG == 4)
+		{
+			timeBetweenShots = 2.f;
 		}
 
 		if (shootElapsedTime > timeBetweenShots && m_dAttackDuration > m_dElapsedTime)
@@ -207,19 +200,15 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			shootElapsedTime = 0.0;
 
 			if (RNG == 3)
-				timeBetweenShots = 5.f;
+				RNG = 4;
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
-
-		break;
 	}
-
-	default:
-		// Do nothing if idling
+	else if (this->CurrentState == IDLE)
+	{
 		SetIsMoving(false);
 		SetIsShooting(false);
-		break;
 	}
 }
 /********************************************************************************

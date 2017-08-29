@@ -159,51 +159,13 @@ void CProjectile::Update(double dt)
 		return;
 	}
 
-	//=====Testing codes for laser=====
-	//if(!m_bProjectileLaserBeam)
-	//if (m_bProjectileLaserBeam)
-	//{
-	//	EntityManager* temp = EntityManager::GetInstance();
-	//	for (std::list<EntityBase*>::iterator it = temp->getCollisionList().begin();
-	//		it != temp->getCollisionList().end(); ++it)
-	//	{
-	//		if (dynamic_cast<GenericEntity*>((*it))->type != GenericEntity::ENEMY)
-	//			continue;
-
-	//		//if ((*it)->GetPosition() >= Player::GetInstance()->GetPos() &&
-	//		//	(*it)->GetPosition() <= position)
-	//		//	std::cout << "A: " << (*it)->GetPosition() << "\n";
-
-	//		// (A + (0.1 * AB.normalise)) 
-	//		Vector3 AB = (position - Player::GetInstance()->GetPos()).Normalize();
-	//		Vector3 A = Player::GetInstance()->GetPos();
-	//		while(A <= position)
-	//		{
-	//			if (CollisionManager::GetInstance()->CheckPointToAABBCollision(A, (*it)))
-	//				std::cout << "hit\n";
-	//				//CollisionResponse(dynamic_cast<GenericEntity*>(*it));
-	//			A = A + (0.1f * AB);
-	//			std::cout << "A: " << A << std::endl;
-	//		}
-
-	//		//std::cout << "pPos: " << Player::GetInstance()->GetPos() << "\n";
-	//		//std::cout << "ePos: " << (*it)->GetPosition() << std::endl;
-	//		//std::cout << "tPos: " << position << std::endl;
-	//	}
-
-	//}
-	//==========================
-
 	// Update Position
-	switch (projectileType)
+	if (projectileType == PROJECTILE_TYPE::BULLET)
 	{
-	case PROJECTILE_TYPE::BULLET:
 		position += theDirection * (float)(dt * m_fSpeed);
-		break;
-	case PROJECTILE_TYPE::LASER:
-
-		break;
-	case PROJECTILE_TYPE::ROCKET:
+	}
+	else if (projectileType == PROJECTILE_TYPE::ROCKET)
+	{
 		position += theDirection * (float)(dt * m_fSpeed);
 		if (m_fLifetime <= 1.0f)
 		{
@@ -211,18 +173,7 @@ void CProjectile::Update(double dt)
 			isDone = true;
 			ProjectileSpilt(9, 45, true);
 		}
-		break;
-	default:
-		break;
 	}
-
-
-	//if (!m_bProjectileLaserBeam)
-	//position += theDirection * (float)(dt * m_fSpeed);
-
-	//position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
-	//				position.y + (float)(theDirection.y * dt * m_fSpeed),
-	//				position.z + (float)(theDirection.z * dt * m_fSpeed));
 
 	//set projectile AABB
 	if(!m_bProjectileLaserBeam)
@@ -268,8 +219,7 @@ void CProjectile::Render(void)
 // Collision Response
 void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 {
-	switch (ThatEntity->type) {
-	case GenericEntity::OBJECT_TYPE::WALL:
+	if (ThatEntity->type == GenericEntity::OBJECT_TYPE::WALL)
 	{
 		std::cout << "bullet collided with wall\n";
 		//if can ricochet
@@ -305,13 +255,8 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		}
 
 	}
-		break;
-	case GenericEntity::OBJECT_TYPE::ENEMY:
+	else if ((ThatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY || ThatEntity->type == GenericEntity::OBJECT_TYPE::BOSS) && this->type == PLAYER_BULLET)
 	{
-		if (this->type != PLAYER_BULLET)
-			break;
-
-		//this->SetIsDone(true);
 		isActive = false;
 		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
 		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
@@ -330,37 +275,6 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 			ProjectileSpilt(9, 45, true);
 
 		std::cout << "player bullet collide with enemy" << std::endl;
-		break;
-	}
-	case GenericEntity::OBJECT_TYPE::BOSS:
-	{
-		if (this->type != PLAYER_BULLET)
-			break;
-
-		//this->SetIsDone(true);
-		isActive = false;
-		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
-		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
-
-		if (!HitEnemy->getInvuln())
-		{
-			Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, HitEnemy);
-			HitEnemy->editHealth(-Proj->getProjectileDamage());
-		}
-		else
-		{
-			std::cout << "enemy is invulnerable!" << std::endl;
-		}
-
-		if (projectileType == ROCKET)
-			ProjectileSpilt(9, 45, true);
-
-		std::cout << "player bullet collide with enemy" << std::endl;
-		break;
-	}
-
-	default:
-		break;
 	}
 }
 

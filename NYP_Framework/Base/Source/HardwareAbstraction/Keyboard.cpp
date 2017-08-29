@@ -60,36 +60,23 @@ int Keyboard::Read(const float deltaTime)
 	return 0;
 	map<string, string> lel;
 
-	for (int i = 0;i < NUM_CONRTOLLER;++i)
+	for (int i = 0; i < NUM_CONRTOLLER; ++i)
 	{
-		switch (pressMethod[i])
+		if (pressMethod[i] == 1 && KeyboardController::GetInstance()->IsKeyDown(KeyList[i]))
 		{
-		case 1:
-			if (KeyboardController::GetInstance()->IsKeyDown(KeyList[i]))
-			{
-				(this->*(controllerfunc[i]))(deltaTime);
-			}
-			break;
-		case 2:
-			if (KeyboardController::GetInstance()->IsKeyUp(KeyList[i]))
-			{
-				(this->*(controllerfunc[i]))(deltaTime);
-			}
-			break;
-		case 3:
-			if (KeyboardController::GetInstance()->IsKeyPressed(KeyList[i]))
-			{
-				(this->*(controllerfunc[i]))(deltaTime);
-			}
-			break;
-		case 4:
-			if (KeyboardController::GetInstance()->IsKeyReleased(KeyList[i]))
-			{
-				(this->*(controllerfunc[i]))(deltaTime);
-			}
-			break;
-		default:
-			break;
+			(this->*(controllerfunc[i]))(deltaTime);
+		}
+		else if (pressMethod[i] == 2 && KeyboardController::GetInstance()->IsKeyUp(KeyList[i]))
+		{
+			(this->*(controllerfunc[i]))(deltaTime);
+		}
+		else if (pressMethod[i] == 3 && KeyboardController::GetInstance()->IsKeyPressed(KeyList[i]))
+		{
+			(this->*(controllerfunc[i]))(deltaTime);
+		}
+		else if (pressMethod[i] == 4 && KeyboardController::GetInstance()->IsKeyReleased(KeyList[i]))
+		{
+			(this->*(controllerfunc[i]))(deltaTime);
 		}
 	}
 }

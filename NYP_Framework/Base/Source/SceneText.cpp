@@ -62,34 +62,34 @@ void SceneText::Init()
 	currProg->AddUniform("MVP");
 	currProg->AddUniform("MV");
 	currProg->AddUniform("MV_inverse_transpose");
-	currProg->AddUniform("material.kAmbient");
-	currProg->AddUniform("material.kDiffuse");
-	currProg->AddUniform("material.kSpecular");
-	currProg->AddUniform("material.kShininess");
-	currProg->AddUniform("lightEnabled");
-	currProg->AddUniform("numLights");
-	currProg->AddUniform("lights[0].type");
-	currProg->AddUniform("lights[0].position_cameraspace");
-	currProg->AddUniform("lights[0].color");
-	currProg->AddUniform("lights[0].power");
-	currProg->AddUniform("lights[0].kC");
-	currProg->AddUniform("lights[0].kL");
-	currProg->AddUniform("lights[0].kQ");
-	currProg->AddUniform("lights[0].spotDirection");
-	currProg->AddUniform("lights[0].cosCutoff");
-	currProg->AddUniform("lights[0].cosInner");
-	currProg->AddUniform("lights[0].exponent");
-	currProg->AddUniform("lights[1].type");
-	currProg->AddUniform("lights[1].position_cameraspace");
-	currProg->AddUniform("lights[1].color");
-	currProg->AddUniform("lights[1].power");
-	currProg->AddUniform("lights[1].kC");
-	currProg->AddUniform("lights[1].kL");
-	currProg->AddUniform("lights[1].kQ");
-	currProg->AddUniform("lights[1].spotDirection");
-	currProg->AddUniform("lights[1].cosCutoff");
-	currProg->AddUniform("lights[1].cosInner");
-	currProg->AddUniform("lights[1].exponent");
+	//currProg->AddUniform("material.kAmbient");
+	//currProg->AddUniform("material.kDiffuse");
+	//currProg->AddUniform("material.kSpecular");
+	//currProg->AddUniform("material.kShininess");
+	//currProg->AddUniform("lightEnabled");
+	//currProg->AddUniform("numLights");
+	//currProg->AddUniform("lights[0].type");
+	//currProg->AddUniform("lights[0].position_cameraspace");
+	//currProg->AddUniform("lights[0].color");
+	//currProg->AddUniform("lights[0].power");
+	//currProg->AddUniform("lights[0].kC");
+	//currProg->AddUniform("lights[0].kL");
+	//currProg->AddUniform("lights[0].kQ");
+	//currProg->AddUniform("lights[0].spotDirection");
+	//currProg->AddUniform("lights[0].cosCutoff");
+	//currProg->AddUniform("lights[0].cosInner");
+	//currProg->AddUniform("lights[0].exponent");
+	//currProg->AddUniform("lights[1].type");
+	//currProg->AddUniform("lights[1].position_cameraspace");
+	//currProg->AddUniform("lights[1].color");
+	//currProg->AddUniform("lights[1].power");
+	//currProg->AddUniform("lights[1].kC");
+	//currProg->AddUniform("lights[1].kL");
+	//currProg->AddUniform("lights[1].kQ");
+	//currProg->AddUniform("lights[1].spotDirection");
+	//currProg->AddUniform("lights[1].cosCutoff");
+	//currProg->AddUniform("lights[1].cosInner");
+	//currProg->AddUniform("lights[1].exponent");
 	currProg->AddUniform("colorTextureEnabled[0]");
 	currProg->AddUniform("colorTexture[0]");
 	currProg->AddUniform("colorTextureEnabled[1]");
@@ -109,8 +109,8 @@ void SceneText::Init()
 	currProg->AddUniform("textEnabled");
 	currProg->AddUniform("textColor");
 
-	currProg->AddUniform("shadowMap");
-	currProg->AddUniform("lightDepthMVP");
+	//currProg->AddUniform("shadowMap");
+	//currProg->AddUniform("lightDepthMVP");
 	
 	GraphicsManager::GetInstance()->m_gPassShaderID = LoadShaders("Shader//GPass.vertexshader", "Shader//GPass.fragmentshader");
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE_ENABLED] =
@@ -130,9 +130,9 @@ void SceneText::Init()
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE3] =
 		glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "colorTexture[3]");
 
-	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_LIGHT_DEPTH_MVP_GPASS] =
-		glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "lightDepthMVP");
-	GraphicsManager::GetInstance()->m_lightDepthFBO.Init(1024, 1024);
+	//GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_LIGHT_DEPTH_MVP_GPASS] =
+	//	glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "lightDepthMVP");
+	//GraphicsManager::GetInstance()->m_lightDepthFBO.Init(1024, 1024);
 
 	// Tell the graphics manager to use the shader we just loaded
 	GraphicsManager::GetInstance()->SetActiveShader("default");
@@ -165,7 +165,7 @@ void SceneText::Init()
 	
 	// Create the playerinfo instance, which manages all information about the player
 
-	std::cout << _DEBUG << std::endl;
+	//std::cout << _DEBUG << std::endl;
 	//int a;
 
 	// Create and attach the camera to the scene
@@ -454,8 +454,7 @@ void SceneText::Update(double dt)
 	keyboard->Read(dt);
 	UIManager::GetInstance()->Update();
 
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		WeaponManager::GetInstance()->update(dt);
 		minimap->Update(dt);
@@ -482,28 +481,23 @@ void SceneText::Update(double dt)
 
 			int rand_element = Math::RandIntMinMax(0, 2);
 			// Of course they dont disappear, this is a boss fight, dont be a wuss
-			switch (rand_element) {
-			case 0:
+			if (rand_element == 0)
 			{
 				GenericEntity* fire = Create::Entity("fire", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				fire->type = GenericEntity::OBJECT_TYPE::FIRE;
 				fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
-				break;
 			}
-			case 1:
+			else if (rand_element == 1)
 			{
 				GenericEntity* slow = Create::Entity("slow", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				slow->type = GenericEntity::OBJECT_TYPE::SLOW;
 				slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
-				break;
 			}
-			case 2:
+			else if (rand_element == 2)
 			{
 				GenericEntity* poison = Create::Entity("poison", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				poison->type = GenericEntity::OBJECT_TYPE::POISON;
 				poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
-				break;
-			}
 			}
 		}
 
@@ -528,32 +522,6 @@ void SceneText::Update(double dt)
 			if (Level::GetInstance()->getCurrLevel() >= 3)
 				Level::GetInstance()->setCurrLevel(0);
 		}
-
-		//if (KeyboardController::GetInstance()->IsKeyDown('5'))
-		//{
-		//	lights[0]->type = Light::LIGHT_POINT;
-		//}
-		//else if (KeyboardController::GetInstance()->IsKeyDown('6'))
-		//{
-		//	lights[0]->type = Light::LIGHT_DIRECTIONAL;
-		//}
-		//else if (KeyboardController::GetInstance()->IsKeyDown('7'))
-		//{
-		//	lights[0]->type = Light::LIGHT_SPOT;
-		//}
-
-		//if (KeyboardController::GetInstance()->IsKeyDown('I'))
-		//	lights[0]->position.z -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('K'))
-		//	lights[0]->position.z += (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('J'))
-		//	lights[0]->position.x -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('L'))
-		//	lights[0]->position.x += (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('O'))
-		//	lights[0]->position.y -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('P'))
-		//	lights[0]->position.y += (float)(10.f * dt);
 
 		// if the left mouse button was released
 		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
@@ -624,9 +592,8 @@ void SceneText::Update(double dt)
 			Level::GetInstance()->newLevel();
 			Player::GetInstance()->m_bNewLevel = false;
 		}
-		break;
 	}	
-	case UIManager::GAME_STATE::OPTIONS:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::OPTIONS)
 	{
 		std::vector<std::string> temp = Loader::GetInstance()->GetData();
 		fontSize = ((halfWindowWidth * 2) / 800) * 20;
@@ -673,9 +640,8 @@ void SceneText::Update(double dt)
 			optionTextObj[9]->SetText(ss3.str());
 			optionTextObj[9]->SetPosition(Vector3((halfWindowWidth / 800) - 100 + 10, (halfWindowHeight / 300) + 60, 10.0f));
 		}
-		break;
 	}
-	case UIManager::GAME_STATE::MAIN_MENU:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::MAIN_MENU)
 	{
 		for (size_t i = 0; i < 10; ++i)
 		{
@@ -687,16 +653,14 @@ void SceneText::Update(double dt)
 		HuntTarget->SetIsActive(false);
 		}*/
 
-		break;
+		//break;
 	}
-	case UIManager::GAME_STATE::PAUSE:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PAUSE)
 	{
 		for (size_t i = 0; i < 10; ++i)
 		{
 			optionTextObj[i]->SetIsActive(false);
 		}
-		break;
-	}
 	}
 }
 
@@ -792,12 +756,9 @@ void SceneText::RenderPassMain()
 	//ms.PopMatrix();
 
 	//placed down so alpha will work properly on ldq.
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		RenderWorld();
-		break;
-	}
 	}
 
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
@@ -808,13 +769,9 @@ void SceneText::RenderPassMain()
 	TextEntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
 
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		minimap->RenderUI();
-		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
-		break;
-	}
 	}
 }
 
