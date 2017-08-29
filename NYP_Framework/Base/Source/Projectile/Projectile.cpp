@@ -255,28 +255,7 @@ void CProjectile::CollisionResponse(GenericEntity * ThatEntity)
 		}
 
 	}
-	else if (ThatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY && this->type != PLAYER_BULLET)
-	{
-		isActive = false;
-		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
-		CProjectile* Proj = dynamic_cast<CProjectile*>(this);
-
-		if (!HitEnemy->getInvuln())
-		{
-			Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, HitEnemy);
-			HitEnemy->editHealth(-Proj->getProjectileDamage());
-		}
-		else
-		{
-			std::cout << "enemy is invulnerable!" << std::endl;
-		}
-
-		if (projectileType == ROCKET)
-			ProjectileSpilt(9, 45, true);
-
-		std::cout << "player bullet collide with enemy" << std::endl;
-	}
-	else if (ThatEntity->type == GenericEntity::OBJECT_TYPE::BOSS && this->type != PLAYER_BULLET)
+	else if ((ThatEntity->type == GenericEntity::OBJECT_TYPE::ENEMY || ThatEntity->type == GenericEntity::OBJECT_TYPE::BOSS) && this->type == PLAYER_BULLET)
 	{
 		isActive = false;
 		EnemyBase* HitEnemy = dynamic_cast<EnemyBase*>(ThatEntity);
