@@ -38,14 +38,14 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	int distancePlayerToEnemy = CalculateDistance(_destination, _shootpos);
 
-	if (distancePlayerToEnemy < 40 && this->CurrentState == IDLE)
+	if (distancePlayerToEnemy < 70 && this->CurrentState == IDLE)
 	{
 		this->SetState(ATTACK_SET_ONE);
 		AudioEngine::GetInstance()->StopAllSounds();
 		AudioEngine::GetInstance()->PlayASound("lastbattle", true);
 	}
 
-	if (this->CurrentState == ATTACK_SET_ONE && _health < 500)
+	if (this->CurrentState == ATTACK_SET_ONE && _health < 250)
 		this->SetState(ATTACK_SET_TWO);
 
 	if (this->CurrentState == IDLE)
@@ -53,22 +53,16 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		int rolls;
+		//RNG = Math::RandIntMinMax(0, 3);
 
-		if (this->CurrentState == ATTACK_SET_ONE)
-			rolls = 3;
-		else
-			rolls = 2;
+		//if (RNG == prevRoll)
+		//{
+		//	++RNG;
+		//	RNG = Math::Wrap(RNG, 0, 3);
+		//}
 
-		RNG = Math::RandIntMinMax(0, rolls);
-
-		if (RNG == prevRoll)
-		{
-			++RNG;
-			RNG = Math::Wrap(RNG, 0, rolls);
-		}
-
-		prevRoll = RNG;
+		//prevRoll = RNG;
+		RNG = 3;
 
 		Player::GetInstance()->m_bProjectileCircle = false; // I hate this move so much
 		Player::GetInstance()->m_bPullEffect = false;
@@ -117,6 +111,9 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 				Player::GetInstance()->m_bProjectileCircle = true;
 				Player::GetInstance()->m_bHunted = true;
 				break;
+			case 3:
+				_weaponIndex = 3;
+				m_dAttackDuration = m_dElapsedTime + 5.f;
 
 			default:
 				break;
@@ -196,6 +193,9 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			timeBetweenShots = 0.5f;
 			break;
 		}
+		case 3:
+			timeBetweenShots = 0.f;
+			break;
 
 		default:
 			break;
@@ -206,6 +206,9 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			SetIsMoving(false);		//stop animate moving
 			SetIsShooting(true);	//set animate shoot & enable shoot
 			shootElapsedTime = 0.0;
+
+			if (RNG == 3)
+				timeBetweenShots = 5.f;
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot

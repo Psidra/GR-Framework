@@ -78,6 +78,7 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 	enemyInventory->addWeaponToInventory(new Minigun(GenericEntity::ENEMY_BULLET));
 	enemyInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::ENEMY_BULLET));
+	enemyInventory->addWeaponToInventory(new FourSidedWeapon(GenericEntity::ENEMY_BULLET));
 
 	enemyInventory->getWeaponList()[weaponIndex]->setIsActive(true);
 
