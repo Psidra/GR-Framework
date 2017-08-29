@@ -53,16 +53,15 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		//RNG = Math::RandIntMinMax(0, 3);
+		RNG = Math::RandIntMinMax(0, 3);
 
-		//if (RNG == prevRoll)
-		//{
-		//	++RNG;
-		//	RNG = Math::Wrap(RNG, 0, 3);
-		//}
+		if (RNG == prevRoll || RNG == 4)
+		{
+			++RNG;
+			RNG = Math::Wrap(RNG, 0, 3);
+		}
 
-		//prevRoll = RNG;
-		RNG = 3;
+		prevRoll = RNG;
 
 		Player::GetInstance()->m_bProjectileCircle = false; // I hate this move so much
 		Player::GetInstance()->m_bPullEffect = false;
@@ -196,6 +195,8 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 		case 3:
 			timeBetweenShots = 0.f;
 			break;
+		case 4:
+			timeBetweenShots = 2.f;
 
 		default:
 			break;
@@ -208,7 +209,7 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 			shootElapsedTime = 0.0;
 
 			if (RNG == 3)
-				timeBetweenShots = 5.f;
+				RNG = 4;
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot

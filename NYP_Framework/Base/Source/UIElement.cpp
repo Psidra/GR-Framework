@@ -192,7 +192,7 @@ void UIElement::Render()
 			HUDposition.x += HUDscale.x + 0.1f;
 		}
 
-		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 0)
+		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 0 && (Player::GetInstance()->GetHealth() > 0))
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();

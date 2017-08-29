@@ -61,34 +61,34 @@ void SceneText::Init()
 	currProg->AddUniform("MVP");
 	currProg->AddUniform("MV");
 	currProg->AddUniform("MV_inverse_transpose");
-	currProg->AddUniform("material.kAmbient");
-	currProg->AddUniform("material.kDiffuse");
-	currProg->AddUniform("material.kSpecular");
-	currProg->AddUniform("material.kShininess");
-	currProg->AddUniform("lightEnabled");
-	currProg->AddUniform("numLights");
-	currProg->AddUniform("lights[0].type");
-	currProg->AddUniform("lights[0].position_cameraspace");
-	currProg->AddUniform("lights[0].color");
-	currProg->AddUniform("lights[0].power");
-	currProg->AddUniform("lights[0].kC");
-	currProg->AddUniform("lights[0].kL");
-	currProg->AddUniform("lights[0].kQ");
-	currProg->AddUniform("lights[0].spotDirection");
-	currProg->AddUniform("lights[0].cosCutoff");
-	currProg->AddUniform("lights[0].cosInner");
-	currProg->AddUniform("lights[0].exponent");
-	currProg->AddUniform("lights[1].type");
-	currProg->AddUniform("lights[1].position_cameraspace");
-	currProg->AddUniform("lights[1].color");
-	currProg->AddUniform("lights[1].power");
-	currProg->AddUniform("lights[1].kC");
-	currProg->AddUniform("lights[1].kL");
-	currProg->AddUniform("lights[1].kQ");
-	currProg->AddUniform("lights[1].spotDirection");
-	currProg->AddUniform("lights[1].cosCutoff");
-	currProg->AddUniform("lights[1].cosInner");
-	currProg->AddUniform("lights[1].exponent");
+	//currProg->AddUniform("material.kAmbient");
+	//currProg->AddUniform("material.kDiffuse");
+	//currProg->AddUniform("material.kSpecular");
+	//currProg->AddUniform("material.kShininess");
+	//currProg->AddUniform("lightEnabled");
+	//currProg->AddUniform("numLights");
+	//currProg->AddUniform("lights[0].type");
+	//currProg->AddUniform("lights[0].position_cameraspace");
+	//currProg->AddUniform("lights[0].color");
+	//currProg->AddUniform("lights[0].power");
+	//currProg->AddUniform("lights[0].kC");
+	//currProg->AddUniform("lights[0].kL");
+	//currProg->AddUniform("lights[0].kQ");
+	//currProg->AddUniform("lights[0].spotDirection");
+	//currProg->AddUniform("lights[0].cosCutoff");
+	//currProg->AddUniform("lights[0].cosInner");
+	//currProg->AddUniform("lights[0].exponent");
+	//currProg->AddUniform("lights[1].type");
+	//currProg->AddUniform("lights[1].position_cameraspace");
+	//currProg->AddUniform("lights[1].color");
+	//currProg->AddUniform("lights[1].power");
+	//currProg->AddUniform("lights[1].kC");
+	//currProg->AddUniform("lights[1].kL");
+	//currProg->AddUniform("lights[1].kQ");
+	//currProg->AddUniform("lights[1].spotDirection");
+	//currProg->AddUniform("lights[1].cosCutoff");
+	//currProg->AddUniform("lights[1].cosInner");
+	//currProg->AddUniform("lights[1].exponent");
 	currProg->AddUniform("colorTextureEnabled[0]");
 	currProg->AddUniform("colorTexture[0]");
 	currProg->AddUniform("colorTextureEnabled[1]");
@@ -108,8 +108,8 @@ void SceneText::Init()
 	currProg->AddUniform("textEnabled");
 	currProg->AddUniform("textColor");
 
-	currProg->AddUniform("shadowMap");
-	currProg->AddUniform("lightDepthMVP");
+	//currProg->AddUniform("shadowMap");
+	//currProg->AddUniform("lightDepthMVP");
 	
 	GraphicsManager::GetInstance()->m_gPassShaderID = LoadShaders("Shader//GPass.vertexshader", "Shader//GPass.fragmentshader");
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE_ENABLED] =
@@ -129,9 +129,9 @@ void SceneText::Init()
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE3] =
 		glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "colorTexture[3]");
 
-	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_LIGHT_DEPTH_MVP_GPASS] =
-		glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "lightDepthMVP");
-	GraphicsManager::GetInstance()->m_lightDepthFBO.Init(1024, 1024);
+	//GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_LIGHT_DEPTH_MVP_GPASS] =
+	//	glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "lightDepthMVP");
+	//GraphicsManager::GetInstance()->m_lightDepthFBO.Init(1024, 1024);
 
 	// Tell the graphics manager to use the shader we just loaded
 	GraphicsManager::GetInstance()->SetActiveShader("default");
@@ -164,7 +164,7 @@ void SceneText::Init()
 	
 	// Create the playerinfo instance, which manages all information about the player
 
-	std::cout << _DEBUG << std::endl;
+	//std::cout << _DEBUG << std::endl;
 	//int a;
 
 	// Create and attach the camera to the scene
