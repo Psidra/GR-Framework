@@ -335,7 +335,29 @@ void Application::InitAllMeshes()
 		MeshBuilder::GetInstance()->GenerateQuad("enemy2_bhurt", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("enemy2_bhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy2/enemy2_bhurt.tga");
 
-
+		//-------enemy3
+		//stand
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_fstand1", Color(1, 1, 1), 1.f); 
+		MeshList::GetInstance()->GetMesh("enemy3_fstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_fstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_bstand1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_bstand1")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_bstand1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_stand2", Color(1, 1, 1), 1.f);//shares between front and back
+		MeshList::GetInstance()->GetMesh("enemy3_stand2")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_stand2.tga");
+		//walk
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_fwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_fwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_fwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_fwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_fwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_fwalk2.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_bwalk1", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_bwalk1")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_bwalk1.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_bwalk2", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_bwalk2")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_bwalk2.tga");
+		//hurt
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_fhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_fhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_fhurt.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("enemy3_bhurt", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("enemy3_bhurt")->textureID[0] = LoadTGA("Image/Enemies/Enemy3/enemy3_bhurt.tga");
+			
 		//-------FINAL BOSS
 		//normal
 		MeshBuilder::GetInstance()->GenerateQuad("ccore_normal1", Color(1, 1, 1), 1.f);

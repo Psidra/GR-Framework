@@ -3,6 +3,7 @@
 #include "CollisionManager.h"
 #include "WeaponInfo\Pistol.h"
 #include "WeaponInfo\Shotgun.h"
+#include "WeaponInfo\CircularWeapon.h"
 #include "WeaponManager.h"
 #include "Collider\Collider.h"
 
@@ -73,6 +74,7 @@ void CEnemy::Init(float _hp, double _speed, int _enemyType, bool _invul)
 
 void CEnemy::SetTypeOfEnemy(int _enemyType)
 {
+	this->enemyType = _enemyType;
 	enemyAnimated = new GenericEntity*[10];
 	for (size_t i = 0; i < 10; i++)
 	{
@@ -110,6 +112,21 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
 		this->ChangeStrategy(new CStrategy_AI_2(), false);
 	}
+	else if (_enemyType == 3)
+	{
+		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_fstand1"));
+		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_stand2"));
+		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_bstand1"));
+		enemyAnimated[3]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_stand2"));
+		enemyAnimated[4]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_fwalk1"));
+		enemyAnimated[5]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_fwalk2"));
+		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_bwalk1"));
+		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_bwalk2"));
+		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_fhurt"));
+		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy3_bhurt"));
+		enemyInventory->addWeaponToInventory(new CircularWeapon(GenericEntity::ENEMY_BULLET));
+		this->ChangeStrategy(new CStrategy_AI_3(), false);
+	}
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
 	this->SetIndices_fWalk(4, 5);
@@ -131,7 +148,11 @@ void CEnemy::Update(double dt)
 		this->position += this->direction * this->speed * (float)dt;
 		
 		if (this->theStrategy->GetIsShooting() && enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() > 0)
+		{
 			this->Shoot(dt, this->position);
+			if (this->enemyType == 3)
+				this->health = 0;
+		}
 
 		if (enemyInventory->getWeaponList()[weaponIndex]->GetMagRound() == 0)
 			reloadElapsedTime += dt;
@@ -141,7 +162,7 @@ void CEnemy::Update(double dt)
 			reloadElapsedTime = 0.0;
 		}
 	}
-	if (health <= 0)
+	if (this->health <= 0)
 	{
 		this->SetIsDone(true);
 		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + 1);
