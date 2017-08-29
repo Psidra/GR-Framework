@@ -28,7 +28,7 @@ void LaserBeam::Init(void)
 	// The current total number of rounds currently carried by this player
 	totalRounds = 1000;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 000;
+	maxTotalRounds = 1000;
 
 	// The time between shots
 	timeBetweenShots = 0.01;

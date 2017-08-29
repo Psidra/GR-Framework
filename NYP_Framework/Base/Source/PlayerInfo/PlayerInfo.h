@@ -125,6 +125,9 @@ public:
 	//get weaponMesh
 	inline Mesh* getWeaponMesh() const { return this->weaponMesh; };
 
+	//reset player's ammo/hp
+	void playerRest();
+
 	// Boss fight effects on player
 	bool m_bProjectileCircle;
 	bool m_bPullEffect;

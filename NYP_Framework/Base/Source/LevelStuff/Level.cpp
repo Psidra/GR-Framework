@@ -539,13 +539,15 @@ void Level::updateEnemy()
 						}
 						if (!(*it)->IsActive())
 						{
+							(*it)->SetIsDone(true);
 							spawnBoss = false;
+							Player::GetInstance()->m_bProjectileCircle = false;
+							Player::GetInstance()->playerRest();
 							level = 0;
 							Player::m_bNewLevel = true;
 							UIManager::GetInstance()->Victory();
 							//UIManager::GetInstance()->state = UIManager::MAIN_MENU;
 							//spawnExit();
-							(*it)->SetIsDone(true);
 							break;
 						}
 					}

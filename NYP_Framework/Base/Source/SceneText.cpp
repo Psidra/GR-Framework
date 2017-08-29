@@ -681,6 +681,12 @@ void SceneText::Update(double dt)
 		{
 			optionTextObj[i]->SetIsActive(false);
 		}
+		HuntTarget->SetIsActive(false);
+		/*if (Player::GetInstance()->GetHealth() < 0)
+		{
+		HuntTarget->SetIsActive(false);
+		}*/
+
 		break;
 	}
 	case UIManager::GAME_STATE::PAUSE:
@@ -845,7 +851,7 @@ void SceneText::RenderWorld()
 	RenderHelper::RenderMesh(Player::GetInstance()->GetPlayerAnimated()[Player::GetInstance()->GetAnimationIndex()]->GetMesh());
 	ms.PopMatrix();
 
-	if (huntTime + 0.7f > elapsedTime)
+	if (huntTime + 0.7f > elapsedTime && HuntTarget->IsActive())
 	{
 		ms.PushMatrix();
 		ms.Translate(HuntTarget->GetPosition().x, HuntTarget->GetPosition().y, HuntTarget->GetPosition().z);

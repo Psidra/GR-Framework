@@ -344,6 +344,22 @@ void Player::CollisionCheck_Movement()
 	SetMovement(!(direction.x == 0 && direction.y == 0));
 }
 
+void Player::playerRest()
+{
+
+	m_bPullEffect = false;
+	m_bHunted = false;
+	m_bProjectileCircle = false;
+	m_fHealth = 100;
+	for (size_t i = 0; i < playerInventory->getWeaponList().size(); ++i)
+	{
+		playerInventory->getWeaponList()[i]->SetMagRound(playerInventory->getWeaponList()[i]->GetMaxMagRound());
+		playerInventory->getWeaponList()[i]->SetTotalRound(playerInventory->getWeaponList()[i]->GetMaxTotalRound());
+		m_iBlank = 2;
+		m_iMoney = 0;
+	}
+}
+
 void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
@@ -351,16 +367,9 @@ void Player::Update(double dt)
 
 	if (m_fHealth <= 0)
 	{
+		playerRest();
 		Level::GetInstance()->setCurrLevel(0);
 		Player::m_bNewLevel = true;
-		m_fHealth = 100;
-		for (size_t i = 0; i < playerInventory->getWeaponList().size(); ++i)
-		{
-			playerInventory->getWeaponList()[i]->SetMagRound(playerInventory->getWeaponList()[i]->GetMaxMagRound());
-			playerInventory->getWeaponList()[i]->SetTotalRound(playerInventory->getWeaponList()[i]->GetMaxTotalRound());
-			m_iBlank = 2;
-			m_iMoney = 0;
-		}
 		UIManager::GetInstance()->Defeat();
 	}
 
