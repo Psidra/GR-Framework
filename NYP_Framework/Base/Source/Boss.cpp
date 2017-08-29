@@ -26,6 +26,7 @@
 
 #include "PlayerInfo\PlayerInfo.h"
 #include"AI FSM\Ai_1.h"
+#include "KeyboardController.h"
 // no idea how many guns boss will have so w/e have 'em all
 
 Boss::Boss()
@@ -53,9 +54,13 @@ Boss::~Boss()
 	delete[] enemyAnimated;
 	//WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 	
-	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
-	{
-		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	//for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
+	//{
+	//	enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	//}
+	while (enemyInventory->getWeaponList().size() > 0)
+	{	//remove all weapon
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList().back());
 	}
 	delete enemyInventory;
 }
@@ -86,7 +91,7 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	{
 		CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
 		enemy->Init();
-		enemy->ChangeStrategy(new CStrategy_AI_1(), false);
+		//enemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 }
 
@@ -99,9 +104,8 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 	}
 	enemyInventory = new Inventory;
 
-	switch (_enemyType) //WIP - set choice of units to spawn
+	if (_enemyType == 1)
 	{
-	case 1: //red minion
 		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal1"));
 		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal2"));
 		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_normal3"));
@@ -111,10 +115,6 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[6]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ1"));
 		enemyAnimated[7]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ2"));
 		enemyAnimated[8]->SetMesh(MeshList::GetInstance()->GetMesh("ccore_succ3"));
-		break;
-
-	default:
-		break;
 	}
 	this->SetIndices_fStand(0, 2);
 	this->SetIndices_bStand(0, 2);
@@ -125,6 +125,15 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 
 void Boss::Update(double dt)
 {
+	if(!isActive)
+		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
+
+	//cheat key
+	if (KeyboardController::GetInstance()->IsKeyDown(VK_F3))
+	{	//minus boss hp
+		health -= 100;
+	}
+
 	this->SetPosition(this->position);
 	this->shootPos = this->position;
 	this->SetAABB((this->scale * 0.5f) + this->position, (this->scale * -0.5f) + this->position);
@@ -162,7 +171,13 @@ void Boss::Update(double dt)
 		}
 	}
 	if (health <= 0)
-		this->SetIsDone(true);
+	{
+		this->SetIsActive(false);
+		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
+		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + Player::GetInstance()->GetHealth());
+	}
+
+	
 	if (isHurt)
 		hurtElapsedTime += dt;
 	if (hurtElapsedTime > 1.5f)
@@ -212,14 +227,10 @@ void Boss::EditMaxHealth(float _health)
 
 void Boss::CollisionResponse(GenericEntity * thatEntity)
 {
-	switch (thatEntity->type) {
-	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+	if (thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET) 
+	{
 		isHurt = true;
-		std::cout << "boss collide with player bullet" << std::endl;
-		break;
-
-	default:
-		break;
+		std::cout << "boss collide with player bullet" << std::endl; // proj should be calling over this
 	}
 }
 

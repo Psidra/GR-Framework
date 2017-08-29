@@ -37,6 +37,7 @@
 #include "WeaponInfo\WeaponInfo.h"
 #include "Loader.h"
 #include "TextEntityManager.h"
+#include "CollisionManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -171,7 +172,7 @@ void SceneText::Init()
 	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	// Create entities into the scene
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 	//GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	//aCube->SetCollider(true);
@@ -192,7 +193,7 @@ void SceneText::Init()
 	UIManager::GetInstance()->state = UIManager::GAME_STATE::MAIN_MENU;
 
 	// test walls
-	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
+	/*GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
 	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
 	wall->setNormal(Vector3(1, 0, 0));
@@ -200,19 +201,19 @@ void SceneText::Init()
 	GenericEntity* BwallA = Create::Entity("cube", Vector3(50.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
 	BwallA->type = GenericEntity::OBJECT_TYPE::WALL;
 	BwallA->SetAABB(BwallA->GetScale() * 0.5f + BwallA->GetPosition(), BwallA->GetScale() * -0.5f + BwallA->GetPosition());
-	BwallA->setNormal(Vector3(1, 0, 0));
+	BwallA->setNormal(Vector3(1, 0, 0));*/
 
 	// :b:roke
 
-	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
-	BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
-	BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
-	BwallC->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
+	//BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
+	//BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
+	//BwallC->setNormal(Vector3(1, 0, 0));
 
-	GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
-	BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
-	BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
-	BwallD->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	//BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
+	//BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
+	//BwallD->setNormal(Vector3(1, 0, 0));
 
 	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
@@ -453,8 +454,7 @@ void SceneText::Update(double dt)
 	keyboard->Read(dt);
 	UIManager::GetInstance()->Update();
 
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		WeaponManager::GetInstance()->update(dt);
 		minimap->Update(dt);
@@ -481,28 +481,23 @@ void SceneText::Update(double dt)
 
 			int rand_element = Math::RandIntMinMax(0, 2);
 			// Of course they dont disappear, this is a boss fight, dont be a wuss
-			switch (rand_element) {
-			case 0:
+			if (rand_element == 0)
 			{
 				GenericEntity* fire = Create::Entity("fire", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				fire->type = GenericEntity::OBJECT_TYPE::FIRE;
 				fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
-				break;
 			}
-			case 1:
+			else if (rand_element == 1)
 			{
 				GenericEntity* slow = Create::Entity("slow", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				slow->type = GenericEntity::OBJECT_TYPE::SLOW;
 				slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
-				break;
 			}
-			case 2:
+			else if (rand_element == 2)
 			{
 				GenericEntity* poison = Create::Entity("poison", HuntTarget->GetPosition(), Vector3(2, 2, 1), true);
 				poison->type = GenericEntity::OBJECT_TYPE::POISON;
 				poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
-				break;
-			}
 			}
 		}
 
@@ -519,32 +514,14 @@ void SceneText::Update(double dt)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		if (KeyboardController::GetInstance()->IsKeyDown('4'))
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-		//if (KeyboardController::GetInstance()->IsKeyDown('5'))
-		//{
-		//	lights[0]->type = Light::LIGHT_POINT;
-		//}
-		//else if (KeyboardController::GetInstance()->IsKeyDown('6'))
-		//{
-		//	lights[0]->type = Light::LIGHT_DIRECTIONAL;
-		//}
-		//else if (KeyboardController::GetInstance()->IsKeyDown('7'))
-		//{
-		//	lights[0]->type = Light::LIGHT_SPOT;
-		//}
-
-		//if (KeyboardController::GetInstance()->IsKeyDown('I'))
-		//	lights[0]->position.z -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('K'))
-		//	lights[0]->position.z += (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('J'))
-		//	lights[0]->position.x -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('L'))
-		//	lights[0]->position.x += (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('O'))
-		//	lights[0]->position.y -= (float)(10.f * dt);
-		//if (KeyboardController::GetInstance()->IsKeyDown('P'))
-		//	lights[0]->position.y += (float)(10.f * dt);
+		
+		//ALL THEM CHEAT KEYS
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_F1)) //move level forwards
+		{
+			Player::m_bNewLevel = true;
+			if (Level::GetInstance()->getCurrLevel() >= 3)
+				Level::GetInstance()->setCurrLevel(0);
+		}
 
 		// if the left mouse button was released
 		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
@@ -615,9 +592,8 @@ void SceneText::Update(double dt)
 			Level::GetInstance()->newLevel();
 			Player::GetInstance()->m_bNewLevel = false;
 		}
-		break;
 	}	
-	case UIManager::GAME_STATE::OPTIONS:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::OPTIONS)
 	{
 		std::vector<std::string> temp = Loader::GetInstance()->GetData();
 		fontSize = ((halfWindowWidth * 2) / 800) * 20;
@@ -664,24 +640,20 @@ void SceneText::Update(double dt)
 			optionTextObj[9]->SetText(ss3.str());
 			optionTextObj[9]->SetPosition(Vector3((halfWindowWidth / 800) - 100 + 10, (halfWindowHeight / 300) + 60, 10.0f));
 		}
-		break;
 	}
-	case UIManager::GAME_STATE::MAIN_MENU:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::MAIN_MENU)
 	{
 		for (size_t i = 0; i < 10; ++i)
 		{
 			optionTextObj[i]->SetIsActive(false);
 		}
-		break;
 	}
-	case UIManager::GAME_STATE::PAUSE:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PAUSE)
 	{
 		for (size_t i = 0; i < 10; ++i)
 		{
 			optionTextObj[i]->SetIsActive(false);
 		}
-		break;
-	}
 	}
 }
 
@@ -777,12 +749,9 @@ void SceneText::RenderPassMain()
 	//ms.PopMatrix();
 
 	//placed down so alpha will work properly on ldq.
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		RenderWorld();
-		break;
-	}
 	}
 
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
@@ -793,13 +762,9 @@ void SceneText::RenderPassMain()
 	TextEntityManager::GetInstance()->RenderUI();
 	UIManager::GetInstance()->Render();
 
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::PLAYING:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		minimap->RenderUI();
-		//RenderHelper::RenderTextOnScreen(text, std::to_string(fps), Color(0, 1, 0), 2, 0, 0);
-		break;
-	}
 	}
 }
 
@@ -862,8 +827,6 @@ void SceneText::Exit()
 	//delete entitymanager
 	EntityManager::GetInstance()->Destroy();
 
-
-
 	//delete tetxentiymanager
 	TextEntityManager::GetInstance()->Destroy();
 
@@ -873,9 +836,21 @@ void SceneText::Exit()
 	Player::GetInstance()->Destroy();
 	KeyboardController::GetInstance()->Destroy();
 	UIManager::GetInstance()->Destroy();
-
+	
+	Level::Destroy();
+	CollisionManager::Destroy();
+	ProjectileManager::Destroy();
+	
 	delete keyboard;
 	delete camera;
+	delete minimap;
+
+	//HuntTarget = NULL;
+	//delete HuntTarget;
+
+//	delete quadTree;
+//	delete level;
+	delete currProg;
 	// Delete the lights
 	//delete lights[0];
 	//delete lights[1];

@@ -78,7 +78,8 @@ Player::~Player(void)
 	m_pTerrain = NULL;
 	for (size_t i = 0;i < playerInventory->getWeaponList().size(); ++i)
 	{
-		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
+		playerInventory->getWeaponList().clear();
+		//playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
 	}
 	for (int i = 0; i < 14; i++)
 	{
@@ -193,11 +194,12 @@ void Player::Reset(void)
 
 void Player::CollisionResponse(GenericEntity* thatEntity)
 {
-	switch (thatEntity->type) {
-	case WALL:
+	if (thatEntity->type == WALL)
+	{
 		std::cout << "collide" << std::endl;
-		break;
-	case ENEMY:
+	}
+	else if (thatEntity->type == ENEMY || thatEntity->type == BOSS)
+	{
 		EditHealth(-0.5f);
 
 		if (m_bPullEffect)
@@ -210,13 +212,9 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 			position += Vector3(-1, -1, 0) * (float)m_dSpeed * 0.016666667f;
 			m_bMoving = true;
 		}
-		break;
-	case ENEMY_BULLET:
+	}
+	else if (thatEntity->type == ENEMY_BULLET && !this->m_bDodge)
 	{
-		if (this->m_bDodge)
-			break;
-
-		//std::cout << "player hit by enemy bullet" << std::endl;
 		Create::Particle("blood", this->position, 0, EFFECT_TYPE::ET_BLEED, 0.3, 0.5, true, this);
 
 		thatEntity->SetIsDone(true);
@@ -224,15 +222,9 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 
 		EditHealth(-Proj->getProjectileDamage());
 		isHurt = true;
-		break;
 	}
-	case PIT:
-		// TODO
-		break;
-	case SPIKE:
-		// TODO
-		break;
-	case FIRE:
+	else if (thatEntity->type == FIRE) // supa hot
+	{
 		if (!this->m_bFire)
 		{
 			this->FireIntensity = 1;
@@ -240,22 +232,19 @@ void Player::CollisionResponse(GenericEntity* thatEntity)
 		}
 
 		this->m_bFire = true;
-		// oh shit nigga
-		break;
-	case SLOW:
+	}
+	else if (thatEntity->type == SLOW)
+	{
 		this->m_bSlow = true;
-		break;
-	case POISON:
+	}
+	else if (thatEntity->type == POISON)
+	{
 		this->m_bPoison = true;
 		this->m_dPoisonDuration = m_dElapsedTime + 3.f;
-		break;
-	case EXIT:
+	}
+	else if (thatEntity->type == EXIT)
+	{
 		m_bNewLevel = true;
-		//Level::GetInstance()->newLevel();
-		break;
-
-	default:
-		break;
 	}
 }
 
@@ -348,6 +337,22 @@ void Player::Update(double dt)
 	m_dElapsedTime += dt;
 	hurtElapsedTime += dt;
 
+	if (m_fHealth <= 0)
+	{
+		Level::GetInstance()->setCurrLevel(0);
+		Player::m_bNewLevel = true;
+		m_fHealth = 100;
+		for (size_t i = 0; i < playerInventory->getWeaponList().size(); ++i)
+		{
+			playerInventory->getWeaponList()[i]->SetMagRound(playerInventory->getWeaponList()[i]->GetMaxMagRound());
+			playerInventory->getWeaponList()[i]->SetTotalRound(playerInventory->getWeaponList()[i]->GetMaxTotalRound());
+			m_iBlank = 2;
+			m_iMoney = 0;
+		}
+		UIManager::GetInstance()->Defeat();
+	}
+
+
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;
 
@@ -432,47 +437,11 @@ void Player::Update(double dt)
 
 				std::cout << "Fire Intensity:" << FireIntensity << std::endl;
 			}
-
-			//AudioEngine::GetInstance()->editVolume(-10); // just a random button to test if edit volume is working (spoiler: it is)
 		}
 	}
 
 	if (this->m_bMoving)
 		CollisionCheck_Movement();
-
-	//update minimap only when player moves
-	//if (m_bMoving)
-	//{
-		//for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
-		//	;it != CMinimap::GetInstance()->getMinimapList().end();++it)
-		//{
-
-		//	Vector3 temp = CMinimap::GetInstance()->GetScale();
-
-		//	if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
-		//	{
-		//		//std::cout << "in range\n";
-		//		switch (dynamic_cast<GenericEntity*>((*it))->type)
-		//		{
-		//		case GenericEntity::TELEPORTER:
-		//			CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
-		//			CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
-		//			CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
-		//			break;
-		//		default:
-		//			break;
-		//		}
-		//	}
-		//}
-	//}
-
-	//for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
-	//{
-	//	Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
-	//	Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-	//	CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
-	//	CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
-	//}
 
 	if ((m_dElapsedTime > m_dRollTime && m_bDodge) || !m_bMoving)
 	{

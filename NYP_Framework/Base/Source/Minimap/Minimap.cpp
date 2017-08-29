@@ -24,26 +24,26 @@ CMinimap::CMinimap(void)
 }
 CMinimap::~CMinimap(void)
 {
-	if (m_cMinimap_Background)
-	{
-		delete m_cMinimap_Background;
-		m_cMinimap_Background = NULL;
-	}
-	if (m_cMinimap_Border)
-	{
-		delete m_cMinimap_Border;
-		m_cMinimap_Border = NULL;
-	}
-	if (m_cMinimap_Avatar)
-	{
-		delete m_cMinimap_Avatar;
-		m_cMinimap_Avatar = NULL;
-	}
-	if (m_cMinimap_Target)
-	{
-		delete m_cMinimap_Target;
-		m_cMinimap_Target = NULL;
-	}
+	//if (m_cMinimap_Background)
+	//{
+	//	delete m_cMinimap_Background;
+	//	m_cMinimap_Background = NULL;
+	//}
+	//if (m_cMinimap_Border)
+	//{
+	//	delete m_cMinimap_Border;
+	//	m_cMinimap_Border = NULL;
+	//}
+	//if (m_cMinimap_Avatar)
+	//{
+	//	delete m_cMinimap_Avatar;
+	//	m_cMinimap_Avatar = NULL;
+	//}
+	//if (m_cMinimap_Target)
+	//{
+	//	delete m_cMinimap_Target;
+	//	m_cMinimap_Target = NULL;
+	//}
 }
 
 // Initialise this class instance
@@ -100,15 +100,11 @@ bool CMinimap::Init(void)
 
 	for (std::list<EntityBase*>::iterator it = minimapList.begin(); it != minimapList.end(); ++it)
 	{
-		switch (dynamic_cast<GenericEntity*>((*it))->type)
+		if (dynamic_cast<GenericEntity*>((*it))->type == GenericEntity::TELEPORTER)
 		{
-			case GenericEntity::TELEPORTER:
-				teleporterMapPos.push_back((*it)->GetPosition());
-				teleporterActPos.push_back((*it)->GetPosition());
-				teleporterMapScale.push_back((*it)->GetScale() * (1.0f / (scale.x * 0.1)));
-				break;
-			default:
-				break;
+			teleporterMapPos.push_back((*it)->GetPosition());
+			teleporterActPos.push_back((*it)->GetPosition());
+			teleporterMapScale.push_back((*it)->GetScale() * (1.0f / (scale.x * 0.1)));
 		}
 	}
 
@@ -116,38 +112,6 @@ bool CMinimap::Init(void)
 	playerMapScale = Vector3(10, 10, 10) * (1 / scale.x);
 
 	return true;
-	//if (m_bMoving)
-	//{
-	//for (std::list<EntityBase*>::iterator it = CMinimap::GetInstance()->getMinimapList().begin()
-	//	;it != CMinimap::GetInstance()->getMinimapList().end();++it)
-	//{
-
-	//	Vector3 temp = CMinimap::GetInstance()->GetScale();
-
-	//	if (((*it)->GetPosition() - position).LengthSquared() < (temp.x * 0.1) * (temp.x * 0.1))
-	//	{
-	//		//std::cout << "in range\n";
-	//		switch (dynamic_cast<GenericEntity*>((*it))->type)
-	//		{
-	//		case GenericEntity::TELEPORTER:
-	//			CMinimap::GetInstance()->setObjectPos("telepos", (*it)->GetPosition() - position);
-	//			CMinimap::GetInstance()->setObjectScale("telescale", (*it)->GetScale());
-	//			CMinimap::GetInstance()->addTeleporterPos((*it)->GetPosition());
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//	}
-	//}
-	//}
-
-	//for (size_t i = 0; i < Level::GetInstance()->getRooms().size(); ++i)
-	//{
-	//	Vector3 tPos(Level::GetInstance()->getRooms()[i].getMidPoint().x - position.x, Level::GetInstance()->getRooms()[i].getMidPoint().y - position.y, 0);
-	//	Vector3 tScale(Level::GetInstance()->getRooms()[i].width, Level::GetInstance()->getRooms()[i].height, 1);
-	//	CMinimap::GetInstance()->setObjectPos("wallpos", tPos);
-	//	CMinimap::GetInstance()->setObjectScale("wallscale", tScale);
-	//}
 }
 
 bool CMinimap::SetTarget(Mesh* aTarget)
@@ -400,12 +364,11 @@ void CMinimap::Update(double dt)
 		++counter;
 	}
 
-	switch (mapState)
+	if (mapState == NORMAL)
 	{
-	case NORMAL:
 		position.Set(halfWindowWidth - 65.f, halfWindowHeight - 65.f, 0.0f);
-		break;
-	case ENLARGED:
+	}
+	else if (mapState == ENLARGED)
 	{
 		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 		{
@@ -440,10 +403,6 @@ void CMinimap::Update(double dt)
 				}
 			}
 		}
-	}
-		break;
-	default:
-		break;
 	}
 
 	playerMapPos = Player::GetInstance()->GetPos() * (1.0f / (scale.x * 0.1));

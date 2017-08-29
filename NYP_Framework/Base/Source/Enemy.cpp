@@ -45,10 +45,10 @@ CEnemy::~CEnemy(void)
 		enemyAnimated[i] = NULL;
 	}
 	delete[] enemyAnimated;
-
-	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
-	{
-		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	
+	while (enemyInventory->getWeaponList().size() > 0)
+	{	//remove all weapon
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList().back());
 	}
 	delete enemyInventory;
 }
@@ -80,9 +80,8 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 	}
 	enemyInventory = new Inventory;
 
-	switch (_enemyType) //WIP - set choice of units to spawn
+	if (_enemyType == 1) //red minion
 	{
-	case 1: //red minion
 		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand1"));
 		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_fstand2"));
 		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bstand1"));
@@ -95,8 +94,9 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy1_bhurt"));
 		enemyInventory->addWeaponToInventory(new Pistol(GenericEntity::ENEMY_BULLET));
 		this->ChangeStrategy(new CStrategy_AI_1(), false);
-		break;
-	case 2:
+	}
+	else if (_enemyType == 2)
+	{
 		enemyAnimated[0]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand1"));
 		enemyAnimated[1]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_fstand2"));
 		enemyAnimated[2]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bstand1"));
@@ -109,7 +109,6 @@ void CEnemy::SetTypeOfEnemy(int _enemyType)
 		enemyAnimated[9]->SetMesh(MeshList::GetInstance()->GetMesh("enemy2_bhurt"));
 		enemyInventory->addWeaponToInventory(new Shotgun(GenericEntity::ENEMY_BULLET));
 		this->ChangeStrategy(new CStrategy_AI_2(), false);
-		break;
 	}
 	this->SetIndices_fStand(0, 1);
 	this->SetIndices_bStand(2, 3);
@@ -145,6 +144,7 @@ void CEnemy::Update(double dt)
 	if (health <= 0)
 	{
 		this->SetIsDone(true);
+		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + 1);
 		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 	}
 	if (isHurt == true)
@@ -259,28 +259,10 @@ void CEnemy::CollisionCheck()
 
 void CEnemy::CollisionResponse(GenericEntity* thatEntity)
 {
-	switch (thatEntity->type) {
-	//case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
-	//	thatEntity->SetIsDone(true);
-	//	editHP(-20);
-	//	std::cout << "player bullet collide with enemy" << std::endl;
-	//	break;
-	case GenericEntity::OBJECT_TYPE::WALL:
-		//std::cout << "enemy collide with wall" << std::endl;
-		break;
-	case GenericEntity::OBJECT_TYPE::ENEMY:
-		//std::cout << "enemy collide with enemy" << std::endl;
-		break;
-	case GenericEntity::OBJECT_TYPE::PLAYER:
-		//std::cout << "enemy collide with player" << std::endl;
-		break;
-	case GenericEntity::OBJECT_TYPE::PLAYER_BULLET:
+	if (thatEntity->type == GenericEntity::OBJECT_TYPE::PLAYER_BULLET)
+	{
 		isHurt = true;
-		std::cout << "enemy collide with player bullet" << std::endl;
-		break;
-
-	default:
-		break;
+		std::cout << "enemy collide with player bullet" << std::endl; // this shouldn't run
 	}
 }
 

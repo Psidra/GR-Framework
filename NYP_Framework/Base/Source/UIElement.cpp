@@ -26,20 +26,6 @@ UIElement::~UIElement()
 
 void UIElement::Update()
 {
-	/*
-	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
-	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	resume->type = UIElement::ELEMENT_TYPE::RESUME;
-
-	UIElement* option = Create::UIEntity("option_button", Vector3(0, 40, 9.5f), Vector3(175, 25, 1), true);
-	option->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	option->type = UIElement::ELEMENT_TYPE::OPTION;
-
-	UIElement* exit = Create::UIEntity("exit_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
-	exit->elestate = UIElement::ELEMENT_STATE::PAUSE;
-	exit->type = UIElement::ELEMENT_TYPE::EXIT;
-	*/
-
 	float w = Application::GetInstance().GetWindowWidth();
 	float hhalf = Application::GetInstance().GetWindowHeight() * 0.5f;
 
@@ -161,8 +147,7 @@ void UIElement::Render()
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 
-	switch (UIManager::GetInstance()->state) {
-	case UIManager::GAME_STATE::MAIN_MENU:
+	if (UIManager::GetInstance()->state == UIManager::GAME_STATE::MAIN_MENU)
 	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
 		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
@@ -173,9 +158,8 @@ void UIElement::Render()
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("main_menu"));
 		modelStack.PopMatrix();
-		break;
 	}
-	case UIManager::GAME_STATE::PLAYING:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PLAYING)
 	{
 		Vector3 HUDposition(-halfWindowWidth + 45.f, halfWindowHeight - 45.f, 8.0f);
 		Vector3 HUDscale(50, 50, 1);
@@ -248,11 +232,8 @@ void UIElement::Render()
 		modelStack.Scale(100, 100, 100);
 		RenderHelper::RenderMesh(Player::GetInstance()->getWeaponMesh());
 		modelStack.PopMatrix();
-
-
-		break;
 	}
-	case UIManager::GAME_STATE::PAUSE:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::PAUSE)
 	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
 		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
@@ -263,13 +244,32 @@ void UIElement::Render()
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pause_menu"));
 		modelStack.PopMatrix();
-
-		//if (this->type == CURSOR)
-		//	return;
-
-		break;
 	}
-	case UIManager::GAME_STATE::OPTIONS:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::VICTORY)
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("victory"));
+		modelStack.PopMatrix();
+	}
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::DEFEAT)
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("defeat"));
+		modelStack.PopMatrix();
+	}
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::OPTIONS)
 	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
 		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
@@ -280,9 +280,8 @@ void UIElement::Render()
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("option_menu"));
 		modelStack.PopMatrix();
-		break;
 	}
-	case UIManager::GAME_STATE::sOVERVIEW:
+	else if (UIManager::GetInstance()->state == UIManager::GAME_STATE::sOVERVIEW)
 	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
 		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
@@ -293,12 +292,7 @@ void UIElement::Render()
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("overview"));
 		modelStack.PopMatrix();
-		break;
 	}
-
-	}
-
-	// TODO: Fix scaling with fullscreen. (windowwidth / 800), (windowheight / 800) <- something about this I think
 
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();

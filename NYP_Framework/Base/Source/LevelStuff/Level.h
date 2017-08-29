@@ -118,7 +118,9 @@ public:
 	bool setTile(int x, int y, Tile::TILE_TYPE);
 	Tile getTile(int x, int y);
 	vector<Rectangle> getRooms(void);
-	
+	int getCurrLevel(void);
+	void setCurrLevel(int _level);
+
 private:
 	int maxRooms;
 	float mapWidth, mapHeight, maxRoomWidth, maxRoomHeight;

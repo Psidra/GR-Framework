@@ -42,9 +42,8 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 	
 
 	// Based on the current state, move the enemy
-	switch (CurrentState)
+	if (CurrentState == CHASE)
 	{
-	case CHASE:
 		SetIsShooting(false);
 
 		if (theDestination.x - maxDistFromPlayer > theEnemyPosition.x)
@@ -55,8 +54,9 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 			MoveUp(theEnemyDirection);
 		else if (theDestination.y + maxDistFromPlayer < theEnemyPosition.y)
 			MoveDown(theEnemyDirection);
-		break;
-	case ATTACK:
+	}
+	else if (CurrentState == ATTACK)
+	{
 		if (shootElapsedTime > timeBetweenShots)
 		{
 			SetIsMoving(false);		//stop animate moving
@@ -65,11 +65,10 @@ void CStrategy_AI_1::Update(Vector3& theDestination, Vector3 theEnemyPosition, V
 		}
 		else
 			SetIsShooting(false);	//stop animate shoot & disable shoot
-		break;
-	default:
-		// Do nothing if idling
+	}
+	else
+	{
 		SetIsMoving(false);
-		break;
 	}
 }
 

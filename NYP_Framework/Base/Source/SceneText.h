@@ -39,9 +39,9 @@ private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
 	ShaderProgram* currProg;
-	Player* playerInfo;
-	CEnemy* minion;
-	GroundEntity* groundEntity;
+	//Player* playerInfo;
+	//CEnemy* minion;
+	//GroundEntity* groundEntity;
 	FPSCamera *camera;
 	TextEntity* textObj[4];
 	TextEntity* optionTextObj[10];

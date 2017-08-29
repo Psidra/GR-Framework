@@ -33,39 +33,32 @@ UIManager::~UIManager()
 
 void UIManager::Pause()
 {
-	//glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-	switch (this->state) {
-	case PLAYING:
+	if (this->state == PLAYING || this->state == OPTIONS)
 		this->state = PAUSE;
-		break;
-	case OPTIONS:
-		this->state = PAUSE;
-		break;
-	case PAUSE:
+	else if (this->state == PAUSE)
 		this->Playing();
-		break;
-
-	default:
-		break;
-	}
 }
 
 void UIManager::Playing()
 {
-	//glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-	switch (this->state) {
-	case MAIN_MENU:
+	if (this->state == MAIN_MENU || this->state == PAUSE)
 		this->state = PLAYING;
-		break;
-	case PAUSE:
-		this->state = PLAYING;
-		break;
+}
 
-	default:
-		break;
-	}
+void UIManager::Victory()
+{
+	if (this->state == PLAYING || this->state == OPTIONS)
+		this->state = VICTORY;
+	else if (this->state == PAUSE)
+		this->Playing();
+}
+
+void UIManager::Defeat()
+{
+	if (this->state == PLAYING || this->state == OPTIONS)
+		this->state = DEFEAT;
+	else if (this->state == PAUSE)
+		this->Playing();
 }
 
 void UIManager::Update()
@@ -76,6 +69,16 @@ void UIManager::Update()
 			AudioEngine::GetInstance()->StopAllSounds();
 
 		AudioEngine::GetInstance()->PlayASound("mainmenu", true);
+	}
+	else if (this->state == VICTORY)
+	{
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_BACK))
+			UIManager::GetInstance()->state = UIManager::MAIN_MENU;
+	}
+	else if (this->state == DEFEAT)
+	{
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_BACK))
+			UIManager::GetInstance()->state = UIManager::MAIN_MENU;
 	}
 	else if (this->state == PLAYING || this->state == PAUSE)
 	{
@@ -130,21 +133,25 @@ void UIManager::Update()
 			
 			if (CollisionManager::GetInstance()->UI_CheckAABBCollision(Vector3(posX, posY, 0), (*it)))
 			{
-				switch ((*it)->type) {
-				case UIElement::ELEMENT_TYPE::START:
+				if ((*it)->type == UIElement::ELEMENT_TYPE::START)
+				{
 					cur_state = UIManager::GAME_STATE::PLAYING; //set cur state to playing
 					this->Playing();
-					break;
-				case UIElement::ELEMENT_TYPE::RESUME:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::RESUME)
+				{
 					this->Playing();
-					break;
-				case UIElement::ELEMENT_TYPE::OPTION:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::OPTION)
+				{
 					UIManager::state = UIManager::GAME_STATE::OPTIONS;
-					break;
-				case UIElement::ELEMENT_TYPE::tOVERVIEW:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::tOVERVIEW)
+				{
 					UIManager::state = UIManager::GAME_STATE::sOVERVIEW;
-					break;
-				case UIElement::ELEMENT_TYPE::CANCEL:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::CANCEL)
+				{
 					//set to not save changed keys
 
 					if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
@@ -152,8 +159,9 @@ void UIManager::Update()
 
 					else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
 						UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
-					break;
-				case UIElement::ELEMENT_TYPE::CONFIRM:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::CONFIRM)
+				{
 					//set to save changed keys
 
 					std::cout << "KEY SET" << std::endl;
@@ -163,71 +171,66 @@ void UIManager::Update()
 						keyboard->Write("Keybind//keyconfigtest.txt", index, inputKey);
 						keyboard->Load("Keybind//keyconfigtest.txt");
 					}
-
-
-					//if (cur_state == UIManager::GAME_STATE::PLAYING)	//checks curstate is in playing, option cancel returns to pause menu
-					//	this->state = PAUSE;
-
-					//else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
-					//	UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
-					break;
-
-				case UIElement::ELEMENT_TYPE::INPUT_RELOAD:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_RELOAD)
+				{
 					std::cout << "pressed reload, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 0;	//key index for reload
-					break;
-
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_UP://index 0 
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_MOVE_UP)//index 0 
+				{
 					std::cout << "pressed move up, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 1;	//key index for moveup
-					break;
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN://index 1
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_MOVE_DOWN)//index 1
+				{
 					std::cout << "pressed move down, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 2;	//key index for movedown
-					break;
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_MOVE_LEFT)
+				{
 					std::cout << "pressed move left, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 3;	//key index for moveleft
-					break;
-				case UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_MOVE_RIGHT)
+				{
 					std::cout << "pressed move right, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 4;	//key index for moveright
-					break;
-
-				case UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_NEXT_GUN)
+				{
 					std::cout << "pressed next gun, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 5;	//key index for next gun
-					break;
-
-				case UIElement::ELEMENT_TYPE::INPUT_BLANK:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_BLANK)
+				{
 					std::cout << "pressed blank, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 6;	//key index for next gun
-					break;
-
-				case UIElement::ELEMENT_TYPE::INPUT_PAUSE:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::INPUT_PAUSE)
+				{
 					std::cout << "pressed pause, please input a key" << std::endl;
 
 					checkingInput = true;
 					index = 7;	//key index for pause
-					break;
-
-				case UIElement::ELEMENT_TYPE::EXIT:
+				}
+				else if ((*it)->type == UIElement::ELEMENT_TYPE::EXIT)
+				{
 					exit(0);
-					break;
 				}
 			}
 		}
@@ -270,36 +273,24 @@ void UIManager::AddEntity(UIElement * result)
 
 std::string UIManager::GetIndex()
 {
-	switch (index) //hardcoded 
-	{
-	case 0:
+	if (index == 0) //hardcodebestcode
 		return "Reload Selected";
-		break;
-	case 1:
+	else if (index == 1)
 		return "Move Up Selected";
-		break;
-	case 2:
+	else if (index == 2)
 		return "Move Down Selected";
-		break;
-	case 3:
+	else if (index == 3)
 		return "Move Left Selected";
-		break;
-	case 4:
+	else if (index == 4)
 		return "Move Right Selected";
-		break;
-	case 5:
+	else if (index == 5)
 		return "Next Gun Selected";
-		break;
-	case 6:
+	else if (index == 6)
 		return "Blank Selected";
-		break;
-	case 7:
+	else if (index == 7)
 		return "Pause Selected";
-		break;
-	default:
+	else
 		return "Nothing Selected";
-		break;
-	}
 
 	return "";
 }
