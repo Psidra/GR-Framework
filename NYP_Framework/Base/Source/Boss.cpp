@@ -54,9 +54,13 @@ Boss::~Boss()
 	delete[] enemyAnimated;
 	//WeaponManager::GetInstance()->removeWeapon(enemyInventory->getWeaponList()[weaponIndex]);
 	
-	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
-	{
-		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	//for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
+	//{
+	//	enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	//}
+	while (enemyInventory->getWeaponList().size() > 0)
+	{	//remove all weapon
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList().back());
 	}
 	delete enemyInventory;
 }
@@ -126,6 +130,9 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 
 void Boss::Update(double dt)
 {
+	if(!isActive)
+		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
+
 	//cheat key
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_F3))
 	{	//minus boss hp
@@ -171,6 +178,7 @@ void Boss::Update(double dt)
 	if (health <= 0)
 	{
 		this->SetIsActive(false);
+		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + Player::GetInstance()->GetHealth());
 	}
 

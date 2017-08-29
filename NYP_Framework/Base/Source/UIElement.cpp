@@ -296,7 +296,7 @@ void UIElement::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistol"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("victory"));
 		modelStack.PopMatrix();
 		break;
 	}
@@ -309,7 +309,7 @@ void UIElement::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
 		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
-		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("defeat"));
 		modelStack.PopMatrix();
 		break;
 	}
