@@ -120,6 +120,7 @@ public:
 	vector<Rectangle> getRooms(void);
 	int getCurrLevel(void);
 	void setCurrLevel(int _level);
+
 private:
 	int maxRooms;
 	float mapWidth, mapHeight, maxRoomWidth, maxRoomHeight;

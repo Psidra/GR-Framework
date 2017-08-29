@@ -20,6 +20,7 @@ public:
 		PLAYING,
 		PAUSE,
 		OPTIONS,
+		sOVERVIEW,
 		ALL,
 		VICTORY,
 		DEFEAT,

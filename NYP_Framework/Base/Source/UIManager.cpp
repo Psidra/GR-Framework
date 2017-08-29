@@ -181,14 +181,14 @@ void UIManager::Update()
 					cur_state = UIManager::GAME_STATE::PLAYING; //set cur state to playing
 					this->Playing();
 					break;
-
 				case UIElement::ELEMENT_TYPE::RESUME:
 					this->Playing();
 					break;
-
 				case UIElement::ELEMENT_TYPE::OPTION:
-					
 					UIManager::state = UIManager::GAME_STATE::OPTIONS;
+					break;
+				case UIElement::ELEMENT_TYPE::tOVERVIEW:
+					UIManager::state = UIManager::GAME_STATE::sOVERVIEW;
 					break;
 				case UIElement::ELEMENT_TYPE::CANCEL:
 					//set to not save changed keys
@@ -199,7 +199,6 @@ void UIManager::Update()
 					else if (cur_state == UIManager::GAME_STATE::MAIN_MENU) //when curstate in menu, option cancel returns to main menu
 						UIManager::state = UIManager::GAME_STATE::MAIN_MENU;
 					break;
-
 				case UIElement::ELEMENT_TYPE::CONFIRM:
 					//set to save changed keys
 

@@ -183,11 +183,28 @@ void Boss::Update(double dt)
 		isHurt = false;
 	}
 
-	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y) ? true : false,
-		this->theStrategy->GetIsMoving(), isHurt, dt);
+	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y),this->theStrategy->GetIsMoving(), isHurt, dt);
 	//set gun pos to enemy pos
 	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
+}
+
+void Boss::Render()
+{
+
+	//boss hp border
+	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
+	RenderHelper::RenderMesh(enemyAnimated[GetAnimationIndex()]->GetMesh());
+	modelStack.Translate(0, 1, 0);
+	modelStack.Scale(5, 1, 1);
+	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("boss_hp_border"));
+	modelStack.Translate(-(700 - this->health) * 0.00058f, 0.01f, 0.1f);
+	modelStack.Scale(0.81f * this->health / 700, 0.19f, 1);
+	RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("bossHP"));
+	modelStack.PopMatrix();
 }
 
 void Boss::SetMaxHealth(float _health)

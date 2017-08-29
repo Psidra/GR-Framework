@@ -3,6 +3,8 @@
 
 #include "EnemyBase.h"
 
+class Mesh;
+
 class Boss : public EnemyBase
 {
 public:
@@ -14,7 +16,7 @@ public:
 	void SetTypeOfEnemy(int _enemyType);
 
 	void Update(double dt);
-
+	void Render();
 	// Set Max Health
 	void SetMaxHealth(float _maxHealth);
 	// Get Max Health
@@ -28,6 +30,7 @@ public:
 private:
 	Vector3 shootPos;
 	float maxHealth;
+	Mesh* healthbar;
 };
 
 namespace Create

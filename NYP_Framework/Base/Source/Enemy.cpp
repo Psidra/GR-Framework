@@ -156,8 +156,7 @@ void CEnemy::Update(double dt)
 		isHurt = false;
 	}
 
-	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y) ? true : false, 
-							this->theStrategy->GetIsMoving(), isHurt, dt);
+	this->SetAnimationStatus((Player::GetInstance()->GetPos().y > this->GetPos().y), this->theStrategy->GetIsMoving(), isHurt, dt);
 	//set gun pos to enemy pos
 	enemyInventory->getWeaponList()[weaponIndex]->setGunPos(position);
 	enemyInventory->getWeaponList()[weaponIndex]->setGunDir(Player::GetInstance()->GetPos() - position);
