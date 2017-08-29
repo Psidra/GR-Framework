@@ -53,16 +53,15 @@ void CStrategy_AI_FirstBoss::UpdateBoss(Vector3& _destination, Vector3& _shootpo
 
 	if (m_dElapsedTime > m_dAttackDuration + 1.f) // 1s cd after doing attack
 	{
-		//RNG = Math::RandIntMinMax(0, 3);
+		RNG = Math::RandIntMinMax(0, 3);
 
-		//if (RNG == prevRoll)
-		//{
-		//	++RNG;
-		//	RNG = Math::Wrap(RNG, 0, 3);
-		//}
+		if (RNG == prevRoll)
+		{
+			++RNG;
+			RNG = Math::Wrap(RNG, 0, 3);
+		}
 
-		//prevRoll = RNG;
-		RNG = 3;
+		prevRoll = RNG;
 
 		Player::GetInstance()->m_bProjectileCircle = false; // I hate this move so much
 		Player::GetInstance()->m_bPullEffect = false;

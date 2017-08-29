@@ -20,6 +20,8 @@ public:
 		PAUSE,
 		OPTIONS,
 		ALL,
+		VICTORY,
+		DEFEAT,
 	}elestate;
 
 	enum ELEMENT_TYPE {

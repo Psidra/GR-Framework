@@ -68,6 +68,42 @@ void UIManager::Playing()
 	}
 }
 
+void UIManager::Victory()
+{
+	switch (this->state) {
+	case PLAYING:
+		this->state = VICTORY;
+		break;
+	case OPTIONS:
+		this->state = VICTORY;
+		break;
+	case PAUSE:
+		this->Playing();
+		break;
+
+	default:
+		break;
+	}
+}
+
+void UIManager::Defeat()
+{
+	switch (this->state) {
+	case PLAYING:
+		this->state = DEFEAT;
+		break;
+	case OPTIONS:
+		this->state = DEFEAT;
+		break;
+	case PAUSE:
+		this->Playing();
+		break;
+
+	default:
+		break;
+	}
+}
+
 void UIManager::Update()
 {
 	if (this->state == MAIN_MENU)
@@ -76,6 +112,16 @@ void UIManager::Update()
 			AudioEngine::GetInstance()->StopAllSounds();
 
 		AudioEngine::GetInstance()->PlayASound("mainmenu", true);
+	}
+	else if (this->state == VICTORY)
+	{
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_BACK))
+			UIManager::GetInstance()->state = UIManager::MAIN_MENU;
+	}
+	else if (this->state == DEFEAT)
+	{
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_BACK))
+			UIManager::GetInstance()->state = UIManager::MAIN_MENU;
 	}
 	else if (this->state == PLAYING || this->state == PAUSE)
 	{

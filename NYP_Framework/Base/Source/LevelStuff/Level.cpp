@@ -14,12 +14,15 @@
 #include "../AI FSM/Ai_1.h"
 #include "../AI FSM/Ai_firstboss.h"
 
+#include "../UIManager.h"
+
 Level::Level() : roomCount(0)
 {
 }
 
 Level::~Level()
 {
+	levelMap.clear();
 }
 
 void Level::init(float mapHeight, float mapWidth, float maxRoomHeight, float maxRoomWidth, int maxAttempts)
@@ -210,11 +213,11 @@ void Level::addCorridor(float x, float y, int dir, int l)
 
 void Level::generateWalls()
 {
-	Tile *currentTile;
-	Tile *nextTile;
-	Tile *prevTile;
-	Tile *upTile;
-	Tile *loTile;
+	Tile *currentTile = NULL;
+	Tile *nextTile = NULL;
+	Tile *prevTile = NULL;
+	Tile *upTile = NULL;
+	Tile *loTile = NULL;
 
 	// Add Walls in 4 direction (Up, Down, Left, Right)
 	for (int x = 0; x < mapWidth; ++x) {
@@ -241,6 +244,52 @@ void Level::generateWalls()
 			}
 		}
 	}
+
+	currentTile = NULL;
+	delete currentTile;
+
+	nextTile = NULL;
+	delete nextTile;
+		
+	prevTile = NULL;
+	delete prevTile;
+		
+	upTile = NULL;
+	delete upTile;
+		
+	loTile = NULL;
+	delete loTile;
+
+
+	//if (currentTile)
+	//{
+	//	delete currentTile;
+	//	currentTile = NULL;
+	//}
+	//
+	//if (nextTile)
+	//{
+	//	delete nextTile;
+	//	nextTile = NULL;
+	//}
+
+	//if (prevTile)
+	//{
+	//	delete prevTile;
+	//	prevTile = NULL;
+	//}
+
+	//if (upTile)
+	//{
+	//	delete upTile;
+	//	upTile = NULL;
+	//}
+
+	//if (loTile)
+	//{
+	//	delete loTile;
+	//	loTile = NULL;
+	//}
 
 	//Add Walls in 4 coners
 	/*for (int x = 0; x < mapWidth; ++x) {
@@ -466,7 +515,8 @@ void Level::newLevel()
 void Level::updateEnemy()
 {
 	unsigned playerCurrentRoom = NULL;
-	for (size_t i = 0; i < rooms.size() - 1; ++i)
+
+	for (size_t i = 0; i < rooms.size(); ++i)
 	{
 		if (Player::GetInstance()->GetPos().x >= rooms[i].x &&
 			Player::GetInstance()->GetPos().x <= rooms[i].x2 &&
@@ -479,12 +529,23 @@ void Level::updateEnemy()
 			{
 				if (spawnBoss)
 				{
-					if (dynamic_cast<CEnemy*>(*it)->type == GenericEntity::OBJECT_TYPE::BOSS)
+					if (dynamic_cast<GenericEntity*>(*it)->type == GenericEntity::OBJECT_TYPE::BOSS)
 					{
-						if ((*it)->IsDone())
+						if (level < 3)
 						{
 							spawnBoss = false;
-							spawnExit();
+							(*it)->SetIsDone(true);
+							break;
+						}
+						if (!(*it)->IsActive())
+						{
+							spawnBoss = false;
+							level = 0;
+							Player::m_bNewLevel = true;
+							UIManager::GetInstance()->Victory();
+							//UIManager::GetInstance()->state = UIManager::MAIN_MENU;
+							//spawnExit();
+							(*it)->SetIsDone(true);
 							break;
 						}
 					}
@@ -591,6 +652,16 @@ Tile Level::getTile(int x, int y)
 vector<Level::Rectangle> Level::getRooms(void)
 {
 	return rooms;
+}
+
+int Level::getCurrLevel(void)
+{
+	return level;
+}
+
+void Level::setCurrLevel(int _level)
+{
+	level = _level;
 }
 
 

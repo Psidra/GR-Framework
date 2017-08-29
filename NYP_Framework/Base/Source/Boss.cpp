@@ -26,6 +26,7 @@
 
 #include "PlayerInfo\PlayerInfo.h"
 #include"AI FSM\Ai_1.h"
+#include "KeyboardController.h"
 // no idea how many guns boss will have so w/e have 'em all
 
 Boss::Boss()
@@ -86,7 +87,7 @@ void Boss::Init(float _hp, double _speed, int _enemyType, bool _invul)
 	{
 		CEnemy* enemy = Create::Enemy(Vector3(0, 0, 0), "player", Vector3(1, 1, 1), false);
 		enemy->Init();
-		enemy->ChangeStrategy(new CStrategy_AI_1(), false);
+		//enemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	}
 }
 
@@ -125,6 +126,12 @@ void Boss::SetTypeOfEnemy(int _enemyType)
 
 void Boss::Update(double dt)
 {
+	//cheat key
+	if (KeyboardController::GetInstance()->IsKeyDown(VK_F3))
+	{	//minus boss hp
+		health -= 100;
+	}
+
 	this->SetPosition(this->position);
 	this->shootPos = this->position;
 	this->SetAABB((this->scale * 0.5f) + this->position, (this->scale * -0.5f) + this->position);
@@ -162,7 +169,12 @@ void Boss::Update(double dt)
 		}
 	}
 	if (health <= 0)
-		this->SetIsDone(true);
+	{
+		this->SetIsActive(false);
+		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + Player::GetInstance()->GetHealth());
+	}
+
+	
 	if (isHurt)
 		hurtElapsedTime += dt;
 	if (hurtElapsedTime > 1.5f)

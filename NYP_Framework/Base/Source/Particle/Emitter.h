@@ -64,8 +64,8 @@ public:
 	{
 		for (size_t i = 0; i < m_particles.size(); ++i)
 		{
-			m_particles[i] = nullptr;
 			delete m_particles[i];
+			m_particles[i] = nullptr;
 		}
 	};
 

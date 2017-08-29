@@ -28,6 +28,8 @@ public:
 	virtual ~ParticleEffect() 
 	{
 		this->getEmitter()->~Emitter();
+		delete m_emitter;
+		m_emitter = NULL;
 	};
 
 	virtual void Update(double _dt);

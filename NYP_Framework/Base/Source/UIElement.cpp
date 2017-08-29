@@ -33,7 +33,10 @@ void UIElement::Update()
 		break;
 	case OPTIONS:
 		break;
-
+	case VICTORY:
+		break;
+	case DEFEAT:
+		break;
 	default:
 		// nothing should be here.
 		break;
@@ -273,6 +276,32 @@ void UIElement::Render()
 		//if (this->type == CURSOR)
 		//	return;
 
+		break;
+	}
+	case UIManager::GAME_STATE::VICTORY:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("pistol"));
+		modelStack.PopMatrix();
+		break;
+	}
+	case UIManager::GAME_STATE::DEFEAT:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("rifle"));
+		modelStack.PopMatrix();
 		break;
 	}
 	case UIManager::GAME_STATE::OPTIONS:

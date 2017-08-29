@@ -9,6 +9,8 @@
 #include "EntityManager.h"
 #include "TextEntityManager.h"
 #include "UIManager.h"
+#include "AudioEngine.h"
+#include "Loader.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -154,6 +156,14 @@ void Application::Run()
 
 void Application::Exit()
 {
+	MeshList::Destroy();
+	GraphicsManager::Destroy();
+	AudioEngine::Destroy();
+	Loader::Destroy();
+	MeshBuilder::Destroy();
+	SceneManager::Destroy();
+	MouseController::Destroy();
+	
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW

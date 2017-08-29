@@ -21,6 +21,7 @@ public:
 	void AddMesh(const string& _meshName, Mesh* _newMesh);
 	void RemoveMesh(const string& _meshName);
 	bool IsMeshEmpty();
+	virtual ~MeshList();
 private:
 	map<string, Mesh*> meshMap;
 };

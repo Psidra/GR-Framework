@@ -21,11 +21,15 @@ public:
 		PAUSE,
 		OPTIONS,
 		ALL,
+		VICTORY,
+		DEFEAT,
 	}state;
 	unsigned int cur_state;
 
 	void Pause();
 	void Playing();
+	void Victory();
+	void Defeat();
 
 	void Update();
 	void Render();

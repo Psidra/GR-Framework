@@ -39,14 +39,14 @@ private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
 	ShaderProgram* currProg;
-	Player* playerInfo;
-	CEnemy* minion;
-	GroundEntity* groundEntity;
+	//Player* playerInfo;
+	//CEnemy* minion;
+	//GroundEntity* groundEntity;
 	FPSCamera *camera;
 	TextEntity* textObj[4];
 	TextEntity* optionTextObj[10];
 	std::vector<unsigned int> buttonInt;
-	Light* lights[2];
+	//Light* lights[2];
 
 	GenericEntity* HuntTarget;
 	Keyboard* keyboard;
@@ -59,7 +59,7 @@ private:
 	void RenderPassGPass();//PRE RENDER PASS
 	void RenderPassMain();//MAIN RENDER PASS
 	void RenderWorld();
-	Mesh* light_depth_mesh;
+	//Mesh* light_depth_mesh;
 	CMinimap* minimap;
 
 	QuadTree* quadTree;

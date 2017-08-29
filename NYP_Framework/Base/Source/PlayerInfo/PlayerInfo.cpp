@@ -78,9 +78,10 @@ Player::~Player(void)
 	m_pTerrain = NULL;
 	for (size_t i = 0;i < playerInventory->getWeaponList().size(); ++i)
 	{
-		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
+		playerInventory->getWeaponList().clear();
+		//playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
 	}
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 14; i++)
 	{
 		delete playerAnimated[i];
 		playerAnimated[i] = NULL;
@@ -347,6 +348,22 @@ void Player::Update(double dt)
 {
 	m_dElapsedTime += dt;
 	hurtElapsedTime += dt;
+
+	if (m_fHealth <= 0)
+	{
+		Level::GetInstance()->setCurrLevel(0);
+		Player::m_bNewLevel = true;
+		m_fHealth = 100;
+		for (size_t i = 0; i < playerInventory->getWeaponList().size(); ++i)
+		{
+			playerInventory->getWeaponList()[i]->SetMagRound(playerInventory->getWeaponList()[i]->GetMaxMagRound());
+			playerInventory->getWeaponList()[i]->SetTotalRound(playerInventory->getWeaponList()[i]->GetMaxTotalRound());
+			m_iBlank = 2;
+			m_iMoney = 0;
+		}
+		UIManager::GetInstance()->Defeat();
+	}
+
 
 	if (attachedCamera == NULL)
 		std::cout << "No camera attached! Please make sure to attach one" << std::endl;

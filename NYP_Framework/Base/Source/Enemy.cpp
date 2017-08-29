@@ -45,10 +45,10 @@ CEnemy::~CEnemy(void)
 		enemyAnimated[i] = NULL;
 	}
 	delete[] enemyAnimated;
-
-	for (size_t i = 0; i < enemyInventory->getWeaponList().size(); ++i)
-	{
-		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList()[i]);
+	
+	while (enemyInventory->getWeaponList().size() > 0)
+	{	//remove all weapon
+		enemyInventory->removeWeaponFromInventory(enemyInventory->getWeaponList().back());
 	}
 	delete enemyInventory;
 }
@@ -145,6 +145,7 @@ void CEnemy::Update(double dt)
 	if (health <= 0)
 	{
 		this->SetIsDone(true);
+		Player::GetInstance()->SetMoney(Player::GetInstance()->GetMoney() + 1);
 		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
 	}
 	if (isHurt == true)
