@@ -110,7 +110,7 @@ bool Controller::SpawnEnemy(double dt)
 {
 	CEnemy* NewEnemy = Create::Enemy(Vector3(Math::RandFloatMinMax(-20,20), Math::RandFloatMinMax(-20,20), 0), "player");
 	NewEnemy->Init();
-	NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
+	//NewEnemy->ChangeStrategy(new CStrategy_AI_1(), false);
 	//std::cout << "Enemy Spawned" << std::endl;
 
 	return false;

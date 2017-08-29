@@ -66,7 +66,7 @@ protected:
 	CStrategy* theStrategy;
 	GenericEntity** enemyAnimated;
 	Inventory* enemyInventory;
-	CWeaponInfo* primaryWeapon;
+	//CWeaponInfo* primaryWeapon;
 	int weaponIndex;
 	bool isShooting;
 	bool m_bLookingUp;

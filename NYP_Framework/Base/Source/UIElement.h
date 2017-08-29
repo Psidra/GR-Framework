@@ -21,6 +21,8 @@ public:
 		OPTIONS,
 		sOVERVIEW,
 		ALL,
+		VICTORY,
+		DEFEAT,
 	}elestate;
 
 	enum ELEMENT_TYPE {

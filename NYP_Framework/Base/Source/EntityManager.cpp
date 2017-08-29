@@ -193,5 +193,5 @@ EntityManager::~EntityManager()
 		delete temp;
 		temp = NULL;
 	}
-	//entityList.clear();
+	entityList.clear();
 }

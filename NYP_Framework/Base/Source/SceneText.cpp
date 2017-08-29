@@ -37,6 +37,7 @@
 #include "WeaponInfo\WeaponInfo.h"
 #include "Loader.h"
 #include "TextEntityManager.h"
+#include "CollisionManager.h"
 
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
@@ -171,7 +172,7 @@ void SceneText::Init()
 	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	// Create entities into the scene
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 	//GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	//aCube->SetCollider(true);
@@ -192,7 +193,7 @@ void SceneText::Init()
 	UIManager::GetInstance()->state = UIManager::GAME_STATE::MAIN_MENU;
 
 	// test walls
-	GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
+	/*GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
 	wall->type = GenericEntity::OBJECT_TYPE::WALL;
 	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
 	wall->setNormal(Vector3(1, 0, 0));
@@ -200,19 +201,19 @@ void SceneText::Init()
 	GenericEntity* BwallA = Create::Entity("cube", Vector3(50.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
 	BwallA->type = GenericEntity::OBJECT_TYPE::WALL;
 	BwallA->SetAABB(BwallA->GetScale() * 0.5f + BwallA->GetPosition(), BwallA->GetScale() * -0.5f + BwallA->GetPosition());
-	BwallA->setNormal(Vector3(1, 0, 0));
+	BwallA->setNormal(Vector3(1, 0, 0));*/
 
 	// :b:roke
 
-	GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
-	BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
-	BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
-	BwallC->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
+	//BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
+	//BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
+	//BwallC->setNormal(Vector3(1, 0, 0));
 
-	GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
-	BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
-	BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
-	BwallD->setNormal(Vector3(1, 0, 0));
+	//GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
+	//BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
+	//BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
+	//BwallD->setNormal(Vector3(1, 0, 0));
 
 	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
@@ -519,6 +520,14 @@ void SceneText::Update(double dt)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		if (KeyboardController::GetInstance()->IsKeyDown('4'))
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		
+		//ALL THEM CHEAT KEYS
+		if (KeyboardController::GetInstance()->IsKeyPressed(VK_F1)) //move level forwards
+		{
+			Player::m_bNewLevel = true;
+			if (Level::GetInstance()->getCurrLevel() >= 3)
+				Level::GetInstance()->setCurrLevel(0);
+		}
 
 		//if (KeyboardController::GetInstance()->IsKeyDown('5'))
 		//{
@@ -862,8 +871,6 @@ void SceneText::Exit()
 	//delete entitymanager
 	EntityManager::GetInstance()->Destroy();
 
-
-
 	//delete tetxentiymanager
 	TextEntityManager::GetInstance()->Destroy();
 
@@ -873,9 +880,21 @@ void SceneText::Exit()
 	Player::GetInstance()->Destroy();
 	KeyboardController::GetInstance()->Destroy();
 	UIManager::GetInstance()->Destroy();
-
+	
+	Level::Destroy();
+	CollisionManager::Destroy();
+	ProjectileManager::Destroy();
+	
 	delete keyboard;
 	delete camera;
+	delete minimap;
+
+	//HuntTarget = NULL;
+	//delete HuntTarget;
+
+//	delete quadTree;
+//	delete level;
+	delete currProg;
 	// Delete the lights
 	//delete lights[0];
 	//delete lights[1];

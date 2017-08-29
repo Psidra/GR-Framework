@@ -26,6 +26,24 @@ UIElement::~UIElement()
 
 void UIElement::Update()
 {
+	switch (elestate) {
+	case MAIN_MENU:
+		break;
+	case PLAYING:
+		break;
+	case PAUSE:
+		break;
+	case OPTIONS:
+		break;
+	case VICTORY:
+		break;
+	case DEFEAT:
+		break;
+	default:
+		// nothing should be here.
+		break;
+	}
+
 	/*
 	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
 	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
@@ -267,6 +285,32 @@ void UIElement::Render()
 		//if (this->type == CURSOR)
 		//	return;
 
+		break;
+	}
+	case UIManager::GAME_STATE::VICTORY:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("victory"));
+		modelStack.PopMatrix();
+		break;
+	}
+	case UIManager::GAME_STATE::DEFEAT:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("defeat"));
+		modelStack.PopMatrix();
 		break;
 	}
 	case UIManager::GAME_STATE::OPTIONS:

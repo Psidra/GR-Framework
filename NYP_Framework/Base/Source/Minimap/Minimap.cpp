@@ -24,26 +24,26 @@ CMinimap::CMinimap(void)
 }
 CMinimap::~CMinimap(void)
 {
-	if (m_cMinimap_Background)
-	{
-		delete m_cMinimap_Background;
-		m_cMinimap_Background = NULL;
-	}
-	if (m_cMinimap_Border)
-	{
-		delete m_cMinimap_Border;
-		m_cMinimap_Border = NULL;
-	}
-	if (m_cMinimap_Avatar)
-	{
-		delete m_cMinimap_Avatar;
-		m_cMinimap_Avatar = NULL;
-	}
-	if (m_cMinimap_Target)
-	{
-		delete m_cMinimap_Target;
-		m_cMinimap_Target = NULL;
-	}
+	//if (m_cMinimap_Background)
+	//{
+	//	delete m_cMinimap_Background;
+	//	m_cMinimap_Background = NULL;
+	//}
+	//if (m_cMinimap_Border)
+	//{
+	//	delete m_cMinimap_Border;
+	//	m_cMinimap_Border = NULL;
+	//}
+	//if (m_cMinimap_Avatar)
+	//{
+	//	delete m_cMinimap_Avatar;
+	//	m_cMinimap_Avatar = NULL;
+	//}
+	//if (m_cMinimap_Target)
+	//{
+	//	delete m_cMinimap_Target;
+	//	m_cMinimap_Target = NULL;
+	//}
 }
 
 // Initialise this class instance

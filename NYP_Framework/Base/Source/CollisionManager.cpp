@@ -164,6 +164,8 @@ void CollisionManager::Update(std::list<EntityBase*> collisionList, int totalFro
 			Player::GetInstance()->CollisionResponse(thatEntity);
 		}
 	}
+
+	getNearestObj.clear();
 }
 
 CollisionManager::CollisionManager()

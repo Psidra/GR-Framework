@@ -39,3 +39,13 @@ bool MeshList::IsMeshEmpty()
 
 	return true;
 }
+
+MeshList::~MeshList()
+{
+	for (map<string, Mesh*>::iterator it = meshMap.begin(); it != meshMap.end(); ++it)
+	{
+		delete it->second;
+		it->second = NULL;
+	}
+	meshMap.clear();
+}
