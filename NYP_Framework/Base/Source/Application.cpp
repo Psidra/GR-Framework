@@ -381,6 +381,9 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("player_cursor")->textureID[0] = LoadTGA("Image/UI/PlayerCursorV2.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("boss_hp_border", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("boss_hp_border")->textureID[0] = LoadTGA("Image/UI/BossHealthBorder.tga");
+
+		MeshBuilder::GetInstance()->GenerateQuad("bossHP", Color(1, 0, 0), 1.f);
+
 		MeshBuilder::GetInstance()->GenerateQuad("main_menu", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("main_menu")->textureID[0] = LoadTGA("Image/UI/MainMenu.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("pause_menu", Color(1, 1, 1), 1.f);
@@ -397,7 +400,12 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("overview_button")->textureID[0] = LoadTGA("Image/UI/OverviewButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("overview", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("overview")->textureID[0] = LoadTGA("Image/UI/Overview.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("victory", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("victory")->textureID[0] = LoadTGA("Image/UI/victory.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("defeat", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("defeat")->textureID[0] = LoadTGA("Image/UI/defeat.tga");
 
+		//options related
 		MeshBuilder::GetInstance()->GenerateQuad("option_menu", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("option_menu")->textureID[0] = LoadTGA("Image/UI/OptionMenu.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("confirm_button", Color(1, 1, 1), 1.f);
@@ -412,7 +420,6 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("moveleft_button")->textureID[0] = LoadTGA("Image/UI/MoveLeft_Button.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("moveright_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("moveright_button")->textureID[0] = LoadTGA("Image/UI/MoveRight_Button.tga");
-		
 		MeshBuilder::GetInstance()->GenerateQuad("reload_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("reload_button")->textureID[0] = LoadTGA("Image/UI/ReloadButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("nextwep_button", Color(1, 1, 1), 1.f);
@@ -499,6 +506,9 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("tile_stairs")->textureID[0] = LoadTGA("Image/TileSet/tile_stairs.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("tile_wall", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("tile_wall")->textureID[0] = LoadTGA("Image/TileSet/tile_wall.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("tile_portal", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("tile_portal")->textureID[0] = LoadTGA("Image/TileSet/tile_portal.tga");
+
 		
 		/*MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");

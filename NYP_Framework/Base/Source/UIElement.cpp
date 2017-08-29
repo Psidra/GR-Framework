@@ -8,6 +8,8 @@
 #include "MouseController.h"
 #include "PlayerInfo\PlayerInfo.h"
 #include "GL\glew.h"
+#include "Boss.h"
+#include "LevelStuff\Level.h"
 
 UIElement::UIElement()
 {
@@ -246,6 +248,7 @@ void UIElement::Render()
 		modelStack.Scale(100, 100, 100);
 		RenderHelper::RenderMesh(Player::GetInstance()->getWeaponMesh());
 		modelStack.PopMatrix();
+
 
 		break;
 	}

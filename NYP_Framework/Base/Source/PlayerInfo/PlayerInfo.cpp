@@ -395,7 +395,7 @@ void Player::Update(double dt)
 	y = y + (h * 0.5f);
 
 	//(y <= h) //W.I.P - to compare cursor pos.y with mid of screen size
-	SetAnimationStatus((y <= h) ? true : false, m_bMoving, isHurt, dt, m_bDodge);
+	SetAnimationStatus((y <= h), m_bMoving, isHurt, dt, m_bDodge);
 
 	SetMovement(!(direction.x == 0 && direction.y == 0));
 
