@@ -80,7 +80,7 @@ Player::~Player(void)
 	{
 		playerInventory->removeWeaponFromInventory(playerInventory->getWeaponList()[i]);
 	}
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 14; i++)
 	{
 		delete playerAnimated[i];
 		playerAnimated[i] = NULL;
