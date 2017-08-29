@@ -249,6 +249,9 @@
     <ClCompile Include="Source\AI FSM\Ai_2.cpp">
       <Filter>Enemy Related</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI FSM\Ai_3.cpp">
+      <Filter>Enemy Related</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -405,6 +408,9 @@
       <Filter>Weapon\Guns\GunsHeader</Filter>
     </ClInclude>
     <ClInclude Include="Source\AI FSM\Ai_2.h">
+      <Filter>Enemy Related\EnemyHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI FSM\Ai_3.h">
       <Filter>Enemy Related\EnemyHeader</Filter>
     </ClInclude>
   </ItemGroup>

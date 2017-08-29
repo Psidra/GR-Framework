@@ -6,6 +6,7 @@
 #include <string>
 #include "AI FSM\Ai_1.h"
 #include "AI FSM\Ai_2.h"
+#include "AI FSM\Ai_3.h"
 
 class Mesh;
 class CStrategy;
@@ -74,4 +75,5 @@ protected:
 	double reloadDuration;
 	bool isHurt;
 	bool invulnerable;
+	int enemyType;
 };

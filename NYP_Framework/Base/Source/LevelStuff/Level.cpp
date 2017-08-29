@@ -402,7 +402,7 @@ void Level::loadEntitys()
 	{
 		for (size_t j = 0; j < mapHeight; ++j)
 		{
-			int enemyType = rand() % 2 + 1;//rand num for enemy type
+			int enemyType = rand() % 3 + 1;//rand num for enemy type
 			
 			TileEntity* temp = NULL;
 			CEnemy* NewEnemy = NULL;
@@ -411,17 +411,17 @@ void Level::loadEntitys()
 			switch (getTile(i, j).type)
 			{
 			case Tile::WALL:
-				temp = Create::TEntity("tile_floor", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp = Create::TEntity("tile_wall", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::WALL;
 				temp->setNormal(Vector3(1, 0, 0));
 				break;
 			case Tile::EXIT:
-				temp = Create::TEntity("player", Vector3(i, j, 0), Vector3(1, 1, 1), true);
+				temp = Create::TEntity("tile_stairs", Vector3(i, j, 0), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::EXIT;
 				temp->setNormal(Vector3(1, 0, 0));
 				break;
 			case Tile::TELEPORTER:
-				temp = Create::TEntity("greenCube", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
+				temp = Create::TEntity("tile_portal", Vector3(i, j, 0.0f), Vector3(1, 1, 1), true);
 				temp->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
 				break;
 			case Tile::ENEMY:

@@ -270,36 +270,27 @@ void UIManager::AddEntity(UIElement * result)
 
 std::string UIManager::GetIndex()
 {
-	switch (index) //hardcoded 
-	{
-	case 0:
+	if (index == 0)
 		return "Reload Selected";
-		break;
-	case 1:
+	
+	else if (index == 1)
 		return "Move Up Selected";
-		break;
-	case 2:
+		
+	else if (index == 2)
 		return "Move Down Selected";
-		break;
-	case 3:
-		return "Move Left Selected";
-		break;
-	case 4:
-		return "Move Right Selected";
-		break;
-	case 5:
-		return "Next Gun Selected";
-		break;
-	case 6:
-		return "Blank Selected";
-		break;
-	case 7:
-		return "Pause Selected";
-		break;
-	default:
-		return "Nothing Selected";
-		break;
-	}
 
-	return "";
+	else if (index == 3)
+		return "Move Left Selected";
+		
+	else if (index == 4)
+		return "Move Right Selected";
+		
+	else if (index == 5)
+		return "Next Gun Selected";
+		
+	else if (index == 6)
+		return "Blank Selected";
+		
+	else if (index == 7)
+		return "Pause Selected";
 }
