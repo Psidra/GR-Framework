@@ -187,7 +187,7 @@ void UIElement::Render()
 		Vector3 HUDposition(-halfWindowWidth + 45.f, halfWindowHeight - 45.f, 8.0f);
 		Vector3 HUDscale(50, 50, 1);
 
-		for (float i = Player::GetInstance()->GetHealth(); i > 10.f; i -= 20.f)
+		for (float i = Player::GetInstance()->GetHealth(); i >= 20.f; i -= 20.f)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();
@@ -199,7 +199,7 @@ void UIElement::Render()
 			HUDposition.x += HUDscale.x + 0.1f;
 		}
 
-		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 == 10)
+		if (static_cast<int>(Player::GetInstance()->GetHealth()) % 20 > 0)
 		{
 			MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 			modelStack.PushMatrix();

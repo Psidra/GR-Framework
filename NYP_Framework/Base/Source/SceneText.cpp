@@ -218,22 +218,22 @@ void SceneText::Init()
 	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
 	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
 
-	// test fire
-	GenericEntity* fire = Create::Entity("fire", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	fire->type = GenericEntity::OBJECT_TYPE::FIRE;
-	fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
+	//// test fire
+	//GenericEntity* fire = Create::Entity("fire", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
+	//fire->type = GenericEntity::OBJECT_TYPE::FIRE;
+	//fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
 
-	// test slow
-	GenericEntity* slow = Create::Entity("slow", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	slow->type = GenericEntity::OBJECT_TYPE::SLOW;
-	slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
+	//// test slow
+	//GenericEntity* slow = Create::Entity("slow", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
+	//slow->type = GenericEntity::OBJECT_TYPE::SLOW;
+	//slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
 
-	// test poison
-	GenericEntity* poison = Create::Entity("poison", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	poison->type = GenericEntity::OBJECT_TYPE::POISON;
-	poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
+	//// test poison
+	//GenericEntity* poison = Create::Entity("poison", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
+	//poison->type = GenericEntity::OBJECT_TYPE::POISON;
+	//poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
 
-	GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
+	//GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
 
@@ -472,7 +472,7 @@ void SceneText::Update(double dt)
 			HuntTarget->SetIsActive(false);
 
 			int rand_element = Math::RandIntMinMax(0, 2);
-
+			// Of course they dont disappear, this is a boss fight, dont be a wuss
 			switch (rand_element) {
 			case 0:
 			{

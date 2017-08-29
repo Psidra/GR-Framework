@@ -432,7 +432,7 @@ void Level::loadEntitys()
 				break;
 			case Tile::BOSS:
 				FirstBoss = Create::SpawnBoss(Vector3(i, j, 0), "player", Vector3(1.5f, 3, 3), true);
-				FirstBoss->Init(450.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
+				FirstBoss->Init(1500.f, 0, 1, false); // HP default should be 1500.f but i wanted to see 2nd form skills xd
 				FirstBoss->ChangeStrategy(new CStrategy_AI_FirstBoss(), false);
 				break;
 			default:
