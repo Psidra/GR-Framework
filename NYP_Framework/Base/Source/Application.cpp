@@ -393,6 +393,10 @@ void Application::InitAllMeshes()
 		MeshList::GetInstance()->GetMesh("option_button")->textureID[0] = LoadTGA("Image/UI/OptionButton.tga");
 		MeshBuilder::GetInstance()->GenerateQuad("exit_button", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("exit_button")->textureID[0] = LoadTGA("Image/UI/ExitButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("overview_button", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("overview_button")->textureID[0] = LoadTGA("Image/UI/OverviewButton.tga");
+		MeshBuilder::GetInstance()->GenerateQuad("overview", Color(1, 1, 1), 1.f);
+		MeshList::GetInstance()->GetMesh("overview")->textureID[0] = LoadTGA("Image/UI/Overview.tga");
 
 		MeshBuilder::GetInstance()->GenerateQuad("option_menu", Color(1, 1, 1), 1.f);
 		MeshList::GetInstance()->GetMesh("option_menu")->textureID[0] = LoadTGA("Image/UI/OptionMenu.tga");
