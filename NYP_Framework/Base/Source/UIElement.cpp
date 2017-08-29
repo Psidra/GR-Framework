@@ -24,21 +24,6 @@ UIElement::~UIElement()
 
 void UIElement::Update()
 {
-	switch (elestate) {
-	case MAIN_MENU:
-		break;
-	case PLAYING:
-		break;
-	case PAUSE:
-		break;
-	case OPTIONS:
-		break;
-
-	default:
-		// nothing should be here.
-		break;
-	}
-
 	/*
 	UIElement* resume = Create::UIEntity("resume_button", Vector3(0, 90, 9.5f), Vector3(175, 25, 1), true);
 	resume->elestate = UIElement::ELEMENT_STATE::PAUSE;
@@ -140,6 +125,12 @@ void UIElement::Update()
 	{
 		this->position.Set(-70 * w / 800, hhalf * -0.64f, 9.5f);
 		this->scale.Set(53 * w / 800, 19.5 * hhalf / 300, 1);
+	}
+
+	if (this->type == tOVERVIEW)
+	{
+		this->position.Set(-150 * w/800, hhalf * 0.1f, 9.5f);
+		this->scale.Set(80 * w / 800, 30 * hhalf / 300, 1);
 	}
 
 	if (this->m_bCollider)
@@ -276,6 +267,7 @@ void UIElement::Render()
 		break;
 	}
 	case UIManager::GAME_STATE::OPTIONS:
+	{
 		Vector3 HUDposition(0.f, 0.f, 9.0f);
 		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
 
@@ -286,6 +278,21 @@ void UIElement::Render()
 		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("option_menu"));
 		modelStack.PopMatrix();
 		break;
+	}
+	case UIManager::GAME_STATE::sOVERVIEW:
+	{
+		Vector3 HUDposition(0.f, 0.f, 9.0f);
+		Vector3 HUDscale(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight(), 1.f);
+
+		MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(HUDposition.x, HUDposition.y, HUDposition.z);
+		modelStack.Scale(HUDscale.x, HUDscale.y, HUDscale.z);
+		RenderHelper::RenderMesh(MeshList::GetInstance()->GetMesh("overview"));
+		modelStack.PopMatrix();
+		break;
+	}
+
 	}
 
 	// TODO: Fix scaling with fullscreen. (windowwidth / 800), (windowheight / 800) <- something about this I think

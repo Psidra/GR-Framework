@@ -19,6 +19,7 @@ public:
 		PLAYING,
 		PAUSE,
 		OPTIONS,
+		sOVERVIEW,
 		ALL,
 	}elestate;
 
@@ -28,6 +29,7 @@ public:
 		START,
 		RESUME,
 		OPTION,
+		tOVERVIEW,
 		BACK,
 		EXIT,
 		VOL_UP,

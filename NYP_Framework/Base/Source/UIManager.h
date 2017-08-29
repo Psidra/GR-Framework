@@ -20,6 +20,7 @@ public:
 		PLAYING,
 		PAUSE,
 		OPTIONS,
+		sOVERVIEW,
 		ALL,
 	}state;
 	unsigned int cur_state;

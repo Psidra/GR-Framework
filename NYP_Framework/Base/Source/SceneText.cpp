@@ -304,6 +304,14 @@ void SceneText::Init()
 	UIElement* pauseOp = Create::UIEntity("pause_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
 	pauseOp->elestate = UIElement::ELEMENT_STATE::OPTIONS;
 	pauseOp->type = UIElement::ELEMENT_TYPE::INPUT_PAUSE;
+
+	UIElement* overviewMM = Create::UIEntity("overview_button", Vector3(10, 90, 9.5f), Vector3(175, 25, 1), true);
+	overviewMM->elestate = UIElement::ELEMENT_STATE::MAIN_MENU;
+	overviewMM->type = UIElement::ELEMENT_TYPE::tOVERVIEW;
+
+	UIElement* backOV = Create::UIEntity("cancel_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
+	backOV->elestate = UIElement::ELEMENT_STATE::sOVERVIEW;
+	backOV->type = UIElement::ELEMENT_TYPE::CANCEL;
 	
 	//TELEPORTER
 	//GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
@@ -593,7 +601,7 @@ void SceneText::Update(double dt)
 		std::ostringstream curr;
 		curr << Player::GetInstance()->GetMoney();
 		textObj[3]->SetText(curr.str());
-		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 10.0f));
+		textObj[3]->SetPosition(Vector3(-halfWindowWidth + 60.f, halfWindowHeight - 150.f, 0.0f));
 
 		// Update textpos for fullscreening
 		for (int i = 1; i < 3; ++i)
