@@ -62,34 +62,6 @@ void SceneText::Init()
 	currProg->AddUniform("MVP");
 	currProg->AddUniform("MV");
 	currProg->AddUniform("MV_inverse_transpose");
-	//currProg->AddUniform("material.kAmbient");
-	//currProg->AddUniform("material.kDiffuse");
-	//currProg->AddUniform("material.kSpecular");
-	//currProg->AddUniform("material.kShininess");
-	//currProg->AddUniform("lightEnabled");
-	//currProg->AddUniform("numLights");
-	//currProg->AddUniform("lights[0].type");
-	//currProg->AddUniform("lights[0].position_cameraspace");
-	//currProg->AddUniform("lights[0].color");
-	//currProg->AddUniform("lights[0].power");
-	//currProg->AddUniform("lights[0].kC");
-	//currProg->AddUniform("lights[0].kL");
-	//currProg->AddUniform("lights[0].kQ");
-	//currProg->AddUniform("lights[0].spotDirection");
-	//currProg->AddUniform("lights[0].cosCutoff");
-	//currProg->AddUniform("lights[0].cosInner");
-	//currProg->AddUniform("lights[0].exponent");
-	//currProg->AddUniform("lights[1].type");
-	//currProg->AddUniform("lights[1].position_cameraspace");
-	//currProg->AddUniform("lights[1].color");
-	//currProg->AddUniform("lights[1].power");
-	//currProg->AddUniform("lights[1].kC");
-	//currProg->AddUniform("lights[1].kL");
-	//currProg->AddUniform("lights[1].kQ");
-	//currProg->AddUniform("lights[1].spotDirection");
-	//currProg->AddUniform("lights[1].cosCutoff");
-	//currProg->AddUniform("lights[1].cosInner");
-	//currProg->AddUniform("lights[1].exponent");
 	currProg->AddUniform("colorTextureEnabled[0]");
 	currProg->AddUniform("colorTexture[0]");
 	currProg->AddUniform("colorTextureEnabled[1]");
@@ -108,9 +80,6 @@ void SceneText::Init()
 	currProg->AddUniform("colorTexture[7]");
 	currProg->AddUniform("textEnabled");
 	currProg->AddUniform("textColor");
-
-	//currProg->AddUniform("shadowMap");
-	//currProg->AddUniform("lightDepthMVP");
 	
 	GraphicsManager::GetInstance()->m_gPassShaderID = LoadShaders("Shader//GPass.vertexshader", "Shader//GPass.fragmentshader");
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE_ENABLED] =
@@ -130,111 +99,12 @@ void SceneText::Init()
 	GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_SHADOW_COLOR_TEXTURE3] =
 		glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "colorTexture[3]");
 
-	//GraphicsManager::GetInstance()->gPass_params[GraphicsManager::GPASS_UNIFORM_TYPE::U_LIGHT_DEPTH_MVP_GPASS] =
-	//	glGetUniformLocation(GraphicsManager::GetInstance()->m_gPassShaderID, "lightDepthMVP");
-	//GraphicsManager::GetInstance()->m_lightDepthFBO.Init(1024, 1024);
-
 	// Tell the graphics manager to use the shader we just loaded
 	GraphicsManager::GetInstance()->SetActiveShader("default");
 
-	//lights[0] = new Light();
-	//GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
-	//lights[0]->type = Light::LIGHT_DIRECTIONAL;
-	//lights[0]->position.Set(0, 20, 0);
-	//lights[0]->color.Set(1, 1, 1);
-	//lights[0]->power = 1;
-	//lights[0]->kC = 1.f;
-	//lights[0]->kL = 0.01f;
-	//lights[0]->kQ = 0.001f;
-	//lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
-	//lights[0]->cosInner = cos(Math::DegreeToRadian(30));
-	//lights[0]->exponent = 3.f;
-	//lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
-	//lights[0]->name = "lights[0]";
-
-	//lights[1] = new Light();
-	//GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
-	//lights[1]->type = Light::LIGHT_DIRECTIONAL;
-	//lights[1]->position.Set(1, 1, 0);
-	//lights[1]->color.Set(1, 1, 0.5f);
-	//lights[1]->power = 0.4f;
-	//lights[1]->name = "lights[1]";
-
-	//currProg->UpdateInt("numLights", 2);
 	currProg->UpdateInt("textEnabled", 0);
-	
-	// Create the playerinfo instance, which manages all information about the player
-
-	//std::cout << _DEBUG << std::endl;
-	//int a;
-
-	// Create and attach the camera to the scene
-	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
-
-	// Create entities into the scene
-	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
-	//GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
-	//aCube->SetCollider(true);
-	//aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-//	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
-//	Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));
-	//Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
-
-	/*SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
-											 "SKYBOX_LEFT", "SKYBOX_RIGHT",
-											 "SKYBOX_TOP", "SKYBOX_BOTTOM");*/
-
-	// Customise the ground entity
-//	groundEntity->SetPosition(Vector3(0, -10, 0));
-//	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
-	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 
 	UIManager::GetInstance()->state = UIManager::GAME_STATE::MAIN_MENU;
-
-	// test walls
-	/*GenericEntity* wall = Create::Entity("cube", Vector3(-20.0f, 0.0f, 0.0f), Vector3(2, 5, 2), true);
-	wall->type = GenericEntity::OBJECT_TYPE::WALL;
-	wall->SetAABB(wall->GetScale() * 0.5f + wall->GetPosition() , wall->GetScale() * -0.5f + wall->GetPosition());
-	wall->setNormal(Vector3(1, 0, 0));
-
-	GenericEntity* BwallA = Create::Entity("cube", Vector3(50.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
-	BwallA->type = GenericEntity::OBJECT_TYPE::WALL;
-	BwallA->SetAABB(BwallA->GetScale() * 0.5f + BwallA->GetPosition(), BwallA->GetScale() * -0.5f + BwallA->GetPosition());
-	BwallA->setNormal(Vector3(1, 0, 0));*/
-
-	// :b:roke
-
-	//GenericEntity* BwallC = Create::Entity("cube", Vector3(65.0f, 15.0f, 0.0f), Vector3(30, 1, 1), true);
-	//BwallC->type = GenericEntity::OBJECT_TYPE::WALL;
-	//BwallC->SetAABB(BwallC->GetScale() * 0.5f + BwallC->GetPosition(), BwallC->GetScale() * -0.5f + BwallC->GetPosition());
-	//BwallC->setNormal(Vector3(1, 0, 0));
-
-	//GenericEntity* BwallD = Create::Entity("cube", Vector3(80.0f, 0.0f, 0.0f), Vector3(1, 30, 1), true);
-	//BwallD->type = GenericEntity::OBJECT_TYPE::WALL;
-	//BwallD->SetAABB(BwallD->GetScale() * 0.5f + BwallD->GetPosition(), BwallD->GetScale() * -0.5f + BwallD->GetPosition());
-	//BwallD->setNormal(Vector3(1, 0, 0));
-
-	//GenericEntity* wall2 = Create::Entity("cube", Vector3(10.0f, 0.0f, -0.5f), Vector3(2, 10, 2), true);
-	//wall2->type = GenericEntity::OBJECT_TYPE::WALL;
-	//wall2->SetAABB(Vector3(10, 10, 10) + wall2->GetPosition(), Vector3(-10, -10, -10) + wall2->GetPosition());
-
-	//// test fire
-	//GenericEntity* fire = Create::Entity("fire", Vector3(-10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	//fire->type = GenericEntity::OBJECT_TYPE::FIRE;
-	//fire->SetAABB(fire->GetScale() * 0.5f + fire->GetPosition(), fire->GetScale() * -0.5f + fire->GetPosition());
-
-	//// test slow
-	//GenericEntity* slow = Create::Entity("slow", Vector3(0.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	//slow->type = GenericEntity::OBJECT_TYPE::SLOW;
-	//slow->SetAABB(slow->GetScale() * 0.5f + slow->GetPosition(), slow->GetScale() * -0.5f + slow->GetPosition());
-
-	//// test poison
-	//GenericEntity* poison = Create::Entity("poison", Vector3(10.0f, -5.0f, 0.0f), Vector3(2, 2, 1), true);
-	//poison->type = GenericEntity::OBJECT_TYPE::POISON;
-	//poison->SetAABB(poison->GetScale() * 0.5f + poison->GetPosition(), poison->GetScale() * -0.5f + poison->GetPosition());
-
-	//GenericEntity* testcube = Create::Entity("cube", Vector3(8, 6, 0));
 
 	// Make UI
 
@@ -313,16 +183,6 @@ void SceneText::Init()
 	UIElement* backOV = Create::UIEntity("cancel_button", Vector3(0, -10, 9.5f), Vector3(175, 25, 1), true);
 	backOV->elestate = UIElement::ELEMENT_STATE::sOVERVIEW;
 	backOV->type = UIElement::ELEMENT_TYPE::CANCEL;
-	
-	//TELEPORTER
-	//GenericEntity* teleporter = Create::Entity("greenCube", Vector3(-20.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	//teleporter->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
-	////teleporter->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
-	////teleporter->setNormal(Vector3(1, 0, 0));
-	//GenericEntity* teleporter2 = Create::Entity("greenCube", Vector3(5.0f, 10.0f, 0.0f), Vector3(5, 5, 2), true);
-	//teleporter2->type = GenericEntity::OBJECT_TYPE::TELEPORTER;
-	//teleporter2->SetAABB(teleporter->GetScale() * 0.5f + teleporter->GetPosition(), teleporter->GetScale() * -0.5f + teleporter->GetPosition());
-	//teleporter->setNormal(Vector3(1, 0, 0));
 
 	// Setup the 2D entities
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
