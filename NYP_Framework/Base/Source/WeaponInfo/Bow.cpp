@@ -43,7 +43,7 @@ void Bow::Init(void)
 	// projectile scale
 	scale.Set(0.6f, 0.6f, 0.6f);
 	// projectile ricochet
-	m_bRicochet = true;
+	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed

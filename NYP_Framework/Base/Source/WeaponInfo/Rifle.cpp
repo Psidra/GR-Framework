@@ -45,7 +45,7 @@ void Rifle::Init(void)
 	// projectile scale
 	scale.Set(0.3, 0.3, 0.3);
 	// projectile ricochet
-	m_bRicochet = true;
+	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed

@@ -41,7 +41,7 @@ void FourSidedWeapon::Init(void)
 	// projectile scale
 	scale.Set(0.6, 0.6, 0.6);
 	// projectile ricochet
-	m_bRicochet = true;
+	m_bRicochet = false;
 	// is laserBeam
 	m_bLaserBeam = false;
 	// projectile speed
