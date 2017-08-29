@@ -143,7 +143,10 @@ void CEnemy::Update(double dt)
 		}
 	}
 	if (health <= 0)
+	{
 		this->SetIsDone(true);
+		enemyInventory->getWeaponList()[weaponIndex]->setIsActive(false);
+	}
 	if (isHurt == true)
 		hurtElapsedTime += dt;
 	if (hurtElapsedTime > 1.5)
